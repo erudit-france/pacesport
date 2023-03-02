@@ -1,0 +1,12 @@
+.mantine-Autocomplete-input:focus {
+    border-color: #f58077;
+}
+
+.mantine-Autocomplete-input {
+    padding: 15px 20px;
+    font-size: 14px;
+}
+
+.mantine-Autocomplete-item {
+    font-size: 14px;
+}

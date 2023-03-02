@@ -7,6 +7,8 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 import '@/styles/globals.css'
+import '../styles/SearchInput.css'
+
 
 export default function App({ Component, pageProps }) {
   return <Component {...pageProps} />
