@@ -6,6 +6,7 @@ import { motion } from "framer-motion"
 import styles from '@/styles/Menu.module.css'
 import Link from 'next/link';
 import { useScrollLock } from '@mantine/hooks';
+import NavbarLink from './NavbarLink';
 
 export default function Navbar(){
     const [open, setOpen] = useState(false);
@@ -63,12 +64,12 @@ export default function Navbar(){
                     >
                     <div className='tw-flex tw-flex-col tw-justify-center'>
                         <ul className='tw-relative -tw-top-4'>
-                            <motion.li className="tw-font-semibold tw-my-3.5 tw-text-gray-900 item" variants={menuItemVariants}><Link href="#" className='tw-block tw-w-full'>Mon compte</Link></motion.li>
-                            <motion.li className="tw-font-semibold tw-my-3.5 tw-text-gray-900 item" variants={menuItemVariants}><Link href="#" className='tw-block tw-w-full'>Paramètres</Link></motion.li>
-                            <motion.li className="tw-font-semibold tw-my-3.5 tw-text-gray-900 item" variants={menuItemVariants}><Link href="#" className='tw-block tw-w-full'>Invitations partenaires</Link></motion.li>
-                            <motion.li className="tw-font-semibold tw-my-3.5 tw-text-gray-900 item" variants={menuItemVariants}><Link href="#" className='tw-block tw-w-full tw-flex'>Mon pace&lsquo;sport (carte) <BsLock className='tw-text-red-600 tw-my-auto tw-ml-1'/></Link></motion.li>
-                            <motion.li className="tw-font-semibold tw-my-3.5 tw-text-gray-900 item" variants={menuItemVariants}><Link href="#" className='tw-block tw-w-full'>Offres de partenariat</Link></motion.li>
-                            <motion.li className="tw-font-semibold tw-my-3.5 tw-text-gray-900 item" variants={menuItemVariants}><Link href="#" className='tw-block tw-w-full'>Messagerie</Link></motion.li>
+                            <NavbarLink href={'/login'} name={'Mon compte'} />
+                            <NavbarLink href={'#'} name={'Paramètres'} />
+                            <NavbarLink href={'#'} name={'Invitations partenaires'} />
+                            <NavbarLink href={'#'} name={<>Mon pace&lsquo;sport (carte) <BsLock className='tw-text-red-600 tw-my-auto tw-ml-1'/></>} />
+                            <NavbarLink href={'#'} name={'Offres de partenariat'} />
+                            <NavbarLink href={'#'} name={'Messagerie'} />
                         </ul>
                     </div>
 
