@@ -8,6 +8,7 @@ import hero from '../public/hand-in-hand.jpg'
 import SearchInput from '@/components/SearchInput'
 import { Grid } from '@mantine/core'
 import AssociationCard from '@/components/AssociationCard'
+import EnseigneCard from '@/components/EnseigneCard'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,7 +21,7 @@ export default function Home() {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <div className={ `${styles.main} tw-overflow-x-hidden` } >
+        <div className={ `${styles.main}` } >
           <Navbar />
           <div>
             <header className='tw-flex tw-justify-center tw-h-36 tw-relative'>
@@ -41,11 +42,26 @@ export default function Home() {
               {/* carte proche */}
               <section className='tw-mt-8'>
                 <h1 className="tw-text-lg tw-font-semibold tw-uppercase tw-text-center">Carte proche de vous</h1>
-                <Grid gutter={6} className="mt-4">
+                <Grid gutter={12} className="mt-4">
                   {[0,1,2,3].map(function(o) {
                     return (
                         <Grid.Col key={o} span={6} xs={6} xl={3}>
                           <AssociationCard />
+                        </Grid.Col>
+                      )
+                  }
+                  )}
+                </Grid>
+              </section>
+
+              {/* Enseigne proche */}
+              <section className='tw-mt-12'>
+                <h1 className="tw-text-lg tw-font-semibold tw-uppercase tw-text-center">Enseigne proche de vous</h1>
+                <Grid gutter={12} className="mt-4">
+                  {[0,1,2,3].map(function(o) {
+                    return (
+                        <Grid.Col key={o} span={6} xs={6} xl={3}>
+                          <EnseigneCard />
                         </Grid.Col>
                       )
                   }

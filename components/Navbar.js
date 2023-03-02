@@ -5,10 +5,16 @@ import { BsLock } from "react-icons/bs";
 import { motion } from "framer-motion"
 import styles from '@/styles/Menu.module.css'
 import Link from 'next/link';
+import { useScrollLock } from '@mantine/hooks';
 
 export default function Navbar(){
     const [open, setOpen] = useState(false);
-    const toggleMenu = () => { setOpen(!open)}
+    const [lockScroll, setLockScroll] = useState(false);
+    useScrollLock(lockScroll);
+    const toggleMenu = () => { 
+        setOpen(!open)
+        setLockScroll(!lockScroll)
+    }
     const closeBtnInitial = { opacity: 0, scale: 0 }
     const closeBtnAnimate = { opacity: 1, scale: 1 }
     const menuBgInitial = { transform: "translateX(-100%) translateY(-100%)"}
@@ -27,7 +33,7 @@ export default function Navbar(){
     return (
         <>
             <div className='tw-max-h-screen tw-z-50 tw-absolute'>
-                <motion.button className='bg-white shadow-sm btn tw-text-xl tw-absolute -tw-left-2 tw-top-5 tw-z-100'
+                <motion.button className='bg-white shadow-lg btn tw-text-xl tw-fixed -tw-left-2 tw-top-5 tw-z-100'
                         onClick={toggleMenu}
                         initial={{transform: "translateX(0%)" }}
                         animate={ open ? { transform: "translateX(-100%)" } : {transform: "translateX(0%)" } }>
@@ -35,13 +41,13 @@ export default function Navbar(){
                 </motion.button>
 
                 {/* menu background */}
-                <motion.div className='tw-bg-black tw-w-[117vw] tw-h-[29rem] tw-absolute -tw-left-10 tw-shadow-lg tw-z-100'
+                <motion.div className='tw-bg-black tw-w-[117vw] tw-h-[29rem] tw-fixed -tw-left-10 tw-shadow-lg tw-z-100'
                     style={{ borderRadius: "0 0 63%"}}
                     initial={menuBgInitial}
                     animate={ open ? menuBgAnimate : menuBgInitial }
                     ></motion.div>
                 {/* menu */}
-                <motion.div className='tw-bg-gray-100 tw-w-screen tw-h-[29rem] tw-absolute tw-flex tw-justify-center tw-shadow-lg tw-z-20'
+                <motion.div className='tw-bg-gray-100 tw-w-screen tw-h-[29rem] tw-fixed tw-flex tw-justify-center tw-shadow-lg tw-z-20'
                     style={{ borderRadius: "0 0 70%"}}
                     initial={menuInitial}
                     animate={ open ? menuAnimate : menuInitial }
