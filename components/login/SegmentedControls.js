@@ -1,4 +1,5 @@
 import { createStyles, SegmentedControl, rem } from '@mantine/core';
+import { useState } from 'react';
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -24,13 +25,22 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function SegmentedControls() {
+export function SegmentedControls({ tabHandler }) {
   const { classes } = useStyles();
+  const [value, setValue] = useState('Connexion');
+  const changeHandler = (value) => {
+    setValue(value)
+    tabHandler(value)
+  }
+
   return (
     <SegmentedControl
+      value={value}
+      onChange={changeHandler}
       radius="xl"
-      size="lg"
+      size="md"
       data={['Connexion', 'Inscription']}
+      color="pink"
       classNames={classes}
     />
   );

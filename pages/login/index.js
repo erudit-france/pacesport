@@ -1,86 +1,32 @@
 import { SegmentedControls } from "@/components/login/SegmentedControls";
-import { Button, Checkbox, Flex, Input, Paper, PasswordInput } from "@mantine/core";
 import Head from "next/head";
-import Link from "next/link";
-import { SiMaildotru } from 'react-icons/si'
+import SignupForm from "./components/SignupForm";
+import { Tabs } from '@mantine/core';
+import LoginForm from "./components/LoginForm";
+import { useState } from "react";
 
 export default function Login() {
+    const [activeTab, setActiveTab] = useState('login');
+
     return (
         <>
             <Head>
                 <title>PACE&lsquo;SPORT | Connexion</title>
                 <meta property="og:title" content="PACE&lsquo;SPORT | Connexion" key="title" />
             </Head>
+            <button onClick={() => setTab(!tab)}></button>
             <main className="container">
                 <div className="tw-flex tw-justify-center">
-                    <SegmentedControls />
+                    <SegmentedControls tabHandler={setActiveTab} />
                 </div>
-                <Paper shadow="xl" p="md" radius='lg'>
-                <Input
-                    variant="filled"
-                    placeholder="Nom & prénom"
-                    radius="lg"
-                    size="md"
-                />
-                <Input
-                    mt='sm'
-                    variant="filled"
-                    placeholder="Pseudo"
-                    radius="lg"
-                    size="md"
-                />
-                <Input
-                    mt='sm'
-                    icon={<SiMaildotru className="tw-text-black tw-relative" />}
-                    variant="filled"
-                    placeholder="Adresse mail"
-                    radius="lg"
-                    size="md"
-                />
-                
-                <PasswordInput
-                    mt='sm'
-                    placeholder="Mot de passe"
-                    variant="filled"
-                    radius="lg"
-                    size="md"
-                />
-
-                
-                <PasswordInput
-                    mt='sm'
-                    placeholder="Confirmation mot de passe"
-                    variant="filled"
-                    radius="lg"
-                    size="md"
-                />
-
-                <Checkbox
-                    ml='xs'
-                    my='lg'
-                    color="dark"
-                    size="sm"
-                    label={
-                        <>
-                        J&lsquo;accepte les {' '}
-                        <Link className="tw-text-blue-900 tw-underline" href="#" target="_blank">
-                            CGU
-                        </Link>
-                        </>
-                    }/>
-                </Paper>
-
-
-                <Flex
-                    justify="center"
-                    align="center"
-                    direction="row"
-                    mt='md'
-                >
-                    <Button className='tw-bg-pink-600 hover:tw-bg-pink-700 tw-shadow-sm' radius="xl" size="lg">
-                        Inscription
-                    </Button>
-                </Flex>
+                <Tabs value={activeTab}>
+                    <Tabs.Panel value="Inscription">
+                        <SignupForm />
+                    </Tabs.Panel>
+                    <Tabs.Panel value="Connexion">
+                        <LoginForm />
+                    </Tabs.Panel>
+                </Tabs>
             </main>
         </>
     )
