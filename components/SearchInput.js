@@ -46,7 +46,6 @@ export default function SearchInput() {
   return (
     <Autocomplete
     className='focus:tw-border-red-600'
-      onChange={(value) => console.log(value)}
       ref={ref}
       size={"lg"}
       dropdownPosition="bottom" 
