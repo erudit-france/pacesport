@@ -8,8 +8,16 @@ import '@fontsource/roboto/700.css';
 
 import '@/styles/globals.css'
 import '../styles/SearchInput.css'
+import Navbar from '@/components/navbar/Navbar';
+import HeroSection from '@/components/HeroSection';
 
 
 export default function App({ Component, pageProps }) {
-  return <Component {...pageProps} />
+  return (
+    <>
+      <Navbar />
+      <HeroSection />
+      <Component {...pageProps} />
+    </>
+  )
 }

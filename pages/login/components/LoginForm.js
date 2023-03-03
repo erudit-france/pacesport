@@ -1,12 +1,13 @@
 import { SiMaildotru } from 'react-icons/si'
-import { Button, Checkbox, Flex, Input, Paper, PasswordInput } from "@mantine/core";
-import Link from "next/link";
-import { useState } from "react";
+import { Button, Flex, Input, Paper, PasswordInput } from "@mantine/core";
+import { useRouter } from 'next/navigation';
 
 export default function LoginForm({overlayHandler}) {
+  const router = useRouter();
   const submitHandler = () => {
     setTimeout(() => {
       overlayHandler(false)
+      router.push('/profil')
     }, 1000);
     overlayHandler(true)
   }

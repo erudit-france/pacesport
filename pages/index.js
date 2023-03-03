@@ -1,14 +1,12 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import Navbar from '@/components/navbar/Navbar'
-import logo from '../public/logo.png'
-import hero from '../public/hand-in-hand.jpg'
 import SearchInput from '@/components/SearchInput'
 import { Grid } from '@mantine/core'
 import AssociationCard from '@/components/AssociationCard'
 import EnseigneCard from '@/components/EnseigneCard'
+import HeroSection from '@/components/HeroSection'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,16 +20,7 @@ export default function Home() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <div className={ `${styles.main}` } >
-          <Navbar />
           <div>
-            <header className='tw-flex tw-justify-center tw-h-36 tw-relative'>
-              <div className='tw-flex tw-flex-col tw-justify-center'>
-                <Image src={logo} height={70} width={70} alt="Logo Pace'sport" 
-                      className='tw-rounded-full shadow-sm tw-bg-white tw-p-2'/>
-              </div>
-              <Image className='tw-w-full tw-h-full tw-absolute tw-object-cover -tw-z-10 tw-blur-sm tw-scale-110' src={hero} placeholder='blur' alt="Hero image"/>
-            </header>
-
 
             <main className='container '>
               {/* search input */}

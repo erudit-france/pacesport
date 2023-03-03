@@ -6,6 +6,8 @@ import LoginForm from "./components/LoginForm";
 import { useState } from "react";
 import logo from '../../public/logo.png'
 import Image from "next/image";
+import HeroSection from "@/components/HeroSection";
+import Navbar from "@/components/navbar/Navbar";
 
 export default function Login() {
     const [activeTab, setActiveTab] = useState('Connexion');
