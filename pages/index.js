@@ -7,6 +7,7 @@ import { Grid } from '@mantine/core'
 import AssociationCard from '@/components/AssociationCard'
 import EnseigneCard from '@/components/EnseigneCard'
 import HeroSection from '@/components/HeroSection'
+import Layout from './Layout'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,6 +20,7 @@ export default function Home() {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
+        
         <div className={ `${styles.main}` } >
           <div>
 
@@ -63,5 +65,11 @@ export default function Home() {
         </div>
 
     </>
+  )
+}
+
+Home.getLayout = function getLayout(page) {
+  return (
+    <Layout>{page}</Layout>
   )
 }

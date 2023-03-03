@@ -8,8 +8,9 @@ import logo from '../../public/logo.png'
 import Image from "next/image";
 import HeroSection from "@/components/HeroSection";
 import Navbar from "@/components/navbar/Navbar";
+import Layout from "../Layout";
 
-export default function Login() {
+export default function Page() {
     const [activeTab, setActiveTab] = useState('Connexion');
     const [visible, setVisible] = useState(false);
     const overlayHandler = (isVisible) => setVisible(isVisible)
@@ -50,3 +51,10 @@ export default function Login() {
         </>
     )
 }
+
+
+Page.getLayout = function getLayout(page) {
+    return (
+      <Layout>{page}</Layout>
+    )
+  }
