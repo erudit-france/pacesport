@@ -6,7 +6,7 @@ import LoginForm from "./components/LoginForm";
 import { useState } from "react";
 
 export default function Login() {
-    const [activeTab, setActiveTab] = useState('login');
+    const [activeTab, setActiveTab] = useState('Connexion');
 
     return (
         <>
