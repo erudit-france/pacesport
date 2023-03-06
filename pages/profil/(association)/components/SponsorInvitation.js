@@ -44,16 +44,15 @@ export default function SponsorInvitation(){
     return (
         <>
             {message && 
-                <Notification className="tw-fixed tw-bottom-5 tw-right-5" 
+                <Notification className="tw-fixed tw-bottom-5 tw-right-5 tw-z-30" 
                     color={error ? "red" : "teal"} title="Envoi du mail"
                     icon={error ? <RxCross2 size="1.1rem" /> : <BsCheckLg size="1.1rem" />}>
                     {message}
                 </Notification>
             }
 
-            <Input.Wrapper className="tw-w-full">
+            <Input.Wrapper className="tw-w-full focus:tw-outline-red-600">
                 <Input
-                    className="tw-w-full"
                     size={'md'}
                     rightSection={loading ? <Loader color="red" size={'xs'}/> : <InputButton />}
                     radius={'xl'}

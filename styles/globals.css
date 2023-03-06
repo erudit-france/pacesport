@@ -110,3 +110,7 @@ a {
     color-scheme: dark;
   }
 }
+
+.mantine-Input-input::placeholder {
+  font-size: .85rem;
+}

@@ -12,7 +12,7 @@ export default function UserListButton(){
             </Modal>
 
 
-            <Indicator inline label="5" size={20} offset={4} color={'black'}>
+            <Indicator zIndex={4} inline label="5" size={20} offset={4} color={'black'}>
                 <Avatar radius={"lg"} size={'2.6rem'} onClick={open} 
                     className="hover:tw-cursor-pointer tw-bg-red-500">
                     <RxPerson size={'1.6rem'} color='black'  />
