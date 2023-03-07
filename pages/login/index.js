@@ -8,7 +8,7 @@ import logo from '../../public/logo.png'
 import Image from "next/image";
 import HeroSection from "@/components/HeroSection";
 import Navbar from "@/components/navbar/Navbar";
-import Layout from "../Layout";
+import Layout from "../layout";
 
 export default function Page() {
     const [activeTab, setActiveTab] = useState('Connexion');

@@ -7,7 +7,7 @@ import { Grid } from '@mantine/core'
 import AssociationCard from '@/components/AssociationCard'
 import EnseigneCard from '@/components/EnseigneCard'
 import HeroSection from '@/components/HeroSection'
-import Layout from './Layout'
+import Layout from './layout'
 
 const inter = Inter({ subsets: ['latin'] })
 
