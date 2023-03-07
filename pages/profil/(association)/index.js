@@ -6,6 +6,7 @@ import Layout from "./layout";
 import SponsorInvitation from "./components/SponsorInvitation";
 import { GoPlus } from 'react-icons/go'
 import CampagneList from "./components/CampagneList";
+import Link from "next/link";
 
 export default function Page(){
     const isAccountLimited = true
@@ -30,14 +31,16 @@ export default function Page(){
             </section>
 
             <section className="tw-bg-white tw-mt-6 tw-shadow-inner tw-py-5 tw-px-4">
-                <Flex justify={'space-between'}>
+                <Flex justify={'space-between'} pb={'sm'}>
                     <Text fz={'sm'} fw={'bold'} align={'center'} transform={'uppercase'} py={2}>Mon Pace&lsquo;sport</Text>
-                    <Button size="xs" rightIcon={<GoPlus size="1rem" />}
-                        className="tw-bg-gray-900 tw-text-gray-100 tw-text-xs tw-rounded-xl
-                                    hover:tw-bg-black" 
-                        >
-                        Nouvelle campagne
-                    </Button>
+                    <Link href="/profil/(association)/campagne/ajouter">
+                        <Button size="xs" rightIcon={<GoPlus size="1rem" />}
+                            className="tw-bg-gray-900 tw-text-gray-100 tw-text-xs tw-rounded-xl
+                                        hover:tw-bg-black" 
+                            >
+                            Nouvelle campagne
+                        </Button>
+                    </Link>
                 </Flex>
                 <CampagneList />
             </section>
