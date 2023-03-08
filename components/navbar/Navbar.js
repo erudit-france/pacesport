@@ -72,7 +72,7 @@ export default function Navbar(){
                             <NavbarLink toggleMenu={ toggleMenu } href={'#'} name={'Annuaire'} />
                             <NavbarLink toggleMenu={ toggleMenu } href={'#'} name={'Gestion de fonds'} />
                             <NavbarLink toggleMenu={ toggleMenu } href={'#'} name={'Offres de partenariat'} />
-                            <NavbarLink toggleMenu={ toggleMenu } href={'#'} name={'Messagerie'} />
+                            <NavbarLink toggleMenu={ toggleMenu } href={'/messages'} name={'Messagerie'} />
                         </ul>
                     </div>
 

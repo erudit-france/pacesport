@@ -16,7 +16,13 @@ export default function SignupForm({overlayHandler}) {
       <Paper shadow="xl" p="md" radius="lg">
         <Input
           variant="filled"
-          placeholder="Nom & prénom"
+          placeholder="Nom"
+          radius="lg"
+          size="md"
+        />
+        <Input
+          variant="filled"
+          placeholder="Prénom"
           radius="lg"
           size="md"
         />

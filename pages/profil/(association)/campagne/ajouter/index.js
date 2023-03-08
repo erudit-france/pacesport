@@ -8,6 +8,9 @@ import 'dayjs/locale/fr';
 
 export default function Page(){
     const form = useForm({
+        initialValues: {
+            nom: '',
+        },
         validate: {
             nom: (v) => v != '' ? null : 'Veuillez saisir un nom',
             montant: (v) => v > -1 ? null : 'Veuillez saisir un montant valide',
@@ -23,13 +26,6 @@ export default function Page(){
             },
         },
     });
-
-    const [dateDebut, setDateDebut] = useState(new Date());
-    const [dateFin, setDateFin] = useState(dateDebut + 1);
-    const dateDebutHandler = (value) => {
-        setDateDebut(value)
-        setDateFin(dateDebut + 1)
-    }
 
     return (
         <>
