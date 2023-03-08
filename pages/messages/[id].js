@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 import Layout from "./layout"
 import { HiOutlineArrowNarrowLeft } from 'react-icons/hi'
+import ChatMessage from "./components/ChatMessage"
 
 export default function ChatPage({id}) {
     const user = {
@@ -13,6 +14,45 @@ export default function ChatPage({id}) {
         time: '01/03',
         unreadNumber: 0,
     }
+
+    const messages = [
+        {
+            data: 'hello there',
+            time: new Date(),
+            isContact: true
+        },
+        {
+            data: 'Hi',
+            time: new Date(),
+            isContact: false
+        },
+        {
+            data: 'What\'s up?',
+            time: new Date(),
+            isContact: true
+        },
+        {
+            data: 'nm you',
+            time: new Date(),
+            isContact: false
+        },
+        {
+            data: 'chillin',
+            time: new Date(),
+            isContact: true
+        },
+        {
+            data: 'u free this evening?',
+            time: new Date(),
+            isContact: false
+        },
+        {
+            data: 'im going out if u wanna come',
+            time: new Date(),
+            isContact: false
+        }
+    ]
+
     const router = useRouter()
     const contactId = router.query.id
 
@@ -40,54 +80,16 @@ export default function ChatPage({id}) {
                     <ScrollArea className="tw-p-2" 
                                 style={{ height: 'calc(100vh - 286px)' }}
                                 offsetScrollbars>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
-                                    <p>HELEHLHE</p>
+                                {messages.map((message,i) => (
+                                    <ChatMessage message={message} key={i}/>
+                                ))}
                     </ScrollArea>
                     <Flex>
-                        <Flex>
-                        <TextInput radius='lg' placeholder="message"></TextInput>
-                        </Flex>
+                        <form>
+                            <Flex>
+                            <TextInput radius='lg' placeholder="message"></TextInput>
+                            </Flex>
+                        </form>
                     </Flex>
             </section>
         </>
