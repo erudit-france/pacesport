@@ -4,7 +4,7 @@ import moment from "moment/moment"
 import 'moment/locale/fr'
 
 export default function ContactList() {
-    const now = new Date()
+    const now = new moment()
     const data =
     [
         {
