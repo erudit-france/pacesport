@@ -5,8 +5,11 @@ import { useRouter } from "next/router"
 import Layout from "./layout"
 import { HiOutlineArrowNarrowLeft } from 'react-icons/hi'
 import ChatMessage from "./components/ChatMessage"
+import moment from "moment/moment"
+import 'moment/locale/fr'
 
 export default function ChatPage({id}) {
+    const now = moment()
     const user = {
         name: 'Grand frais',
         logo: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Grand_Frais_logo.png',
@@ -18,37 +21,37 @@ export default function ChatPage({id}) {
     const messages = [
         {
             data: 'hello there',
-            time: new Date(),
+            time: now,
             isContact: true
         },
         {
             data: 'Hi',
-            time: new Date(),
+            time: now,
             isContact: false
         },
         {
             data: 'What\'s up?',
-            time: new Date(),
+            time: now,
             isContact: true
         },
         {
             data: 'nm you',
-            time: new Date(),
+            time: now,
             isContact: false
         },
         {
             data: 'chillin',
-            time: new Date(),
+            time: now,
             isContact: true
         },
         {
             data: 'u free this evening?',
-            time: new Date(),
+            time: now,
             isContact: false
         },
         {
             data: 'im going out if u wanna come',
-            time: new Date(),
+            time: now,
             isContact: false
         }
     ]
