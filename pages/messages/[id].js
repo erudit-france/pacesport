@@ -83,9 +83,9 @@ export default function ChatPage({id}) {
                     <ScrollArea className="tw-p-2" 
                                 style={{ height: 'calc(100vh - 286px)' }}
                                 offsetScrollbars>
-                                {messages.map((message,i) => (
+                                {/* {messages.map((message,i) => (
                                     <ChatMessage message={message} key={i}/>
-                                ))}
+                                ))} */}
                     </ScrollArea>
                     <Flex>
                         <form>
