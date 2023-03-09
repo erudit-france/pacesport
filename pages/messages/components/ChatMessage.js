@@ -3,7 +3,7 @@ import moment from "moment/moment";
 import 'moment/locale/fr'
 
 export default function ChatMessage({message}) {
-    const delai = moment(message.time).fromNow();
+    // const delai = moment(message.time).fromNow();
 
     return (
         <>
@@ -13,7 +13,7 @@ export default function ChatMessage({message}) {
                     <Text className="tw-text-[.92rem]">{message.data}</Text>
                 </Paper>
             </Flex>
-            <Text align={message.isContact ? 'start' : 'end'} className="tw-text-[.6rem] tw-text-gray-500">{delai}</Text>
+            {/* <Text align={message.isContact ? 'start' : 'end'} className="tw-text-[.6rem] tw-text-gray-500">{delai}</Text> */}
         </>
     )
 }
