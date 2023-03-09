@@ -20,7 +20,7 @@ export default function NavbarLink({name, href, toggleMenu}) {
             <motion.li 
                 className="tw-font-semibold tw-my-3.5 tw-text-gray-900 item"
                 variants={menuItemVariants}>
-                    <Link onClick={toggleMenuHandler} href={href} className='tw-w-full tw-flex'>{name}</Link></motion.li>
+                    <Link onClick={toggleMenuHandler} href={href} className={`tw-w-full tw-flex ${href == '' ? 'tw-text-gray-400' : ''}`}>{name}</Link></motion.li>
         </>
 
     )
