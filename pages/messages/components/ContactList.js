@@ -48,22 +48,7 @@ export default function ContactList() {
             message: 'Merci pour votre retour',
             time: now,
             unreadNumber: 0,
-        },
-        {
-            name: 'Grand frais',
-            logo: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Grand_Frais_logo.png',
-            message: 'Merci pour votre retour',
-            time: '01/03',
-            unreadNumber: 0,
-        },
-        {
-            name: 'Grand frais',
-            logo: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Grand_Frais_logo.png',
-            message: 'Merci pour votre retour',
-            time: '01/03',
-            unreadNumber: 0,
         }
-        
     ]  
     const getDelai = (time) => ( moment(time).fromNow() )
 
