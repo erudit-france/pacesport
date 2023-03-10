@@ -3,7 +3,8 @@ import Image from "next/image";
 
 export default function CampagneCard(){
     const url = 'https://images.unsplash.com/photo-1628891890377-57dba2715caf'
-    const status = 'active'
+    const status = Math.round(Math.random() * 1)
+    const statusString = (status) => { return status == 1 ? 'Active' : 'En attente' }
 
     return (
         <>
@@ -19,8 +20,10 @@ export default function CampagneCard(){
                         <Text fz={'xs'}>Campagne X</Text>
                         <Text fz={'xs'} color={"gray"}>
                             Status: 
-                            <Badge className="tw-font-normal tw-uppercase tw-ml-3" size="sm" color={status.toLowerCase() == 'active' ? 'teal' : 'indigo'}>
-                                {status}</Badge></Text>
+                            <Badge className="tw-font-normal tw-uppercase tw-ml-3" 
+                                size="sm" 
+                                color={status == 1 ? 'teal' : 'indigo'}>
+                                {statusString(status)}</Badge></Text>
                         <Button size="xs" className="tw-bg-gray-900 tw-text-gray-100 tw-text-xs tw-rounded-xl tw-px-10 tw-h-6
                                 hover:tw-bg-black">
                                 Détail</Button>

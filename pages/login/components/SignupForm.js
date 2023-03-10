@@ -21,6 +21,7 @@ export default function SignupForm({overlayHandler}) {
           size="md"
         />
         <Input
+          mt="sm"
           variant="filled"
           placeholder="Prénom"
           radius="lg"

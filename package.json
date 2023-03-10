@@ -15,7 +15,6 @@
     "@mantine/dates": "^5.10.5",
     "@mantine/form": "^5.10.5",
     "@mantine/hooks": "^5.10.5",
-    "bootstrap": "^5.2.3",
     "dayjs": "^1.11.7",
     "eslint": "8.35.0",
     "eslint-config-next": "13.2.1",

@@ -34,7 +34,7 @@ export default function Navbar(){
     return (
         <>
             <div className='tw-max-h-screen tw-z-50 tw-absolute tw-top-0'>
-                <motion.button className='bg-white shadow-lg btn tw-text-xl tw-fixed -tw-left-2 tw-top-5 tw-z-100'
+                <motion.button className='tw-bg-white shadow-lg tw-p-2 tw-px-3 tw-rounded-r-lg tw-text-xl tw-fixed -tw-left-1 tw-top-5 tw-z-100'
                         onClick={toggleMenu}
                         initial={{transform: "translateX(0%)" }}
                         animate={ open ? { transform: "translateX(-100%)" } : {transform: "translateX(0%)" } }>
@@ -70,7 +70,7 @@ export default function Navbar(){
                             <NavbarLink toggleMenu={ toggleMenu } href={''} name={<>Mon pace&lsquo;sport (carte)</>} />
                             <NavbarLink toggleMenu={ toggleMenu } href={''} name={<>Pace&lsquo;sport business <BsLock className='tw-text-red-600 tw-my-auto tw-ml-1'/></>} />
                             <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Annuaire'} />
-                            <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Gestion de fonds'} />
+                            <NavbarLink toggleMenu={ toggleMenu } href={'/gestion-fonds'} name={'Gestion de fonds'} />
                             <NavbarLink toggleMenu={ toggleMenu } href={'/partenariat'} name={'Offres de partenariat'} />
                             <NavbarLink toggleMenu={ toggleMenu } href={'/messages'} name={'Messagerie'} />
                         </ul>
