@@ -1,10 +1,13 @@
 import { SiMaildotru } from 'react-icons/si'
-import { Button, Flex, Input, Paper, PasswordInput, TextInput } from "@mantine/core";
+import { Alert, Button, Flex, Input, Paper, PasswordInput, TextInput } from "@mantine/core";
 import { useRouter } from 'next/navigation';
 import { useForm } from '@mantine/form';
+import { AiOutlineInfoCircle } from 'react-icons/ai'
+import { useState } from 'react';
 
 export default function LoginForm({overlayHandler}) {
   const router = useRouter();
+  const [error, setError] = useState('');
   const form = useForm({
     initialValues: {
         email: '',
@@ -17,9 +20,7 @@ export default function LoginForm({overlayHandler}) {
 });
 
   const submitHandler = (data) => {
-    console.log('submithandler');
-    console.log(data);
-    console.log('process.env.API_URL', process.env.API_URL)
+    setError('')
 
     fetch(`/api/login`, {
       method: 'POST',
@@ -29,7 +30,11 @@ export default function LoginForm({overlayHandler}) {
       },
       body: JSON.stringify(data)
     }).then(res => res.json())
-      .then(res => console.log(res));
+      .then(res => 
+        {
+          if (res.code == 401) {setError(res.message)}
+          console.log(res)
+        })
     // setTimeout(() => {
     //   overlayHandler(false)
     //   router.push('/profil')
@@ -50,6 +55,11 @@ export default function LoginForm({overlayHandler}) {
             withAsterisk
             {...form.getInputProps('password')}
             />
+            
+          {error != '' && 
+              <Alert icon={<AiOutlineInfoCircle size="1rem" />} p={'md'} mt='md' color="pink" radius="md" withCloseButton>
+                <span className='tw-text-red-900'>{error}</span></Alert>
+          }
         </Paper>
 
         <Flex justify="center" align="center" direction="row" mt="md">
