@@ -1,12 +1,14 @@
 import Head from "next/head";
 import Layout from "./layout";
 import { useState } from 'react';
-import { Stepper, Button, Group, TextInput, Text, Box, NumberInput } from '@mantine/core';
+import { Stepper, Button, Group, TextInput, Text, Box, NumberInput, Flex, Modal } from '@mantine/core';
 import { DateInput, DatePicker } from '@mantine/dates'
 import { useForm } from '@mantine/form';
 import 'dayjs/locale/fr';
+import AssociatedOffersList from "../components/AssociatedOffersList";
 
 export default function Page(){
+    const [opened, setOpened] = useState(false);
     const form = useForm({
         initialValues: {
             nom: '',
@@ -34,8 +36,8 @@ export default function Page(){
             </Head>       
             <section className="tw-px-4 tw-pt-4">
                 <form onSubmit={form.onSubmit((values) => console.log(values))}>
-                    <div className="rounded tw-border-[1px] tw-border-gray-400 tw-shadow-sm tw-p-3">
-                        <h2>Détails</h2>
+                    <div className="tw-rounded-xl tw-border-[1px] tw-border-gray-400 tw-shadow-sm tw-p-3">
+                        <h2 className="tw-font-semibold">Détails</h2>
                         <TextInput size="xs" mb={'sm'} label="Nom de la carte"
                                 withAsterisk
                                 {...form.getInputProps('nom')}/>
@@ -64,16 +66,31 @@ export default function Page(){
                                     {...form.getInputProps('dateFin')}/>
                     </div>
 
-                    <div className="rounded tw-border-[1px] tw-border-gray-400 tw-shadow-sm tw-p-3 tw-mt-2">
-                        <h2>Offres associées</h2>
-
+                    <div className="tw-rounded-xl tw-border-[1px] tw-border-gray-400 tw-shadow-sm tw-p-3 tw-mt-2">
+                        <Flex justify={'space-between'}>
+                            <h2 className="tw-font-semibold">Offres associées</h2>
+                            <Button onClick={() => setOpened(true)} 
+                                className="tw-bg-slate-900 hover:tw-bg-slate-700"
+                                size="xs">
+                                    Ajouter</Button>
+                        </Flex>
+                        <AssociatedOffersList className='tw-mt-2' />
                     </div>
                         
-                    <Button className="tw-w-full tw-mx-auto tw-bg-gray-800" 
+                    <Button className="tw-w-full tw-mx-auto tw-bg-teal-600 hover:tw-bg-teal-700" 
                             mt={'md'} radius={'lg'} size="sm" variant="filled" 
-                            color={"dark"} type="submit">Enregister</Button>
+                            type="submit">Enregister</Button>
                 </form>
             </section>         
+
+            <Modal
+                centered 
+                opened={opened}
+                onClose={() => setOpened(false)}
+                title="Introduce yourself!"
+            >
+                {/* Modal content */}
+            </Modal>
 
         </>
     )

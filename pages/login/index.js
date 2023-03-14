@@ -28,7 +28,7 @@ export default function Page() {
                         <div className="tw-absolute tw-z-[201]"
                             style={ {top: 'calc(50vh - 80px)', left: 'calc(50vw - 56.5px)'} }>
                             <Image src={logo} height={70} width={70} alt="Logo Pace'sport" 
-                                className='tw-rounded-full shadow-sm tw-bg-gray-200/80 tw-p-2 mx-auto'
+                                className='tw-rounded-full shadow-sm tw-bg-gray-200/80 tw-p-2 tw-mx-auto'
                                 />
                             <p className="text-center tw-uppercase tw-mt-2">Chargement...</p>
                         </div>

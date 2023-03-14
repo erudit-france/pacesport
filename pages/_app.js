@@ -9,6 +9,7 @@ import Navbar from '@/components/navbar/Navbar';
 import HeroSection from '@/components/HeroSection';
 
 
+
 export default function App({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page)
 
