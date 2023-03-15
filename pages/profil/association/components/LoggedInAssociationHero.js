@@ -9,7 +9,7 @@ export default function LoggedInAssociationHero(){
     return (
         <header className='tw-flex tw-justify-center tw-h-36 tw-relative'>
             <div className='tw-flex tw-flex-col tw-justify-center'>
-                <Link href='/profil/(association)'>
+                <Link href='/profil/association'>
                 <Image src={userImage} height={70} width={70} alt="Logo Pace'sport" 
                         className='tw-rounded-full shadow-sm tw-bg-white tw-p-2 tw-mx-auto'/>
                 </Link>

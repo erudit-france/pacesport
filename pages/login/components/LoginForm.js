@@ -4,14 +4,15 @@ import { useRouter } from 'next/navigation';
 import { useForm } from '@mantine/form';
 import { AiOutlineInfoCircle } from 'react-icons/ai'
 import { useState } from 'react';
+import { setCookie, getCookie } from 'cookies-next';
 
-export default function LoginForm({overlayHandler}) {
+export default function LoginForm({loading}) {
   const router = useRouter();
   const [error, setError] = useState('');
   const form = useForm({
     initialValues: {
-        email: '',
-        password: ''
+        email: 'admin@example.com',
+        password: '123+aze'
     },
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Veuillez saisir un E-mail valide'),
@@ -20,6 +21,7 @@ export default function LoginForm({overlayHandler}) {
 });
 
   const submitHandler = (data) => {
+    loading(true)
     setError('')
 
     fetch(`/api/login`, {
@@ -32,19 +34,35 @@ export default function LoginForm({overlayHandler}) {
     }).then(res => res.json())
       .then(res => 
         {
+          loading(false)
+          if (res.payload) {
+            if(res.payload.token) setCookie('token', res.payload.token)
+          }
           if (res.code == 401) {setError(res.message)}
-          console.log(res)
+          nextPage()
         })
-    // setTimeout(() => {
-    //   overlayHandler(false)
-    //   router.push('/profil')
-    // }, 1000);
-    // overlayHandler(true)
+  }
+
+  const fetchOffers = () => {
+    fetch(`/api/offer`, {
+      method: 'GET',
+      headers: new Headers({
+        'JWTAuthorization': `Bearer ${getCookie('token')}`,
+        'Content-Type': 'application/json'
+      })
+    })
+    .then(res => res.json())
+    .then(res => console.log('res', res))
+  }
+
+  const nextPage = () => {
+      router.push('/inscription/finaliser')
   }
 
   return (
     <>
       <form onSubmit={form.onSubmit((values) => submitHandler(values))}>
+      {/* <form onSubmit={(e) => nextPage(e)}> */}
         <Paper shadow="xl" p="md" radius="lg">
           <TextInput mt="sm" variant="filled" placeholder="Adresse mail" radius="lg" size="md"
             icon={<SiMaildotru className="tw-text-black tw-relative" />}

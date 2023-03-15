@@ -3,12 +3,12 @@ import { Button, Checkbox, Flex, Input, Paper, PasswordInput } from "@mantine/co
 import Link from "next/link";
 import { useState } from "react";
 
-export default function SignupForm({overlayHandler}) {
+export default function SignupForm({loading}) {
   const submitHandler = () => {
     setTimeout(() => {
-      overlayHandler(false)
+      loading(false)
     }, 1000);
-    overlayHandler(true)
+    loading(true)
   }
 
   return (

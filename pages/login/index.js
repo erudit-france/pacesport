@@ -40,10 +40,10 @@ export default function Page() {
                     </div>
                     <Tabs value={activeTab}>
                         <Tabs.Panel value="Inscription">
-                            <SignupForm overlayHandler={overlayHandler} />
+                            <SignupForm loading={overlayHandler} />
                         </Tabs.Panel>
                         <Tabs.Panel value="Connexion">
-                            <LoginForm overlayHandler={overlayHandler} />
+                            <LoginForm loading={overlayHandler} />
                         </Tabs.Panel>
                     </Tabs>
                 </main>

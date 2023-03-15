@@ -33,7 +33,7 @@ export default function Page(){
             <section className="tw-bg-white tw-mt-6 tw-shadow-inner tw-py-5 tw-px-4">
                 <Flex justify={'space-between'} pb={'sm'}>
                     <Text fz={'sm'} fw={'bold'} align={'center'} transform={'uppercase'} py={2}>Mon Pace&lsquo;sport</Text>
-                    <Link href="/profil/(association)/campagne/ajouter">
+                    <Link href="/profil/association/campagne/ajouter">
                         <Button size="xs" rightIcon={<GoPlus size="1rem" />}
                             className="tw-bg-gray-900 tw-text-gray-100 tw-text-xs tw-rounded-xl
                                         hover:tw-bg-black" 
