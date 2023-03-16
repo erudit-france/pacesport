@@ -56,7 +56,8 @@ export default function LoginForm({loading}) {
   }
 
   const nextPage = () => {
-      router.push('/inscription/finaliser')
+      router.push('/inscription')
+      // router.push('/inscription/finaliser')
   }
 
   return (
