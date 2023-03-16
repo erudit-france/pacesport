@@ -22,7 +22,7 @@ export default function OfferList() {
 
     return (
         <>
-            <div className="tw-bg-white tw-rounded-b-md tw-py-2">
+            <div className="tw-bg-white tw-rounded-b-xl tw-py-2">
                 {offers.length == 0 
                     ? <Text align={'center'} className='tw-text-gray-700'>Aucune offre</Text>
                     :   <Table striped>
