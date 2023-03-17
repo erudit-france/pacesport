@@ -47,9 +47,9 @@ function AccordionControl({offer}) {
             </Flex>
         </Accordion.Control>
         <ActionIcon size="lg" m={'md'}>
-          <Link href=''>
-            <BsInfoSquare className={`tw-text-teal-600 hover:tw-text-white hover:tw-bg-teal-600 tw-rounded-[3px]`} size={18} />
-          </Link>
+          <Button variant='filled' size='xs'
+            className='tw-bg-gray-800 hover:tw-bg-gray-700 tw-mr-2 tw-p-1'>
+              Détails</Button>
         </ActionIcon>
         </Box>
     );

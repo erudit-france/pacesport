@@ -1,5 +1,5 @@
 import Navbar from "@/components/navbar/Navbar";
-import LoggedInAssociationHero from "../profil/(association)/components/LoggedInAssociationHero";
+import LoggedInAssociationHero from "../profil/association/components/LoggedInAssociationHero";
 
 export default function Layout({children}){
     return (
