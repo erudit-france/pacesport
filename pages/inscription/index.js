@@ -21,14 +21,19 @@ export default function Page() {
             .then(res => res.json())
             .then(res => {
                 if(res.data){
-                    if(res.data.isSignupComplete == true) {
+                    if(res.data.isSignupComplete === true) {
                         router.push('/profil')
+                    }else{
+                        router.push('/inscription/finaliser')
                     }
+                }else{
+                    router.push('/login')
                 }
             })
         })
 
     return (
-        <></>
+        <>
+        </>
     )
 }

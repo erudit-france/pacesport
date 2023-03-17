@@ -7,8 +7,17 @@ import styles from '@/styles/Menu.module.css'
 import Link from 'next/link';
 import { useScrollLock } from '@mantine/hooks';
 import NavbarLink from './NavbarLink';
+import { deleteCookie, getCookie } from 'cookies-next';
+import { useRouter } from 'next/router';
+import { Button } from '@mantine/core';
 
 export default function Navbar(){
+    const token = getCookie('token')
+    const router = useRouter()
+    const logout = () => {
+        deleteCookie('token')
+        router.push('/')
+    }
     const [open, setOpen] = useState(false);
     const [lockScroll, setLockScroll] = useState(false);
     useScrollLock(lockScroll);
@@ -73,6 +82,11 @@ export default function Navbar(){
                             <NavbarLink toggleMenu={ toggleMenu } href={'/gestion-fonds'} name={'Gestion de fonds'} />
                             <NavbarLink toggleMenu={ toggleMenu } href={'/partenariat'} name={'Offres de partenariat'} />
                             <NavbarLink toggleMenu={ toggleMenu } href={'/messages'} name={'Messagerie'} />
+                            {token &&
+                                <motion.li 
+                                className="tw-font-semibold tw-my-3.5 tw-text-gray-900 item">
+                                        <Link href='' onClick={() => logout()} className={`tw-w-full tw-flex`}>Déconnexion</Link></motion.li>
+                            }
                         </ul>
                     </div>
 

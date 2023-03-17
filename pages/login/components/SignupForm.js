@@ -7,6 +7,7 @@ import { AiOutlineInfoCircle } from 'react-icons/ai';
 
 export default function SignupForm({loading}) {
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [cguChecked, setCguChecked] = useState('');
   const form = useForm({
     initialValues: {
@@ -40,10 +41,10 @@ export default function SignupForm({loading}) {
 
     
   const submitHandler = (data) => {
-    if (data === undefined) return
-    console.log('form.validate()', form.validate())
-    loading(true)
     setError('')
+    setSuccess('')
+    if (data === undefined) return
+    loading(true)
 
     fetch(`/api/register`, {
       method: 'POST',
@@ -57,11 +58,11 @@ export default function SignupForm({loading}) {
         {
           console.log('res', res)
           loading(false)
-          // if (res.payload) {
-          //   if(res.payload.token) setCookie('token', res.payload.token)
-          // }
-          // if (res.code == 401) {setError(res.message)}
-          // nextPage()
+          if(res.error) setError(res.error.message) 
+          if(res.data) {
+            setSuccess(res.data.message)
+            form.reset()
+          }
         })
   }
 
@@ -140,11 +141,15 @@ export default function SignupForm({loading}) {
             }
             {...form.getInputProps('cgu', { type: 'checkbox' })}
           />
+          {error != '' && 
+            <Alert icon={<AiOutlineInfoCircle size="1rem" />} p={'md'} mt='md' color="pink" radius="md" withCloseButton closeButtonLabel='fermer' onClose={() => setError('')}>
+              <span className='tw-text-red-900'>{error}</span></Alert>
+          }
+          {success != '' && 
+            <Alert icon={<AiOutlineInfoCircle size="1rem" />} p={'md'} mt='md' color="teal" radius="md" withCloseButton closeButtonLabel='fermer' onClose={() => setSuccess('')}>
+              <span className='tw-text-teal-900'>{success}</span></Alert>
+          }
         </Paper>
-        {error != '' && 
-          <Alert icon={<AiOutlineInfoCircle size="1rem" />} p={'md'} mt='md' color="pink" radius="md" withCloseButton>
-            <span className='tw-text-red-900'>{error}</span></Alert>
-        }
 
         <Flex justify="center" align="center" direction="row" mt="md">
           <Button
