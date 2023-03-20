@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { HiMenuAlt2 } from 'react-icons/hi';
 import { GrClose } from "react-icons/gr";
 import { BsLock } from "react-icons/bs";
@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 import { Button } from '@mantine/core';
 
 export default function Navbar(){
-    const token = getCookie('token')
+    const [token, setToken] = useState(false);
     const router = useRouter()
     const logout = () => {
         deleteCookie('token')
@@ -31,13 +31,10 @@ export default function Navbar(){
     const menuBgAnimate = { transform: "translateX(0%) translateY(0%)"}
     const menuInitial = { transform: "translateX(-100%) translateY(-100%)"}
     const menuAnimate = { transform: "translateX(0%) translateY(0%)"}
-    const menuItemVariants = {
-        hidden: { y: 20, opacity: 0 },
-        visible: {
-            y: 0,
-            opacity: 1
-        }
-    }
+
+    useEffect(() => {
+        setToken(getCookie('token'))
+    }, []);
 
 
     return (
