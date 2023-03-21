@@ -41,6 +41,10 @@ export default function LoginForm({loading}) {
           if (res.code == 401) {setError(res.message)}
           nextPage()
         })
+      .catch((error) => {
+        loading(false)
+        setError(`Erreur de connexion à la base de données \n ${error.message}`)
+      });
   }
 
   const fetchOffers = () => {
@@ -56,7 +60,7 @@ export default function LoginForm({loading}) {
   }
 
   const nextPage = () => {
-      router.push('/inscription')
+      router.push('/login/as')
       // router.push('/inscription/finaliser')
   }
 
@@ -76,7 +80,7 @@ export default function LoginForm({loading}) {
             />
             
           {error != '' && 
-              <Alert icon={<AiOutlineInfoCircle size="1rem" />} p={'md'} mt='md' color="pink" radius="md" withCloseButton>
+              <Alert icon={<AiOutlineInfoCircle size="1rem" />} p={'md'} mt='md' color="pink" radius="md" withCloseButton onClose={() => setError('')}>
                 <span className='tw-text-red-900'>{error}</span></Alert>
           }
         </Paper>

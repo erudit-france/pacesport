@@ -41,10 +41,10 @@ export default function Page() {
   return (
     <>
       <Head>
-        <title>Pace&#8217;sport - connexion</title>
+        <title>Pace&#8217;sport - Inscription Association</title>
       </Head>
-      <form className="tw-relative tw-top-9" onSubmit={form.onSubmit((values) => submitHandler(values))}>
-      {/* <form onSubmit={(e) => nextPage(e)}> */}
+      <form className="tw-relative tw-top-5" onSubmit={form.onSubmit((values) => submitHandler(values))}>
+        <Text align="center" className="tw-font-semibold tw-text-lg tw-text-white">Formulaire Association</Text>
         <Paper shadow="xl" p="xs" radius="lg" className="tw-bg-gray-800 tw-m-3 tw-pb-10 tw-top-5">
             <Flex className="tw-border-[1px] tw-border-gray-800 tw-bg-gray-900 tw-rounded-md mx-auto tw-m-1 tw-py-1"
                 align={'center'}
@@ -56,15 +56,15 @@ export default function Page() {
                 </FileButton>
                 {logoError && <Text align="center" size={'xs'} className="tw-text-red-600">{logoError}</Text>}
             </Flex>
-            <TextInput mt="sm" variant="filled" placeholder="Nom" radius="lg" size="sm" withAsterisk
+            <TextInput mt="sm" variant="filled" description="Nom" placeholder="Nom" radius="lg" size="sm" withAsterisk
                 {...form.getInputProps('name')}/>
-            <TextInput mt="sm" variant="filled" placeholder="Adresse" radius="lg" size="sm" withAsterisk
+            <TextInput mt="sm" variant="filled" description="Adresse" placeholder="Adresse" radius="lg" size="sm" withAsterisk
                 {...form.getInputProps('address')}/>
-            <TextInput mt="sm" variant="filled" placeholder="E-mail" radius="lg" size="sm" withAsterisk
+            <TextInput mt="sm" variant="filled" description="E-mail" placeholder="E-mail" radius="lg" size="sm" withAsterisk
                 {...form.getInputProps('email')}/>
-            <TextInput mt="sm" variant="filled" placeholder="Téléphone" radius="lg" size="sm" withAsterisk
+            <TextInput mt="sm" variant="filled" description="Téléphone" placeholder="Téléphone" radius="lg" size="sm" withAsterisk
                 {...form.getInputProps('phone')}/>
-            <TextInput mt="sm" variant="filled" placeholder="Description" radius="lg" size="sm" withAsterisk
+            <TextInput mt="sm" variant="filled" description="Description" placeholder="Description" radius="lg" size="sm" withAsterisk
                 {...form.getInputProps('description')}/>
             <Flex className="tw-border-[1px] tw-border-gray-800 tw-bg-gray-900 tw-rounded-md tw-my-2 tw-py-2" direction={"column"}>
                 <Text align="center" className="tw-text-gray-300 tw-text-sm">Justificatifs</Text>

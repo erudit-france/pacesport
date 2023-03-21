@@ -114,3 +114,7 @@ a {
 .mantine-Input-input::placeholder {
   font-size: .85rem;
 }
+
+.tw-text-white .mantine-Radio-label {
+  color: white;
+}
