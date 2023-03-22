@@ -1,6 +1,9 @@
 import { Avatar, Button, FileButton, FileInput, Flex, Group, Paper, Text, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { showNotification } from "@mantine/notifications";
+import { getCookie } from "cookies-next";
 import Head from "next/head";
+import { serialize } from "object-to-formdata";
 import { useState } from "react";
 import Layout from "../layout";
 
@@ -15,11 +18,12 @@ export default function Page() {
     }
     const form = useForm({
         initialValues: {
-            name: '',
-            address: '',
-            email: '',
-            phone: '',
-            description: '',
+            name: 'Lou',
+            address: 'Lou 12 Lyon',
+            email: 'lou@example.com',
+            phone: '001239123023',
+            description: 'Lou Rugby club',
+            logo: null,
         },
         validate: {
             name: (v) => v > '' ? null : 'Veuillez saisir un nom',
@@ -36,7 +40,39 @@ export default function Page() {
             setLogoError('Veuillez insérer un logo')
             return
         }
-        console.log('data', data)
+        const body = serialize(data)
+        // body.delete('logo')
+        console.log('body', body)
+
+        fetch(`http://localhost:3000/api/association`, {
+            method: 'POST',
+            type: 'cors',
+            headers: new Headers({
+              'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: body
+          })
+          .then(res => res.json())
+          .then(res => {
+            console.log('res', res)
+            // if (res.data) {
+            //     showNotification({
+            //         title: 'Succès',
+            //         color: 'teal'
+            //     })
+            //     close()
+            // }
+            // console.log('res', res)
+        })
+        .catch((error) => {
+          console.log(error.message)
+            showNotification({
+                title: 'Erreur',
+                message: 'Erreur pendant la création de l\'association',
+                color: 'red',
+                autoClose: 5000,
+            })
+        })
     }
   return (
     <>

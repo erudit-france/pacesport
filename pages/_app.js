@@ -4,9 +4,9 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 import '@/styles/globals.css'
-import '../styles/SearchInput.css'
-import Navbar from '@/components/navbar/Navbar';
-import HeroSection from '@/components/HeroSection';
+import '@/styles/SearchInput.css'
+import { MantineProvider } from '@mantine/core';
+import { NotificationsProvider } from '@mantine/notifications';
 
 
 
@@ -16,7 +16,11 @@ export default function App({ Component, pageProps }) {
   return (
       getLayout(
         <>
-          <Component {...pageProps} />
+          <MantineProvider withGlobalStyles withNormalizeCSS>
+            <NotificationsProvider>
+              <Component {...pageProps} />
+            </NotificationsProvider>
+          </MantineProvider>
         </>
       )
   )

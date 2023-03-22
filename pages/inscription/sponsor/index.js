@@ -1,14 +1,31 @@
 import { Avatar, Button, FileButton, FileInput, Flex, Group, Input, Paper, Radio, Select, Text, Textarea, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { showNotification } from "@mantine/notifications";
+import { getCookie } from "cookies-next";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { serialize } from "object-to-formdata";
 import { useState } from "react";
 import Layout from "../layout";
 
 export default function Page() {
+    const router = useRouter();
     const [logo, setLogo] = useState(null);
     const [logoError, setLogoError] = useState(null);
     const [isPublic, setIsPublic] = useState(false);
     const [type, setType] = useState(null);
+    const [typeError, setTypeError] = useState(null);
+
+    const isPublicHandler = (v) => {
+        setIsPublic(v)
+        setType(null)
+        form.values.type = ''
+    }
+
+    const typeHandler = (type) => {
+        setType(type)
+        form.values.type = type
+    }
 
     const handleLogo = (file) => {
         const url = URL.createObjectURL(file)
@@ -23,28 +40,64 @@ export default function Page() {
             email: '',
             phone: '',
             description: '',
+            isPublic: isPublic
         },
         validate: {
             name: (v) => v > '' ? null : 'Veuillez saisir une dénomination',
             address: (v) => v > '' ? null : 'Veuillez saisir une adresse',
             email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Veuillez saisir un E-mail valide'),
             phone: (v) => v > '' ? null : 'Veuillez saisir un numéro',
-            description: (v) => v > '' ? null : 'Veuillez saisir une description'
+            description: (v) => v > '' ? null : 'Veuillez saisir une description',
+            logo: () => { 
+                setLogoError(null)
+                if(logo == null){ setLogoError('Veuillez insérer un logo') }
+                return logoError
+            },
+            type: () => { 
+                setTypeError(null)
+                if(type == null){ setTypeError('Veuillez choisir un type') }
+                return typeError
+            }
         },
     });
 
     const submitHandler = (data) => {
-        setLogoError(null)
-        if (logo == null) {
-            setLogoError('Veuillez insérer un logo')
-            return
-        }
-        console.log('data', data)
+        const body = serialize(data)
+        fetch(`http://localhost:3000/api/enseigne`, {
+            method: 'POST',
+            type: 'cors',
+            headers: new Headers({
+              'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: body
+          })
+          .then(res => res.json())
+          .then(res => {
+            if(res.code == 401) router.push('/login')
+            console.log('res', res)
+            // if (res.data) {
+            //     showNotification({
+            //         title: 'Succès',
+            //         color: 'teal'
+            //     })
+            //     close()
+            // }
+            // console.log('res', res)
+        })
+        .catch((error) => {
+            showNotification({
+                title: 'Erreur',
+                message: 'Erreur pendant la création du compte partenaire',
+                color: 'red',
+                autoClose: 5000,
+            })
+        })
     }
 
-    const TypeEnseigne = () => {
+    const TypeEnseigne = ({error}) => {
         return (
-            <Select className="tw-m-1.5 tw-my-3" value={type} onChange={setType} description="Type enseigne" placeholder="Type enseigne"
+            <Select className="tw-m-1.5 tw-my-3" value={type} onChange={typeHandler} description="Type enseigne" placeholder="Type enseigne"
+            error={error}
             data={[
                 { value: 'Restauration', label: 'Restauration' },
                 { value: 'Services', label: 'Services' },
@@ -59,9 +112,10 @@ export default function Page() {
         )
     }
 
-    const TypeCollectivite = () => {
+    const TypeCollectivite = ({error}) => {
         return (
-            <Select className="tw-m-1.5 tw-my-3" value={type} onChange={setType} description="Type collectivité" placeholder="Type collectivité"
+            <Select className="tw-m-1.5 tw-my-3" value={type} onChange={typeHandler} description="Type collectivité" placeholder="Type collectivité"
+            error={error}
             data={[
                 { value: 'Commune', label: 'Commune' },
                 { value: 'EPCI', label: 'EPCI' },
@@ -86,15 +140,15 @@ export default function Page() {
                 >
                 <Input.Label className="tw-text-white tw-top-[3px] tw-relative" required>Collectivité publique</Input.Label>
                 <Group mt="xs">
-                    <Radio checked={isPublic} onClick={() => {setIsPublic(true)}}
+                    <Radio checked={isPublic} onClick={() => {isPublicHandler(true)}}
                             className="tw-text-white" value="1" label="Oui" />
-                    <Radio checked={isPublic} onClick={() => {setIsPublic(false)}}
+                    <Radio checked={isPublic} onClick={() => {isPublicHandler(false)}}
                             className="tw-text-white" value="0" label="Non" />
                 </Group>
             </Radio.Group>
             {isPublic 
-                ? <TypeEnseigne />
-                : <TypeCollectivite />}
+                ? <TypeCollectivite error={typeError} />
+                : <TypeEnseigne error={typeError} />}
             <Flex className="tw-border-[1px] tw-border-gray-800 tw-bg-gray-900 tw-rounded-md mx-auto tw-m-1 tw-py-1"
                 align={'center'}
                 direction={"column"}>

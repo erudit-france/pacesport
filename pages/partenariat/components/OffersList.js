@@ -38,31 +38,37 @@ function AccordionLabel({ label, image, description }) {
 }
 
 function AccordionControl({offer}) {
+    const logoUrl = offer.enseigne 
+                      ? 'http://localhost:8080/uploads/images/' + offer.enseigne.logo
+                      : null
+    console.log('logoUrl', logoUrl)
     return (
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Accordion.Control>
             <Flex>
-                <Avatar src={offer.image} alt={offer.label} />
-                <Text className='tw-my-auto tw-ml-2'>{offer.label}</Text>
+                <Avatar radius={'xl'} className="tw-shadow-md" src={logoUrl} alt={offer.title} />
+                <Text className='tw-my-auto tw-ml-2'>{offer.title}</Text>
             </Flex>
         </Accordion.Control>
         <ActionIcon size="lg" m={'md'}>
-          <Button variant='filled' size='xs'
+          {/* <Button variant='filled' size='xs'
             className='tw-bg-gray-800 hover:tw-bg-gray-700 tw-mr-2 tw-p-1'>
-              Détails</Button>
+              Détails</Button> */}
         </ActionIcon>
         </Box>
     );
   }
 
 export default function OffersList(props) {
-    const items = charactersList.length == 0 
+    const offers = props.offers
+
+    const items = offers.length == 0 
         ? <Text align='center'>Aucune offre disponbile actuellement</Text>
-        : charactersList.map((item) => (
-        <Accordion.Item value={item.id} key={item.id}>
+        : offers.map((item) => (
+        <Accordion.Item value={String(item.id)} key={item.id}>
             <AccordionControl offer={item} />
             <Accordion.Panel>
-                <Text className='tw-text-gray-800' size="sm">{item.content}</Text>
+                <Text className='tw-text-gray-800' size="sm">{item.description}</Text>
             </Accordion.Panel>
         </Accordion.Item>
     ));

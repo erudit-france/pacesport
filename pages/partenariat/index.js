@@ -5,11 +5,50 @@ import Link from "next/link"
 import Layout from "./layout"
 import { useForm } from '@mantine/form';
 import OffersList from "./components/OffersList"
+import { getCookie } from "cookies-next"
+import { serialize } from 'object-to-formdata';
+import { showNotification } from "@mantine/notifications"
+import { useEffect, useState } from "react"
+import axios from "axios"
 
 export default function Page() {
     const [opened, { open, close }] = useDisclosure(false);
+    const [offers, setOffers] = useState([]);
+
+    useEffect(() => {
+        async function fetchData(){
+            const res = await axios(
+                '/api/discount-offer',
+                {headers: { 'JWTAuthorization': `Bearer ${getCookie('token')}`}}
+            );
+
+            setOffers(JSON.parse(res.data.data))
+            console.log('offers', offers)
+        }
+        fetchData()
+    }, []);
+
     const submitHandler = (values) => {
         console.log('submit values', values)
+        fetch(`/api/discount-offer`, {
+            method: 'POST',
+            headers: new Headers({
+              'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: serialize(values)
+          })
+          .then(res => res.json())
+          .then(res => {
+            if (res.data) {
+                showNotification({
+                    title: 'Succès',
+                    message: res.data.message,
+                    color: 'teal'
+                })
+                close()
+            }
+            console.log('res', res)
+        })
     }
 
     const form = useForm({
@@ -17,7 +56,7 @@ export default function Page() {
             title: '',
             description: '',
             duration: 0,
-            numberLimit: 0,
+            numberLimit: 0
         },
         validate: {
             title: (v) => v != '' ? null : 'Veuillez saisir un titre',
@@ -38,7 +77,7 @@ export default function Page() {
                             onClick={open}>Ajouter</Button>
                 </Link>
             </Flex>
-            <OffersList />
+            <OffersList offers={offers} />
 
             <Modal opened={opened} onClose={close} title="Ajouter une offre de partenariat" centered>
                 <form onSubmit={form.onSubmit((values) => submitHandler(values))}>

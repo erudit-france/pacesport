@@ -3,7 +3,6 @@ import { MantineProvider } from '@mantine/core';
 
 export default function Document() {
   return (
-    <MantineProvider withGlobalStyles withNormalizeCSS>
       <Html lang="fr">
         <Head />
         <body>
@@ -11,6 +10,5 @@ export default function Document() {
           <NextScript />
         </body>
       </Html>
-    </MantineProvider>
   )
 }
