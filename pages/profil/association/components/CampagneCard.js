@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function CampagneCard(){
     const url = 'https://images.unsplash.com/photo-1628891890377-57dba2715caf'
-    const status = Math.round(Math.random() * 1)
+    const status = 1
     const statusString = (status) => { return status == 1 ? 'Active' : 'En attente' }
 
     return (

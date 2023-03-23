@@ -8,7 +8,7 @@ const AutoCompleteItem = forwardRef(
   ({ description, value, image, ...others }, ref) => (
     <div ref={ref} {...others} onClick={() => console.log('opening link')}>
       <Group noWrap>
-        <Avatar className='tw-shadow-md p-2' size="md"  radius="xl" src={"https://logo-marque.com/wp-content/uploads/2021/02/Auchan-Logo.png"} />
+        <Avatar className='tw-shadow-md p-2' size="md"  radius="xl" />
         <div>
             <Text size="md">{value}</Text>
         </div>
@@ -36,7 +36,7 @@ export default function SearchSponsor() {
       setLoading(true);
       timeoutRef.current = window.setTimeout(() => {
         setLoading(false);
-        setData(['gmail.com', 'outlook.com', 'yahoo.com', 'yandex.com', 'hotmail.com', 'hostinger.com'].map((provider) => `${val}@${provider}`));
+        setData(['1', '2', '3'].map((provider) => `${val} ${provider}`));
       }, 100);
     }
   };

@@ -7,6 +7,9 @@ import { useForm } from '@mantine/form';
 import 'dayjs/locale/fr';
 import AssociatedOffersList from "../components/AssociatedOffersList";
 import AvailableOffersList from "../components/AvailableOffersList";
+import { serialize } from "object-to-formdata";
+import { getCookie } from "cookies-next";
+import { showNotification } from "@mantine/notifications";
 
 export default function Page(){
     const minOffers = 5
@@ -16,11 +19,35 @@ export default function Page(){
     const [associatedOffersError, setAssociatedOffersError] = useState(false);
     
     const submitHandler = (values) => {
-        console.log('values', values)
+        const body = serialize(values)
+        body.append('associatedOffers', JSON.stringify(associatedOffers))
         setAssociatedOffersError('')
         if (associatedOffers.length < values.nombreOffres) {
             setAssociatedOffersError('Le nombre de vos offres associées est en dessous du minimum')
         }
+        fetch(`/api/discount-card`, {
+            method: 'POST',
+            headers: new Headers({
+              'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: body
+          })
+          .then(res => res.json())
+          .then(res => {
+            if (res.data) {
+                showNotification({
+                    title: 'Succès',
+                    message: res.data.message,
+                    color: 'teal'
+                })
+                close()
+            }
+            })
+            .catch(error => showNotification({
+                title: 'Erreur',
+                message: 'Erreur pendant le création.' + error.message,
+                color: 'red'
+            }))      
     }
     const form = useForm({
         initialValues: {
@@ -38,7 +65,7 @@ export default function Page(){
                 if (v < form.values.dateDebut) {
                    return 'La date de fin ne doit pas être inférieure à la date de début'
                 }
-            },
+            }
         },
     });
 

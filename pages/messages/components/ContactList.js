@@ -7,48 +7,62 @@ export default function ContactList() {
     const now = new moment()
     const data =
     [
-        {
-            name: 'Auchan',
-            logo: 'https://logo-marque.com/wp-content/uploads/2021/02/Auchan-Logo.png',
-            message: 'Merci pour votre retour',
-            time: now,
-            unreadNumber: 2,
-        },
-        {
-            name: 'Decathlon',
-            logo: 'https://logos-marques.com/wp-content/uploads/2020/09/Decathlon-logo.png',
-            message: 'Merci pour votre retour',
-            time: now,
-            unreadNumber: 0,
-        },
-        {
-            name: 'Grand frais',
-            logo: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Grand_Frais_logo.png',
-            message: 'Merci pour votre retour',
-            time: now,
-            unreadNumber: 0,
-        },
-        {
-            name: 'Grand frais',
-            logo: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Grand_Frais_logo.png',
-            message: 'Merci pour votre retour',
-            time: now,
-            unreadNumber: 0,
-        },
-        {
-            name: 'Grand frais',
-            logo: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Grand_Frais_logo.png',
-            message: 'Merci pour votre retour',
-            time: now,
-            unreadNumber: 0,
-        },
-        {
-            name: 'Grand frais',
-            logo: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Grand_Frais_logo.png',
-            message: 'Merci pour votre retour',
-            time: now,
-            unreadNumber: 0,
-        }
+        // {
+        //     name: 'Auchan',
+        //     logo: 'https://logo-marque.com/wp-content/uploads/2021/02/Auchan-Logo.png',
+        //     message: 'Merci pour votre retour',
+        //     time: now,
+        //     unreadNumber: 2,
+        // },
+        // {
+        //     name: 'Decathlon',
+        //     logo: 'https://logos-marques.com/wp-content/uploads/2020/09/Decathlon-logo.png',
+        //     message: 'Merci pour votre retour',
+        //     time: now,
+        //     unreadNumber: 0,
+        // },
+        // {
+        //     name: 'Grand frais',
+        //     logo: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Grand_Frais_logo.png',
+        //     message: 'Merci pour votre retour',
+        //     time: now,
+        //     unreadNumber: 0,
+        // },
+        // {
+        //     name: 'Grand frais',
+        //     logo: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Grand_Frais_logo.png',
+        //     message: 'Merci pour votre retour',
+        //     time: now,
+        //     unreadNumber: 0,
+        // },
+        // {
+        //     name: 'Grand frais',
+        //     logo: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Grand_Frais_logo.png',
+        //     message: 'Merci pour votre retour',
+        //     time: now,
+        //     unreadNumber: 0,
+        // },
+        // {
+        //     name: 'Grand frais',
+        //     logo: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Grand_Frais_logo.png',
+        //     message: 'Merci pour votre retour',
+        //     time: now,
+        //     unreadNumber: 0,
+        // },
+        // {
+        //     name: 'Grand frais',
+        //     logo: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Grand_Frais_logo.png',
+        //     message: 'Merci pour votre retour',
+        //     time: now,
+        //     unreadNumber: 0,
+        // },
+        // {
+        //     name: 'Grand frais',
+        //     logo: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Grand_Frais_logo.png',
+        //     message: 'Merci pour votre retour',
+        //     time: now,
+        //     unreadNumber: 0,
+        // }
     ]  
     const getDelai = (time) => ( moment(time).fromNow() )
 

@@ -1,18 +1,10 @@
 import { Group, Avatar, Text, Accordion, Box, ActionIcon, Flex } from '@mantine/core';
 import { MdDelete } from 'react-icons/md'
 
-function AccordionLabel({ label, image, description }) {
-    return (
-      <Group noWrap>
-        <Avatar src={image} radius="xl" size="md" />
-        <div>
-          <Text size={'sm'}>{label}</Text>
-        </div>
-      </Group>
-    );
-}
-
 function AccordionControl({offer, associatedOffers, setAssociatedOffers}) {
+    const logoUrl = offer.enseigne 
+      ? '/uploads/images/' + offer.enseigne.logo
+      : null
     const removeOffer = () => {
       setAssociatedOffers(
         associatedOffers.filter(function(o) { 
@@ -23,8 +15,8 @@ function AccordionControl({offer, associatedOffers, setAssociatedOffers}) {
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <Accordion.Control>
             <Flex>
-                <Avatar src={offer.image} alt={offer.label} />
-                <Text className='tw-my-auto tw-ml-2'>{offer.label}</Text>
+                <Avatar src={logoUrl} alt={offer.title} radius="xl" />
+                <Text className='tw-my-auto tw-ml-2'>{offer.title}</Text>
             </Flex>
         </Accordion.Control>
         <ActionIcon size="lg" onClick={() => removeOffer()}>
@@ -37,10 +29,10 @@ function AccordionControl({offer, associatedOffers, setAssociatedOffers}) {
 export default function AssociatedOffersList(props) {
     const charactersList = props.associatedOffers
     const items = charactersList.map((item) => (
-        <Accordion.Item value={item.id} key={item.id}>
+        <Accordion.Item value={String(item.id)} key={item.id}>
             <AccordionControl offer={item} associatedOffers={props.associatedOffers} setAssociatedOffers={props.setAssociatedOffers} />
             <Accordion.Panel>
-                <Text className='tw-text-gray-800' size="sm">{item.content}</Text>
+                <Text className='tw-text-gray-800' size="sm">{item.description}</Text>
             </Accordion.Panel>
         </Accordion.Item>
     ));
