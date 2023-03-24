@@ -26,7 +26,7 @@ export default function Page() {
             console.log('offers', offers)
         }
         fetchData()
-    }, [offers]);
+    });
 
     const submitHandler = (values) => {
         console.log('submit values', values)
