@@ -21,12 +21,10 @@ export default function Page() {
                 '/api/discount-offer',
                 {headers: { 'JWTAuthorization': `Bearer ${getCookie('token')}`}}
             );
-
             setOffers(JSON.parse(res.data.data))
-            console.log('offers', offers)
         }
         fetchData()
-    });
+    }, [offers]);
 
     const submitHandler = (values) => {
         console.log('submit values', values)

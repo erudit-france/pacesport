@@ -46,7 +46,7 @@ export default function AvailableOffersList(props) {
         setLoading(false)
       }
       fetchData()
-  }, []);
+  }, [offers]);
 
   const items = loading 
       ? <Text align='center'>Chargement</Text>
