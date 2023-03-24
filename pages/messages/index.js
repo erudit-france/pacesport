@@ -66,24 +66,25 @@ const ChatHeader = () => {
     )
 }
 
-export default function Page(){
+export default function Page(props){
     const [title, setTitle] = useState('Pace\'Sport - Messages');
     useDocumentTitle(title);
+    console.log('props.chatRooms', props.chatRooms)
     
-    const [chatRooms, setChatRooms] = useState([]);
-    useEffect(() => {
-        async function fetchData(){
-          //   setLoading(true)
-            const res = await axios(
-                '/api/chat/rooms',
-                {headers: { 'JWTAuthorization': `Bearer ${getCookie('token')}`}}
-            );
+    // const [chatRooms, setChatRooms] = useState([]);
+    // useEffect(() => {
+    //     async function fetchData(){
+    //       //   setLoading(true)
+    //         const res = await axios(
+    //             '/api/chat/rooms',
+    //             {headers: { 'JWTAuthorization': `Bearer ${getCookie('token')}`}}
+    //         );
     
-            setChatRooms(JSON.parse(res.data.data))
-          //   setLoading(false)
-          }
-          fetchData()
-      }, []);
+    //         setChatRooms(JSON.parse(res.data.data))
+    //       //   setLoading(false)
+    //       }
+    //       fetchData()
+    //   }, []);
 
 
     return (
@@ -99,11 +100,32 @@ export default function Page(){
                 <ScrollArea className="tw-bg-white tw-p-2 tw-py-5 tw-rounded-3xl tw-mt-2" 
                     offsetScrollbars
                     style={{ height: 'calc(100vh - 220px)' }}>
-                    <ContactList chatRooms={chatRooms} />
+                    <ContactList chatRooms={props.chatRooms} />
                 </ScrollArea>
             </section>
         </>
     )
+}
+
+export async function getServerSideProps(context) {
+    const token = context.req.cookies['token']
+    const res = await fetch(`${process.env.API_URL}/api/chat/rooms`, {
+      headers: new Headers({
+              'JWTAuthorization': `Bearer ${token}`,
+      })}
+      )
+    const data = await res.json()
+  
+    if(data.code == 401) 
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/login"
+      }
+    }
+
+    // // Pass data to the page via props
+    return { props: { chatRooms: JSON.parse(data.data) } }
 }
 
 Page.getLayout = function getLayout(page) {

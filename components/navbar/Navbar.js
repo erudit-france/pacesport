@@ -48,13 +48,13 @@ export default function Navbar(){
                 </motion.button>
 
                 {/* menu background */}
-                <motion.div className='tw-bg-black tw-w-[117vw] tw-h-[29rem] tw-absolute -tw-left-10 tw-shadow-lg tw-z-100'
+                <motion.div className='tw-bg-black tw-w-[117vw] tw-h-[37rem] tw-absolute -tw-left-10 tw-shadow-lg tw-z-100'
                     style={{ borderRadius: "0 0 63%"}}
                     initial={menuBgInitial}
                     animate={ open ? menuBgAnimate : menuBgInitial }
                     ></motion.div>
                 {/* menu */}
-                <motion.div className='tw-bg-gray-100 tw-w-screen tw-h-[29rem] tw-absolute tw-flex tw-justify-center tw-shadow-lg tw-z-20'
+                <motion.div className='tw-bg-gray-100 tw-w-screen tw-h-[36.5rem] tw-absolute tw-flex tw-justify-center tw-shadow-lg tw-z-20'
                     style={{ borderRadius: "0 0 70%"}}
                     initial={menuInitial}
                     animate={ open ? menuAnimate : menuInitial }
@@ -70,8 +70,9 @@ export default function Navbar(){
                     >
                     <div className='tw-flex tw-flex-col tw-justify-center'>
                         <ul className='tw-relative -tw-top-4'>
+                            <NavbarLink toggleMenu={ toggleMenu } href={'/login/as'} name={'Changer de rôle'} />
                             <NavbarLink toggleMenu={ toggleMenu } href={'/'} name={'Accueil'} />
-                            <NavbarLink toggleMenu={ toggleMenu } href={'/login'} name={'Mon compte'} />
+                            <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Mon compte'} />
                             <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Invitations partenaires'} />
                             <NavbarLink toggleMenu={ toggleMenu } href={''} name={<>Mon pace&lsquo;sport (carte)</>} />
                             <NavbarLink toggleMenu={ toggleMenu } href={''} name={<>Pace&lsquo;sport business <BsLock className='tw-text-red-600 tw-my-auto tw-ml-1'/></>} />

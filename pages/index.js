@@ -1,17 +1,34 @@
 import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
-import Navbar from '@/components/navbar/Navbar'
 import SearchInput from '@/components/SearchInput'
-import { Grid } from '@mantine/core'
+import { Grid, Text } from '@mantine/core'
 import AssociationCard from '@/components/AssociationCard'
-import EnseigneCard from '@/components/EnseigneCard'
-import HeroSection from '@/components/HeroSection'
 import Layout from './layout'
+import { useEffect, useState } from 'react'
+import { getCookie } from 'cookies-next'
+import * as cookie from 'cookie'
+import { useRouter } from 'next/router'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
+
+const DiscountCardsGrid = ({cards}) => {
+  return (
+    <Grid gutter={12} className="mt-4">
+      {cards.map(function(card) {
+        return (
+            <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
+              <AssociationCard card={card} />
+            </Grid.Col>
+          )
+      }
+      )}
+    </Grid>
+  )
+}
+
+export default function Page(props) {
   return (
     <>
         <Head>
@@ -32,32 +49,15 @@ export default function Home() {
 
               {/* carte proche */}
               <section className='tw-mt-8'>
-                <h1 className="tw-text-lg tw-font-semibold tw-uppercase tw-text-center">Carte proche de vous</h1>
-                <Grid gutter={12} className="mt-4">
-                  {[0,1,2,3].map(function(o) {
-                    return (
-                        <Grid.Col key={o} span={6} xs={6} xl={3}>
-                          <AssociationCard />
-                        </Grid.Col>
-                      )
-                  }
-                  )}
-                </Grid>
+                <h1 className="tw-text-lg tw-font-semibold tw-uppercase tw-text-center tw-mb-3">Carte proche de vous</h1>
+                <DiscountCardsGrid cards={props.cards} />
+
               </section>
 
               {/* Enseigne proche */}
               <section className='tw-mt-12'>
                 <h1 className="tw-text-lg tw-font-semibold tw-uppercase tw-text-center">Enseigne proche de vous</h1>
-                <Grid gutter={12} className="mt-4">
-                  {[0,1,2,3].map(function(o) {
-                    return (
-                        <Grid.Col key={o} span={6} xs={6} xl={3}>
-                          <EnseigneCard />
-                        </Grid.Col>
-                      )
-                  }
-                  )}
-                </Grid>
+                {/* <EnseigneGrid /> */}
               </section>
             </main>
 
@@ -68,7 +68,27 @@ export default function Home() {
   )
 }
 
-Home.getLayout = function getLayout(page) {
+export async function getServerSideProps(context) {
+  const token = context.req.cookies['token']
+  const res = await fetch(`${process.env.API_URL}/api/discount-card`, {
+    headers: new Headers({
+            'JWTAuthorization': `Bearer ${token}`,
+    })}
+    )
+  const data = await res.json()
+
+  if(data.code == 401) 
+  return {
+    redirect: {
+      permanent: false,
+      destination: "/login"
+    }
+  }
+  // // Pass data to the page via props
+  return { props: { cards: JSON.parse(data.data) } }
+}
+
+Page.getLayout = function getLayout(page) {
   return (
     <Layout>{page}</Layout>
   )

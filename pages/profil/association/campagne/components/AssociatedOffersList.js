@@ -27,16 +27,16 @@ function AccordionControl({offer, associatedOffers, setAssociatedOffers}) {
   }
 
 export default function AssociatedOffersList(props) {
-    const charactersList = props.associatedOffers
-    const items = charactersList.map((item) => (
+    const offers = props.associatedOffers
+    const items = offers
+        ? offers.map((item) => (
         <Accordion.Item value={String(item.id)} key={item.id}>
             <AccordionControl offer={item} associatedOffers={props.associatedOffers} setAssociatedOffers={props.setAssociatedOffers} />
             <Accordion.Panel>
                 <Text className='tw-text-gray-800' size="sm">{item.description}</Text>
             </Accordion.Panel>
-        </Accordion.Item>
-    ));
-
+        </Accordion.Item>))
+        : <Text>Chargement</Text>
 
     return <Accordion className={props.className} chevronPosition="left" variant="contained">{items}</Accordion>;
 }

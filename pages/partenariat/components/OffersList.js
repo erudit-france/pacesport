@@ -62,17 +62,18 @@ function AccordionControl({offer}) {
 export default function OffersList(props) {
     const offers = props.offers
 
-    const items = offers.length == 0 
-        ? <Text align='center'>Aucune offre disponbile actuellement</Text>
-        : offers.map((item) => (
-        <Accordion.Item value={String(item.id)} key={item.id}>
-            <AccordionControl offer={item} />
-            <Accordion.Panel>
-                <Text className='tw-text-gray-800' size="sm">{item.description}</Text>
-            </Accordion.Panel>
-        </Accordion.Item>
-    ));
-
+    const items = offers 
+        ? offers.length == 0 
+          ? <Text align='center'>Aucune offre disponbile actuellement</Text>
+          : offers.map((item) => (
+          <Accordion.Item value={String(item.id)} key={item.id}>
+              <AccordionControl offer={item} />
+              <Accordion.Panel>
+                  <Text className='tw-text-gray-800' size="sm">{item.description}</Text>
+              </Accordion.Panel>
+          </Accordion.Item>
+          ))
+        : <Text>Chargement</Text>
 
     return (
       <Paper p={'xs'}>
