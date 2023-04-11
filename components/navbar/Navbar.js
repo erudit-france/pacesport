@@ -3,28 +3,65 @@ import { HiMenuAlt2 } from 'react-icons/hi';
 import { GrClose } from "react-icons/gr";
 import { BsLock } from "react-icons/bs";
 import { motion } from "framer-motion"
-import styles from '@/styles/Menu.module.css'
 import Link from 'next/link';
 import { useScrollLock } from '@mantine/hooks';
 import NavbarLink from './NavbarLink';
 import { deleteCookie, getCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
-import { Button } from '@mantine/core';
+import { useContext } from 'react';
+import AppContext from '@/context/AppContext';
+
+const NavParticulier = ({toggleMenu}) => {
+    return (
+        <>
+            <NavbarLink toggleMenu={ toggleMenu } href={'/login/as'} name={'Changer de rôle'} />
+            <NavbarLink toggleMenu={ toggleMenu } href={'/'} name={'Accueil'} />
+            <NavbarLink toggleMenu={ toggleMenu } href={''} name={<>Mon pace&lsquo;sport (carte)</>} />
+            <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Paramètres'} />
+        </>
+    )
+}
+
+const NavAssociation = ({toggleMenu}) => {
+    return (
+        <>
+            <NavbarLink toggleMenu={ toggleMenu } href={''} name={<>Mon pace&lsquo;sport (carte)</>} />
+            <NavbarLink toggleMenu={ toggleMenu } href={'/login/as'} name={'Changer de rôle'} />
+            <NavbarLink toggleMenu={ toggleMenu } href={'/'} name={'Accueil'} />
+            <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Mon compte'} />
+            <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Invitations partenaires'} />
+            <NavbarLink toggleMenu={ toggleMenu } href={''} name={<>Pace&lsquo;sport business <BsLock className='tw-text-red-600 tw-my-auto tw-ml-1'/></>} />
+            <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Annuaire'} />
+            <NavbarLink toggleMenu={ toggleMenu } href={'/gestion-fonds'} name={'Gestion de fonds'} />
+            <NavbarLink toggleMenu={ toggleMenu } href={'/partenariat'} name={'Offres de partenariat'} />
+            <NavbarLink toggleMenu={ toggleMenu } href={'/messages'} name={'Messagerie'} />
+        </>
+    )
+}
+
+const NavSponsor = ({toggleMenu}) => {
+    return (
+        <>
+            <NavbarLink toggleMenu={ toggleMenu } href={'/login/as'} name={'Changer de rôle'} />
+            <NavbarLink toggleMenu={ toggleMenu } href={'/'} name={'Accueil'} />
+            <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Mes cartes / partenariats actifs'} />
+            <NavbarLink toggleMenu={ toggleMenu } href={'/partenariat'} name={'Offres de partenariat'} />
+            <NavbarLink toggleMenu={ toggleMenu } href={'/communication/add'} name={'Communication'} />
+            <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Annuaire'} />
+            <NavbarLink toggleMenu={ toggleMenu } href={'/messages'} name={'Messagerie'} />
+            <NavbarLink toggleMenu={ toggleMenu } href={'/gestion-fonds'} name={'Gestion de fonds'} />
+            <NavbarLink toggleMenu={ toggleMenu } href={''} name={<>Pace&lsquo;sport business <BsLock className='tw-text-red-600 tw-my-auto tw-ml-1'/></>} />
+        </>
+    )
+}
 
 export default function Navbar(){
+    const context = useContext(AppContext)
+    const role = context.role
     const [token, setToken] = useState(false);
     const router = useRouter()
-    const logout = () => {
-        deleteCookie('token')
-        router.push('/')
-    }
     const [open, setOpen] = useState(false);
     const [lockScroll, setLockScroll] = useState(false);
-    useScrollLock(lockScroll);
-    const toggleMenu = () => { 
-        setOpen(!open)
-        setLockScroll(!lockScroll)
-    }
     const closeBtnInitial = { opacity: 0, scale: 0 }
     const closeBtnAnimate = { opacity: 1, scale: 1 }
     const menuBgInitial = { transform: "translateX(-100%) translateY(-100%)"}
@@ -32,10 +69,19 @@ export default function Navbar(){
     const menuInitial = { transform: "translateX(-100%) translateY(-100%)"}
     const menuAnimate = { transform: "translateX(0%) translateY(0%)"}
 
+    useScrollLock(lockScroll);
+    const toggleMenu = () => { 
+        setOpen(!open)
+        setLockScroll(!lockScroll)
+    }
     useEffect(() => {
         setToken(getCookie('token'))
     }, []);
-
+    
+    const logout = () => {
+        deleteCookie('token')
+        router.push('/')
+    }
 
     return (
         <>
@@ -70,16 +116,9 @@ export default function Navbar(){
                     >
                     <div className='tw-flex tw-flex-col tw-justify-center'>
                         <ul className='tw-relative -tw-top-4'>
-                            <NavbarLink toggleMenu={ toggleMenu } href={'/login/as'} name={'Changer de rôle'} />
-                            <NavbarLink toggleMenu={ toggleMenu } href={'/'} name={'Accueil'} />
-                            <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Mon compte'} />
-                            <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Invitations partenaires'} />
-                            <NavbarLink toggleMenu={ toggleMenu } href={''} name={<>Mon pace&lsquo;sport (carte)</>} />
-                            <NavbarLink toggleMenu={ toggleMenu } href={''} name={<>Pace&lsquo;sport business <BsLock className='tw-text-red-600 tw-my-auto tw-ml-1'/></>} />
-                            <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Annuaire'} />
-                            <NavbarLink toggleMenu={ toggleMenu } href={'/gestion-fonds'} name={'Gestion de fonds'} />
-                            <NavbarLink toggleMenu={ toggleMenu } href={'/partenariat'} name={'Offres de partenariat'} />
-                            <NavbarLink toggleMenu={ toggleMenu } href={'/messages'} name={'Messagerie'} />
+                            {role == 'particulier' && <NavParticulier toggleMenu={toggleMenu} />}
+                            {role == 'sponsor' && <NavSponsor toggleMenu={toggleMenu} />}
+                            {role == 'association' && <NavAssociation toggleMenu={toggleMenu} />}
                             {token &&
                                 <motion.li 
                                 className="tw-font-semibold tw-my-3.5 tw-text-gray-900 item">

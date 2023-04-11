@@ -3,11 +3,29 @@ import Head from "next/head";
 import Link from "next/link";
 import { BsLock } from 'react-icons/bs'
 import Layout from "./layout";
+import { useContext } from "react";
+import AppContext from "@/context/AppContext";
+import { deleteCookie } from "cookies-next";
+import { useRouter } from "next/router";
 
-const LinkButton = ({text, href, lock}) => {
+const LinkButton = ({text, href, lock, onClick}) => {
+    const router = useRouter()
+    const logout = () => {
+        console.log('hello')
+        deleteCookie('token')
+        router.push('/')
+    }
+    const context = useContext(AppContext)
     return (
-        <Link href={href} className="tw-w-full">
-            <Button className="tw-bg-white hover:tw-bg-slate-100 tw-text-gray-800 tw-w-full" radius='lg'>
+        <Link href={href} className="tw-w-full"
+            onClick={text == 'Déconnexion' 
+                        ? () => logout
+                        : () => context.setRole(text.toLowerCase())}
+            >
+            <Button 
+                className={`tw-bg-white hover:tw-bg-slate-100 tw-text-gray-800
+                            tw-w-full`}
+                radius='lg'>
                 {text}
                 {lock && <BsLock className='tw-text-red-600 tw-my-auto tw-ml-1'/>}
             </Button>
@@ -16,7 +34,7 @@ const LinkButton = ({text, href, lock}) => {
 }
 
 export default function Page({status}){
-    console.log('status', status)
+    const context = useContext(AppContext)
     const associationLink = status.association == true 
             ? '/profil/association'
             : '/inscription/association';
@@ -33,6 +51,7 @@ export default function Page({status}){
                 <LinkButton text='Particulier' href='/' />
                 <LinkButton text='Sponsor' href={sponsorLink} lock={true} />
                 <LinkButton text='Association' href={associationLink} lock={true} />
+                <LinkButton text='Déconnexion' href={''} />
             </Flex>
         </>
     )

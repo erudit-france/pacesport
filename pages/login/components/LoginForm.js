@@ -5,8 +5,11 @@ import { useForm } from '@mantine/form';
 import { AiOutlineInfoCircle } from 'react-icons/ai'
 import { useState } from 'react';
 import { setCookie, getCookie } from 'cookies-next';
+import { useContext } from 'react';
+import AppContext from '@/context/AppContext';
 
 export default function LoginForm({loading}) {
+  const context = useContext(AppContext)
   const router = useRouter();
   const [error, setError] = useState('');
   const form = useForm({
@@ -36,7 +39,9 @@ export default function LoginForm({loading}) {
         {
           loading(false)
           if (res.payload) {
-            if(res.payload.token) setCookie('token', res.payload.token)
+            if(res.payload.token) {
+              setCookie('token', res.payload.token)
+            }
           }
           if (res.code == 401) {setError(res.message)}
           nextPage()

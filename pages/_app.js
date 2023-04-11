@@ -7,21 +7,23 @@ import '@/styles/globals.css'
 import '@/styles/SearchInput.css'
 import { MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
+import { AppContext } from '../context/AppContext';
+import { useState } from 'react';
 
 
 
 export default function App({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page)
+  const [user, setUser] = useState(null);
+  const [role, setRole] = useState('particulier');
 
   return (
-      getLayout(
-        <>
+        <AppContext.Provider value={{user, setUser, role, setRole}}>
           <MantineProvider withGlobalStyles withNormalizeCSS>
             <NotificationsProvider>
-              <Component {...pageProps} />
+              {getLayout(<Component {...pageProps} />)}
             </NotificationsProvider>
           </MantineProvider>
-        </>
-      )
+        </AppContext.Provider>
   )
 }
