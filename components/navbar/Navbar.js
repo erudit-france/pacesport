@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { HiMenuAlt2 } from 'react-icons/hi';
 import { GrClose } from "react-icons/gr";
 import { BsLock } from "react-icons/bs";
+import { VscSync } from 'react-icons/vsc'
 import { motion } from "framer-motion"
 import Link from 'next/link';
 import { useScrollLock } from '@mantine/hooks';
@@ -14,7 +15,7 @@ import AppContext from '@/context/AppContext';
 const NavParticulier = ({toggleMenu}) => {
     return (
         <>
-            <NavbarLink toggleMenu={ toggleMenu } href={'/login/as'} name={'Changer de rôle'} />
+            <NavbarLink border={true} toggleMenu={ toggleMenu } href={'/login/as'} name={<>Changer de rôle <VscSync className="tw-my-auto tw-ml-1" /></>} />
             <NavbarLink toggleMenu={ toggleMenu } href={'/'} name={'Accueil'} />
             <NavbarLink toggleMenu={ toggleMenu } href={''} name={<>Mon pace&lsquo;sport (carte)</>} />
             <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Paramètres'} />
@@ -25,15 +26,15 @@ const NavParticulier = ({toggleMenu}) => {
 const NavAssociation = ({toggleMenu}) => {
     return (
         <>
-            <NavbarLink toggleMenu={ toggleMenu } href={''} name={<>Mon pace&lsquo;sport (carte)</>} />
-            <NavbarLink toggleMenu={ toggleMenu } href={'/login/as'} name={'Changer de rôle'} />
+            <NavbarLink border={true} toggleMenu={ toggleMenu } href={'/login/as'} name={<>Changer de rôle <VscSync className="tw-my-auto tw-ml-1" /></>} />
             <NavbarLink toggleMenu={ toggleMenu } href={'/'} name={'Accueil'} />
+            <NavbarLink toggleMenu={ toggleMenu } href={''} name={<>Mon pace&lsquo;sport (carte)</>} />
+            <NavbarLink toggleMenu={ toggleMenu } href={'/sponsoring'} name={'Offres de partenariat'} />
             <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Mon compte'} />
             <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Invitations partenaires'} />
             <NavbarLink toggleMenu={ toggleMenu } href={''} name={<>Pace&lsquo;sport business <BsLock className='tw-text-red-600 tw-my-auto tw-ml-1'/></>} />
             <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Annuaire'} />
             <NavbarLink toggleMenu={ toggleMenu } href={'/gestion-fonds'} name={'Gestion de fonds'} />
-            <NavbarLink toggleMenu={ toggleMenu } href={'/partenariat'} name={'Offres de partenariat'} />
             <NavbarLink toggleMenu={ toggleMenu } href={'/messages'} name={'Messagerie'} />
         </>
     )
@@ -42,7 +43,7 @@ const NavAssociation = ({toggleMenu}) => {
 const NavSponsor = ({toggleMenu}) => {
     return (
         <>
-            <NavbarLink toggleMenu={ toggleMenu } href={'/login/as'} name={'Changer de rôle'} />
+            <NavbarLink border={true} toggleMenu={ toggleMenu } href={'/login/as'} name={<>Changer de rôle <VscSync className="tw-my-auto tw-ml-1" /></>} />
             <NavbarLink toggleMenu={ toggleMenu } href={'/'} name={'Accueil'} />
             <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Mes cartes / partenariats actifs'} />
             <NavbarLink toggleMenu={ toggleMenu } href={'/partenariat'} name={'Offres de partenariat'} />
