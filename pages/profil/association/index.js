@@ -1,4 +1,4 @@
-import { Button, Divider, Flex, Text } from "@mantine/core";
+import { Button, Divider, Flex, Space, Text } from "@mantine/core";
 import Head from "next/head";
 import SearchSponsor from "./components/SearchSponsor";
 import UserListButton from "./components/UserListButton";
@@ -7,6 +7,9 @@ import SponsorInvitation from "./components/SponsorInvitation";
 import { GoPlus } from 'react-icons/go'
 import CampagneList from "./components/CampagneList";
 import Link from "next/link";
+import { BsLock } from "react-icons/bs";
+import { GrMoney } from "react-icons/gr";
+import { BiMessage } from "react-icons/bi";
 
 export default function Page(){
     const isAccountLimited = true
@@ -43,6 +46,27 @@ export default function Page(){
                     </Link>
                 </Flex>
                 <CampagneList />
+            </section>
+
+            <Space className="tw-mt-1"></Space>
+
+            <section className="tw-bg-yellow-300/70 tw-flex tw-flex-col tw-py-4">
+                <Text color="white" align="center">Offre de sponsoring</Text>
+                <Text className="tw-flex tw-justify-center" align="center">Uniquement avec Pace&lsquo;sport Business<BsLock className='tw-my-auto tw-ml-1'/></Text>
+                <Button color="white" variant="filled" size="xs" 
+                    className="tw-bg-white tw-text-black hover:tw-bg-gray-200 tw-mx-auto tw-mt-3" radius={'lg'}>En savoir plus</Button>
+            </section>
+
+            
+            <section className="tw-flex tw-flex-col tw-py-4">
+                <Link href='/messages' className="tw-mx-auto tw-mt-3">
+                    <Button color="white" variant="filled" size="sm" leftIcon={<BiMessage />} miw={200}
+                        className="tw-bg-white tw-text-black hover:tw-bg-gray-200" radius={'lg'}>
+                            Messagerie</Button></Link>
+                <Link href='/gestion-fonds' className="tw-mx-auto tw-mt-3">
+                        <Button color="white" variant="filled" size="sm" leftIcon={<GrMoney />} miw={200}
+                        className="tw-bg-white tw-text-black hover:tw-bg-gray-200" radius={'lg'}>
+                            Gestion de fonds</Button></Link>
             </section>
                 
         </>

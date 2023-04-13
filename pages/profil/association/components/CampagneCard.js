@@ -11,8 +11,8 @@ export default function CampagneCard(){
             <Flex className="tw-mb-7">
                     <Image
                         className="tw-rounded-xl tw-shadow-sm"
-                        width={120}
-                        height={50}
+                        width={180}
+                        height={90}
                         src={url}
                         alt="Photo de campagne"
                     />
