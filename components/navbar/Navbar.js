@@ -27,7 +27,7 @@ const NavAssociation = ({toggleMenu}) => {
     return (
         <>
             <NavbarLink border={true} toggleMenu={ toggleMenu } href={'/login/as'} name={<>Changer de rôle <VscSync className="tw-my-auto tw-ml-1" /></>} />
-            <NavbarLink toggleMenu={ toggleMenu } href={'/'} name={'Accueil'} />
+            <NavbarLink toggleMenu={ toggleMenu } href={'/profil/association'} name={'Accueil'} />
             <NavbarLink toggleMenu={ toggleMenu } href={''} name={<>Mon pace&lsquo;sport (carte)</>} />
             <NavbarLink toggleMenu={ toggleMenu } href={'/sponsoring'} name={'Offres de partenariat'} />
             <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Mon compte'} />
