@@ -3,20 +3,35 @@ import { NextResponse } from 'next/server'
 
 // // This function can be marked `async` if using `await` inside
 export function middleware(req) {
-// if (req.nextUrl.pathname.startsWith('/inscription/finaliser')) {
-//         fetch(`/api/register/check/is-complete`, {
-//             headers: new Headers({
-//               'JWTAuthorization': `Bearer ${getCookie('token')}`,
-//               'Content-Type': 'application/json'
-//             })
-//         })
-//         .then(res => res.json())
-//         .then(res => {
-//             if (res.data){
-//                 if(res.data.isSignupComplete == false) {
-//                     return NextResponse.rewrite(new URL('/', req.url))
-//                 }
-//             }
-//         })
-//     }
+
+    fetch(`${process.env.API_URL}/api/verify/jwt`, {
+        method: 'POST',
+        headers: new Headers({
+            'JWTAuthorization': `Bearer ${getCookie('token')}`,
+        }),
+    })
+    .then(res => res.json())
+    .then(res => {
+        console.log('middleware -------------- res', res);
+        if (res.code == 401) {
+            console.log('-------------- res', res.code);
+            req.nextUrl.pathname = '/login'
+            return NextResponse.redirect(req.nextUrl)
+        }
+        return NextResponse.rewrite(req.nextUrl);
+    })
+    .catch((error) => {
+        console.log('middleware -------------- error', error);
+        return NextResponse.redirect(new URL('/login', req.url))
+    })
+    return NextResponse.next();
 }
+
+
+export const config = {
+    matcher: [
+        '/gestion-fonds/',
+        '/sponsoring/'
+    ],
+}
+  

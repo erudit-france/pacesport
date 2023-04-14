@@ -58,7 +58,7 @@ const NavSponsor = ({toggleMenu}) => {
 
 export default function Navbar(){
     const context = useContext(AppContext)
-    const role = context.role
+    const role = context?.role;
     const [token, setToken] = useState(false);
     const router = useRouter()
     const [open, setOpen] = useState(false);
