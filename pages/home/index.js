@@ -32,7 +32,7 @@ export default function Page() {
                         </Paper>
                     
                         <ActionIcon size={'lg'} radius={'xl'} component="a" href="/login"
-                            className="tw-bg-white tw-invert tw-text-black tw-relative tw-top-8 tw-text-[1.3rem]">
+                            className="tw-bg-white tw-invert tw-text-black tw-relative tw-top-8 tw-text-[1.3rem] tw-z-10">
                             <IoMdLogIn />
                         </ActionIcon>
                     </Flex>
