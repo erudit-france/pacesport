@@ -6,7 +6,7 @@ import { Text, Image, Space } from "@mantine/core";
 
 export default function CampagneHeader(){
     return (
-        <header className='tw-flex tw-justify-center tw-h-52 tw-bg-gradient-to-br tw-from-slate-700 tw-to-gray-800
+        <header className='tw-flex tw-justify-center tw-h-52 tw-bg-gradient-to-br tw-from-gray-800 tw-to-black/90
                 tw-relative'>
             <div className='tw-flex tw-flex-col tw-justify-center tw-relative -tw-top-3'>
                 {/* <NextImage src={userImage} height={70} width={70} alt="Image campagne" 
