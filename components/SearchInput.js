@@ -47,7 +47,8 @@ export default function SearchInput() {
     <Autocomplete
     className='focus:tw-border-red-600'
       ref={ref}
-      size={"lg"}
+      px={'md'}
+      size={"md"}
       dropdownPosition="bottom" 
       radius={"xl"}
       placeholder="Auchan Lyon 1..."

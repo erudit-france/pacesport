@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Layout from "./layout";
 import { useEffect, useState } from 'react';
-import { Stepper, Button, Group, TextInput, Text, Box, NumberInput, Flex, Modal, Skeleton, Progress, Title, Dialog, Space } from '@mantine/core';
+import { Stepper, Button, Group, TextInput, Text, Box, NumberInput, Flex, Modal, Skeleton, Progress, Title, Dialog, Space, Spoiler, Image, Accordion } from '@mantine/core';
 import { DateInput, DatePicker } from '@mantine/dates'
 import { useForm } from '@mantine/form';
 import 'dayjs/locale/fr';
@@ -13,6 +13,7 @@ import { showNotification } from "@mantine/notifications";
 import moment from "moment/moment";
 import PageStatusIndicator from "./components/PageStatusIndicator";
 import RemainingOffersDialog from "./components/RemainingOffersDialog";
+import AccordionItem from "./components/AccordionItem";
 
 
 export default function Page(){
@@ -116,11 +117,13 @@ export default function Page(){
                                     <TextInput size="xs" mb={'sm'} label="Nom de la carte"
                                             withAsterisk
                                             {...form1.getInputProps('nom')}/>
-                                    <DatePicker locale="fr" placeholder="Choisir une date" 
+                                    <DatePicker locale="fr" placeholder="Choisir une date"
+                                                dropdownType="modal"
                                                 label="Date début" size="xs" inputFormat="DD/MM/YYYY" 
                                                 onChange={(value) => dateDebutHandler(value)} withAsterisk
                                                 {...form1.getInputProps('dateDebut')}/>
                                     <DatePicker locale="fr" placeholder="Choisir une date" 
+                                                dropdownType="modal"
                                                 label="Date fin" size="xs" inputFormat="DD/MM/YYYY" 
                                                 withAsterisk
                                                 {...form1.getInputProps('dateFin')}/>
@@ -194,14 +197,23 @@ export default function Page(){
                             type="submit">Enregister</Button>
             </section>  
 
+            <Space h={'xl'} my={'xl'} />
+
             <Box mt={'md'}>
                 <Title align="center" color="white" className="tw-bg-red-600 tw-font-light tw-pb-1" order={6}>Nouvelles offres de partenariat</Title>
+                <Accordion chevronPosition="right" variant="contained">
+                    <AccordionItem id={'Carol'} label={'Auchan'} content={'lorem ipsum'} image={null} />
+                    <AccordionItem id={'Carol'} label={'Grand Frais'} content={'lorem ipsum'} image={null} />
+                    <AccordionItem id={'Carol'} label={'Leclerc'} content={'lorem ipsum'} image={null} />
+                </Accordion>
             </Box>       
 
             <Box mt={'md'}>
                 <Title align="center" color="white" className="tw-bg-red-600 tw-font-light tw-pb-1" order={6}>Offres validées de partenaire</Title>
             </Box>  
 
+            <Space h={'xl'} mt={'xl'} />
+            <Space h={'xl'} mt={'xl'} />
             <Space h={'xl'} mt={'xl'} />
             <RemainingOffersDialog remainingOffers={3} />
         </>
