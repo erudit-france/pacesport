@@ -4,7 +4,14 @@ import { useForm } from "@mantine/form";
 import { useState } from "react";
 import { BsCurrencyEuro } from "react-icons/bs";
 
-export default function MaillotModal({opened, setOpened, maillotOffers, setMaillotOffers, maillotImages}) {
+export default function MaillotModal({opened, setOpened, maillotOffers, setMaillotOffers}) {
+    const maillotImages = [
+        {text: 'Gauche', src: null},
+        {text: 'Droite', src: null},
+        {text: 'Avant', src: null},
+        {text: 'Arrière', src: null}
+    ]
+
     const [embla, setEmbla] = useState(null);
     
     const form = useForm({

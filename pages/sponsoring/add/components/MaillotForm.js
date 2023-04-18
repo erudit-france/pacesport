@@ -8,12 +8,6 @@ import MaillotModal from "./MaillotModal";
 export default function MaillotForm() {
     const [opened, setOpened] = useState(false);
     const [maillotOffers, setMaillotOffers] = useState([]);
-    const maillotImages = [
-        {text: 'Gauche', src: null},
-        {text: 'Droite', src: null},
-        {text: 'Avant', src: null},
-        {text: 'Arrière', src: null}
-    ]
 
     const offers = maillotOffers.map((offer, idx) => (
         <Paper key={idx} radius={'lg'} shadow="md" p={'lg'} mb={'md'}>
@@ -59,8 +53,7 @@ export default function MaillotForm() {
             </Flex>
             <MaillotModal 
                 opened={opened} setOpened={setOpened} 
-                maillotOffers={maillotOffers} setMaillotOffers={setMaillotOffers}
-                maillotImages={maillotImages}/>
+                maillotOffers={maillotOffers} setMaillotOffers={setMaillotOffers}/>
         </>
     )
 }

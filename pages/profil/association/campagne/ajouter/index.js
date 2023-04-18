@@ -13,8 +13,8 @@ import { showNotification } from "@mantine/notifications";
 import moment from "moment/moment";
 import PageStatusIndicator from "./components/PageStatusIndicator";
 import RemainingOffersDialog from "./components/RemainingOffersDialog";
-import AccordionItem from "./components/AccordionItem";
-
+import AccordionLabel from "./components/AccordionLabel";
+import { BiMessage } from "react-icons/bi";
 
 export default function Page(){
     const [progress, setProgress] = useState(33);
@@ -202,9 +202,9 @@ export default function Page(){
             <Box mt={'md'}>
                 <Title align="center" color="white" className="tw-bg-red-600 tw-font-light tw-pb-1" order={6}>Nouvelles offres de partenariat</Title>
                 <Accordion chevronPosition="right" variant="contained">
-                    <AccordionItem id={'Carol'} label={'Auchan'} content={'lorem ipsum'} image={null} />
-                    <AccordionItem id={'Carol'} label={'Grand Frais'} content={'lorem ipsum'} image={null} />
-                    <AccordionItem id={'Carol'} label={'Leclerc'} content={'lorem ipsum'} image={null} />
+                    {/* <AccordionComponent id={'Carol'} label={'Auchan'} content={'lorem ipsum'} image={null} />
+                    <AccordionComponent id={'Carol'} label={'Grand Frais'} content={'lorem ipsum'} image={null} />
+                    <AccordionComponent id={'Carol'} label={'Leclerc'} content={'lorem ipsum'} image={null} /> */}
                 </Accordion>
             </Box>       
 
