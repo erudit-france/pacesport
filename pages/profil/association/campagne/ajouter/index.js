@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Layout from "./layout";
 import { useEffect, useState } from 'react';
-import { Stepper, Button, Group, TextInput, Text, Box, NumberInput, Flex, Modal, Skeleton, Progress, Title } from '@mantine/core';
+import { Stepper, Button, Group, TextInput, Text, Box, NumberInput, Flex, Modal, Skeleton, Progress, Title, Dialog, Space } from '@mantine/core';
 import { DateInput, DatePicker } from '@mantine/dates'
 import { useForm } from '@mantine/form';
 import 'dayjs/locale/fr';
@@ -12,6 +12,7 @@ import { getCookie } from "cookies-next";
 import { showNotification } from "@mantine/notifications";
 import moment from "moment/moment";
 import PageStatusIndicator from "./components/PageStatusIndicator";
+import RemainingOffersDialog from "./components/RemainingOffersDialog";
 
 
 export default function Page(){
@@ -188,30 +189,21 @@ export default function Page(){
                 }
                 
                 <Button disabled
-                            className="tw-w-full tw-mx-auto tw-bg-teal-600 hover:tw-bg-teal-700 disabled:tw-border-2 disabled:tw-border-gray-300" 
+                            className="tw-w-full tw-mx-auto tw-bg-teal-600 hover:tw-bg-teal-700 disabled:tw-border-2 disabled:tw-border-gray-100" 
                             mt={'md'} radius={'lg'} size="sm" variant="filled" 
                             type="submit">Enregister</Button>
-            </section>         
+            </section>  
 
-            <Modal
-                centered 
-                opened={opened}
-                onClose={() => { setOpened(false); setLoadingOffers(true) }}
-                title="Liste des offres disponibles"
-            >
-                {loadingOffers && 
-                <Flex>
-                    <div>
-                        <Skeleton height={50} circle/>
-                    </div>
-                    <div className="tw-flex tw-flex-col tw-w-full tw-justify-around tw-ml-4">
-                        <Skeleton height={8} width="50%" radius="xl" />
-                        <Skeleton height={8} width="70%" radius="xl" />
-                    </div>
-                </Flex>}
-                {!loadingOffers && <AvailableOffersList associatedOffers={associatedOffers} setAssociatedOffers={setAssociatedOffers} />}
-            </Modal>
+            <Box mt={'md'}>
+                <Title align="center" color="white" className="tw-bg-red-600 tw-font-light tw-pb-1" order={6}>Nouvelles offres de partenariat</Title>
+            </Box>       
 
+            <Box mt={'md'}>
+                <Title align="center" color="white" className="tw-bg-red-600 tw-font-light tw-pb-1" order={6}>Offres validées de partenaire</Title>
+            </Box>  
+
+            <Space h={'xl'} mt={'xl'} />
+            <RemainingOffersDialog remainingOffers={3} />
         </>
     )
 }

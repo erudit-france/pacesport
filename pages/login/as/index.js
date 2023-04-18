@@ -39,7 +39,7 @@ export default function Page({status}){
             ? '/profil/association'
             : '/inscription/association';
     const sponsorLink = status.enseigne == true 
-            ? '/partenariat'
+            ? '/profil/sponsor'
             : '/inscription/sponsor';
     return (
         <>

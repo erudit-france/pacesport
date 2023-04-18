@@ -10,3 +10,7 @@
 .mantine-Autocomplete-item {
     font-size: 14px;
 }
+
+.card-remaining-offers-wrapper 	.mantine-Dialog-root {
+    width: 100vw;
+  }

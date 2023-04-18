@@ -112,3 +112,11 @@ a {
 .tw-text-white .mantine-Radio-label {
   color: white;
 }
+
+.card-remaining-offers-wrapper 	.mantine-Dialog-root {
+  width: 100vw;
+}
+
+.mantine-Dialog-root {
+  width: 100vw;
+}

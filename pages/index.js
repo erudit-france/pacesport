@@ -15,7 +15,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 const DiscountCardsGrid = ({cards}) => {
   return (
-    <Grid gutter={12} className="mt-4">
+    <Grid gutter={12} className="mt-4 tw-px-3">
       {cards.map(function(card) {
         return (
             <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
