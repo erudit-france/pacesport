@@ -36,10 +36,10 @@ export default function Page() {
 
     const submitHandler = (data) => {
         setLogoError(null)
-        if (logo == null) {
-            setLogoError('Veuillez insérer un logo')
-            return
-        }
+        // if (logo == null) {
+        //     setLogoError('Veuillez insérer un logo')
+        //     return
+        // }
         const body = serialize(data)
         // body.delete('logo')
         console.log('body', body)

@@ -48,11 +48,11 @@ export default function Page() {
             email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Veuillez saisir un E-mail valide'),
             phone: (v) => v > '' ? null : 'Veuillez saisir un numéro',
             description: (v) => v > '' ? null : 'Veuillez saisir une description',
-            logo: () => { 
-                setLogoError(null)
-                if(logo == null){ setLogoError('Veuillez insérer un logo') }
-                return logoError
-            },
+            // logo: () => { 
+            //     setLogoError(null)
+            //     if(logo == null){ setLogoError('Veuillez insérer un logo') }
+            //     return logoError
+            // },
             type: () => { 
                 setTypeError(null)
                 if(type == null){ setTypeError('Veuillez choisir un type') }
