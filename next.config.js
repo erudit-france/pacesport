@@ -18,6 +18,10 @@ const nextConfig = {
       {
         source: '/uploads/:path*',
         destination: `${process.env.API_URL}/uploads/:path*`
+      },
+      {
+        source: '/local/:path*',
+        destination: `${process.env.NEXT_URL}/:path*`
       }
     ]
   },
