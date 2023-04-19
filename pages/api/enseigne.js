@@ -20,6 +20,6 @@ export default async (req, res) => {
      });
 
     httpProxyMiddleware(req, res, {
-        target: 'http://localhost:8080',
+        target: `${process.env.API_URL}`,
     })
 }

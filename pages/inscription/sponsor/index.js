@@ -63,7 +63,7 @@ export default function Page() {
 
     const submitHandler = (data) => {
         const body = serialize(data)
-        fetch(`http://localhost:3000/api/enseigne`, {
+        fetch(`${process.env.NEXT_URL}/api/enseigne`, {
             method: 'POST',
             type: 'cors',
             headers: new Headers({

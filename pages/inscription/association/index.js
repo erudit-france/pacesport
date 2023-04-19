@@ -44,7 +44,7 @@ export default function Page() {
         // body.delete('logo')
         console.log('body', body)
 
-        fetch(`http://localhost:3000/api/association`, {
+        fetch(`${process.env.NEXT_URL}/api/association`, {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
