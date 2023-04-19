@@ -10,6 +10,13 @@ import AppContext from '@/context/AppContext';
 
 export default function LoginForm({loading}) {
   const context = useContext(AppContext)
+  const inputOptions = {
+    mt: "sm",
+    variant: "filled",
+    placeholder: "Prénom",
+    radius: "lg",
+    size: "md"
+  }
   const router = useRouter();
   const [error, setError] = useState('');
   const form = useForm({
@@ -52,50 +59,31 @@ export default function LoginForm({loading}) {
       });
   }
 
-  const fetchOffers = () => {
-    fetch(`/api/offer`, {
-      method: 'GET',
-      headers: new Headers({
-        'JWTAuthorization': `Bearer ${getCookie('token')}`,
-        'Content-Type': 'application/json'
-      })
-    })
-    .then(res => res.json())
-    .then(res => console.log('res', res))
-  }
-
-  const nextPage = () => {
-      router.push('/login/as')
-      // router.push('/inscription/finaliser')
-  }
+  const nextPage = () => { router.push('/login/as') }
 
   return (
     <>
       <form onSubmit={form.onSubmit((values) => submitHandler(values))}>
       {/* <form onSubmit={(e) => nextPage(e)}> */}
-        <Paper shadow="xl" p="md" radius="lg">
-          <TextInput mt="sm" variant="filled" placeholder="Adresse mail" radius="lg" size="md"
-            icon={<SiMaildotru className="tw-text-black tw-relative" />}
-            withAsterisk
-            {...form.getInputProps('email')}
-          />
-          <PasswordInput mt="sm" placeholder="Mot de passe" variant="filled" radius="lg" size="md"
-            withAsterisk
-            {...form.getInputProps('password')}
-            />
-            
+        <Paper className='tw-bg-gray-900' shadow="xl" p="md" radius="lg">
+          <TextInput {...inputOptions} placeholder="Adresse mail" {...form.getInputProps('email')}
+            icon={<SiMaildotru className="tw-text-black tw-relative" />} />
+          <PasswordInput {...inputOptions} placeholder="Mot de passe" {...form.getInputProps('password')}/>
           {error != '' && 
               <Alert icon={<AiOutlineInfoCircle size="1rem" />} p={'md'} mt='md' color="pink" radius="md" withCloseButton onClose={() => setError('')}>
                 <span className='tw-text-red-900'>{error}</span></Alert>
           }
         </Paper>
 
-        <Flex justify="center" align="center" direction="row" mt="md">
-          <Button className="tw-bg-pink-600 hover:tw-bg-pink-700 tw-shadow-sm" radius="xl" size="lg"
-            type='submit'
-            >
-            Connexion
-          </Button>
+        <Flex className='' justify="center" align="center" direction="row" mt="md">
+            <div className='tw-w-1/2'>
+              <Button
+                  className="tw-bg-gray-900 hover:tw-bg-gray-600 tw-shadow-sm tw-border-[1px] tw-border-gray-400"
+                  size='md'
+                  fullWidth
+                  radius="xl"
+                  type='submit'>Connexion</Button>
+              </div>
         </Flex>
       </form>
     </>

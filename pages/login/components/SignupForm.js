@@ -1,11 +1,18 @@
 import { SiMaildotru } from 'react-icons/si'
-import { Alert, Button, Checkbox, Flex, Input, Paper, PasswordInput, TextInput } from "@mantine/core";
+import { Alert, Button, Checkbox, Flex, Input, Paper, PasswordInput, Text, TextInput } from "@mantine/core";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from '@mantine/form';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 
 export default function SignupForm({loading}) {
+  const inputOptions = {
+    mt: "sm",
+    variant: "filled",
+    placeholder: "Prénom",
+    radius: "lg",
+    size: "md"
+  }
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [cguChecked, setCguChecked] = useState('');
@@ -69,23 +76,9 @@ export default function SignupForm({loading}) {
   return (
     <>
       <form onSubmit={form.onSubmit((values) => submitHandler(values))}>
-        <Paper shadow="xl" p="md" radius="lg">
-          <TextInput
-            variant="filled"
-            placeholder="Nom"
-            radius="lg"
-            size="md"
-            withAsterisk
-            {...form.getInputProps('nom')}
-            />
-          <TextInput
-            mt="sm"
-            variant="filled"
-            placeholder="Prénom"
-            radius="lg"
-            size="md"
-            {...form.getInputProps('prenom')}
-            />
+        <Paper className='tw-bg-gray-900' shadow="xl" p="md" radius="lg">
+          <TextInput {...inputOptions} {...form.getInputProps('nom')} placeholder='Nom' />
+          <TextInput {...inputOptions} {...form.getInputProps('prenom')} placeholder='Prénom' />
           {/* <Input
             mt="sm"
             variant="filled"
@@ -93,33 +86,11 @@ export default function SignupForm({loading}) {
             radius="lg"
             size="md"
           /> */}
-          <TextInput
-            mt="sm"
+          <TextInput {... inputOptions} {...form.getInputProps('email')} placeholder="Adresse mail"
             icon={<SiMaildotru className="tw-text-black tw-relative" />}
-            variant="filled"
-            placeholder="Adresse mail"
-            radius="lg"
-            size="md"
-            {...form.getInputProps('email')}
             />
-
-          <PasswordInput
-            mt="sm"
-            placeholder="Mot de passe"
-            variant="filled"
-            radius="lg"
-            size="md"
-            {...form.getInputProps('password')}
-            />
-
-          <PasswordInput
-            mt="sm"
-            placeholder="Confirmation mot de passe"
-            variant="filled"
-            radius="lg"
-            size="md"
-            {...form.getInputProps('passwordConfirmation')}
-            />
+          <PasswordInput {...inputOptions} {...form.getInputProps('password')} placeholder="Mot de passe" />
+          <PasswordInput {...inputOptions} {...form.getInputProps('passwordConfirmation')} placeholder="Confirmation mot de passe"/>
 
           <Checkbox
             ml="xs"
@@ -128,16 +99,16 @@ export default function SignupForm({loading}) {
             size="sm"
             error={ cguChecked === false ? 'Veuillez accepter les CGU' : '' }
             label={
-              <>
+              <Text color='white'>
                 J&lsquo;accepte les{" "}
                 <Link
-                  className="tw-text-blue-900 tw-underline"
+                  className="tw-text-blue-400 tw-underline"
                   href="#"
                   target="_blank"
                 >
                   CGU
                 </Link>
-              </>
+              </Text>
             }
             {...form.getInputProps('cgu', { type: 'checkbox' })}
           />
@@ -150,18 +121,21 @@ export default function SignupForm({loading}) {
               <span className='tw-text-teal-900'>{success}</span></Alert>
           }
         </Paper>
-
-        <Flex justify="center" align="center" direction="row" mt="md">
-          <Button
-            onClick={() => submitHandler()}
-            className="tw-bg-pink-600 hover:tw-bg-pink-700 tw-shadow-sm"
-            radius="xl"
-            size="lg"
-            type='submit'
-          >
-            Inscription
-          </Button>
+        <Flex className='' justify="center" align="center" direction="row" mt="md">
+            <div className='tw-w-1/2'>
+              <Button
+                className="tw-bg-gray-900 hover:tw-bg-gray-600 tw-shadow-sm tw-border-[1px] tw-border-gray-400"
+                size='md'
+                fullWidth
+                radius="xl"
+                type='submit'
+                onClick={() => submitHandler()}
+              >
+                Inscription
+              </Button>
+            </div>
         </Flex>
+
       </form>
     </>
   );

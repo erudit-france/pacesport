@@ -26,7 +26,6 @@ const useStyles = createStyles((theme) => ({
 }));
 
 export function SegmentedControls({ tabHandler }) {
-  const { classes } = useStyles();
   const [value, setValue] = useState('Connexion');
   const changeHandler = (value) => {
     setValue(value)
@@ -35,13 +34,13 @@ export function SegmentedControls({ tabHandler }) {
 
   return (
     <SegmentedControl
+      fullWidth 
       value={value}
       onChange={changeHandler}
       radius="xl"
       size="md"
       data={['Connexion', 'Inscription']}
-      color="pink"
-      classNames={classes}
+      color="gray"
     />
   );
 }
