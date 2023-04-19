@@ -25,14 +25,14 @@ export default function Page() {
             <Box className="tw-w-[100vw] tw-h-[100vh] tw-overflow-y-scroll tw-bg-scroll tw-overflow-x-hidden tw-snap-y tw-snap-mandatory
                 tw-mw-[100vw] tw-mh-[100vh] tw-bg-white tw-invert tw-relative" style={{backgroundImage: `url(${background.src})`}}>
                 <section className="tw-w-[100vw] tw-h-[100vh] tw-snap-center">
-                    <Flex className="relative tw-justify-end tw-mx-5">
+                    <Flex className="relative tw-justify-end tw-mx-6">
                         <Paper className="tw-bg-white tw-invert tw-h-[85px] tw-w-[85px] tw-rounded-full tw-absolute tw-top-2 tw-mx-auto tw-left-0 tw-right-0">
                             <Image src={logo.src} height={70} width={70} alt="Logo Pace'sport" 
                                 className='tw-p-2 tw-mx-auto'/>
                         </Paper>
                     
-                        <ActionIcon size={'lg'} radius={'xl'} component="a" href="/login"
-                            className="tw-bg-white tw-invert tw-text-black tw-relative tw-top-8 tw-text-[1.3rem] tw-z-10">
+                        <ActionIcon size={'xl'} radius={'xl'} component="a" href="/login"
+                            className="tw-bg-white tw-invert tw-text-black tw-relative tw-top-6 tw-text-[1.3rem] tw-z-10">
                             <IoMdLogIn />
                         </ActionIcon>
                     </Flex>
