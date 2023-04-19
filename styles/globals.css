@@ -120,3 +120,7 @@ a {
 .mantine-Dialog-root {
   width: 100vw;
 }
+
+body {
+  --removed-scroll-width: 0px !important;
+}
