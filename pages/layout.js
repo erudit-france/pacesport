@@ -1,35 +1,114 @@
-import Image from "next/image";
 import background from '@/public/doodle-pattern.png'
-import { ActionIcon, BackgroundImage, FileButton } from "@mantine/core";
+import { ActionIcon, Avatar, BackgroundImage, Box, FileButton, Flex, Group, Image } from "@mantine/core";
 import Link from "next/link";
 import { useState } from "react";
 import { RiImageAddFill } from "react-icons/ri";
 import fileUploader from "@/utils/fileUploader"
 import axios from "axios";
+import { useDisclosure } from "@mantine/hooks";
+import { RxCheck, RxCross2 } from 'react-icons/rx';
+import { showNotification } from '@mantine/notifications';
+import { getCookie } from 'cookies-next';
 
 
 const HeroSection = ({avatar}) => {
-    const originalImage = avatar;
-    const [image, setImage] = useState(avatar);
+    const originalImage = '../public/uploads/' . avatar;
+    const [editing, edit] = useDisclosure(false)
+    const [image, setImage] = useState(avatar)
+    const [imageFile, setImageFile] = useState(null)
     
     const uploadHandler = (file) => {
         const url = URL.createObjectURL(file)
         setImage(url)
-        // const response = fileUploader(file);
+        setImageFile(file)
+        edit.open()
+    }
+
+    const resetImage = () => {
+        setImage(originalImage)
+    }
+
+    const confirmEdit = () => {
+        if (!imageFile) {
+            showNotification({
+                title: 'Erreur',
+                message: 'Erreur pendant le téléchargement de l\'image',
+                color: 'red',
+                autoClose: 5000,
+            })
+            resetImage()
+            edit.close()
+            return
+        }
+        fileUploader(imageFile)
+            .then((response) => {
+                let body = new FormData();
+                body.append('filename', response.data.filename)
+                fetch(`/api/avatar`, {
+                    method: 'POST',
+                    type: 'cors',
+                    headers: new Headers({
+                      'JWTAuthorization': `Bearer ${getCookie('token')}`
+                    }),
+                    body: body
+                  })
+                  .then(res => res.json())
+                    .then(res => {
+                        console.log('res', res)
+                        showNotification({
+                            title: res.data.code == 1 ? 'Succès' : 'Erreur',
+                            message: res.data.message,
+                            color: res.data.code == 1 ? 'teal' : 'red',
+                            autoClose: 5000,
+                        })
+                    })
+                    .catch((error) => {
+                        showNotification({
+                            title: 'Erreur',
+                            message: 'Erreur pendant le téléchargement de l\'image',
+                            color: 'red',
+                            autoClose: 5000,
+                        })
+                    })
+            });
+        edit.close()
+    }
+
+    const cancelEdit = () => {
+        edit.close()
+        resetImage()
+    }
+
+    const LogoButtons = () => {
+        if (editing) {
+            return (
+                <Box className="tw-absolute tw-z-20 -tw-bottom-2 tw-w-full">
+                    <Flex className='tw-w-full' justify={'space-between'}>
+                        <ActionIcon onClick={cancelEdit} className='tw-bg-gray-200/50 tw-relative tw-right-4' color='dark' variant='light' radius={'xl'}><RxCross2 /></ActionIcon>
+                        <ActionIcon onClick={confirmEdit} className='tw-bg-teal-300/50 tw-relative tw-left-4' color='teal' variant='light' radius={'xl'}><RxCheck /></ActionIcon>
+                    </Flex>
+                </Box>
+            )
+        }
+        return (
+            <Box className="tw-absolute tw-z-20 tw-bottom-0 tw-right-0">
+                <FileButton onChange={uploadHandler} accept="image/png,image/jpeg">
+                {(props) => <ActionIcon size={25} {...props} className="tw-bg-yellow-500/80 hover:tw-bg-yellow-500 tw-text-yellow-700 tw-rounded-full">
+                        <RiImageAddFill size={15} className="tw-relative tw-right-[1px]"/>
+                    </ActionIcon>}
+                </FileButton>
+            </Box>
+        )
     }
 
     return (
         <header className='tw-flex tw-justify-center tw-h-36 tw-relative'>
             <div className='tw-flex tw-flex-col tw-justify-center'>
-              <div className="tw-relative">
-                <Image src={avatar} height={70} width={70} alt="Logo Pace'sport" 
-                    className='tw-rounded-full shadow-sm tw-bg-white tw-p-2 tw-z-20'/>
-                <FileButton onChange={uploadHandler} accept="image/png,image/jpeg">
-                  {(props) => <ActionIcon size={25} {...props} className="tw-absolute tw-z-10 tw-bottom-0 tw-right-0 tw-bg-yellow-500/80 hover:tw-bg-yellow-500 tw-text-yellow-700 tw-rounded-full">
-                        <RiImageAddFill size={15} className="tw-relative tw-right-[1px]"/>
-                    </ActionIcon>}
-                </FileButton>
-              </div>
+              <Box className="tw-relative tw-bg-white tw-rounded-full">
+                <Avatar radius={9999} size={70} src={image}  alt="Logo Pace'sport" 
+                    className='hadow-sm tw-bg-transparent tw-z-20'/>
+                <LogoButtons />
+              </Box>
             </div>
         </header>
     )

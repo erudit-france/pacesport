@@ -9,7 +9,6 @@ import { useEffect, useState } from 'react'
 import { getCookie } from 'cookies-next'
 import * as cookie from 'cookie'
 import { useRouter } from 'next/router'
-import logo from '@/public/logo.png'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -33,7 +32,7 @@ const DiscountCardsGrid = ({cards}) => {
 }
 
 export default function Page(props) {
-  console.log('logo', logo)
+  console.log('props', props)
   return (
     <>
         <Head>
@@ -89,12 +88,23 @@ export async function getServerSideProps(context) {
       destination: "/login"
     }
   }
+  let avatar = await fetch(`${process.env.API_URL}/api/avatar`, {
+    headers: new Headers({
+            'JWTAuthorization': `Bearer ${token}`,
+    })}
+  )
+
+  avatar = await avatar.json();
+
   // // Pass data to the page via props
-  return { props: { cards: JSON.parse(data.data) } }
+  return { props: {
+    cards: JSON.parse(data.data),
+    avatar: avatar.filename
+  } }
 }
 
 Page.getLayout = function getLayout(page) {
   return (
-    <Layout avatar={logo}>{page}</Layout>
+    <Layout avatar={null}>{page}</Layout>
   )
 }

@@ -16,7 +16,10 @@ const handler = async (req, res) => {
     console.log('------------------------');
     console.log('------------------------');
     await saveFile(files.file[0]);
-    return res.status(201).send("Success");
+    return res.status(201).send({
+      message: 'Image téléchargée',
+      filename: files.file[0].newFilename
+    });
   });
 };
 
