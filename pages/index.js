@@ -2,16 +2,20 @@ import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import SearchInput from '@/components/SearchInput'
-import { Grid, Text } from '@mantine/core'
+import { Grid, Space, Text, Title } from '@mantine/core'
 import AssociationCard from '@/components/AssociationCard'
 import Layout from './layout'
 import { useEffect, useState } from 'react'
 import { getCookie } from 'cookies-next'
 import * as cookie from 'cookie'
 import { useRouter } from 'next/router'
+import logo from '@/public/logo.png'
 
 const inter = Inter({ subsets: ['latin'] })
 
+const SectionTitle = ({title}) => (
+    <Title order={4} align='center' transform='uppercase' mb={"lg"}>{title}</Title>
+)
 
 const DiscountCardsGrid = ({cards}) => {
   return (
@@ -29,6 +33,7 @@ const DiscountCardsGrid = ({cards}) => {
 }
 
 export default function Page(props) {
+  console.log('logo', logo)
   return (
     <>
         <Head>
@@ -49,14 +54,14 @@ export default function Page(props) {
 
               {/* carte proche */}
               <section className='tw-mt-8'>
-                <h1 className="tw-text-lg tw-font-semibold tw-uppercase tw-text-center tw-mb-3">Carte proche de vous</h1>
+                <SectionTitle title='Carte proche de vous' />
                 <DiscountCardsGrid cards={props.cards} />
-
               </section>
+              <Space my={'xl'} h={'md'} />
 
               {/* Enseigne proche */}
               <section className='tw-mt-12'>
-                <h1 className="tw-text-lg tw-font-semibold tw-uppercase tw-text-center">Enseigne proche de vous</h1>
+                <SectionTitle title='Enseigne proche de vous' />
                 {/* <EnseigneGrid /> */}
               </section>
             </main>
@@ -90,6 +95,6 @@ export async function getServerSideProps(context) {
 
 Page.getLayout = function getLayout(page) {
   return (
-    <Layout>{page}</Layout>
+    <Layout avatar={logo}>{page}</Layout>
   )
 }
