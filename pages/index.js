@@ -32,7 +32,6 @@ const DiscountCardsGrid = ({cards}) => {
 }
 
 export default function Page(props) {
-  console.log('props', props)
   return (
     <>
         <Head>
@@ -88,7 +87,7 @@ export async function getServerSideProps(context) {
       destination: "/login"
     }
   }
-  let avatar = await fetch(`${process.env.API_URL}/api/avatar`, {
+  let avatar = await fetch(`${process.env.API_URL}/api/user/avatar`, {
     headers: new Headers({
             'JWTAuthorization': `Bearer ${token}`,
     })}

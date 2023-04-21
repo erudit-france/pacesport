@@ -10,6 +10,7 @@ import Link from "next/link";
 import { BsLock } from "react-icons/bs";
 import { GrMoney } from "react-icons/gr";
 import { BiMessage } from "react-icons/bi";
+import { getCookie } from "cookies-next";
 
 export default function Page(){
     const isAccountLimited = true
@@ -73,8 +74,33 @@ export default function Page(){
     )
 }
 
+export async function getServerSideProps(context) {
+    const token = context.req.cookies['token']
+    let avatar = await fetch(`${process.env.API_URL}/api/association/avatar`, {
+      headers: new Headers({
+              'JWTAuthorization': `Bearer ${token}`,
+      })}
+    )
+    avatar = await avatar.json();
+    console.log('avatar', avatar)
+    if (avatar.code == 401) {
+        return {
+            redirect: {
+            permanent: false,
+            destination: "/login"
+            }
+        }
+    }
+  
+    // // Pass data to the page via props
+    return { props: {
+      avatar: avatar.filename
+    } }
+  }
+  
+
 Page.getLayout = function getLayout(page) {
     return (
-      <Layout>{page}</Layout>
+      <Layout avatar={null}>{page}</Layout>
     )
   }

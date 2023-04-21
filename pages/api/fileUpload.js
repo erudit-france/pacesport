@@ -10,11 +10,6 @@ const handler = async (req, res) => {
     keepExtensions: true
   });
   form.parse(req, async function (err, fields, files) {
-    console.log('------------------------');
-    console.log('------------------------');
-    console.log('fileupload files', files.file[0])
-    console.log('------------------------');
-    console.log('------------------------');
     await saveFile(files.file[0]);
     return res.status(201).send({
       message: 'Image téléchargée',

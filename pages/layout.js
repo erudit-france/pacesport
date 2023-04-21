@@ -10,11 +10,13 @@ import { RxCheck, RxCross2 } from 'react-icons/rx';
 import { showNotification } from '@mantine/notifications';
 import { getCookie } from 'cookies-next';
 import Image from 'next/image';
+import Navbar from '@/components/navbar/Navbar';
+import Toast from '@/services/Toast';
 
 
 const HeroSection = ({avatar}) => {
-    const originalImage = avatar;
-    const [image, setImage] = useState(avatar)
+    const originalImage = '/uploads/' + avatar;
+    const [image, setImage] = useState(originalImage)
     const [editing, edit] = useDisclosure(false)
     const [imageFile, setImageFile] = useState(null)
     
@@ -31,12 +33,7 @@ const HeroSection = ({avatar}) => {
 
     const confirmEdit = () => {
         if (!imageFile) {
-            showNotification({
-                title: 'Erreur',
-                message: 'Erreur pendant le téléchargement de l\'image',
-                color: 'red',
-                autoClose: 5000,
-            })
+            Toast.error('Erreur pendant le téléchargement de l\'image')
             resetImage()
             edit.close()
             return
@@ -55,22 +52,11 @@ const HeroSection = ({avatar}) => {
                   })
                   .then(res => res.json())
                     .then(res => {
-                        console.log('res', res)
-                        showNotification({
-                            title: res.data.code == 1 ? 'Succès' : 'Erreur',
-                            message: res.data.message,
-                            color: res.data.code == 1 ? 'teal' : 'red',
-                            autoClose: 5000,
-                        })
+                        res.data.code == 1 
+                            ? Toast.success(res.data.message)
+                            : Toast.error(res.data.message)
                     })
-                    .catch((error) => {
-                        showNotification({
-                            title: 'Erreur',
-                            message: 'Erreur pendant le téléchargement de l\'image',
-                            color: 'red',
-                            autoClose: 5000,
-                        })
-                    })
+                    .catch((error) => { Toast.error('Erreur pendant le téléchargement de l\'image') })
             });
         edit.close()
     }
@@ -106,7 +92,7 @@ const HeroSection = ({avatar}) => {
         <header className='tw-flex tw-justify-center tw-h-36 tw-relative'>
             <div className='tw-flex tw-flex-col tw-justify-center'>
               <Box className="tw-relative tw-bg-white tw-rounded-full">
-                <Avatar radius={9999} size={70} src={`/uploads/${image}`}  alt="Logo Pace'sport" 
+                <Avatar radius={9999} size={70} src={`${image}`}  alt="Logo Pace'sport" 
                     className='hadow-sm tw-bg-transparent tw-z-20'/>
                 <LogoButtons />
               </Box>
@@ -118,17 +104,20 @@ const HeroSection = ({avatar}) => {
     
 export default function Layout({children}){
     return (
-        <main className="tw-w-screen tw-relative">
-            <div className="tw-w-full tw-h-full">
-                <HeroSection avatar={children.props.avatar} />
-                <section className="tw-z-20">{children}</section>
-            </div>
-            <div className="tw-w-full tw-h-full tw-absolute tw-top-0 -tw-z-10">
-                <BackgroundImage className="tw-h-full tw-opacity-10 tw-invert " 
-                    src={background.src}/>
-                <BackgroundImage className="tw-h-full tw-w-full tw-absolute tw-top-0 tw-opacity-80 -tw-z-20
-                    tw-bg-gradient-to-b tw-from-white tw-from-10% tw-via-red-600 tw-via-40% tw-to-red-800 tw-to-90%" />
-            </div>
-        </main>
+        <>
+            <Navbar />
+            <main className="tw-w-screen tw-relative">
+                <div className="tw-w-full tw-h-full">
+                    <HeroSection avatar={children.props.avatar} />
+                    <section className="tw-z-20">{children}</section>
+                </div>
+                <div className="tw-w-full tw-h-full tw-absolute tw-top-0 -tw-z-10">
+                    <BackgroundImage className="tw-h-full tw-opacity-10 tw-invert " 
+                        src={background.src}/>
+                    <BackgroundImage className="tw-h-full tw-w-full tw-absolute tw-top-0 tw-opacity-80 -tw-z-20
+                        tw-bg-gradient-to-b tw-from-white tw-from-10% tw-via-red-600 tw-via-40% tw-to-red-800 tw-to-90%" />
+                </div>
+            </main>
+        </>
     )
 }
