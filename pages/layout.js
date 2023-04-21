@@ -42,7 +42,7 @@ const HeroSection = ({avatar}) => {
             .then((response) => {
                 let body = new FormData();
                 body.append('filename', response.data.filename)
-                fetch(`/api/avatar`, {
+                fetch(`/api/user/avatar`, {
                     method: 'POST',
                     type: 'cors',
                     headers: new Headers({

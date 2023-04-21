@@ -117,8 +117,29 @@ export async function getServerSideProps(context) {
       destination: "/login"
     }
   }
+
+  // fetch avatar
+  let avatar = await fetch(`${process.env.API_URL}/api/enseigne/avatar`, {
+    headers: new Headers({
+            'JWTAuthorization': `Bearer ${token}`,
+    })}
+  )
+  avatar = await avatar.json();
+  console.log('avatar', avatar)
+  if (avatar.code == 401) {
+      return {
+          redirect: {
+          permanent: false,
+          destination: "/login"
+          }
+      }
+  }
+
   // // Pass data to the page via props
-  return { props: { cards: JSON.parse(data.data) } }
+  return { props: { 
+    cards: JSON.parse(data.data),
+    avatar: avatar.filename
+  } }
 }
 
 Page.getLayout = function getLayout(page) {
