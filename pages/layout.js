@@ -1,5 +1,5 @@
 import background from '@/public/doodle-pattern.png'
-import { ActionIcon, Avatar, BackgroundImage, Box, FileButton, Flex, Group, Image } from "@mantine/core";
+import { ActionIcon, Avatar, BackgroundImage, Box, FileButton, Flex, Group } from "@mantine/core";
 import Link from "next/link";
 import { useState } from "react";
 import { RiImageAddFill } from "react-icons/ri";
@@ -9,12 +9,13 @@ import { useDisclosure } from "@mantine/hooks";
 import { RxCheck, RxCross2 } from 'react-icons/rx';
 import { showNotification } from '@mantine/notifications';
 import { getCookie } from 'cookies-next';
+import Image from 'next/image';
 
 
 const HeroSection = ({avatar}) => {
-    const originalImage = '../public/uploads/' . avatar;
-    const [editing, edit] = useDisclosure(false)
+    const originalImage = avatar;
     const [image, setImage] = useState(avatar)
+    const [editing, edit] = useDisclosure(false)
     const [imageFile, setImageFile] = useState(null)
     
     const uploadHandler = (file) => {
@@ -105,7 +106,7 @@ const HeroSection = ({avatar}) => {
         <header className='tw-flex tw-justify-center tw-h-36 tw-relative'>
             <div className='tw-flex tw-flex-col tw-justify-center'>
               <Box className="tw-relative tw-bg-white tw-rounded-full">
-                <Avatar radius={9999} size={70} src={image}  alt="Logo Pace'sport" 
+                <Avatar radius={9999} size={70} src={`/uploads/${image}`}  alt="Logo Pace'sport" 
                     className='hadow-sm tw-bg-transparent tw-z-20'/>
                 <LogoButtons />
               </Box>
@@ -115,11 +116,11 @@ const HeroSection = ({avatar}) => {
 }
 
     
-export default function Layout({children, avatar}){
+export default function Layout({children}){
     return (
         <main className="tw-w-screen tw-relative">
             <div className="tw-w-full tw-h-full">
-                <HeroSection avatar={avatar} />
+                <HeroSection avatar={children.props.avatar} />
                 <section className="tw-z-20">{children}</section>
             </div>
             <div className="tw-w-full tw-h-full tw-absolute tw-top-0 -tw-z-10">
