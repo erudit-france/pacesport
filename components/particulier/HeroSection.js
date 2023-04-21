@@ -1,3 +1,6 @@
+import Toast from "@/services/Toast";
+import fileUploader from "@/utils/fileUploader";
+
 const { Box, Flex, ActionIcon, FileButton, Avatar } = require("@mantine/core");
 const { useDisclosure } = require("@mantine/hooks");
 const { getCookie } = require("cookies-next");
@@ -6,7 +9,7 @@ const { RiImageAddFill } = require("react-icons/ri");
 const { RxCross2, RxCheck } = require("react-icons/rx");
 
 const HeroSection = ({avatar}) => {
-    const originalImage = '/uploads/' + avatar;
+    const originalImage = '/uploads/'.concat(avatar);
     const [image, setImage] = useState(originalImage)
     const [editing, edit] = useDisclosure(false)
     const [imageFile, setImageFile] = useState(null)
