@@ -37,10 +37,10 @@ export default function Page() {
                         </ActionIcon>
                     </Flex>
                     <Center className="tw-w-full tw-h-full tw-relative tw-flex tw-flex-col">
-                        <Image className="tw-object-contain tw-relative -tw-top-12" 
+                        <Image className="tw-object-contain tw-relative -tw-top-2 tw-invert" 
                             alt="iphone"
-                            src={mockup.src} width={300} />
-                        <Title order={2} className="tw-font-semibold tw-relative -tw-top-8 tw-w-1/2 tw-text-center tw-invert tw-text-white"
+                            src={'/mockup-design-1.png'} width={260} />
+                        <Title order={2} className="tw-font-semibold tw-relative -tw-top-2 tw-w-1/2 tw-text-center tw-invert tw-text-white"
                             sx={{textShadow: '#FC0 1px 0 10px'}}>Des réductions dans des centaines d&lsquo;enseignes proches de vous</Title>
                     </Center>
                     <Button className="tw-bg-white tw-px-14 tw-py-3 tw-absolute tw-bottom-3 tw-left-0 tw-right-0 tw-mx-auto
@@ -50,9 +50,9 @@ export default function Page() {
                 </section>
                 <section id='section-2'className="tw-w-[100vw] tw-h-[100vh] tw-snap-center tw-relative">
                     <Center className="tw-w-full tw-h-full tw-relative">
-                        <Image className="tw-object-contain tw-relative  -tw-top-12" 
+                        <Image className="tw-object-contain tw-relative tw-invert -tw-top-12" 
                             alt="iphone"
-                            src={mockup.src} width={300} />
+                            src={'/mockup-design-2.png'} width={300} />
                     </Center>
                     <Button className="tw-bg-white tw-px-14 tw-py-3 tw-absolute tw-bottom-3 tw-left-0 tw-right-0 tw-mx-auto
                             tw-invert hover:tw-bg-gray-100 tw-rounded-xl tw-text-black tw-text-[1.5rem]"
