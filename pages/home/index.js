@@ -40,7 +40,7 @@ export default function Page() {
                         <Image className="tw-object-contain tw-relative -tw-top-2 tw-invert" 
                             alt="iphone"
                             src={'/mockup-design-1.png'} width={260} />
-                        <Title order={2} className="tw-font-semibold tw-relative -tw-top-2 tw-w-1/2 tw-text-center tw-invert tw-text-white"
+                        <Title order={3} className="tw-font-semibold tw-relative -tw-top-2 tw-w-8/12 tw-text-center tw-invert tw-text-white"
                             sx={{textShadow: '#FC0 1px 0 10px'}}>Des réductions dans des centaines d&lsquo;enseignes proches de vous</Title>
                     </Center>
                     <Button className="tw-bg-white tw-px-14 tw-py-3 tw-absolute tw-bottom-3 tw-left-0 tw-right-0 tw-mx-auto
