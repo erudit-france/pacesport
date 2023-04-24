@@ -47,7 +47,6 @@ export default function SearchInput() {
     <Autocomplete
     className='focus:tw-border-red-600'
       ref={ref}
-      px={'md'}
       size={"md"}
       dropdownPosition="bottom" 
       radius={"xl"}

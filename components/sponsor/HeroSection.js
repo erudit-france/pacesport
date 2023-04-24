@@ -1,6 +1,6 @@
 import Toast from "@/services/Toast";
 import fileUploader from "@/utils/fileUploader";
-import Image from "next/image";
+import { Image } from "@mantine/core";
 
 const { Box, Flex, ActionIcon, FileButton, Avatar } = require("@mantine/core");
 const { useDisclosure } = require("@mantine/hooks");
@@ -85,7 +85,7 @@ const HeroSection = ({avatar}) => {
 
     return (
         <header className='tw-flex tw-justify-center tw-h-36 tw-relative'>
-            <Image className='tw-w-full tw-h-full tw-absolute tw-object-cover -tw-z-10 tw-blur-sm tw-scale-110' src={'/hand-in-hand.jpg'} placeholder='blur' alt="Hero image"/>
+            <Image className='tw-w-full tw-h-full tw-absolute tw-object-cover -tw-z-10 tw-blur-sm tw-scale-110' fullWidth src={'/hand-in-hand.jpg'} placeholder='blur' alt="Hero image"/>
             <div className='tw-flex tw-flex-col tw-justify-center tw-z-30'>
                 <Box className="tw-relative tw-rounded-full">
                     <Avatar radius={9999} size={70} src={`${image}`}  alt="Logo Pace'sport" 

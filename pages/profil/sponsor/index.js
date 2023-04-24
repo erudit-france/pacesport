@@ -2,12 +2,13 @@ import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import SearchInput from '@/components/SearchInput'
-import { ActionIcon, Box, Flex, Grid, Group, Space, Text, Title } from '@mantine/core'
+import { ActionIcon, Box, Button, Flex, Grid, Group, Space, Text, Title } from '@mantine/core'
 import AssociationCard from '@/components/AssociationCard'
 import Layout from './layout'
 import { IoMdSettings } from 'react-icons/io'
 import { MdQrCode2 } from 'react-icons/md'
 import { GoMegaphone } from 'react-icons/go'
+import Link from 'next/link'
 
 const DiscountCardsGrid = ({cards}) => {
   return (
@@ -71,12 +72,22 @@ export default function Page(props) {
         </Group>
 
         <div className={ `${styles.main}` } >
-          <div>
-            <main className='container '>
+            <main className='container'>
               {/* search input */}
-              <section>
+              <section className='tw-relative -tw-top-4 tw-mx-6'>
                 <SearchInput />
               </section>
+
+              <Flex direction={'column'} className='tw-bg-gray-300' py={'lg'} justify={'space-between'}>
+                <Link href='/' className='tw-flex tw-justify-center'>
+                  <Button className='tw-text-gray-900 tw-bg-white tw-border-[1] tw-border-gray-800 hover:tw-bg-gray-100 tw-uppercase tw-font-bold' w={'90%'} variant='filled' radius={'xl'}> 
+                    Mes partenariats actifs</Button></Link>
+                <Space h={'md'}/>
+                <Link href='/' className='tw-flex tw-justify-center'>
+                  <Button className='tw-text-gray-900 tw-bg-white tw-border-[1] tw-border-gray-800 hover:tw-bg-gray-100 tw-uppercase tw-font-bold' w={'90%'} variant='filled' radius={'xl'}> 
+                  Mes cartes Actives</Button></Link>
+              </Flex>
+              
 
               <CardsSection title="Offres de partenariat de mon réseau">
                 <DiscountCardsGrid cards={props.cards} />
@@ -93,8 +104,7 @@ export default function Page(props) {
                 <DiscountCardsGrid cards={props.cards} />
               </CardsSection> 
             </main>
-
-          </div>
+            <Space py={'xl'} />
         </div>
 
     </>
