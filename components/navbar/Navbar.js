@@ -130,7 +130,7 @@ export default function Navbar(){
 
                 </motion.div>
 
-                <motion.button className='tw-fixed tw-rounded-full tw-shadow-xl tw-bg-white tw-p-4'
+                <motion.button className='tw-fixed tw-rounded-full tw-shadow-xl tw-bg-white tw-p-4 tw-z-[300]'
                         style={{ left: "calc(50% - 24px)", top: "90vh" }}
                         onClick={toggleMenu}
                         initial={ closeBtnInitial }

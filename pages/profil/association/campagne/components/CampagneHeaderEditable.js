@@ -6,12 +6,11 @@ import { RiImageAddFill } from 'react-icons/ri'
 import { useState } from "react";
 
 
-export default function CampagneHeaderEditable(){
-    const [image, setImage] = useState(null);
+export default function CampagneHeaderEditable({image, setImage, setImageFile}){
     const uploadHandler = (file) => {
         const url = URL.createObjectURL(file)
         setImage(url)
-        console.log('image', image)
+        setImageFile(file)
     }
 
     return (

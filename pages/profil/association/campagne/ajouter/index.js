@@ -15,46 +15,56 @@ import PageStatusIndicator from "./components/PageStatusIndicator";
 import RemainingOffersDialog from "./components/RemainingOffersDialog";
 import AccordionLabel from "./components/AccordionLabel";
 import { BiMessage } from "react-icons/bi";
+import Toast from '@/services/Toast'
+import CampagneHeaderEditable from "../components/CampagneHeaderEditable";
+import fileUploader from "@/utils/fileUploader";
+import { useRouter } from "next/navigation";
 
 export default function Page(){
-    const [progress, setProgress] = useState(33);
+    const [imageFile, setImageFile] = useState(null)
+    const [image, setImage] = useState(null)
+    const [progress, setProgress] = useState(33)
     const [page, setPage] = useState(1)
-    const [opened, setOpened] = useState(false);
-    const minOffers = 5
-    const [loadingOffers, setLoadingOffers] = useState(true);
-    const [associatedOffers, setAssociatedOffers] = useState([]);
-    const [associatedOffersError, setAssociatedOffersError] = useState(false);
+    const { push } = useRouter()
     
-    const submitHandler = (values) => {
-        const body = serialize(values)
-        body.append('associatedOffers', JSON.stringify(associatedOffers))
-        setAssociatedOffersError('')
-        if (associatedOffers.length < values.nombreOffres) {
-            setAssociatedOffersError('Le nombre de vos offres associées est en dessous du minimum')
-        }
-        fetch(`/api/discount-card`, {
-            method: 'POST',
-            headers: new Headers({
-              'JWTAuthorization': `Bearer ${getCookie('token')}`
-            }),
-            body: body
-          })
-          .then(res => res.json())
-          .then(res => {
-            if (res.data) {
-                showNotification({
-                    title: 'Succès',
-                    message: res.data.message,
-                    color: 'teal'
-                })
-                close()
-            }
-            })
-            .catch(error => showNotification({
-                title: 'Erreur',
-                message: 'Erreur pendant le création.' + error.message,
-                color: 'red'
-            }))      
+    const postCard = () => {
+        let body = {...form1.values, ...form2.values}
+        body = serialize(body)
+
+        fileUploader(imageFile)
+            .then((response) => {
+                body.append('filename', response.data.filename)
+                fetch(`/api/discount-card`, {
+                    method: 'POST',
+                    type: 'cors',
+                    headers: new Headers({
+                      'JWTAuthorization': `Bearer ${getCookie('token')}`
+                    }),
+                    body: body
+                  })
+                  .then(res => res.json())
+                    .then(res => {
+                        if (res.code == 401) push('/login')
+                        console.log('res', res.data)
+                        if (res.data.code == 1) {
+                            Toast.success(res.data.message)
+                            setTimeout(() => {
+                                push('/profil/association')
+                            }, 2000)
+                        } else {
+                            Toast.error(res.data.message)
+                        }
+                    })
+                    .catch((error) => { 
+                        Toast.error('Erreur pendant la création de la carte') 
+                        console.log('error', error)
+                    })
+            });
+    }
+
+    const submitHandler = () => {
+        // upload image
+        postCard()
     }
 
     const form1 = useForm({
@@ -104,124 +114,127 @@ export default function Page(){
             <Head>
                 <title>PACE&lsquo;SPORT - Ajouter campagne</title>
             </Head>       
-            <section className="tw-px-4 tw-pt-4">
-                <Progress className="tw-contrast-[.8]" mb={'lg'} mt={'sm'} color="teal" size="xl" value={progress} striped />
-                <Title order={3} mb={'sm'}>Ajouter une carte</Title>
-                {page == 1
-                    ?
-                    <form onSubmit={form1.onSubmit((values) => nextPage(values, 2))}>
-                        <div className="tw-rounded-xl tw-border-[1px] tw-border-gray-400 tw-shadow-sm tw-p-3 tw-mt-2">
-                            <Flex>
-                                <PageStatusIndicator page={1} currentPage={page} relative={true}/>
-                                <div className="tw-flex-1 tw-ml-3">
-                                    <TextInput size="xs" mb={'sm'} label="Nom de la carte"
-                                            withAsterisk
-                                            {...form1.getInputProps('nom')}/>
-                                    <DatePicker locale="fr" placeholder="Choisir une date"
-                                                dropdownType="modal"
-                                                label="Date début" size="xs" inputFormat="DD/MM/YYYY" 
-                                                onChange={(value) => dateDebutHandler(value)} withAsterisk
-                                                {...form1.getInputProps('dateDebut')}/>
-                                    <DatePicker locale="fr" placeholder="Choisir une date" 
-                                                dropdownType="modal"
-                                                label="Date fin" size="xs" inputFormat="DD/MM/YYYY" 
+            <CampagneHeaderEditable image={image} setImage={setImage} setImageFile={setImageFile}/>
+            <main className="tw-bg-gradient-to-b tw-from-gray-100 tw-to-white tw-rounded-t-[2rem] tw-relative -tw-mt-7"
+                style={{ minHeight: 'calc(100vh - 180px)' }}>
+                <section className="tw-px-4 tw-pt-4">
+                    <Progress className="tw-contrast-[.8]" mb={'lg'} mt={'sm'} color="teal" size="xl" value={progress} striped />
+                    <Title order={3} mb={'sm'}>Ajouter une carte</Title>
+                    {page == 1
+                        ?
+                        <form onSubmit={form1.onSubmit((values) => nextPage(values, 2))}>
+                            <div className="tw-rounded-xl tw-border-[1px] tw-border-gray-400 tw-shadow-sm tw-p-3 tw-mt-2">
+                                <Flex>
+                                    <PageStatusIndicator page={1} currentPage={page} relative={true}/>
+                                    <div className="tw-flex-1 tw-ml-3">
+                                        <TextInput size="xs" mb={'sm'} label="Nom de la carte"
                                                 withAsterisk
-                                                {...form1.getInputProps('dateFin')}/>
-                                </div>
+                                                {...form1.getInputProps('nom')}/>
+                                        <DatePicker locale="fr" placeholder="Choisir une date"
+                                                    dropdownType="modal"
+                                                    label="Date début" size="xs" inputFormat="DD/MM/YYYY" 
+                                                    onChange={(value) => dateDebutHandler(value)} withAsterisk
+                                                    {...form1.getInputProps('dateDebut')}/>
+                                        <DatePicker locale="fr" placeholder="Choisir une date" 
+                                                    dropdownType="modal"
+                                                    label="Date fin" size="xs" inputFormat="DD/MM/YYYY" 
+                                                    withAsterisk
+                                                    {...form1.getInputProps('dateFin')}/>
+                                    </div>
+                                </Flex>
+                                <Flex justify={'center'}>
+                                    <Button type="submit" 
+                                        mt={'xs'}
+                                        size="xs" radius={'xl'}
+                                        className="tw-border-[1] tw-border-gray-600 tw-text-gray-700
+                                        tw-py-0 tw-px-8
+                                        hover:tw-bg-gray-200">Suivant</Button>
+                                </Flex>
+                            </div>                        
+                        </form>
+                        :
+                        <div className="tw-rounded-xl tw-border-[1px] tw-border-gray-400 tw-shadow-sm tw-p-3">
+                            <Flex>
+                                <PageStatusIndicator page={1} currentPage={page} relative={false}/>
+                                <Flex direction={'column'} className="tw-flex-1 tw-ml-3">
+                                    <Text size={'sm'} className="tw-font-semibold">{form1.values.nom}</Text>
+                                    <Text size={'xs'}>Du {moment(form1.values.dateDebut).format('DD/MM/YYYY')} au {moment(form1.values.dateFin).format('DD/MM/YYYY')}</Text>
+                                </Flex>
                             </Flex>
-                            <Flex justify={'center'}>
-                                <Button type="submit" 
-                                    mt={'xs'}
-                                    size="xs" radius={'xl'}
-                                    className="tw-border-[1] tw-border-gray-600 tw-text-gray-700
-                                    tw-py-0 tw-px-8
-                                    hover:tw-bg-gray-200">Suivant</Button>
-                            </Flex>
-                        </div>                        
-                    </form>
-                    :
-                    <div className="tw-rounded-xl tw-border-[1px] tw-border-gray-400 tw-shadow-sm tw-p-3">
-                        <Flex>
-                            <PageStatusIndicator page={1} currentPage={page} relative={false}/>
-                            <Flex direction={'column'} className="tw-flex-1 tw-ml-3">
-                                <Text size={'sm'} className="tw-font-semibold">{form1.values.nom}</Text>
-                                <Text size={'xs'}>Du {moment(form1.values.dateDebut).format('DD/MM/YYYY')} au {moment(form1.values.dateFin).format('DD/MM/YYYY')}</Text>
-                            </Flex>
-                        </Flex>
-                    </div>
-                }
+                        </div>
+                    }
 
-                
-                {page == 2
-                    ?
-                    <form onSubmit={form2.onSubmit((values) => nextPage(values, 3))} className="">
+                    
+                    {page == 2
+                        ?
+                        <form onSubmit={form2.onSubmit((values) => nextPage(values, 3))} className="">
+                            <div className="tw-rounded-xl tw-border-[1px] tw-border-gray-400 tw-shadow-sm tw-p-3 tw-mt-2">
+                                <Flex>
+                                    <PageStatusIndicator page={1} currentPage={page} relative={true}/>
+                                    <div className="tw-flex-1 tw-ml-3">
+                                        <NumberInput size="xs" mb={'sm'} label="Montant de la carte"
+                                                withAsterisk
+                                                {...form2.getInputProps('prix')}/>
+                                        <NumberInput size="xs" mb={'sm'} label="Nombre d'offres"
+                                                withAsterisk
+                                                {...form2.getInputProps('offres')}/>
+                                    </div>
+                                </Flex>
+                                <Flex justify={'center'} mt={'xs'}>
+                                    <Button size="xs" radius={'xl'}
+                                            className="tw-text-gray-700 hover:tw-bg-transparent
+                                            tw-py-0 tw-px-8" onClick={() => goToPage(1)}>Retour</Button>
+                                    <Button type="submit" 
+                                        size="xs" radius={'xl'}
+                                        className="tw-border-[1] tw-border-gray-600 tw-text-gray-700
+                                        tw-py-0 tw-px-8
+                                        hover:tw-bg-gray-200">Suivant</Button>
+                                </Flex>
+                            </div>                        
+                        </form>
+                        :  
                         <div className="tw-rounded-xl tw-border-[1px] tw-border-gray-400 tw-shadow-sm tw-p-3 tw-mt-2">
                             <Flex>
-                                <PageStatusIndicator page={1} currentPage={page} relative={true}/>
-                                <div className="tw-flex-1 tw-ml-3">
-                                    <NumberInput size="xs" mb={'sm'} label="Montant de la carte"
-                                            withAsterisk
-                                            {...form2.getInputProps('prix')}/>
-                                    <NumberInput size="xs" mb={'sm'} label="Nombre d'offres"
-                                            withAsterisk
-                                            {...form2.getInputProps('offres')}/>
-                                </div>
+                                <PageStatusIndicator page={2} currentPage={page} relative={false}/>
+                                <Flex direction={'column'} className="tw-flex-1 tw-ml-3">
+                                    <Text size={'sm'} className="tw-font-semibold">Montant {form2.values.prix}€</Text>
+                                    <Text size={'sm'}>Nombre de cartes: {form2.values.offres}</Text>
+                                </Flex>
                             </Flex>
-                            <Flex justify={'center'} mt={'xs'}>
-                                <Button size="xs" radius={'xl'}
-                                        className="tw-text-gray-700 hover:tw-bg-transparent
-                                        tw-py-0 tw-px-8" onClick={() => goToPage(1)}>Retour</Button>
-                                <Button type="submit" 
-                                    size="xs" radius={'xl'}
-                                    className="tw-border-[1] tw-border-gray-600 tw-text-gray-700
-                                    tw-py-0 tw-px-8
-                                    hover:tw-bg-gray-200">Suivant</Button>
-                            </Flex>
-                        </div>                        
-                    </form>
-                    :  
-                    <div className="tw-rounded-xl tw-border-[1px] tw-border-gray-400 tw-shadow-sm tw-p-3 tw-mt-2">
-                        <Flex>
-                            <PageStatusIndicator page={2} currentPage={page} relative={false}/>
-                            <Flex direction={'column'} className="tw-flex-1 tw-ml-3">
-                                <Text size={'sm'} className="tw-font-semibold">Montant {form2.values.prix}</Text>
-                                <Text size={'sm'}>Nombre de cartes {form2.values.offers}</Text>
-                            </Flex>
-                        </Flex>
-                    </div>
-                }
-                
-                <Button disabled
-                            className="tw-w-full tw-mx-auto tw-bg-teal-600 hover:tw-bg-teal-700 disabled:tw-border-2 disabled:tw-border-gray-100" 
-                            mt={'md'} radius={'lg'} size="sm" variant="filled" 
-                            type="submit">Enregister</Button>
-            </section>  
+                        </div>
+                    }
+                    
+                    <Button className="tw-w-full tw-mx-auto tw-bg-teal-600 hover:tw-bg-teal-700 disabled:tw-border-2 disabled:tw-border-gray-100" 
+                        mt={'md'} radius={'lg'} size="sm" variant="filled" 
+                        onClick={() => submitHandler()}>Enregister</Button>
+                </section>  
 
-            <Space h={'xl'} my={'xl'} />
+                <Space h={'xl'} my={'xl'} />
 
-            <Box mt={'md'}>
-                <Title align="center" color="white" className="tw-bg-red-600 tw-font-light tw-pb-1" order={6}>Nouvelles offres de partenariat</Title>
-                <Accordion chevronPosition="right" variant="contained">
-                    {/* <AccordionComponent id={'Carol'} label={'Auchan'} content={'lorem ipsum'} image={null} />
-                    <AccordionComponent id={'Carol'} label={'Grand Frais'} content={'lorem ipsum'} image={null} />
-                    <AccordionComponent id={'Carol'} label={'Leclerc'} content={'lorem ipsum'} image={null} /> */}
-                </Accordion>
-            </Box>       
+                <Box mt={'md'}>
+                    <Title align="center" color="white" className="tw-bg-red-600 tw-font-light tw-pb-1" order={6}>Nouvelles offres de partenariat</Title>
+                    <Accordion chevronPosition="right" variant="contained">
+                        {/* <AccordionComponent id={'Carol'} label={'Auchan'} content={'lorem ipsum'} image={null} />
+                        <AccordionComponent id={'Carol'} label={'Grand Frais'} content={'lorem ipsum'} image={null} />
+                        <AccordionComponent id={'Carol'} label={'Leclerc'} content={'lorem ipsum'} image={null} /> */}
+                    </Accordion>
+                </Box>       
 
-            <Box mt={'md'}>
-                <Title align="center" color="white" className="tw-bg-red-600 tw-font-light tw-pb-1" order={6}>Offres validées de partenaire</Title>
-            </Box>  
+                <Box mt={'md'}>
+                    <Title align="center" color="white" className="tw-bg-red-600 tw-font-light tw-pb-1" order={6}>Offres validées de partenaire</Title>
+                </Box>  
 
-            <Space h={'xl'} mt={'xl'} />
-            <Space h={'xl'} mt={'xl'} />
-            <Space h={'xl'} mt={'xl'} />
-            <RemainingOffersDialog remainingOffers={3} />
+                <Space h={'xl'} mt={'xl'} />
+                <Space h={'xl'} mt={'xl'} />
+                <Space h={'xl'} mt={'xl'} />
+                <RemainingOffersDialog remainingOffers={3} />
+            </main>
         </>
     )
 }
 
 Page.getLayout = function getLayout(page) {
     return (
-      <Layout >{page}</Layout>
+      <Layout>{page}</Layout>
     )
   }

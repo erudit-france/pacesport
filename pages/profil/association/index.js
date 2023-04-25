@@ -82,7 +82,6 @@ export async function getServerSideProps(context) {
       })}
     )
     avatar = await avatar.json();
-    console.log('avatar', avatar)
     if (avatar.code == 401) {
         return {
             redirect: {
@@ -91,10 +90,10 @@ export async function getServerSideProps(context) {
             }
         }
     }
-  
+
     // // Pass data to the page via props
     return { props: {
-      avatar: avatar.filename
+    avatar: avatar.filename
     } }
   }
   
