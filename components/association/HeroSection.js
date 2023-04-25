@@ -12,7 +12,6 @@ const { RxCross2, RxCheck } = require("react-icons/rx");
 const HeroSection = ({avatar}) => {
     const originalImage = '/uploads/'.concat(avatar);
     const [image, setImage] = useState(originalImage)
-    console.log('image', image)
     const [editing, edit] = useDisclosure(false)
     const [imageFile, setImageFile] = useState(null)
     

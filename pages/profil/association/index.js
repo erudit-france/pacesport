@@ -9,7 +9,6 @@ import Link from "next/link";
 import { BsLock } from "react-icons/bs";
 import { GrMoney } from "react-icons/gr";
 import { BiMessage } from "react-icons/bi";
-import { getCookie } from "cookies-next";
 import CampagneCard from "./components/CampagneCard";
 
 export default function Page(props){
@@ -110,7 +109,6 @@ export async function getServerSideProps(context) {
         cards: JSON.parse(cards.data)
     }}
   }
-  
 
 Page.getLayout = function getLayout(page) {
     return (
