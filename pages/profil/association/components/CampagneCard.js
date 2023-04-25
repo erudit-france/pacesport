@@ -1,8 +1,7 @@
-import { AspectRatio, Badge, Button, Flex, Text } from "@mantine/core";
-import Image from "next/image";
+import { AspectRatio, Badge, Button, Flex, Image, Text } from "@mantine/core";
+import moment from "moment";
 
-export default function CampagneCard(){
-    const url = 'https://images.unsplash.com/photo-1628891890377-57dba2715caf'
+export default function CampagneCard({title, image, startDate}){
     const status = 1
     const statusString = (status) => { return status == 1 ? 'Active' : 'En attente' }
 
@@ -10,15 +9,16 @@ export default function CampagneCard(){
         <>
             <Flex className="tw-mb-7">
                     <Image
-                        className="tw-rounded-xl tw-shadow-sm"
+                        className="tw-rounded-xl tw-shadow-md"
                         width={180}
                         height={90}
-                        src={url}
+                        src={`/uploads/${image}`}
                         alt="Photo de campagne"
                     />
                     <Flex direction={'column'} ml={'lg'} justify={'space-around'}>
-                        <Text fz={'xs'}>Campagne X</Text>
-                        <Text fz={'xs'} color={"gray"}>
+                        <Text fz={'md'} weight={550} className="tw-capitalize">{title}</Text>
+                        <Text color="dimmed" fz={'xs'}>{moment(startDate).format('DD/MM/YYYY')}</Text>
+                        <Text fz={'xs'} color={"gray"} my={'sm'}>
                             Status: 
                             <Badge className="tw-font-normal tw-uppercase tw-ml-3" 
                                 size="sm" 

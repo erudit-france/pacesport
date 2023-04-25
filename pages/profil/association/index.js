@@ -1,19 +1,25 @@
-import { Button, Divider, Flex, Space, Text } from "@mantine/core";
+import { Box, Button, Divider, Flex, Space, Text } from "@mantine/core";
 import Head from "next/head";
 import SearchSponsor from "./components/SearchSponsor";
 import UserListButton from "./components/UserListButton";
 import Layout from "./layout";
 import SponsorInvitation from "./components/SponsorInvitation";
 import { GoPlus } from 'react-icons/go'
-import CampagneList from "./components/CampagneList";
 import Link from "next/link";
 import { BsLock } from "react-icons/bs";
 import { GrMoney } from "react-icons/gr";
 import { BiMessage } from "react-icons/bi";
 import { getCookie } from "cookies-next";
+import CampagneCard from "./components/CampagneCard";
 
-export default function Page(){
+export default function Page(props){
     const isAccountLimited = true
+    const Cards = props.cards.map((card) => 
+        <CampagneCard key={card.name + card.id} title={card.name} image={card.image?.name} startDate={card.startDate} />
+    )
+    const CardList = props.cards.length == 1 
+        ? <Text align="center" color="dimmed">Aucune carte enregistrée</Text>
+        : Cards
 
     return (
         <>
@@ -46,7 +52,7 @@ export default function Page(){
                         </Button>
                     </Link>
                 </Flex>
-                <CampagneList />
+                <Box>{CardList}</Box>
             </section>
 
             <Space className="tw-mt-1"></Space>
@@ -91,10 +97,18 @@ export async function getServerSideProps(context) {
         }
     }
 
+    let cards = await fetch(`${process.env.API_URL}/api/discount-card/association/`, {
+        headers: new Headers({
+                'JWTAuthorization': `Bearer ${token}`,
+        })}
+    )
+    cards = await cards.json();
+    
     // // Pass data to the page via props
     return { props: {
-    avatar: avatar.filename
-    } }
+        avatar: avatar.filename,
+        cards: JSON.parse(cards.data)
+    }}
   }
   
 
