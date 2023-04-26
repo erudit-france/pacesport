@@ -1,20 +1,19 @@
 import { Box, Button, Divider, Flex, Modal, Space, Text, Title } from "@mantine/core";
 import Head from "next/head";
-import SearchSponsor from "./components/SearchSponsor";
-import UserListButton from "./components/UserListButton";
+import SearchSponsor from "../components/SearchSponsor";
+import UserListButton from "../components/UserListButton";
 import Layout from "./layout";
-import SponsorInvitation from "./components/SponsorInvitation";
+import SponsorInvitation from "../components/SponsorInvitation";
 import { GoPlus } from 'react-icons/go'
 import Link from "next/link";
 import { BsLock } from "react-icons/bs";
 import { GrMoney } from "react-icons/gr";
 import { BiMessage } from "react-icons/bi";
-import CampagneCard from "./components/CampagneCard";
+import CampagneCard from "../components/CampagneCard";
 import { useDisclosure } from "@mantine/hooks";
 
 export default function Page(props){
-    const [openedBusinessModal, { open, close }] = useDisclosure(false);
-    const isAccountLimited = true
+    const isAccountLimited = false
     const Cards = props.cards.map((card) => 
         <CampagneCard key={card.name + card.id} title={card.name} image={card.image?.name} startDate={card.startDate} />
     )
@@ -33,6 +32,8 @@ export default function Page(props){
             <section className="tw-px-4">
                 {isAccountLimited && 
                     <Text fz={"sm"} className="tw-font-semibold" align="center" p='lg'>Votre accès est limité le temps que votre association soit validée</Text>}
+                {!isAccountLimited && 
+                    <Space py={'sm'} />}
                 <SearchSponsor />
                 <Flex mt={'md'} justify={'space-between'}>
                     <UserListButton />
@@ -60,9 +61,6 @@ export default function Page(props){
 
             <section className="tw-bg-yellow-300/70 tw-flex tw-flex-col tw-py-4">
                 <Text color="white" align="center">Offre de sponsoring</Text>
-                <Text className="tw-flex tw-justify-center" align="center">Uniquement avec Pace&lsquo;sport Business<BsLock className='tw-my-auto tw-ml-1'/></Text>
-                <Button onClick={open} color="white" variant="filled" size="xs" 
-                    className="tw-bg-white tw-text-black hover:tw-bg-gray-200 tw-mx-auto tw-mt-3" radius={'lg'}>En savoir plus</Button>
             </section>
 
             
@@ -77,19 +75,6 @@ export default function Page(props){
                             Gestion de fonds</Button></Link>
             </section>
                 
-            <Modal radius={'lg'} className="modal-gold" opened={openedBusinessModal} onClose={close} centered
-                title={<Title color="white" style={{textShadow: '#631 1px 0 10px'}} className="tw-mx-auto text-sha" transform="uppercase" align="center" order={3}>Pace&lsquo;Sport Business</Title>}>
-                <Text className='tw-text-gray-100' fz={'sm'} mb={'sm'}>Ces fonctionnalités ne sont disponibles que dans l&lsquo;offre Pace&lsquo;Sport Business</Text>
-                <Text className='tw-text-gray-100' fz={'sm'}>Débloquez des outils professionnels pour faciliter la gestion de votre association</Text>
-                <Box align='center' mt={'md'}>
-                <Link href='/profil/association/business'>
-                    <Button radius={'lg'} 
-                        className="tw-border-[1] tw-border-black tw-bg-gray-100 hover:tw-bg-gray-200 tw-shadow-md">
-                        <Text color="dark">Rejoindre</Text>
-                        <span>&nbsp;</span><Text className="tw-text-yellow-700"> BUSINESS</Text></Button>
-                </Link>
-                </Box>
-            </Modal>
         </>
     )
 }

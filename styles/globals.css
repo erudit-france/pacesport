@@ -122,6 +122,10 @@ a {
   width: 100vw;
 }
 
+.modal-gold .mantine-Paper-root {
+  background-color: #C38F55;
+}
+
 body {
   --removed-scroll-width: 0px !important;
 }
