@@ -6,53 +6,45 @@ import AssociationCard from '@/components/AssociationCard'
 import Layout from './layout'
 import { IoMdSettings } from 'react-icons/io'
 import { MdQrCode2 } from 'react-icons/md'
-import { GoMegaphone } from 'react-icons/go'
+import { GoMegaphone, GoPlus } from 'react-icons/go'
 import Link from 'next/link'
 import AssociationInvitation from '@/components/AssociationInvitation'
-
-const DiscountCardsGrid = ({cards}) => {
-  return (
-    <Grid gutter={12} className="mt-4 tw-px-3">
-      {cards.map(function(card) {
-        return (
-            <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
-              <AssociationCard card={card} />
-            </Grid.Col>
-          )
-      }
-      )}
-    </Grid>
-  )
-}
-
-const DiscountCardsGridBusiness = ({cards}) => {
-    return (
-        <Box className='tw-bg-yellow-600/60 tw-p-3'>
-            <Title order={5} className='tw-text-gray-100 tw-pb-2'>A la une</Title>
-            <Grid gutter={12} className="mt-4">
-            {cards.map(function(card) {
-            return (
-                <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
-                    <AssociationCard card={card} />
-                </Grid.Col>
-                )
-            }
-            )}
-        </Grid>
-      </Box>
-    )
-  }
-
-const CardsSection = (props) => (
-        <section className='tw-mt-8'>
-            <Title align={"center"} order={6}
-                className="tw-uppercase tw-mb-3">
-                    {props.title}</Title>
-                    {props.children}
-        </section>
-)
+import { AiFillPlusCircle } from 'react-icons/ai'
+import CampagneCard from '../association/components/CampagneCard'
 
 export default function Page(props) {
+  const Cards = props.cards.map((card) => 
+    <CampagneCard key={card.name + card.id} title={card.name} image={card.image?.name} startDate={card.startDate} />
+  )
+  const CardList = props.cards.length == 1 
+    ? <Text align="center" color="dimmed">Aucune carte enregistrée</Text>
+    : Cards
+
+  const DiscountCardsGrid = ({cards}) => {
+    return (
+      <Grid gutter={12} className="mt-4 tw-px-3">
+        {cards.map(function(card) {
+          return (
+              <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
+                <AssociationCard card={card} />
+              </Grid.Col>
+            )
+        }
+        )}
+      </Grid>
+    )
+  }
+    
+  const CardsSection = (props) => (
+          <section className='tw-mt-8'>
+              <Title align={"center"} order={6}
+                  className="tw-uppercase tw-mb-3">
+                      {props.title}</Title>
+                      {props.children}
+          </section>
+  )
+    
+
   return (
     <>
         <Head>
@@ -91,22 +83,23 @@ export default function Page(props) {
               </Flex>
               
 
-              <CardsSection title="Offres de partenariat de mon réseau">
-                <DiscountCardsGrid cards={props.cards} />
-              </CardsSection> 
+            <section className="tw-bg-white tw-mt-6 tw-shadow-inner tw-py-5 tw-px-4">
+                <Flex justify='space-around' my={'lg'}>
+                  <Group>
+                    <Title order={5}>Mon Pace&lsquo;Sport Collaboratif</Title>
+                    <ActionIcon variant='transparent' component='a' href='/profil/collectivite/carte/ajouter'>
+                      <AiFillPlusCircle className='tw-text-gray-800 hover:tw-text-black' size={22}/>
+                    </ActionIcon>
+                  </Group>
+                </Flex>
+                <Box>{CardList}</Box>
+            </section>
 
-              {/* carte proche */}
-              <CardsSection title="Prochaines cartes près de vous">
-                <DiscountCardsGrid cards={props.cards} />
-              </CardsSection> 
-
-              <CardsSection title="Associations près de vous">
-                <DiscountCardsGridBusiness cards={props.cards} />
-                <Space my={'md'} />
-                <DiscountCardsGrid cards={props.cards} />
-              </CardsSection> 
+            {/* carte proche */}
+            <CardsSection title="Prochaines cartes près de vous">
+              <DiscountCardsGrid cards={props.cards} />
+            </CardsSection> 
             </main>
-            <Space py={'xl'} />
         </div>
 
     </>

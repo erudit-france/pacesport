@@ -16,7 +16,7 @@ import RemainingOffersDialog from "./components/RemainingOffersDialog";
 import AccordionLabel from "./components/AccordionLabel";
 import { BiMessage } from "react-icons/bi";
 import Toast from '@/services/Toast'
-import CampagneHeaderEditable from "../components/CampagneHeaderEditable";
+import CampagneHeaderEditable from "@/components/CampagneHeaderEditable";
 import fileUploader from "@/utils/fileUploader";
 import { useRouter } from "next/navigation";
 
