@@ -18,7 +18,7 @@ export default function CollectiviteAssociationCard({card, setCardList, setProgr
             handlers.set(parseInt(newCount))
         }, 100);
         setTimeout(() => {
-            var c = {id: props.id, percentage: count}
+            var c = {id: card.id, percentage: count}
             if (cardList.length > 0) {
                 if (findByIndex() > -1) {
                     let idx = findByIndex()
