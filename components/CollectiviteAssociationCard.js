@@ -6,7 +6,8 @@ import { BsPercent } from "react-icons/bs";
 import { FiMinus, FiPlus } from "react-icons/fi";
 import { IMaskInput } from 'react-imask';
 
-export default function CollectiviteAssociationCard({props, title, image, startDate, cardList, setCardList, setProgress}){
+export default function CollectiviteAssociationCard({card, setCardList, setProgress, removeFromCardList }){
+    console.log('CollectiviteAssociationCard', card)
     const [count, handlers] = useCounter(0, { min: 0, max: 100 });
     const updateSelectedCards = (newCount) => {
         if (newCount == '') {
@@ -56,18 +57,18 @@ export default function CollectiviteAssociationCard({props, title, image, startD
                         <Flex direction={'column'} ml={'lg'} justify={'space-around'}>
                                 <Flex mb={'xs'}>
                                     <Center>
-                                        <Avatar src={`/uploads/${props.image?.name}`}
+                                        <Avatar src={`/uploads/${card.image?.name}`}
                                             size={'sm'} radius={'xl'} className="tw-shadow-md tw-mr-2"/>
                                     </Center>
                                     <Flex direction={'column'} justify={'center'}> 
-                                        <Text fz={'xs'} weight={800}>{props.association.name}</Text>
-                                        <Text fz={'xs'} weight={600}>{props.name}</Text>
+                                        <Text fz={'xs'} weight={800}>{card.association.name}</Text>
+                                        <Text fz={'xs'} weight={600}>{card.name}</Text>
                                     </Flex>
                                 </Flex>
-                                <Text fz={'md'} weight={550} className="tw-capitalize">{title}</Text>
+                                <Text fz={'md'} weight={550} className="tw-capitalize">{card.name}</Text>
                                 <Group>
                                     <Text fz={'xs'}>Date début: </Text>
-                                    <Text color="dimmed" fz={'xs'}>{moment(startDate).format('DD/MM/YYYY')}</Text>
+                                    <Text color="dimmed" fz={'xs'}>{moment(card.startDate).format('DD/MM/YYYY')}</Text>
                                 </Group>
                         </Flex>
                         <Box align={'center'} className="tw-flex-1">
@@ -95,7 +96,8 @@ export default function CollectiviteAssociationCard({props, title, image, startD
                                     <ActionIcon onClick={handlers.increment} variant="default"><FiPlus size="1rem" /></ActionIcon>
                                 </Center>
                                 <CloseButton size={'sm'} className="tw-bg-red-100 hover:tw-bg-red-300 tw-rounded-xl tw-absolute tw-right-1" 
-                                    variant='light' color='red'/>
+                                    variant='light' color='red'
+                                    onClick={() => removeFromCardList(card.id)}/>
                             </Group>
                         </Box>
                     </SimpleGrid>

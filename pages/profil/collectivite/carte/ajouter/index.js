@@ -13,25 +13,54 @@ import AssociationCardToAdd from "@/components/collectivite/AssociationCardToAdd
 
 export default function Page(props){
     const [cardList, setCardList] = useState([])
+    const [availableCards, setAvailableCards] = useState(props.cards)
     const [imageFile, setImageFile] = useState(null)
     const [image, setImage] = useState(null)
     const [progress, setProgress] = useState(0)
     const [progressColor, setProgressColor] = useState('red')
     const [page, setPage] = useState(1)
     const { push } = useRouter()
-    const Cards = props.cards.map((card) => 
-        <AssociationCardToAdd key={card.name + card.id} props={card} />
+    const addToCardList = (id) => {
+        console.log('adding new card')
+        let idx = availableCards.findIndex(x => x.id == id)
+        console.log('availableCards', availableCards)
+        console.log('id', id)
+        console.log('idx', idx)
+        if (idx > -1) {
+            console.log('availableCards', availableCards)
+            let newCards = [...availableCards]
+            newCards.splice(idx, 1)
+            console.log('newCards', newCards)
+            setAvailableCards(newCards)
+            setCardList([...cardList, {...availableCards[idx], percentage:0}])
+            console.log('availableCards', availableCards)
+            console.log('cardList', cardList)
+        }
+    }
+
+    const removeFromCardList = (id) => {
+        let idx = cardList.findIndex(x => x.id == id)
+        if (idx > -1) {
+            let newCardList = [...cardList]
+            setAvailableCards([...availableCards, {...cardList[idx]}])
+            newCardList.splice(idx, 1)
+            setCardList(newCardList)
+        }
+    }
+
+    const Cards = availableCards.map((card) => 
+        <AssociationCardToAdd key={card.name + card.id} card={card} addToCardList={addToCardList} />
     )
-    const CardList = props.cards.length == 1 
+    const CardList = availableCards.length == 0
         ? <Text align="center" color="dimmed">Aucune carte enregistrée</Text>
         : Cards
 
     
-    const addedCards = props.cards.map((card) => 
-        <CollectiviteAssociationCard key={card.id} props={card} 
+    const addedCards = cardList.map((card) => 
+        <CollectiviteAssociationCard key={card.id} card={card} removeFromCardList={removeFromCardList}
             cardList={cardList} setCardList={setCardList} setProgress={setProgress}/>
     )
-    const addedCardsList = props.cards.length == 1 
+    const addedCardsList = cardList.length == 0
         ? <Text align="center" color="dimmed">Aucune carte enregistrée</Text>
         : addedCards
 
