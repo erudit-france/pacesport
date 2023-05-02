@@ -28,9 +28,12 @@ const LinkButton = ({text, href, lock, className, onClick}) => {
                         : () => context.setRole(text.toLowerCase())}
             >
             <Button 
-                className={`tw-bg-white hover:tw-bg-slate-100 tw-text-gray-800
+                className={`
                             tw-w-full 
-                            ${text == 'Déconnexion' ? ' tw-bg-red-800 tw-text-white hover:tw-bg-red-900 hover:tw-text-gray-100' : ''}`}
+                            ${text == 'Déconnexion' 
+                                ? ' tw-bg-red-800 tw-text-white hover:tw-bg-red-900 hover:tw-text-gray-100'
+                                : ' tw-bg-white hover:tw-bg-slate-100 tw-text-gray-800'}
+                            `}
                 radius='lg'>
                 {text}
                 {lock && <BsLock className='tw-text-red-600 tw-my-auto tw-ml-1'/>}
