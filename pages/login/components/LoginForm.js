@@ -1,5 +1,5 @@
 import { SiMaildotru } from 'react-icons/si'
-import { Alert, Button, Flex, Input, Paper, PasswordInput, TextInput } from "@mantine/core";
+import { Alert, Button, Flex, Input, Paper, PasswordInput, Text, TextInput } from "@mantine/core";
 import { useRouter } from 'next/navigation';
 import { useForm } from '@mantine/form';
 import { AiOutlineInfoCircle } from 'react-icons/ai'
@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { setCookie, getCookie } from 'cookies-next';
 import { useContext } from 'react';
 import AppContext from '@/context/AppContext';
+import Link from 'next/link';
 
 export default function LoginForm({loading}) {
   const context = useContext(AppContext)
@@ -65,10 +66,11 @@ export default function LoginForm({loading}) {
     <>
       <form onSubmit={form.onSubmit((values) => submitHandler(values))}>
       {/* <form onSubmit={(e) => nextPage(e)}> */}
-        <Paper className='tw-bg-gray-900' shadow="xl" p="md" radius="lg">
+        <Paper className='tw-bg-gray-900 tw-rounded-t-none tw-border-[1px] tw-border-white tw-border-t-0' shadow="xl" p="md" radius="lg">
           <TextInput {...inputOptions} placeholder="Adresse mail" {...form.getInputProps('email')}
             icon={<SiMaildotru className="tw-text-black tw-relative" />} />
           <PasswordInput {...inputOptions} placeholder="Mot de passe" {...form.getInputProps('password')}/>
+          <Link href=''><Text color='dimmed' fz={'sm'} m={"xs"} className='hover:tw-text-gray-400'>Mot de passe oublié?</Text></Link>
           {error != '' && 
               <Alert icon={<AiOutlineInfoCircle size="1rem" />} p={'md'} mt='md' color="pink" radius="md" withCloseButton onClose={() => setError('')}>
                 <span className='tw-text-red-900'>{error}</span></Alert>

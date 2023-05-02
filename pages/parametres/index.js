@@ -7,7 +7,7 @@ import { useContext } from "react";
 import AppContext from "@/context/AppContext";
 import { deleteCookie } from "cookies-next";
 import { useRouter } from "next/router";
-import { FiSettings } from "react-icons/fi";
+import { FiArrowLeft, FiSettings } from "react-icons/fi";
 
 const LinkButton = ({text, href, lock, className, onClick}) => {
     const router = useRouter()
@@ -19,9 +19,12 @@ const LinkButton = ({text, href, lock, className, onClick}) => {
     const context = useContext(AppContext)
     return (
         <Link href={href} 
-            className={`tw-w-full ${className}`}
+            className={`
+                tw-w-full ${className}
+                ${href == '#' ? ' tw-text-gray-400' : ''}
+            `}
             onClick={text == 'Déconnexion' 
-                        ? logout
+                        ? () => logout
                         : () => context.setRole(text.toLowerCase())}
             >
             <Button 
@@ -44,18 +47,13 @@ const Logo = () => (
                     className='tw-rounded-full shadow-sm tw-bg-white tw-p-2 tw-z-20'/>
             </Link>
             
-            <ActionIcon component="a" href='/parametres' radius={'xl'} size={'lg'}
-                className="tw-bg-white tw-text-gray-900 tw-absolute tw-right-4 tw-top-16">
-                <FiSettings />
+            <ActionIcon component="a" href='/login/as' radius={'xl'} size={'lg'}
+                className="tw-bg-white tw-text-gray-900 tw-absolute tw-left-4 tw-top-16">
+                <FiArrowLeft />
             </ActionIcon>
         </Box>
     </>
 )
-
-const logout = () => {
-    deleteCookie('token')
-    router.push('/')
-}
 
 export default function Page({status}){
     const context = useContext(AppContext)
@@ -68,27 +66,28 @@ export default function Page({status}){
     return (
         <>
             <Head><title>Pace&#8217;sport - connexion</title></Head>
+
             <header>
                 <Space my={'xl'} pt={'xl'} h={'xl'}/>
             </header>
-            <Box className="tw-rounded-3xl" pt={'xl'} m={'lg'} bg={'dark'} >
+            <Box className="tw-rounded-3xl tw-relative" pt={'xl'} m={'lg'} bg={'dark'} >
                 <Logo />
-                <Title order={6} align="center" weight={600} color="white">
-                        Se connecter en tant que</Title>
-                <Flex justify='center' direction='column' mb='md' gap="xl">
-                    <LinkButton className={'tw-px-16 tw-mb-0'} text='Particulier' href='/' />
-                </Flex>
-                <Flex className="tw-overflow-hidden" justify='center' direction='column'>
-                    <Box className="tw-bg-zinc-900 tw-px-16 tw-skew-y-3 tw-h-6 tw-relative tw-top-4"></Box>
-                    <Box className="tw-bg-zinc-900 tw-px-16" py={'md'}>
-                        <Flex justify='center' direction='column' my='xs' py={'sm'} gap="xs">
-                            <Title order={6} align="center" weight={600} color="white">Compte pro</Title>
-                            <LinkButton className={''} text='Sponsor' href={sponsorLink} lock={true}/>
-                            <LinkButton className={' tw-mb-2'} text='Association' href={associationLink} lock={true} />
-                        </Flex>
-                    </Box>
-                    <Box className="tw-bg-zinc-900 tw-px-16 tw-skew-y-3 tw-h-6 tw-relative -tw-top-4"></Box>
-                    <LinkButton className={'tw-px-16 tw-my-5'}  text='Déconnexion' href={''} />
+                <Title order={6} align="center" transform="uppercase" weight={600} color="white">
+                        Paramètres</Title>
+                <Flex justify='center' direction='column' mb='lg' p={'xl'} mx={'md'} gap="xl">
+                    <Flex justify='center' direction='column' my='xs' py={'sm'} gap="xs">
+                        <LinkButton className={''} text='Mes informations' href={''}/>
+                        <LinkButton className={''} text='Mes abonnements' href={''} />
+                        <Space my={'xs'} />
+                        <LinkButton className={''} text='Paramètres généraux' href={''}/>
+                        <LinkButton className={''} text='Paramètres association' href={''} />
+                        <LinkButton className={''} text='Paramètres partenaire' href='#'/>
+                        <Space my={'xs'} />
+                        <LinkButton className={''} text='Aide et contact' href={''}/>
+                        <LinkButton className={''} text='Conditions d&lsquo;utilisation' href={''} />
+                        <Space my={'xs'} />
+                    </Flex>
+                    <LinkButton className={''} text='Déconnexion' href={''} />
                 </Flex>
             </Box>
         </>

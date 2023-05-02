@@ -34,6 +34,13 @@ export function SegmentedControls({ tabHandler }) {
 
   return (
     <SegmentedControl
+      styles={{
+        root: { 
+          borderBottomLeftRadius: '0px !important',
+          borderBottomRightRadius: '0px !important',
+          backgroundColor: '#2a2e37'
+        }
+      }}
       fullWidth 
       value={value}
       onChange={changeHandler}
@@ -41,6 +48,7 @@ export function SegmentedControls({ tabHandler }) {
       size="md"
       data={['Connexion', 'Inscription']}
       color="gray"
+      className='tw-border-[1px] tw-border-b-0 tw-border-white'
     />
   );
 }
