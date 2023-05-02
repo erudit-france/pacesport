@@ -42,7 +42,7 @@ const LinkButton = ({text, href, lock, className, onClick}) => {
     )
 }
 
-const Logo = () => (
+const Logo = ({previousUrl}) => (
     <>
         <Box align='center' className="tw-relative -tw-top-16 tw-h-[70px]">
             <Link href='/home' className="tw-h-[70px]">
@@ -50,7 +50,7 @@ const Logo = () => (
                     className='tw-rounded-full shadow-sm tw-bg-white tw-p-2 tw-z-20'/>
             </Link>
             
-            <ActionIcon component="a" href='/login/as' radius={'xl'} size={'lg'}
+            <ActionIcon component="a" href={`${previousUrl == 'undefined' ? '/login/as' : previousUrl}`} radius={'xl'} size={'lg'}
                 className="tw-bg-white tw-text-gray-900 tw-absolute tw-left-4 tw-top-16">
                 <FiArrowLeft />
             </ActionIcon>
@@ -58,7 +58,7 @@ const Logo = () => (
     </>
 )
 
-export default function Page({status}){
+export default function Page({status, previousUrl}){
     const context = useContext(AppContext)
     const associationLink = status.association == true 
             ? '/profil/association'
@@ -74,7 +74,7 @@ export default function Page({status}){
                 <Space my={'xl'} pt={'xl'} h={'xl'}/>
             </header>
             <Box className="tw-rounded-3xl tw-relative" pt={'xl'} m={'lg'} bg={'dark'} >
-                <Logo />
+                <Logo previousUrl={previousUrl} />
                 <Title order={6} align="center" transform="uppercase" weight={600} color="white">
                         Paramètres</Title>
                 <Flex justify='center' direction='column' mb='lg' p={'xl'} mx={'md'} gap="xl">
@@ -115,7 +115,10 @@ export async function getServerSideProps(context) {
     }
 
     // // Pass data to the page via props
-    return { props: { status: data.data } }
+    return { props: { 
+        status: data.data,
+        previousUrl: context.req.headers.referer,
+    } }
 }
 
 Page.getLayout = function getLayout(page) {

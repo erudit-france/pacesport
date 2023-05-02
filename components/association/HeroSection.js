@@ -1,5 +1,6 @@
 import Toast from "@/services/Toast";
 import fileUploader from "@/utils/fileUploader";
+import { FiSettings } from "react-icons/fi";
 
 const { Box, Flex, ActionIcon, FileButton, Avatar, Image } = require("@mantine/core");
 const { useDisclosure } = require("@mantine/hooks");
@@ -93,6 +94,10 @@ const HeroSection = ({avatar}) => {
                     <LogoButtons />
                 </Box>
             </div>
+            <ActionIcon component="a" href='/parametres' radius={'xl'} size={'lg'}
+                className="tw-bg-white tw-text-gray-900 tw-absolute tw-right-4 tw-top-16">
+                <FiSettings />
+            </ActionIcon>
         </header>
     )
 }
