@@ -19,7 +19,7 @@ const AutoCompleteItem = forwardRef(
 
 AutoCompleteItem.displayName = 'AutoCompleteItem';
 
-export default function SearchInput() {
+export default function SearchInput({className}) {
   const timeoutRef = useRef(-1);
   const [value, setValue] = useState('');
   const [loading, setLoading] = useState(false);
@@ -45,7 +45,7 @@ export default function SearchInput() {
   
   return (
     <Autocomplete
-    className='focus:tw-border-red-600'
+    className={`focus:tw-border-red-600 ${className}`}
       ref={ref}
       size={"md"}
       dropdownPosition="bottom" 

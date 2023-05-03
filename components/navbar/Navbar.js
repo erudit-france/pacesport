@@ -87,7 +87,7 @@ export default function Navbar(){
     return (
         <>
             <div className='tw-max-h-screen tw-z-50 tw-fixed tw-top-0'>
-                <motion.button className='tw-bg-white shadow-lg tw-p-2 tw-px-3 tw-rounded-r-lg tw-text-xl tw-fixed -tw-left-1 tw-top-10 tw-z-100'
+                <motion.button className='tw-bg-white tw-shadow-lg tw-p-2 tw-px-3 tw-rounded-r-lg tw-text-xl tw-fixed -tw-left-1 tw-top-10 tw-z-100'
                         onClick={toggleMenu}
                         initial={{transform: "translateX(0%)" }}
                         animate={ open ? { transform: "translateX(-100%)" } : {transform: "translateX(0%)" } }>

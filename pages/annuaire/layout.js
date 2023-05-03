@@ -14,7 +14,7 @@ export default function Layout({children}){
                     <BackgroundImage className="tw-h-full tw-absolute -tw-z-8 tw-blur-[1px]" src='/stadium_chairs.jpg' />
                     <div className="tw-h-[9rem] tw-w-full tw-bg-red-900/20 tw-absolute -tw-z-7">
                         <Center className="tw-h-full">
-                            <Title order={3} color="white" align="center" weight={500}>Messages</Title>
+                            <Title order={3} color="white" align="center" weight={500}>Annuaire</Title>
                             <Flex direction={'column'} className="tw-absolute tw-right-3">
                                 <Avatar src={`uploads/${children.props.user.avatar?.name}`} mx={'auto'} radius={'xl'} />
                                 {children.props.user.prenom &&

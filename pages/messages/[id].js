@@ -55,7 +55,7 @@ const ChatHeader = () => {
     )
 }
 
-export default function Page() {
+export default function Page(props) {
     const router = useRouter()
     const contactId = router.query.id
 
@@ -130,6 +130,32 @@ export default function Page() {
         </>
     )
 }
+
+export async function getServerSideProps(context) {
+    const token = context.req.cookies['token']
+
+
+    const user = await fetch(`${process.env.API_URL}/api/user`, {
+        headers: new Headers({
+                'JWTAuthorization': `Bearer ${token}`,
+        })}
+        )
+    const userData = await user.json()
+
+    if(userData.code == 401) 
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/login"
+      }
+    }
+
+    // // Pass data to the page via props
+    return { props: { 
+        user: JSON.parse(userData.data),
+    } }
+}
+
 
 Page.getLayout = function getLayout(page) {
     return (

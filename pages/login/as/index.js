@@ -60,8 +60,12 @@ const logout = () => {
     router.push('/')
 }
 
-export default function Page({status}){
+export default function Page({status, user}){
     const context = useContext(AppContext)
+    if (!context.user) {
+        context.setUser(user)
+    }
+
     const associationLink = status.association == true 
             ? '/profil/association'
             : '/inscription/association';
@@ -107,16 +111,30 @@ export async function getServerSideProps(context) {
       )
     const data = await res.json()
   
-    if(data.code == 401) 
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/login"
-      }
+    if(data.code == 401) {
+        return {
+            redirect: {
+                permanent: false,
+                destination: "/login"
+            }
+        }
     }
 
+    const user = await fetch(`${process.env.API_URL}/api/user`, {
+        headers: new Headers({
+                'JWTAuthorization': `Bearer ${token}`,
+        })}
+        )
+    const userData = await user.json()
+    
+
     // // Pass data to the page via props
-    return { props: { status: data.data } }
+    return { 
+        props: {
+             status: data.data,
+             user: JSON.parse(userData.data)
+        } 
+    }
 }
 
 Page.getLayout = function getLayout(page) {
