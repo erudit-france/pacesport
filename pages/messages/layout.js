@@ -16,9 +16,9 @@ export default function Layout({children}){
                         <Center className="tw-h-full">
                             <Title order={3} color="white" align="center" weight={500}>Messages</Title>
                             <Flex direction={'column'} className="tw-absolute tw-right-3">
-                                <Avatar src={`uploads/${children.props.user.avatar?.name}`} mx={'auto'} radius={'xl'} />
-                                {children.props.user.prenom &&
-                                    <Text fz={'sm'} weight={500} color="white" align="center">{children.props.user.prenom}</Text>}
+                                <Avatar src={`uploads/${children?.props.user.avatar?.name}`} mx={'auto'} radius={'xl'} />
+                                {children?.props.user.prenom &&
+                                    <Text fz={'sm'} weight={500} color="white" align="center">{children?.props.user.prenom}</Text>}
                             </Flex>
                         </Center>
                     </div>
