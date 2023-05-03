@@ -14,7 +14,7 @@ import CampagneCard from '../association/components/CampagneCard'
 
 export default function Page(props) {
   const Cards = props.cards.map((card) => 
-    <CampagneCard key={card.name + card.id} title={card.name} image={card.image?.name} startDate={card.startDate} />
+    <CampagneCard id={card.id} key={card.name + card.id} title={card.name} image={card.image?.name} startDate={card.startDate} />
   )
   const CardList = props.cards.length == 1 
     ? <Text align="center" color="dimmed">Aucune carte enregistrée</Text>

@@ -1,7 +1,8 @@
 import { AspectRatio, Badge, Button, Flex, Image, Text } from "@mantine/core";
 import moment from "moment";
+import Link from "next/link";
 
-export default function CampagneCard({title, image, startDate}){
+export default function CampagneCard({id, title, image, startDate}){
     const status = 1
     const statusString = (status) => { return status == 1 ? 'Active' : 'En attente' }
 
@@ -24,9 +25,11 @@ export default function CampagneCard({title, image, startDate}){
                                 size="sm" 
                                 color={status == 1 ? 'teal' : 'indigo'}>
                                 {statusString(status)}</Badge></Text>
-                        <Button size="xs" className="tw-bg-gray-900 tw-text-gray-100 tw-text-xs tw-rounded-xl tw-px-10 tw-h-6
-                                hover:tw-bg-black">
-                                Détail</Button>
+                            <Link href={`/profil/association/campagne/${id}`}>
+                                <Button size="xs" className="tw-bg-gray-900 tw-text-gray-100 tw-text-xs tw-rounded-xl tw-px-10 tw-h-6
+                                        hover:tw-bg-black">
+                                        Détail</Button>
+                            </Link>
                     </Flex>
             </Flex>
         </>
