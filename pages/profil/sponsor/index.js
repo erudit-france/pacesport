@@ -9,6 +9,7 @@ import { IoMdSettings } from 'react-icons/io'
 import { MdQrCode2 } from 'react-icons/md'
 import { GoMegaphone } from 'react-icons/go'
 import Link from 'next/link'
+import OrganisationCard from '@/components/OrganisationCard'
 
 const DiscountCardsGrid = ({cards}) => {
   return (
@@ -53,6 +54,29 @@ const CardsSection = (props) => (
 )
 
 export default function Page(props) {
+
+  const associations = props.associations.map((card) => 
+    <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
+      <OrganisationCard organisation={card} />
+    </Grid.Col>
+  )
+
+  const associationsBusiness = props.associations.length > 2 
+    ? props.associations.slice(0,2).map((card) => 
+    <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
+      <OrganisationCard organisation={card} />
+    </Grid.Col>)
+    : ''
+
+  const associationsGrid = props.associations.length == 0
+    ? <Text fz={'sm'} align="center" color="dimmed">Aucune association enregistrée</Text>
+    : <Grid gutter={12} className="mt-4 tw-px-3">{associations}</Grid>
+
+  const associationsGridBusiness = props.associations.length == 0
+    ? <Text fz={'sm'} align="center" color="dimmed">Aucune association enregistrée</Text>
+    : <Grid gutter={12} className="mt-4 tw-px-3">{associationsBusiness}</Grid>
+
+
   return (
     <>
         <Head>
@@ -90,18 +114,26 @@ export default function Page(props) {
               
 
               <CardsSection title="Offres de partenariat de mon réseau">
-                <DiscountCardsGrid cards={props.cards} />
+                <Text align='center' color='dimmed'>Aucune offre enregistrée</Text>
               </CardsSection> 
 
+              <Space h={'lg'} my={'md'} />
+              
               {/* carte proche */}
               <CardsSection title="Prochaines cartes près de vous">
                 <DiscountCardsGrid cards={props.cards} />
               </CardsSection> 
 
+              <Space h={'lg'} my={'md'} />
+
               <CardsSection title="Associations près de vous">
-                <DiscountCardsGridBusiness cards={props.cards} />
+                
+                <Box className='tw-bg-yellow-600/60 tw-p-3'>
+                    <Title order={5} className='tw-text-gray-100 tw-pb-2'>A la une</Title>
+                    {associationsGridBusiness}
+                </Box>
                 <Space my={'md'} />
-                <DiscountCardsGrid cards={props.cards} />
+                {associationsGrid}
               </CardsSection> 
             </main>
             <Space py={'xl'} />
@@ -120,14 +152,6 @@ export async function getServerSideProps(context) {
     )
   const data = await res.json()
 
-  if(data.code == 401) 
-  return {
-    redirect: {
-      permanent: false,
-      destination: "/login"
-    }
-  }
-
   // fetch avatar
   let avatar = await fetch(`${process.env.API_URL}/api/enseigne/avatar`, {
     headers: new Headers({
@@ -135,20 +159,21 @@ export async function getServerSideProps(context) {
     })}
   )
   avatar = await avatar.json();
-  console.log('avatar', avatar)
-  if (avatar.code == 401) {
-      return {
-          redirect: {
-          permanent: false,
-          destination: "/login"
-          }
-      }
-  }
+
+  // fetch Associations
+  let associations = await fetch(`${process.env.API_URL}/api/association/list`, {
+    headers: new Headers({
+            'JWTAuthorization': `Bearer ${token}`,
+    })}
+  )
+  associations = await associations.json();
+  
 
   // // Pass data to the page via props
   return { props: { 
     cards: JSON.parse(data.data),
-    avatar: avatar.filename
+    avatar: avatar.filename,
+    associations: JSON.parse(associations.data)
   } }
 }
 

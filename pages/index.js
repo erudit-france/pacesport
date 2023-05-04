@@ -42,9 +42,6 @@ export default function Page(props) {
         </Head>
         
         <div className={ `${styles.main}` } >
-          <div>
-
-            <main className='container '>
               {/* search input */}
               <section>
                 <SearchInput />
@@ -62,9 +59,6 @@ export default function Page(props) {
                 <SectionTitle title='Enseigne proche de vous' />
                 {/* <EnseigneGrid /> */}
               </section>
-            </main>
-
-          </div>
         </div>
 
     </>

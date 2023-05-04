@@ -8,7 +8,7 @@ const { useState } = require("react");
 const { RiImageAddFill } = require("react-icons/ri");
 const { RxCross2, RxCheck } = require("react-icons/rx");
 
-const HeroSection = ({avatar}) => {
+const HeroSection = ({avatar, editable = true}) => {
     const originalImage = '/uploads/'.concat(avatar);
     const [image, setImage] = useState(originalImage)
     const [editing, edit] = useDisclosure(false)
@@ -88,7 +88,9 @@ const HeroSection = ({avatar}) => {
               <Box className="tw-relative tw-bg-white tw-rounded-full">
                 <Avatar radius={9999} size={70} src={`${image}`}  alt="Logo Pace'sport" 
                     className='hadow-sm tw-bg-transparent tw-z-20'/>
-                <LogoButtons />
+                {editable &&
+                    <LogoButtons />
+                }
               </Box>
             </div>
         </header>
