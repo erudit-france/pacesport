@@ -9,6 +9,8 @@ import React from "react"
 import { BsArrowLeft, BsArrowUpShort } from 'react-icons/bs'
 import { SlChart } from 'react-icons/sl'
 import { FaChevronDown } from "react-icons/fa"
+import { useRouter } from "next/router"
+import { getCookie } from "cookies-next"
 
 const useStyles = createStyles((theme) => ({
     td: {
@@ -46,11 +48,13 @@ const FilterHeader = ({ sort, sortHandler }) => (
     </Flex>
 )
 
-export default function Page(props) {
+export default function Page() {
+    const router = useRouter()
+    const prev = router.query?.prev || ''
 
     const NavHeader = () => (
         <Flex justify='space-between' p={'md'}>
-            <Link href={props.query?.prev || ''}><Button variant="filled" size="sm"
+            <Link href={prev}><Button variant="filled" size="sm"
                 className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
                 hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
                 radius={'xl'}><BsArrowLeft /></Button></Link>
@@ -229,10 +233,6 @@ export default function Page(props) {
             </section>
         </>
     )
-}
-
-Page.getInitialProps = ({query}) => {
-    return {query}
 }
 
 Page.getLayout = function getLayout(page) {

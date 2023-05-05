@@ -10,6 +10,8 @@ import { NotificationsProvider } from '@mantine/notifications';
 import { AppContext } from '../context/AppContext';
 import { useContext, useState } from 'react';
 import { Router } from 'next/router';
+import { getCookie } from 'cookies-next';
+import axios from 'axios';
 
 
 
@@ -29,26 +31,26 @@ export default function App({ Component, pageProps }) {
   )
 }
 
-App.getInitialProps = async ({res, Component, ctx}) => {
+App.getInitialProps = async ({Component, ctx}) => {
   let pageProps = {}
   if (Component.getInitialProps) {
     pageProps = await Component.getInitialProps(ctx)
   }
-  
-  console.log('ctx.pathname', ctx.pathname)
   // si page autre que connexion ou accueil, vérifier l'authentication
   if (!['/login', '/home'].includes(ctx.pathname)) {
-    const token = ctx.req.cookies['token']
-    let response = await fetch(`${process.env.API_URL}/api/verify/jwt`, {
-      headers: new Headers({
-              'JWTAuthorization': `Bearer ${token}`,
-      })}
-    )
-    response = await response.json();
-    if (response.code == 401) {
-        ctx.res.writeHead(302, { Location: '/login' })
-        ctx.res.end()
-        return
+    if (ctx.req) {
+      const token = ctx.req.cookies['token']
+      let response = await fetch(`${process.env.API_URL}/api/verify/jwt`, {
+        headers: new Headers({
+                'JWTAuthorization': `Bearer ${token}`,
+        })}
+      )
+      response = await response.json();
+      if (response.code == 401) {
+          ctx.res.writeHead(302, { Location: '/login' })
+          ctx.res.end()
+          return
+      }
     }
   }
 
