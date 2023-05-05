@@ -8,7 +8,7 @@ import '@/styles/SearchInput.css'
 import { MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { AppContext } from '../context/AppContext';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Router } from 'next/router';
 
 
@@ -16,7 +16,7 @@ import { Router } from 'next/router';
 export default function App({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page)
   const [user, setUser] = useState(null);
-  const [role, setRole] = useState('particulier');
+  const [role, setRole] = useState();
 
   return (
         <AppContext.Provider value={{user, setUser, role, setRole}}>

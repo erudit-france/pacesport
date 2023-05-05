@@ -74,25 +74,27 @@ export async function getServerSideProps(context) {
     )
   const data = await res.json()
 
-  if(data.code == 401) 
-  return {
-    redirect: {
-      permanent: false,
-      destination: "/login"
-    }
-  }
   let avatar = await fetch(`${process.env.API_URL}/api/user/avatar`, {
     headers: new Headers({
             'JWTAuthorization': `Bearer ${token}`,
     })}
   )
-
   avatar = await avatar.json();
+
+  // fetch Associations
+  let associations = await fetch(`${process.env.API_URL}/api/association/list`, {
+    headers: new Headers({
+            'JWTAuthorization': `Bearer ${token}`,
+    })}
+  )
+  associations = await associations.json();
+
 
   // // Pass data to the page via props
   return { props: {
     cards: JSON.parse(data.data),
-    avatar: avatar.filename
+    avatar: avatar.filename,
+    associations: JSON.parse(associations.data)
   } }
 }
 
