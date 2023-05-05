@@ -14,20 +14,33 @@ const LinkButton = ({text, href, lock, className, onClick}) => {
     const logout = () => {
         console.log('hello')
         deleteCookie('token')
-        router.push('/')
+        router.push('/home')
     }
     const context = useContext(AppContext)
-    return (
-        <Link href={href} 
+    const link = text == 'Déconnexion' 
+        ? <Button 
+            onClick={text == 'Déconnexion' 
+            ? () => logout()
+            : () => context.setRole(text.toLowerCase())}
+            className={`
+                        tw-w-full 
+                        ${text == 'Déconnexion' 
+                            ? ' tw-bg-red-800 tw-text-white hover:tw-bg-red-900 hover:tw-text-gray-100'
+                            : ' tw-bg-white hover:tw-bg-slate-100 tw-text-gray-800'}
+                        `}
+            radius='lg'>
+            {text}
+            {lock && <BsLock className='tw-text-red-600 tw-my-auto tw-ml-1'/>}
+        </Button>
+        : <Link href={href} 
             className={`
                 tw-w-full ${className}
                 ${href == '#' ? ' tw-text-gray-400' : ''}
-            `}
-            onClick={text == 'Déconnexion' 
-                        ? () => logout
-                        : () => context.setRole(text.toLowerCase())}
-            >
+            `}>
             <Button 
+                onClick={text == 'Déconnexion' 
+                ? () => logout()
+                : () => context.setRole(text.toLowerCase())}
                 className={`
                             tw-w-full 
                             ${text == 'Déconnexion' 
@@ -39,6 +52,10 @@ const LinkButton = ({text, href, lock, className, onClick}) => {
                 {lock && <BsLock className='tw-text-red-600 tw-my-auto tw-ml-1'/>}
             </Button>
         </Link>
+    return (
+        <>
+        {link}
+        </>
     )
 }
 
@@ -59,13 +76,13 @@ const Logo = ({previousUrl}) => (
 )
 
 export default function Page({status, previousUrl}){
+    const router = useRouter()
+    const prev = router.query?.prev || previousUrl
     const context = useContext(AppContext)
-    const associationLink = status.association == true 
-            ? '/profil/association'
-            : '/inscription/association';
-    const sponsorLink = status.enseigne == true 
-            ? '/profil/sponsor'
-            : '/inscription/sponsor';
+    const logout = () => {
+        deleteCookie('token')
+        router.push('/home')
+    }
     return (
         <>
             <Head><title>Pace&#8217;sport - connexion</title></Head>
@@ -74,7 +91,7 @@ export default function Page({status, previousUrl}){
                 <Space my={'xl'} pt={'xl'} h={'xl'}/>
             </header>
             <Box className="tw-rounded-3xl tw-relative" pt={'xl'} m={'lg'} bg={'dark'} >
-                <Logo previousUrl={previousUrl} />
+                <Logo previousUrl={prev} />
                 <Title order={6} align="center" transform="uppercase" weight={600} color="white">
                         Paramètres</Title>
                 <Flex justify='center' direction='column' mb='lg' p={'xl'} mx={'md'} gap="xl">
@@ -90,7 +107,7 @@ export default function Page({status, previousUrl}){
                         <LinkButton className={''} text='Conditions d&lsquo;utilisation' href={''} />
                         <Space my={'xs'} />
                     </Flex>
-                    <LinkButton className={''} text='Déconnexion' href={''} />
+                    <LinkButton className={''} text='Déconnexion' href={''} onClick={() => logout()} />
                 </Flex>
             </Box>
         </>

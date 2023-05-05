@@ -9,6 +9,8 @@ import { useEffect, useState } from 'react'
 import { getCookie } from 'cookies-next'
 import * as cookie from 'cookie'
 import { useRouter } from 'next/router'
+import OrganisationCard from '@/components/OrganisationCard'
+import OrganisationCardParticulier from '@/components/OrganisationCardParticulier'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -32,6 +34,16 @@ const DiscountCardsGrid = ({cards}) => {
 }
 
 export default function Page(props) {
+  const associations = props.associations.map((card) => 
+    <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
+      <OrganisationCardParticulier organisation={card} />
+    </Grid.Col>
+  )
+
+  const associationsGrid = props.associations.length == 0
+    ? <Text fz={'sm'} align="center" color="dimmed">Aucune association enregistrée</Text>
+    : <Grid gutter={12} className="mt-4 tw-px-3">{associations}</Grid>
+
   return (
     <>
         <Head>
@@ -41,7 +53,7 @@ export default function Page(props) {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         
-        <div className={ `${styles.main}` } >
+        <div className={''} >
               {/* search input */}
               <section>
                 <SearchInput />
@@ -58,6 +70,7 @@ export default function Page(props) {
               <section className='tw-mt-12'>
                 <SectionTitle title='Enseigne proche de vous' />
                 {/* <EnseigneGrid /> */}
+                {associationsGrid}
               </section>
         </div>
 

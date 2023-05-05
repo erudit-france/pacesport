@@ -20,7 +20,7 @@ export default function Navbar(){
     const role = context?.role || 'particulier';
     const [token, setToken] = useState(false);
     const router = useRouter()
-    const [open, setOpen] = useState(false);
+    const [open, setOpen] = useState(false)
     const [lockScroll, setLockScroll] = useState(false);
     const closeBtnInitial = { opacity: 0, scale: 0 }
     const closeBtnAnimate = { opacity: 1, scale: 1 }

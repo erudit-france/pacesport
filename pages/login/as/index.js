@@ -12,9 +12,8 @@ import { FiSettings } from "react-icons/fi";
 const LinkButton = ({text, href, lock, className, onClick}) => {
     const router = useRouter()
     const logout = () => {
-        console.log('hello')
         deleteCookie('token')
-        router.push('/')
+        router.push('/home')
     }
     const context = useContext(AppContext)
     return (
@@ -47,7 +46,7 @@ const Logo = () => (
                     className='tw-rounded-full shadow-sm tw-bg-white tw-p-2 tw-z-20'/>
             </Link>
             
-            <ActionIcon component="a" href='/parametres' radius={'xl'} size={'lg'}
+            <ActionIcon component="a" href='/parametres?prev=/login/as' radius={'xl'} size={'lg'}
                 className="tw-bg-white tw-text-gray-900 tw-absolute tw-right-4 tw-top-16">
                 <FiSettings />
             </ActionIcon>
@@ -57,7 +56,7 @@ const Logo = () => (
 
 const logout = () => {
     deleteCookie('token')
-    router.push('/')
+    router.push('/home')
 }
 
 export default function Page({status, user}){
