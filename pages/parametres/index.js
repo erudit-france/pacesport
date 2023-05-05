@@ -4,7 +4,7 @@ import Link from "next/link";
 import { BsLock } from 'react-icons/bs'
 import Layout from "@/components/layout/GradientDoodle"
 import { useContext } from "react";
-import AppContext from "@/context/AppContext";
+import { AppContext } from "@/context/AppContext";
 import { deleteCookie } from "cookies-next";
 import { useRouter } from "next/router";
 import { FiArrowLeft, FiSettings } from "react-icons/fi";
@@ -75,9 +75,9 @@ const Logo = ({previousUrl}) => (
     </>
 )
 
-export default function Page({status, previousUrl}){
+export default function Page({status}){
     const router = useRouter()
-    const prev = router.query?.prev || previousUrl
+    const prev = router.query?.prev
     const context = useContext(AppContext)
     const logout = () => {
         deleteCookie('token')
@@ -133,8 +133,7 @@ export async function getServerSideProps(context) {
 
     // // Pass data to the page via props
     return { props: { 
-        status: data.data,
-        previousUrl: context.req.headers.referer,
+        status: data.data
     } }
 }
 

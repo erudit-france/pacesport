@@ -1,7 +1,7 @@
 import { motion } from "framer-motion"
 import Link from "next/link"
 
-export default function NavbarLink({name, href, toggleMenu, border, className}) {
+export default function NavbarLink({name, href, toggleMenu, border}) {
     const toggleMenuHandler = () => {
         setTimeout(() => {
             toggleMenu()
@@ -28,7 +28,6 @@ export default function NavbarLink({name, href, toggleMenu, border, className}) 
                         className={`tw-w-full tw-flex 
                                 ${href == '' ? 'tw-text-gray-400' : ''}
                                 ${border ? ' tw-relative -tw-top-0.5' : ''}
-                                ${className}
                                 `}>
                             {name}</Link></motion.li>
         </>

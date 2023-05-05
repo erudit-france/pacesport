@@ -6,7 +6,7 @@ import { AiOutlineInfoCircle } from 'react-icons/ai'
 import { useState } from 'react';
 import { setCookie, getCookie } from 'cookies-next';
 import { useContext } from 'react';
-import AppContext from '@/context/AppContext';
+import { AppContext } from '@/context/AppContext';
 import Link from 'next/link';
 
 export default function LoginForm({loading}) {

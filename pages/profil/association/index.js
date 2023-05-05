@@ -77,7 +77,7 @@ export default function Page(props){
                         <Button color="white" variant="filled" size="sm" leftIcon={<GrMoney />} miw={200}
                         className="tw-bg-white tw-text-black hover:tw-bg-gray-200" radius={'lg'}>
                             Gestion de fonds</Button></Link>
-            </section>
+            </section>  
                 
             <Modal radius={'lg'} className="modal-gold" opened={openedBusinessModal} onClose={close} centered
                 title={<Title color="white" style={{textShadow: '#631 1px 0 10px'}} className="tw-mx-auto text-sha" transform="uppercase" align="center" order={3}>Pace&lsquo;Sport Business</Title>}>

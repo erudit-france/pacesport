@@ -2,7 +2,7 @@ import { Avatar, Box, Center, Container, Flex, Stack, Text, Title } from "@manti
 import Layout from "./layout"
 import Head from "next/head"
 import { useContext } from "react"
-import AppContext from "@/context/AppContext"
+import { AppContext } from "@/context/AppContext"
 import PreviousPageButton from "@/components/PreviousPageButton"
 import SearchInput from "@/components/SearchInput"
 

@@ -7,7 +7,7 @@ import '@/styles/globals.css'
 import '@/styles/SearchInput.css'
 import { MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
-import { AppContext } from '../context/AppContext';
+import Context, { AppContext } from '../context/AppContext';
 import { useContext, useState } from 'react';
 import { Router } from 'next/router';
 import { getCookie } from 'cookies-next';
@@ -17,17 +17,17 @@ import axios from 'axios';
 
 export default function App({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page)
-  const [user, setUser] = useState(null);
-  const [role, setRole] = useState();
 
   return (
-        <AppContext.Provider value={{user, setUser, role, setRole}}>
-          <MantineProvider withGlobalStyles withNormalizeCSS>
-            <NotificationsProvider>
-              {getLayout(<Component {...pageProps} />)}
-            </NotificationsProvider>
-          </MantineProvider>
-        </AppContext.Provider>
+    <>
+      <Context>
+        <MantineProvider withGlobalStyles withNormalizeCSS>
+          <NotificationsProvider>
+            {getLayout(<Component {...pageProps} />)}
+          </NotificationsProvider>
+        </MantineProvider>
+      </Context>
+    </>
   )
 }
 

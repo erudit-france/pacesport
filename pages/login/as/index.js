@@ -4,8 +4,8 @@ import Link from "next/link";
 import { BsLock } from 'react-icons/bs'
 import Layout from "@/components/layout/GradientDoodle"
 import { useContext } from "react";
-import AppContext from "@/context/AppContext";
-import { deleteCookie } from "cookies-next";
+import { AppContext } from "@/context/AppContext";
+import { deleteCookie, setCookie } from "cookies-next";
 import { useRouter } from "next/router";
 import { FiSettings } from "react-icons/fi";
 
@@ -21,7 +21,7 @@ const LinkButton = ({text, href, lock, className, onClick}) => {
             className={`tw-w-full ${className}`}
             onClick={text == 'Déconnexion' 
                         ? logout
-                        : () => context.setRole(text.toLowerCase())}
+                        : () => setCookie('role', text.toLowerCase())}
             >
             <Button 
                 className={`
@@ -59,10 +59,10 @@ const logout = () => {
     router.push('/home')
 }
 
-export default function Page({status, user}){
+export default function Page({status, loggedUser}){
     const context = useContext(AppContext)
     if (!context.user) {
-        context.setUser(user)
+        context.setUser(loggedUser)
     }
 
     const associationLink = status.association == true 
@@ -131,7 +131,7 @@ export async function getServerSideProps(context) {
     return { 
         props: {
              status: data.data,
-             user: JSON.parse(userData.data)
+             loggedUser: JSON.parse(userData.data)
         } 
     }
 }

@@ -1,5 +1,5 @@
 import Navbar from "@/components/navbar/Navbar";
-import AppContext from "@/context/AppContext";
+import { AppContext } from "@/context/AppContext";
 import { Avatar, BackgroundImage, Box, Center, Flex, Text, Title } from "@mantine/core";
 import { useContext } from "react";
 

@@ -10,14 +10,13 @@ import NavbarLink from './NavbarLink';
 import { deleteCookie, getCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
-import AppContext from '@/context/AppContext';
+import { AppContext } from '@/context/AppContext';
 import { Avatar, Center, Overlay } from '@mantine/core';
 
 
 
 export default function Navbar(){
-    const context = useContext(AppContext)
-    const role = context?.role || 'particulier';
+    const role = getCookie('role') || 'particulier';
     const [token, setToken] = useState(false);
     const router = useRouter()
     const [open, setOpen] = useState(false)
@@ -40,16 +39,11 @@ export default function Navbar(){
         setToken(getCookie('token'))
     }, []);
     
-    const logout = () => {
-        deleteCookie('token')
-        router.push('/')
-    }
-
     const NavParticulier = () => {
         return (
             <>
                 <NavbarLink border={true} toggleMenu={ toggleMenu } href={'/login/as'} name={<>Changer de rôle <VscSync className="tw-my-auto tw-ml-1" /></>} />
-                <NavbarLink toggleMenu={ toggleMenu } href={'/'} name={'Accueil'} />
+                <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Accueil'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={''} name={<>Mon pace&lsquo;sport (carte)</>} />
                 <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Paramètres'} />
             </>
@@ -154,11 +148,6 @@ export default function Navbar(){
                                 {role == 'particulier' && <NavParticulier toggleMenu={toggleMenu} />}
                                 {role == 'sponsor' && <NavSponsor toggleMenu={toggleMenu} />}
                                 {role == 'association' && <NavAssociation toggleMenu={toggleMenu} />}
-                                {/* {token &&
-                                    <motion.li 
-                                    className="tw-font-semibold tw-my-3.5 tw-text-gray-900 item">
-                                            <Link href='' onClick={() => logout()} className={`tw-w-full tw-flex`}>Déconnexion</Link></motion.li>
-                                } */}
                             </ul>
                         </div>
 
