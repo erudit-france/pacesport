@@ -8,7 +8,7 @@ import SearchInput from "@/components/SearchInput"
 
 
 
-export default function Page({user, users, previousUrl}) {
+export default function Page({user, users, query}) {
     const ContactCards = users.map((user) => 
         <Flex key={user.id}>
             <Avatar src={`uploads/${user.avatar?.name}`} radius={'xl'} size={'lg'} className="tw-shadow-lg" />
@@ -29,7 +29,7 @@ export default function Page({user, users, previousUrl}) {
             <Box>
                 <Flex m={'md'}>
                     <Center mr={'md'}>
-                        <PreviousPageButton href={previousUrl} />
+                        <PreviousPageButton href={query.prev || ''} />
                     </Center>
                     <SearchInput className='tw-flex-1' />
                 </Flex>
@@ -70,10 +70,10 @@ export async function getServerSideProps(context) {
     return { props: {
         user: JSON.parse(userData.data),
         users: JSON.parse(data.data),
-        previousUrl: previousUrl
+        previousUrl: previousUrl,
+        query: context.query
     } }
 }
-
 
 Page.getLayout = function getLayout(page) {
     return (

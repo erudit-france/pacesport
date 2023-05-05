@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Flex, Modal, Space, Text, Title } from "@mantine/core";
+import { ActionIcon, Box, Button, Divider, Flex, Modal, Space, Text, Title } from "@mantine/core";
 import Head from "next/head";
 import SearchSponsor from "../components/SearchSponsor";
 import UserListButton from "../components/UserListButton";
@@ -11,6 +11,7 @@ import { GrMoney } from "react-icons/gr";
 import { BiMessage } from "react-icons/bi";
 import CampagneCard from "../components/CampagneCard";
 import { useDisclosure } from "@mantine/hooks";
+import { BsMegaphoneFill } from 'react-icons/bs'
 
 export default function Page(props){
     const isAccountLimited = false
@@ -29,17 +30,20 @@ export default function Page(props){
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <section className="tw-px-4">
+            <section className="tw-px-4 tw-pt-8 tw-relative">
                 {isAccountLimited && 
                     <Text fz={"sm"} className="tw-font-semibold" align="center" p='lg'>Votre accès est limité le temps que votre association soit validée</Text>}
                 {!isAccountLimited && 
                     <Space py={'sm'} />}
                 <SearchSponsor />
                 <Flex mt={'md'} justify={'space-between'}>
-                    <UserListButton />
+                    <UserListButton prev='/profil/association/business' />
                     <Divider className="tw-border-gray-200 tw-mx-3 md:tw-mx-8" size="sm" orientation="vertical" />
                     <SponsorInvitation />
                 </Flex>
+                <ActionIcon component='a' href='/communication/add?prev=profil/association/business' className="tw-bg-white tw-absolute tw-right-4 tw-top-4 tw-p-1.5" radius={'xl'}>
+                    <BsMegaphoneFill className="tw-text-black" size={18} />
+                </ActionIcon>
             </section>
 
             <section className="tw-bg-white tw-mt-6 tw-shadow-inner tw-py-5 tw-px-4">
@@ -69,7 +73,7 @@ export default function Page(props){
                     <Button color="white" variant="filled" size="sm" leftIcon={<BiMessage />} miw={200}
                         className="tw-bg-white tw-text-black hover:tw-bg-gray-200" radius={'lg'}>
                             Messagerie</Button></Link>
-                <Link href='/gestion-fonds' className="tw-mx-auto tw-mt-3">
+                <Link href='/gestion-fonds?prev=/profil/association/business' className="tw-mx-auto tw-mt-3">
                         <Button color="white" variant="filled" size="sm" leftIcon={<GrMoney />} miw={200}
                         className="tw-bg-white tw-text-black hover:tw-bg-gray-200" radius={'lg'}>
                             Gestion de fonds</Button></Link>

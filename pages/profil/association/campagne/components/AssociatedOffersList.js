@@ -3,7 +3,7 @@ import { MdDelete } from 'react-icons/md'
 
 function AccordionControl({offer, associatedOffers, setAssociatedOffers}) {
     const logoUrl = offer.enseigne 
-      ? '/uploads/images/' + offer.enseigne.logo
+      ? '/uploads/' + offer.enseigne.logo
       : null
     const removeOffer = () => {
       setAssociatedOffers(

@@ -91,7 +91,7 @@ export default function Page(props) {
                 className='tw-text-black tw-rounded-full tw-bg-white tw-shadow-sm'><IoMdSettings /></ActionIcon>
             <ActionIcon 
                 className='tw-text-black tw-rounded-full tw-bg-white tw-shadow-sm'><MdQrCode2 /></ActionIcon>
-            <ActionIcon component='a' href='/communication/add' 
+            <ActionIcon component='a' href='/communication/add?prev=/profil/sponsor' 
                 className='tw-text-black tw-rounded-full tw-bg-white tw-shadow-sm'><GoMegaphone /></ActionIcon>
         </Group>
 

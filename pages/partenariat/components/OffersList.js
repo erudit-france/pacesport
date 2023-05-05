@@ -39,7 +39,7 @@ function AccordionLabel({ label, image, description }) {
 
 function AccordionControl({offer}) {
     const logoUrl = offer.enseigne 
-                      ? 'http://localhost:8080/uploads/images/' + offer.enseigne.logo
+                      ? 'http://localhost:8080/uploads/' + offer.enseigne.logo
                       : null
     console.log('logoUrl', logoUrl)
     return (

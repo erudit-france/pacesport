@@ -76,7 +76,7 @@ const HeroSection = ({avatar}) => {
         return (
             <Box className="tw-absolute tw-z-20 tw-bottom-0 tw-right-0">
                 <FileButton onChange={uploadHandler} accept="image/png,image/jpeg">
-                {(props) => <ActionIcon size={25} {...props} className="tw-bg-yellow-500/80 hover:tw-bg-yellow-500 tw-text-yellow-700 tw-rounded-full">
+                {(props) => <ActionIcon size={25} {...props} className="tw-bg-gray-100/80 hover:tw-bg-gray-300 tw-text-gray-900 tw-rounded-full">
                         <RiImageAddFill size={15} className="tw-relative tw-right-[1px]"/>
                     </ActionIcon>}
                 </FileButton>
@@ -85,18 +85,22 @@ const HeroSection = ({avatar}) => {
     }
 
     return (
-        <header className='tw-flex tw-justify-center tw-h-36 tw-relative'>
+        <header className='tw-flex tw-justify-center tw-h-32 tw-relative'>
             <Image className='tw-w-full tw-h-full tw-absolute tw-object-cover -tw-z-10 tw-blur-sm tw-scale-110' src={'/hand-in-hand.jpg'} placeholder='blur' alt="Hero image"/>
             <div className='tw-flex tw-flex-col tw-justify-center tw-z-30'>
-                <Box className="tw-relative tw-rounded-full">
-                    <Avatar radius={9999} size={70} src={`${image}`}  alt="Logo Pace'sport" 
+                <Box className="tw-rounded-full tw-relative tw-top-16 tw-shadow-md">
+                    <Avatar radius={9999} size={80} src={`${image}`}  alt="Logo Pace'sport" 
                         className='hadow-sm tw-bg-transparent tw-z-20'/>
                     <LogoButtons />
                 </Box>
             </div>
-            <ActionIcon component="a" href='/parametres' radius={'xl'} size={'lg'}
+            <ActionIcon component="a" href='/parametres' radius={'xl'} size={'md'}
                 className="tw-bg-white tw-text-gray-900 tw-absolute tw-right-4 tw-top-16">
                 <FiSettings />
+            </ActionIcon>
+            <ActionIcon component="a" href='/parametres' radius={'xl'} size={'md'}
+                className="tw-bg-white tw-text-gray-900 tw-absolute tw-right-14 tw-top-16">
+                <RiImageAddFill />
             </ActionIcon>
         </header>
     )

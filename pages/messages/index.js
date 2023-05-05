@@ -57,7 +57,7 @@ const ChatHeader = ({previousUrl}) => {
                     <Center mr={'md'}>
                         <PreviousPageButton href={previousUrl} />
                     </Center>
-                    <Link href={'/annuaire'} 
+                    <Link href={'/annuaire?prev=/messages'} 
                         className='tw-text-sm tw-border-[1px] tw-px-3 tw-py-1.5 tw-rounded-2xl
                                 tw-border-gray-300 hover:tw-bg-gray-50'>
                         Annuaire

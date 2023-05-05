@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Flex, Modal, Space, Text, Title } from "@mantine/core";
+import { ActionIcon, Box, Button, Center, Divider, Flex, Modal, Space, Text, Title } from "@mantine/core";
 import Head from "next/head";
 import SearchSponsor from "./components/SearchSponsor";
 import UserListButton from "./components/UserListButton";
@@ -6,7 +6,7 @@ import Layout from "./layout";
 import SponsorInvitation from "./components/SponsorInvitation";
 import { GoPlus } from 'react-icons/go'
 import Link from "next/link";
-import { BsLock } from "react-icons/bs";
+import { BsLock, BsMegaphoneFill } from "react-icons/bs";
 import { GrMoney } from "react-icons/gr";
 import { BiMessage } from "react-icons/bi";
 import CampagneCard from "./components/CampagneCard";
@@ -30,28 +30,30 @@ export default function Page(props){
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-            <section className="tw-px-4">
+            <section className="tw-px-4 tw-pt-8 tw-relative">
                 {isAccountLimited && 
                     <Text fz={"sm"} className="tw-font-semibold" align="center" p='lg'>Votre accès est limité le temps que votre association soit validée</Text>}
                 <SearchSponsor />
                 <Flex mt={'md'} justify={'space-between'}>
-                    <UserListButton />
+                    <UserListButton prev={'/profil/association'} />
                     <Divider className="tw-border-gray-200 tw-mx-3 md:tw-mx-8" size="sm" orientation="vertical" />
                     <SponsorInvitation />
                 </Flex>
+                <ActionIcon component='a' href='/communication/add?prev=/profil/association' className="tw-bg-white tw-absolute tw-right-4 tw-top-4 tw-p-1.5" radius={'xl'}>
+                    <BsMegaphoneFill className="tw-text-black" size={18} />
+                </ActionIcon>
             </section>
 
             <section className="tw-bg-white tw-mt-6 tw-shadow-inner tw-py-5 tw-px-4">
-                <Flex justify={'space-between'} pb={'sm'}>
-                    <Text fz={'sm'} fw={'bold'} align={'center'} transform={'uppercase'} py={2}>Mon Pace&lsquo;sport</Text>
-                    <Link href="/profil/association/campagne/ajouter">
-                        <Button size="xs" rightIcon={<GoPlus size="1rem" />}
-                            className="tw-bg-gray-900 tw-text-gray-100 tw-text-xs tw-rounded-xl
-                                        hover:tw-bg-black" 
-                            >
-                            Nouvelle campagne
-                        </Button>
-                    </Link>
+                <Flex justify={'space-between'} my={'lg'} className="tw-relative">
+                    <Text className="tw-flex-1" fz={'sm'} fw={'bold'} align={'center'} transform={'uppercase'} py={2}>Mon Pace&lsquo;sport</Text>
+                        <Center>
+                            <Link href="/profil/association/campagne/ajouter" 
+                                className="tw-absolute tw-right-0 tw-bg-gray-900 tw-text-gray-100 tw-text-xs tw-rounded-3xl
+                                hover:tw-bg-black tw-p-1.5">
+                                <GoPlus size="1.2rem" />
+                            </Link>
+                        </Center>
                 </Flex>
                 <Box>{CardList}</Box>
             </section>
@@ -71,7 +73,7 @@ export default function Page(props){
                     <Button color="white" variant="filled" size="sm" leftIcon={<BiMessage />} miw={200}
                         className="tw-bg-white tw-text-black hover:tw-bg-gray-200" radius={'lg'}>
                             Messagerie</Button></Link>
-                <Link href='/gestion-fonds' className="tw-mx-auto tw-mt-3">
+                <Link href='/gestion-fonds?prev=/profil/association' className="tw-mx-auto tw-mt-3">
                         <Button color="white" variant="filled" size="sm" leftIcon={<GrMoney />} miw={200}
                         className="tw-bg-white tw-text-black hover:tw-bg-gray-200" radius={'lg'}>
                             Gestion de fonds</Button></Link>

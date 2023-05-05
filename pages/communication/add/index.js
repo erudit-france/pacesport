@@ -1,6 +1,7 @@
-import { Flex, Text, Textarea } from "@mantine/core"
+import { Box, Flex, Text, Textarea } from "@mantine/core"
 import Layout from "./layout"
 import { useForm } from "@mantine/form";
+import PreviousPageButton from "@/components/PreviousPageButton";
 
 const PriceRow = ({credits, price, oldPrice}) => {
     return (
@@ -18,7 +19,7 @@ const PriceRow = ({credits, price, oldPrice}) => {
     )
 }
 
-export default function Page() {
+export default function Page(props) {
     const form = useForm({
         initialValues: {
             message: '',
@@ -35,6 +36,9 @@ export default function Page() {
     return (
         <>
             <div className="tw-container tw-mx-auto tw-px-2">
+                <Box my={'sm'}>
+                    <PreviousPageButton href={props.query?.prev || '/'}/>
+                </Box>
                 <form onSubmit={form.onSubmit((values) => submitHandler(values))}>
                     <Textarea
                         size="md"
@@ -68,6 +72,10 @@ export default function Page() {
 
         </>
     )
+}
+
+Page.getInitialProps = ({query}) => {
+    return {query}
 }
 
 Page.getLayout = function getLayout(page) {

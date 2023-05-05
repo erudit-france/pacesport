@@ -16,22 +16,7 @@ const useStyles = createStyles((theme) => ({
     }
 }))
 
-const NavHeader = () => (
-    <Flex justify='space-between' p={'md'}>
-        <Link href={'/'}><Button variant="filled" size="sm"
-            className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
-            hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
-            radius={'xl'}><BsArrowLeft /></Button></Link>
-        <Link href={''}><Button variant="filled" size="sm"
-            className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
-            hover:tw-bg-gray-100 hover:tw-text-black" 
-            radius={'xl'}>Ajouter un RIB</Button></Link>
-        <Link href={'/gestion-fonds/statistiques'}><Button variant="filled" size="sm"
-            className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
-            hover:tw-bg-gray-100 hover:tw-text-black" 
-            radius={'xl'}><SlChart /></Button></Link>
-    </Flex>
-)
+
 
 const FilterHeader = ({ sort, sortHandler }) => (
     <Flex justify='space-between' px={'md'} py={'md'}>
@@ -61,7 +46,25 @@ const FilterHeader = ({ sort, sortHandler }) => (
     </Flex>
 )
 
-export default function Page() {
+export default function Page(props) {
+
+    const NavHeader = () => (
+        <Flex justify='space-between' p={'md'}>
+            <Link href={props.query?.prev || ''}><Button variant="filled" size="sm"
+                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
+                radius={'xl'}><BsArrowLeft /></Button></Link>
+            <Link href={''}><Button variant="filled" size="sm"
+                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+                hover:tw-bg-gray-100 hover:tw-text-black" 
+                radius={'xl'}>Ajouter un RIB</Button></Link>
+            <Link href={'/gestion-fonds/statistiques'}><Button variant="filled" size="sm"
+                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+                hover:tw-bg-gray-100 hover:tw-text-black" 
+                radius={'xl'}><SlChart /></Button></Link>
+        </Flex>
+    )
+    
     const [sort, setSort] = useState(null);
     const sortHandler = (v) => {
         setSort(v)
@@ -226,6 +229,10 @@ export default function Page() {
             </section>
         </>
     )
+}
+
+Page.getInitialProps = ({query}) => {
+    return {query}
 }
 
 Page.getLayout = function getLayout(page) {

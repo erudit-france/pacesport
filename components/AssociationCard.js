@@ -7,7 +7,7 @@ export default function AssociationCard({card}) {
     var date = moment(card.startDate);
     var dateComponent = date.utc().format('DD/MM/YYYY');
     const logoUrl = card.association.logo 
-    ? '/uploads/images/' + card.association.logo
+    ? '/uploads/' + card.association.logo
     : null
     return (
         <Link href={`sponsor/campagne/${card.id}`}>

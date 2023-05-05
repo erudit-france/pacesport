@@ -35,6 +35,7 @@ App.getInitialProps = async ({res, Component, ctx}) => {
     pageProps = await Component.getInitialProps(ctx)
   }
   
+  console.log('ctx.pathname', ctx.pathname)
   // si page autre que connexion ou accueil, vérifier l'authentication
   if (!['/login', '/home'].includes(ctx.pathname)) {
     const token = ctx.req.cookies['token']
