@@ -27,9 +27,9 @@ ChartJS.register(
 );
 
 
-const NavHeader = () => (
+const NavHeader = ({href}) => (
   <Flex justify='space-between' p={'md'}>
-      <Link href={'/gestion-fonds'}><Button variant="filled" size="sm"
+      <Link href={href}><Button variant="filled" size="sm"
           className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
           hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
           radius={'xl'}><BsArrowLeft /></Button></Link>
@@ -120,7 +120,7 @@ const CardsChart = ({start, end}) => {
   )
 }
 
-export default function Page() {
+export default function Page(props) {
     const [value, setValue] = useState([
       new Date(2021, 11, 1),
       new Date(2021, 11, 5),
@@ -134,7 +134,7 @@ export default function Page() {
 
     return (
         <>
-            <NavHeader />
+            <NavHeader href={props.previousUrl}/>
             <DateRangePicker
               dropdownType="modal"
               mt={'xs'}
@@ -154,6 +154,17 @@ export default function Page() {
         </>
     )
 }
+
+
+export async function getServerSideProps(context) {
+  let url = context.req.headers.referer
+  let previousUrl = url === undefined ? '/gestion-fonds/' : url
+  // // Pass data to the page via props
+  return { props: { 
+      previousUrl: previousUrl,
+  } }
+}
+
 
 Page.getLayout = function getLayout(page) {
     return (

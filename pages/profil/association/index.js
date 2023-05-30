@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Button, Center, Divider, Flex, Modal, Space, Text, Title } from "@mantine/core";
+import { ActionIcon, Box, Button, Center, Divider, Flex, Modal, Overlay, Space, Text, Title, useMantineTheme } from "@mantine/core";
 import Head from "next/head";
 import SearchSponsor from "./components/SearchSponsor";
 import UserListButton from "./components/UserListButton";
@@ -11,8 +11,13 @@ import { GrMoney } from "react-icons/gr";
 import { BiMessage } from "react-icons/bi";
 import CampagneCard from "./components/CampagneCard";
 import { useDisclosure } from "@mantine/hooks";
+import { useState } from "react";
 
 export default function Page(props){
+    const [modalFirst, setModalFirst] = useState(false)
+    const [tutorialOpened, setTutorialOpened] = useState(true);
+    const theme = useMantineTheme();
+    const hasFinishedTutorial = props.hasFinishedTutorial
     const [openedBusinessModal, { open, close }] = useDisclosure(false);
     const isAccountLimited = true
     const Cards = props.cards.map((card) => 
@@ -60,7 +65,7 @@ export default function Page(props){
 
             <Space className="tw-mt-1"></Space>
 
-            <section className="tw-bg-yellow-300/70 tw-flex tw-flex-col tw-py-4">
+            <section className="tw-bg-lightgold-50 tw-flex tw-flex-col tw-py-4">
                 <Text color="white" align="center">Offre de sponsoring</Text>
                 <Text className="tw-flex tw-justify-center" align="center">Uniquement avec Pace&lsquo;sport Business<BsLock className='tw-my-auto tw-ml-1'/></Text>
                 <Button onClick={open} color="white" variant="filled" size="xs" 
@@ -119,11 +124,20 @@ export async function getServerSideProps(context) {
         })}
     )
     cards = await cards.json();
+
+    let enseigne = await fetch(`${process.env.API_URL}/api/enseigne/auth/`, {
+        headers: new Headers({
+                'JWTAuthorization': `Bearer ${token}`,
+        })}
+    )
+    enseigne = await enseigne.json();
+    console.log('enseigne', enseigne)
     
     // // Pass data to the page via props
     return { props: {
         avatar: avatar.filename,
-        cards: JSON.parse(cards.data)
+        cards: JSON.parse(cards.data),
+        hasFinishedTutorial: JSON.parse(enseigne.data).hasFinishedTutorial
     }}
   }
 
