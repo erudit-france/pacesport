@@ -11,7 +11,8 @@ import { deleteCookie, getCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { AppContext } from '@/context/AppContext';
-import { Avatar, Center, Overlay } from '@mantine/core';
+import { Avatar, Center, Flex, Overlay } from '@mantine/core';
+import { BiHome } from 'react-icons/bi';
 
 
 
@@ -38,12 +39,25 @@ export default function Navbar(){
     useEffect(() => {
         setToken(getCookie('token'))
     }, []);
+
+    const loginAsLink = 
+        <Flex justify={'space-between'} align={'center'}>
+            <NavbarLink 
+                border={true} toggleMenu={ toggleMenu } 
+                href={'/login/as'} 
+                name={<>Changer de rôle <VscSync className="tw-my-auto tw-ml-1" /></>} />
+                
+            <NavbarLink 
+                border={true} toggleMenu={ toggleMenu } 
+                href={'/'} 
+                name={<><BiHome size={20} /></>} />
+           
+        </Flex>
     
     const NavParticulier = () => {
         return (
             <>
-                <NavbarLink border={true} toggleMenu={ toggleMenu } href={'/login/as'} name={<>Changer de rôle <VscSync className="tw-my-auto tw-ml-1" /></>} />
-                <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Accueil'} />
+                {loginAsLink}
                 <NavbarLink toggleMenu={ toggleMenu } href={''} name={<>Mon pace&lsquo;sport (carte)</>} />
                 <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Paramètres'} />
             </>
@@ -53,8 +67,7 @@ export default function Navbar(){
     const NavAssociation = () => {
         return (
             <>
-                <NavbarLink border={true} toggleMenu={ toggleMenu } href={'/login/as'} name={<>Changer de rôle <VscSync className="tw-my-auto tw-ml-1" /></>} />
-                <NavbarLink toggleMenu={ toggleMenu } href={'/profil/association'} name={'Accueil'} />
+                {loginAsLink}
                 <NavbarLink toggleMenu={ toggleMenu } href={''} name={<>Mon pace&lsquo;sport (carte)</>} />
                 <NavbarLink toggleMenu={ toggleMenu } href={'/sponsoring'} name={'Offres de partenariat'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Mon compte'} />
@@ -72,8 +85,7 @@ export default function Navbar(){
     const NavSponsor = () => {
         return (
             <>
-                <NavbarLink border={true} toggleMenu={ toggleMenu } href={'/login/as'} name={<>Changer de rôle <VscSync className="tw-my-auto tw-ml-1" /></>} />
-                <NavbarLink toggleMenu={ toggleMenu } href={'/profil/sponsor'} name={'Accueil'} />
+                {loginAsLink}
                 <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Mes cartes / partenariats actifs'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={'/sponsoring'} name={'Offres de partenariat'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={'/communication/add'} name={'Communication'} />

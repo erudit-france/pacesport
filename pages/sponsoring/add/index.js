@@ -12,22 +12,8 @@ export default function Page() {
     return (
         <>
             <Head><title>Sponsoring - Ajouter</title></Head>
-            <div className="container mx-auto tw-px-2">
-                <Select
-                    className="tw-border-gray-700 tw-border-0 tw-rounded-3xl tw-mb-5"
-                    radius={'lg'}
-                    label="Choisir une catégorie"
-                    placeholder="Catégorie"
-                    rightSection={<FaChevronDown size={14} />}
-                    rightSectionWidth={30}
-                    styles={{ rightSection: { pointerEvents: 'none' } }}
-                    value={category} onChange={setCategory}
-                    data={[
-                        { value: 'Maillot', label: 'Maillot' },
-                        { value: 'Panneau', label: 'Panneau' }]}
-                    withAsterisk/>
-                {category == 'Maillot' && <MaillotForm/> }
-                {category == 'Panneau' && <PanneauForm/> }
+            <div className="container mx-auto tw-px-4">
+                <PanneauForm/>
             </div>
         </>
     )
