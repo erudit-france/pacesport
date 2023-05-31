@@ -6,7 +6,7 @@ import Layout from "./layout";
 import SponsorInvitation from "./components/SponsorInvitation";
 import { GoPlus } from 'react-icons/go'
 import Link from "next/link";
-import { BsLock, BsMegaphoneFill } from "react-icons/bs";
+import { BsLink, BsLock, BsMegaphoneFill } from "react-icons/bs";
 import { GrMoney } from "react-icons/gr";
 import { BiMessage } from "react-icons/bi";
 import CampagneCard from "./components/CampagneCard";
@@ -89,12 +89,23 @@ export default function Page(props){
                 <Text className='tw-text-gray-100' fz={'sm'} mb={'sm'}>Ces fonctionnalités ne sont disponibles que dans l&lsquo;offre Pace&lsquo;Sport Business</Text>
                 <Text className='tw-text-gray-100' fz={'sm'}>Débloquez des outils professionnels pour faciliter la gestion de votre association</Text>
                 <Box align='center' mt={'md'}>
-                <Link href='/profil/association/business'>
-                    <Button radius={'lg'} 
-                        className="tw-border-[1] tw-border-black tw-bg-gray-100 hover:tw-bg-gray-200 tw-shadow-md">
-                        <Text color="dark">Rejoindre</Text>
-                        <span>&nbsp;</span><Text className="tw-text-yellow-700"> BUSINESS</Text></Button>
-                </Link>
+                <Flex>
+                    <Link href={props.stripeMonthPaymentLink}>
+                        1 mois 5€
+                        <Button radius={'lg'} 
+                            className="tw-border-[1] tw-border-black tw-bg-gray-100 hover:tw-bg-gray-200 tw-shadow-md">
+                            <Text color="dark">Rejoindre</Text>
+                            <span>&nbsp;</span><Text className="tw-text-yellow-700"> BUSINESS</Text></Button>
+                    </Link>
+                    
+                    <Link href={props.stripeYearPaymentLink}>
+                        1 An 42,99€
+                        <Button radius={'lg'} 
+                            className="tw-border-[1] tw-border-black tw-bg-gray-100 hover:tw-bg-gray-200 tw-shadow-md">
+                            <Text color="dark">Rejoindre</Text>
+                            <span>&nbsp;</span><Text className="tw-text-yellow-700"> BUSINESS</Text></Button>
+                    </Link>
+                </Flex>
                 </Box>
             </Modal>
         </>
@@ -131,13 +142,27 @@ export async function getServerSideProps(context) {
         })}
     )
     enseigne = await enseigne.json();
-    console.log('enseigne', enseigne)
     
+    let cancelUrl = context.req.headers.referer
+    let stripe = await fetch(`${process.env.API_URL}/api/stripe/subscriptionLinks`, {
+        method: 'POST',
+        headers: new Headers({
+                'JWTAuthorization': `Bearer ${token}`,
+        }),
+        body: JSON.stringify({
+            cancelUrl: `${process.env.NEXT_URL}${context.resolvedUrl}`,
+            baseUrl: `${process.env.NEXT_URL}`
+        })
+    })
+    stripe = await stripe.json();
+
     // // Pass data to the page via props
     return { props: {
         avatar: avatar.filename,
         cards: JSON.parse(cards.data),
-        hasFinishedTutorial: JSON.parse(enseigne.data).hasFinishedTutorial
+        hasFinishedTutorial: JSON.parse(enseigne.data).hasFinishedTutorial,
+        stripeMonthPaymentLink: stripe.monthUrl,
+        stripeYearPaymentLink: stripe.yearUrl
     }}
   }
 
