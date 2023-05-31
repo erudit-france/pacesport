@@ -8,11 +8,11 @@ import { serialize } from "object-to-formdata";
 import { useState } from "react";
 import Layout from "../layout";
 
-export default function Page() {
+export default function Page(props) {
     const router = useRouter();
     const [logo, setLogo] = useState(null);
     const [logoError, setLogoError] = useState(null);
-    const [isPublic, setIsPublic] = useState(false);
+    const [isPublic, setIsPublic] = useState(props.isPublic);
     const [type, setType] = useState(null);
     const [typeError, setTypeError] = useState(null);
 
@@ -132,7 +132,7 @@ export default function Page() {
       <form className="tw-relative tw-top-5" onSubmit={form.onSubmit((values) => submitHandler(values))}>
         <Text align="center" className="tw-font-semibold tw-text-lg tw-text-white">Formulaire Partenaire</Text>
         <Paper shadow="xl" p="xs" radius="lg" className="tw-bg-gray-800 tw-m-3 tw-pb-10 tw-top-5">
-            <Radio.Group
+            {/* <Radio.Group
                 className="tw-text-white tw-p-2"
                 name="isCollectivitePublique"
                 defaultValue={"0"}
@@ -145,7 +145,7 @@ export default function Page() {
                     <Radio checked={isPublic} onClick={() => {isPublicHandler(false)}}
                             className="tw-text-white" value="0" label="Non" />
                 </Group>
-            </Radio.Group>
+            </Radio.Group> */}
             {isPublic 
                 ? <TypeCollectivite error={typeError} />
                 : <TypeEnseigne error={typeError} />}
@@ -191,6 +191,32 @@ export default function Page() {
       </form>
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+    const token = context.req.cookies['token']
+    const res = await fetch(`${process.env.API_URL}/api/user/`, {
+      headers: new Headers({
+              'JWTAuthorization': `Bearer ${token}`,
+      })}
+    )
+    const data = await res.json()
+  
+    if(data.code == 401) {
+        return {
+            redirect: {
+                permanent: false,
+                destination: "/login"
+            }
+        }
+    }
+
+    // // Pass data to the page via props
+    return { 
+        props: {
+             isPublic: JSON.parse(data.data).isCollectivitePublique,
+        } 
+    }
 }
 
 Page.getLayout = function getLayout(page) {
