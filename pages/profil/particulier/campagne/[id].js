@@ -1,34 +1,101 @@
+import { AspectRatio, BackgroundImage, Box, Center, Container, Image, Text, Title } from "@mantine/core"
+import CampagneCard from "../../association/components/CampagneCard"
 import Layout from "../layout"
+import moment from "moment"
+import Link from "next/link"
+import Head from "next/head"
 
 export default function Page(props) {
-    console.log('association', props.association)
+  const PurchaseLink = () => {
+    if (props.isOwned == true) {
+      return (
+        <Text className="tw-border-[1px] tw-px-8 tw-py-0.5 tw-border-green-500 tw-bg-green-400 tw-text-gray-50 tw-rounded-xl tw-shadow-md">En possession</Text>
+      )
+    } else {
+      return (
+        <Link className="tw-border-[1px] tw-px-8 tw-py-0.5 tw-border-red-500 tw-rounded-xl tw-shadow-md hover:tw-bg-gray-100" 
+        href={props.cardPurchaseLink}>Souscrire</Link>
+      )
+    }
+  }
+
+  const standaloneCard = <>
+      <Center>
+        <Box className="tw-rounded-xl tw-shadow-lg tw-relative">
+            <Image
+                className="tw-absolute tw-right-1 tw-opacity-80 -tw-translate-y-1/2 tw-top-1/2"
+                width={36}
+                height={36}
+                src={`/sim.png`}
+                alt="logo sim"
+            />
+            <Image
+              className="tw-opacity-95"
+              radius={'lg'}
+              width={260}
+              height={160}
+              src={`/uploads/${props.card.image?.name}`}
+              alt="Photo de campagne"
+            />
+        </Box>
+      </Center>
+    </>
     return (
-        <>
-        </>
+      <>
+        <Head><title>Pace&lsquo;sport - Détails campagne {props.card.name}</title></Head>
+        <Container className="">
+          <Box className="tw-relative tw-z-[1]">
+            {standaloneCard}
+          </Box>
+          <Box className="tw-bg-white tw-shadow-lg tw-rounded-2xl tw-pt-12 tw-relative -tw-top-8 tw-z-0" p={'xl'}>
+            <Title order={2} mb={'sm'} align="center">{props.card.name}</Title>
+            <Text className="tw-text-gray-800" align="center" fz={'sm'}>Valable du {moment(props.card.startDate).format('DD/MM/YYYY')} au {moment(props.card.endDate).format('DD/MM/YYYY')}</Text>
+            <Title order={5} align="center" className="tw-text-gray-700">{props.card.price.toFixed(2)} €</Title>
+            <Center mt={'md'}>
+              <PurchaseLink />
+            </Center>
+
+          </Box>
+        </Container>
+      </>
     )
 }
 
 export async function getServerSideProps(context) {
     const id = context.query.id
     const token = context.req.cookies['token']
-    const res = await fetch(`${process.env.API_URL}/api/association/get/${id}`, {
+    const res = await fetch(`${process.env.API_URL}/api/discount-card/${id}/`, {
       headers: new Headers({
               'JWTAuthorization': `Bearer ${token}`,
       })}
       )
-    const data = await res.json()
-    
-    let cards = await fetch(`${process.env.API_URL}/api/discount-card`, {
+    const card = await res.json()
+
+    let stripe = await fetch(`${process.env.API_URL}/api/stripe/dicsountcard`, {
+        method: 'POST',
         headers: new Headers({
                 'JWTAuthorization': `Bearer ${token}`,
-        })}
-        )
-    cards = await cards.json()
-
+        }),
+        body: JSON.stringify({
+            cancelUrl: `${process.env.NEXT_URL}${context.resolvedUrl}`,
+            baseUrl: `${process.env.NEXT_URL}`,
+            discountCardId: id
+        })
+    })
+    stripe = await stripe.json();
+    
+    const isOwnedData = await fetch(`${process.env.API_URL}/api/discount-card/is-owned/${id}`, {
+      headers: new Headers({
+              'JWTAuthorization': `Bearer ${token}`,
+      })}
+      )
+    const isOwned = await isOwnedData.json()
+    console.log('card', card)
     // // Pass data to the page via props
     return { props: { 
-      association: JSON.parse(data.data),
-      cards: JSON.parse(cards.data)
+      card: JSON.parse(card.data),
+      cardPurchaseLink: stripe.discountCardUrl,
+      isOwned: isOwned.data.isOwned
     } }
   }
   

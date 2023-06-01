@@ -6,9 +6,9 @@ import { FaMapMarkerAlt } from 'react-icons/fa'
 export default function AssociationCardParticulier({card}) {
     var date = moment(card.startDate);
     var dateComponent = date.utc().format('DD/MM/YYYY');
-    const logoUrl = card.association.logo 
-    ? '/uploads/' + card.association.logo
-    : null
+    const logoUrl = card.image?.name 
+        ? '/uploads/' + card.image.name
+        : null
     return (
         <Link href={`/profil/particulier/campagne/${card.id}`}>
             <Card className='tw-bg-gradient-to-br tw-from-red-600 tw-to-red-700/90 tw-border-0' shadow="md" padding="lg" radius="md" withBorder>
@@ -23,18 +23,10 @@ export default function AssociationCardParticulier({card}) {
                     <Image
                     className='tw-object-cover blur'
                     src={logoUrl}
-                    height={80}
+                    height={120}
                     alt={card.association.name}
                     />
                 </Card.Section>
-
-                <Group position="apart" mt="xs" mb="0">
-                    <Text className='tw-text-gray-200' weight={300}>Voir {card.discountOffers.length} enseignes</Text>
-                </Group>
-
-                <Text  className='tw-flex tw-text-gray-200' size="sm">
-                    <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1' />{card.association.name}
-                </Text>
             </Card>
         </Link>
 
