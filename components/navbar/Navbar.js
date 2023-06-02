@@ -11,12 +11,12 @@ import { deleteCookie, getCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { AppContext } from '@/context/AppContext';
-import { Avatar, Center, Flex, Overlay } from '@mantine/core';
+import { Avatar, Center, Flex, Overlay, Text } from '@mantine/core';
 import { BiHome } from 'react-icons/bi';
 
 
 
-export default function Navbar(){
+export default function Navbar(props){
     const role = getCookie('role') || 'particulier';
     const [token, setToken] = useState(false);
     const router = useRouter()
@@ -28,7 +28,8 @@ export default function Navbar(){
     const menuBgAnimate = { transform: "translateX(0%) translateY(0%)"}
     const menuInitial = { transform: "translateX(-100%) translateY(-100%)"}
     const menuAnimate = { transform: "translateX(0%) translateY(0%)"}
-    const isBusiness = router.pathname.includes('business')
+    const [isBusiness, setIsBusiness] = useState(router.pathname.includes('business'))
+    const [subscriptionEndDate, setSubscriptionEndDate] = useState('')
     const logoSrc = isBusiness ? '/logo-business.png' : '/logo.png'
 
     useScrollLock(lockScroll);
@@ -38,28 +39,51 @@ export default function Navbar(){
     }
     useEffect(() => {
         setToken(getCookie('token'))
+        
+        fetch(`/api/user/hasActiveSubscription`, {
+            method: 'GET',
+            headers: new Headers({
+            'JWTAuthorization': `Bearer ${getCookie('token')}`,
+            'Content-Type': 'application/json'
+            })
+        })
+        .then(res => res.json())
+        .then(res => {
+            console.log('---------------');
+            console.log('---------------');
+            console.log('---------------');
+            console.log('res', JSON.parse(res.data))
+            if (res.date != null) {
+                setIsBusiness(true)
+                setSubscriptionEndDate(`Business jusqu'à '. ${moment(JSON.parse(res.data.end)).format('DD/MM/YYYY')}`)
+            }
+        })
+        .catch(err => console.log(err))
     }, []);
 
     const loginAsLink = 
-        <Flex justify={'space-between'} align={'center'}>
-            <NavbarLink 
-                border={true} toggleMenu={ toggleMenu } 
-                href={'/login/as'} 
-                name={<>Changer de rôle <VscSync className="tw-my-auto tw-ml-1" /></>} />
-                
-            <NavbarLink 
-                border={true} toggleMenu={ toggleMenu } 
-                href={'/'} 
-                name={<><BiHome size={20} /></>} />
-           
-        </Flex>
+        <>
+            <Flex justify={'space-between'} align={'center'}>
+                <NavbarLink 
+                    border={true} toggleMenu={ toggleMenu } 
+                    href={'/login/as'} 
+                    name={<>Changer de rôle <VscSync className="tw-my-auto tw-ml-1" /></>} />
+                    
+                <NavbarLink 
+                    border={true} toggleMenu={ toggleMenu } 
+                    href={'/'} 
+                    name={<><BiHome size={20} /></>} />
+            
+            </Flex>
+            <Text>{subscriptionEndDate}</Text>
+        </>
     
     const NavParticulier = () => {
         return (
             <>
                 {loginAsLink}
-                <NavbarLink toggleMenu={ toggleMenu } href={''} name={<>Mon pace&lsquo;sport (carte)</>} />
-                <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Paramètres'} />
+                <NavbarLink toggleMenu={ toggleMenu } href={'/'} name={<>Mon pace&lsquo;sport (carte)</>} />
+                <NavbarLink toggleMenu={ toggleMenu } href={'/parametres?prev=/'} name={'Paramètres'} />
             </>
         )
     }
@@ -68,9 +92,9 @@ export default function Navbar(){
         return (
             <>
                 {loginAsLink}
-                <NavbarLink toggleMenu={ toggleMenu } href={''} name={<>Mon pace&lsquo;sport (carte)</>} />
+                <NavbarLink toggleMenu={ toggleMenu } href={'/'} name={<>Mon pace&lsquo;sport (carte)</>} />
                 <NavbarLink toggleMenu={ toggleMenu } href={'/sponsoring'} name={'Offres de partenariat'} />
-                <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Mon compte'} />
+                <NavbarLink toggleMenu={ toggleMenu } href={'/parametres?prev=/profil/association'} name={'Mon compte'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Invitations partenaires'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/annuaire?prev=${router.pathname}`} name={'Annuaire'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/gestion-fonds?prev=${router.pathname}`} name={'Gestion de fonds'} />
