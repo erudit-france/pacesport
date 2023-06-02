@@ -13,7 +13,7 @@ export default function OrganisationCardParticulier({organisation}) {
                     <Image
                     className='tw-object-cover blur'
                     src={`/uploads/${organisation.avatar?.name}`}
-                    height={60}
+                    height={80}
                     alt={organisation.name}
                     />
                 </Card.Section>

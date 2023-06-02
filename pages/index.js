@@ -11,6 +11,7 @@ import * as cookie from 'cookie'
 import { useRouter } from 'next/router'
 import OrganisationCard from '@/components/OrganisationCard'
 import OrganisationCardParticulier from '@/components/OrganisationCardParticulier'
+import AssociationCardParticulier from '@/components/AssociationCardParticulier'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,7 +25,7 @@ const DiscountCardsGrid = ({cards}) => {
       {cards.map(function(card) {
         return (
             <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
-              <AssociationCard card={card} />
+              <AssociationCardParticulier card={card} />
             </Grid.Col>
           )
       }
@@ -34,6 +35,24 @@ const DiscountCardsGrid = ({cards}) => {
 }
 
 export default function Page(props) {
+  const PossessedCardsGrid = () => {
+    return (
+      props.possessedCards.length == 0 
+      ? <Text color='dimmed' fz={'sm'} align='center'>Vous ne possédez aucune carte pour le moment</Text>
+      : <Grid gutter={12} className="mt-4 tw-px-3">
+        {props.possessedCards.map(function(card) {
+          return (
+              <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
+                <AssociationCardParticulier card={card} />
+              </Grid.Col>
+            )
+        }
+        )}
+      </Grid>
+    )
+  }
+
+  console.log('props.associations', props.cards)
   const associations = props.associations.map((card) => 
     <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
       <OrganisationCardParticulier organisation={card} />
@@ -59,6 +78,13 @@ export default function Page(props) {
                 <SearchInput />
               </section>
 
+              {/* Mes cartes */}
+              <section className='tw-mt-8'>
+                <SectionTitle title='Mes cartes' />
+                <PossessedCardsGrid />
+              </section>
+              <Space my={'xl'} h={'md'} />
+
               {/* carte proche */}
               <section className='tw-mt-8'>
                 <SectionTitle title='Carte proche de vous' />
@@ -68,7 +94,7 @@ export default function Page(props) {
 
               {/* Enseigne proche */}
               <section className='tw-mt-12'>
-                <SectionTitle title='Enseigne proche de vous' />
+                <SectionTitle title='Associations proche de vous' />
                 {/* <EnseigneGrid /> */}
                 {associationsGrid}
               </section>
@@ -86,6 +112,14 @@ export async function getServerSideProps(context) {
     })}
     )
   const data = await res.json()
+
+  let possessedCardsRes = await fetch(`${process.env.API_URL}/api/discount-card-user`, {
+    headers: new Headers({
+            'JWTAuthorization': `Bearer ${token}`,
+    })}
+    )
+  possessedCardsRes = await possessedCardsRes.json()
+  
 
   let avatar = await fetch(`${process.env.API_URL}/api/user/avatar`, {
     headers: new Headers({
@@ -107,7 +141,8 @@ export async function getServerSideProps(context) {
   return { props: {
     cards: JSON.parse(data.data),
     avatar: avatar.filename,
-    associations: JSON.parse(associations.data)
+    associations: JSON.parse(associations.data),
+    possessedCards: JSON.parse(possessedCardsRes.data),
   } }
 }
 

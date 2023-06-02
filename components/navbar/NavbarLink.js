@@ -15,6 +15,8 @@ export default function NavbarLink({name, href, toggleMenu, border}) {
         }
     }
 
+    const linkClassNames = href == '' ? ' tw-text-gray-400' : ''  + border ? ' tw-relative -tw-top-0.5' : ''
+
     return (
         <>
             <motion.li 
@@ -25,10 +27,7 @@ export default function NavbarLink({name, href, toggleMenu, border}) {
                     <Link 
                         onClick={toggleMenuHandler} 
                         href={href} 
-                        className={`tw-w-full tw-flex 
-                                ${href == '' ? 'tw-text-gray-400' : ''}
-                                ${border ? ' tw-relative -tw-top-0.5' : ''}
-                                `}>
+                        className={`tw-w-full tw-flex ${linkClassNames}`}>
                             {name}</Link></motion.li>
         </>
 
