@@ -124,11 +124,13 @@ export async function getServerSideProps(context) {
     hasActiveSubscriptionRes = await hasActiveSubscriptionRes.json();
 
     if (hasActiveSubscriptionRes.data != null) {
-        const { res } = context;
-        res.setHeader("location", "/profil/association/business");
-        res.statusCode = 302;
-        res.end();
-        return;
+        return {
+            redirect: {
+                permanent: false,
+                destination: "/profil/association/business",
+            },
+            props:{},
+        };
     }
 
     let avatar = await fetch(`${process.env.API_URL}/api/association/avatar`, {
