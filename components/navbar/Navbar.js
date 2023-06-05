@@ -28,7 +28,7 @@ export default function Navbar(props){
     const menuBgAnimate = { transform: "translateX(0%) translateY(0%)"}
     const menuInitial = { transform: "translateX(-100%) translateY(-100%)"}
     const menuAnimate = { transform: "translateX(0%) translateY(0%)"}
-    const [isBusiness, setIsBusiness] = useState(router.pathname.includes('business'))
+    const [isBusiness, setIsBusiness] = useState(null)
     const [subscriptionEndDate, setSubscriptionEndDate] = useState('')
     const logoSrc = isBusiness ? '/logo-business.png' : '/logo.png'
 
@@ -52,10 +52,11 @@ export default function Navbar(props){
             console.log('---------------');
             console.log('---------------');
             console.log('---------------');
-            console.log('res', JSON.parse(res.data))
             if (res.date != null) {
                 setIsBusiness(true)
                 setSubscriptionEndDate(`Business jusqu'à '. ${moment(JSON.parse(res.data.end)).format('DD/MM/YYYY')}`)
+            } else {
+                setIsBusiness(false)
             }
         })
         .catch(err => console.log(err))
@@ -75,7 +76,6 @@ export default function Navbar(props){
                     name={<><BiHome size={20} /></>} />
             
             </Flex>
-            <Text>{subscriptionEndDate}</Text>
         </>
     
     const NavParticulier = () => {
@@ -179,7 +179,7 @@ export default function Navbar(props){
                         <div className='tw-flex tw-flex-col tw-justify-center'>
                             <ul className='tw-relative -tw-top-4'>
                                 <Center mb={'md'}>
-                                    <Avatar src={logoSrc} size={70}/>
+                                    <Avatar src={isBusiness == true ? `/logo-business.png` : '/logo.png'} size={70}/>
                                 </Center>
                                 {role == 'particulier' && <NavParticulier toggleMenu={toggleMenu} />}
                                 {role == 'sponsor' && <NavSponsor toggleMenu={toggleMenu} />}

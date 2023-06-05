@@ -7,14 +7,18 @@ import { useRouter } from "next/router";
 import { serialize } from "object-to-formdata";
 import { useState } from "react";
 import Layout from "../layout";
+import Toast from "@/services/Toast";
+import fileUploader from "@/utils/fileUploader";
 
 export default function Page(props) {
     const router = useRouter();
     const [logo, setLogo] = useState(null);
+    const [logoFile, setLogoFile] = useState(null);
     const [logoError, setLogoError] = useState(null);
     const [isPublic, setIsPublic] = useState(props.isPublic);
     const [type, setType] = useState(null);
     const [typeError, setTypeError] = useState(null);
+    const { push } = useRouter()
 
     const isPublicHandler = (v) => {
         setIsPublic(v)
@@ -28,6 +32,7 @@ export default function Page(props) {
     }
 
     const handleLogo = (file) => {
+        setLogoFile(file)
         const url = URL.createObjectURL(file)
         setLogo(url)
         form.values.logo = file
@@ -63,35 +68,36 @@ export default function Page(props) {
 
     const submitHandler = (data) => {
         const body = serialize(data)
-        fetch(`/local/api/enseigne`, {
-            method: 'POST',
-            type: 'cors',
-            headers: new Headers({
-              'JWTAuthorization': `Bearer ${getCookie('token')}`
-            }),
-            body: body
-          })
-          .then(res => res.json())
-          .then(res => {
-            if(res.code == 401) router.push('/login')
-            console.log('res', res)
-            // if (res.data) {
-            //     showNotification({
-            //         title: 'Succès',
-            //         color: 'teal'
-            //     })
-            //     close()
-            // }
-            // console.log('res', res)
-        })
-        .catch((error) => {
-            showNotification({
-                title: 'Erreur',
-                message: 'Erreur pendant la création du compte partenaire',
-                color: 'red',
-                autoClose: 5000,
-            })
-        })
+
+        fileUploader(logoFile)
+            .then((response) => {
+                body.append('filename', response.data.filename)
+                fetch(`/api/enseigne`, {
+                    method: 'POST',
+                    type: 'cors',
+                    headers: new Headers({
+                      'JWTAuthorization': `Bearer ${getCookie('token')}`
+                    }),
+                    body: body
+                  })
+                  .then(res => res.json())
+                    .then(res => {
+                        if (res.code == 401) push('/login')
+                        console.log('res', res.data)
+                        if (res.data.code == 1) {
+                            Toast.success(res.data.message)
+                            setTimeout(() => {
+                                push('/profil/sponsor')
+                            }, 2000)
+                        } else {
+                            Toast.error(res.data.message)
+                        }
+                    })
+                    .catch((error) => { 
+                        Toast.error('Erreur pendant la création du sponsor') 
+                        console.log('error', error)
+                    })
+        });
     }
 
     const TypeEnseigne = ({error}) => {
@@ -175,12 +181,6 @@ export default function Page(props) {
                 placeholder={isPublic ? 'Description de la collectivité' : 'Description du partenaire'} 
                 radius="lg" size="sm" withAsterisk
                 {...form.getInputProps('description')}/>
-            <Flex className="tw-border-[1px] tw-border-gray-800 tw-bg-gray-900 tw-rounded-md tw-my-2 tw-py-2" direction={"column"}>
-                <Text align="center" className="tw-text-gray-300 tw-text-sm">Justificatifs</Text>
-                <FileInput className="tw-text-white placeholder:tw-text-white tw-bg-gray-100 tw-rounded-md" placeholder="Justificatif 1" size="sm" m={'xs'} withAsterisk/>
-                <FileInput className="tw-text-white placeholder:tw-text-white tw-bg-gray-100 tw-rounded-md" placeholder="Justificatif 2" size="sm" m={'xs'} withAsterisk/>
-            </Flex>
-
         </Paper>
 
         <Flex justify="center" align="center" direction="row" mt="md">
