@@ -142,6 +142,14 @@ export async function getServerSideProps(context) {
       })}
     )
     avatar = await avatar.json();
+    
+    let backgroundImage = await fetch(`${process.env.API_URL}/api/association/background`, {
+        headers: new Headers({
+                'JWTAuthorization': `Bearer ${token}`,
+        })}
+      )
+    backgroundImage = await backgroundImage.json();
+
     if (avatar.code == 401) {
         return {
             redirect: {
@@ -161,12 +169,13 @@ export async function getServerSideProps(context) {
     // // Pass data to the page via props
     return { props: {
         avatar: avatar.filename,
+        backgroundImage: backgroundImage.filename,
         cards: JSON.parse(cards.data)
     }}
   }
 
 Page.getLayout = function getLayout(page) {
     return (
-      <Layout avatar={null}>{page}</Layout>
+      <Layout>{page}</Layout>
     )
   }

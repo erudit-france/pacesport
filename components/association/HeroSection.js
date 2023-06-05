@@ -3,7 +3,7 @@ import fileUploader from "@/utils/fileUploader";
 import { useRouter } from "next/router";
 import { FiSettings } from "react-icons/fi";
 
-const { Box, Flex, ActionIcon, FileButton, Avatar, Image } = require("@mantine/core");
+const { Box, Flex, ActionIcon, FileButton, Avatar, Image, Group } = require("@mantine/core");
 const { useDisclosure } = require("@mantine/hooks");
 const { getCookie } = require("cookies-next");
 const { useState } = require("react");
@@ -11,12 +11,23 @@ const { RiImageAddFill } = require("react-icons/ri");
 const { RxCross2, RxCheck } = require("react-icons/rx");
 
 
-const HeroSection = ({avatar}) => {
+const HeroSection = ({avatar, background}) => {
     const router = useRouter()
     const originalImage = '/uploads/'.concat(avatar);
+    const originalBackgroundImage = background ? background : '/hand-in-hand.jpg'
+    const [backgroundImage, setBackground] = useState(background ? background : '/hand-in-hand.jpg')
     const [image, setImage] = useState(originalImage)
     const [editing, edit] = useDisclosure(false)
+    const [editingBackground, editBackground] = useDisclosure(false)
+    const [backgroundImageFile, setBackgroundImageFile] = useState(null)
     const [imageFile, setImageFile] = useState(null)
+    
+    const backgroundHandler = (file) => {
+        const url = URL.createObjectURL(file)
+        setBackground(url)
+        setBackgroundImageFile(file)
+        editBackground.open()
+    }
     
     const uploadHandler = (file) => {
         const url = URL.createObjectURL(file)
@@ -64,6 +75,41 @@ const HeroSection = ({avatar}) => {
         resetImage()
     }
 
+    const cancelBackgroundEdit = () => {
+        editBackground.close()
+        setBackground(originalBackgroundImage)
+    }
+
+    const confirmBackgroundEdit = () => {
+        if (!backgroundImageFile) {
+            Toast.error('Erreur pendant le téléchargement de l\'image')
+            resetImage()
+            edit.close()
+            return
+        }
+        fileUploader(backgroundImageFile)
+            .then((response) => {
+                let body = new FormData();
+                body.append('filename', response.data.filename)
+                fetch(`/api/association/backgroundimage`, {
+                    method: 'POST',
+                    type: 'cors',
+                    headers: new Headers({
+                      'JWTAuthorization': `Bearer ${getCookie('token')}`
+                    }),
+                    body: body
+                  })
+                  .then(res => res.json())
+                    .then(res => {
+                        res.data.code == 1 
+                            ? Toast.success(res.data.message)
+                            : Toast.error(res.data.message)
+                    })
+                    .catch((error) => { Toast.error('Erreur pendant le téléchargement de l\'image') })
+            });
+        edit.close()
+    }
+
     const LogoButtons = () => {
         if (editing) {
             return (
@@ -86,9 +132,28 @@ const HeroSection = ({avatar}) => {
         )
     }
 
+    const BackgroundButtons = () => {
+        if (editingBackground) {
+            return (
+                <Group className='tw-absolute tw-right-14 tw-top-16'>
+                    <ActionIcon onClick={cancelBackgroundEdit} className='tw-bg-gray-200/80 tw-relative tw-left-1' color='dark' variant='light' radius={'xl'}><RxCross2 /></ActionIcon>
+                    <ActionIcon onClick={confirmBackgroundEdit} className='tw-bg-teal-300/60' color='teal' variant='outline' radius={'xl'}><RxCheck /></ActionIcon>
+                </Group>
+            )
+        }
+        return (
+            <FileButton onChange={backgroundHandler} accept="image/png,image/jpeg">
+                {(props) => <ActionIcon {...props}  radius={'xl'} size={'md'}
+                    className="tw-bg-white tw-text-gray-900 tw-absolute tw-right-14 tw-top-16">
+                    <RiImageAddFill />
+                </ActionIcon>}
+            </FileButton>
+        )
+    }
+
     return (
         <header className='tw-flex tw-justify-center tw-h-32 tw-relative'>
-            <Image className='tw-w-full tw-h-full tw-absolute tw-object-cover -tw-z-10 tw-blur-sm tw-scale-110' src={'/hand-in-hand.jpg'} placeholder='blur' alt="Hero image"/>
+            <Image className='tw-w-full tw-h-full tw-absolute tw-object-cover -tw-z-10 tw-blur-sm tw-scale-110' src={backgroundImage} placeholder='blur' alt="Hero image"/>
             <div className='tw-flex tw-flex-col tw-justify-center tw-z-30'>
                 <Box className="tw-rounded-full tw-relative tw-top-16 tw-shadow-md">
                     <Avatar radius={9999} size={80} src={`${image}`}  alt="Logo Pace'sport" 
@@ -100,10 +165,9 @@ const HeroSection = ({avatar}) => {
                 className="tw-bg-white tw-text-gray-900 tw-absolute tw-right-4 tw-top-16">
                 <FiSettings />
             </ActionIcon>
-            <ActionIcon component="a" href='' radius={'xl'} size={'md'}
-                className="tw-bg-white tw-text-gray-900 tw-absolute tw-right-14 tw-top-16">
-                <RiImageAddFill />
-            </ActionIcon>
+
+
+            <BackgroundButtons />
         </header>
     )
 }

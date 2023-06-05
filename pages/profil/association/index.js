@@ -175,8 +175,16 @@ export async function getServerSideProps(context) {
     })
     stripe = await stripe.json();
 
+    let backgroundImage = await fetch(`${process.env.API_URL}/api/association/background`, {
+        headers: new Headers({
+                'JWTAuthorization': `Bearer ${token}`,
+        })}
+      )
+    backgroundImage = await backgroundImage.json();
+
     // // Pass data to the page via props
     return { props: {
+        backgroundImage: backgroundImage.filename,
         avatar: avatar.filename,
         cards: JSON.parse(cards.data),
         hasFinishedTutorial: JSON.parse(enseigne.data).hasFinishedTutorial,
