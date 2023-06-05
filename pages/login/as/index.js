@@ -60,6 +60,11 @@ const logout = () => {
 }
 
 export default function Page({status, loggedUser}){
+    const router = useRouter()
+    const logout = () => {
+        deleteCookie('token')
+        router.push('/home')
+    }
     const context = useContext(AppContext)
     if (!context.user) {
         context.setUser(loggedUser)
@@ -94,7 +99,14 @@ export default function Page({status, loggedUser}){
                         </Flex>
                     </Box>
                     <Box className="tw-bg-zinc-900 tw-px-16 tw-skew-y-3 tw-h-6 tw-relative -tw-top-4"></Box>
-                    <LinkButton className={'tw-px-16 tw-my-5'}  text='Déconnexion' href={''} />
+                    <Box className="tw-px-16">
+                        <Button 
+                            onClick={logout}
+                            className={`tw-my-5
+                                        tw-w-full tw-bg-red-800 tw-text-white hover:tw-bg-red-900 hover:tw-text-gray-100'}
+                                        `}
+                            radius='lg'>Déconnexion</Button>
+                    </Box>
                 </Flex>
             </Box>
         </>
