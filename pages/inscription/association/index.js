@@ -6,13 +6,19 @@ import Head from "next/head";
 import { serialize } from "object-to-formdata";
 import { useState } from "react";
 import Layout from "../layout";
+import fileUploader from "@/utils/fileUploader";
+import Toast from "@/services/Toast";
+import { useRouter } from "next/router";
 
 export default function Page() {
+    const { push } = useRouter()
     const [logo, setLogo] = useState(null);
+    const [logoFile, setLogoFile] = useState(null);
     const [logoError, setLogoError] = useState(null);
     const handleLogo = (file) => {
         const url = URL.createObjectURL(file)
         setLogo(url)
+        setLogoFile(file)
         form.values.logo = file
         setLogoError(null)
     }
@@ -35,44 +41,36 @@ export default function Page() {
     });
 
     const submitHandler = (data) => {
-        setLogoError(null)
-        // if (logo == null) {
-        //     setLogoError('Veuillez insérer un logo')
-        //     return
-        // }
-        const body = serialize(data)
-        // body.delete('logo')
-        console.log('body', body)
-
-        fetch(`/local/api/association`, {
-            method: 'POST',
-            type: 'cors',
-            headers: new Headers({
-              'JWTAuthorization': `Bearer ${getCookie('token')}`
-            }),
-            body: body
-          })
-          .then(res => res.json())
-          .then(res => {
-            console.log('res', res)
-            // if (res.data) {
-            //     showNotification({
-            //         title: 'Succès',
-            //         color: 'teal'
-            //     })
-            //     close()
-            // }
-            // console.log('res', res)
-        })
-        .catch((error) => {
-          console.log(error.message)
-            showNotification({
-                title: 'Erreur',
-                message: 'Erreur pendant la création de l\'association',
-                color: 'red',
-                autoClose: 5000,
-            })
-        })
+      const body = serialize(data)
+      fileUploader(logoFile)
+          .then((response) => {
+              body.append('filename', response.data.filename)
+              fetch(`/api/association`, {
+                  method: 'POST',
+                  type: 'cors',
+                  headers: new Headers({
+                    'JWTAuthorization': `Bearer ${getCookie('token')}`
+                  }),
+                  body: body
+                })
+                .then(res => res.json())
+                  .then(res => {
+                      if (res.code == 401) push('/login')
+                      console.log('res', res.data)
+                      if (res.data.code == 1) {
+                          Toast.success(res.data.message)
+                          setTimeout(() => {
+                              push('/profil/association')
+                          }, 2000)
+                      } else {
+                          Toast.error(res.data.message)
+                      }
+                  })
+                  .catch((error) => { 
+                      Toast.error(`Erreur pendant la création de l'association`) 
+                      console.log('error', error)
+                  })
+      });
     }
   return (
     <>
@@ -104,8 +102,7 @@ export default function Page() {
                 {...form.getInputProps('description')}/>
             <Flex className="tw-border-[1px] tw-border-gray-800 tw-bg-gray-900 tw-rounded-md tw-my-2 tw-py-2" direction={"column"}>
                 <Text align="center" className="tw-text-gray-300 tw-text-sm">Justificatifs</Text>
-                <FileInput className="tw-text-white placeholder:tw-text-white tw-bg-gray-100 tw-rounded-md" placeholder="Justificatif 1" size="sm" m={'xs'} withAsterisk/>
-                <FileInput className="tw-text-white placeholder:tw-text-white tw-bg-gray-100 tw-rounded-md" placeholder="Justificatif 2" size="sm" m={'xs'} withAsterisk/>
+                <FileInput className="tw-text-white placeholder:tw-text-white tw-bg-gray-100 tw-rounded-md" placeholder="Justificatif" size="sm" m={'xs'} withAsterisk/>
             </Flex>
 
         </Paper>

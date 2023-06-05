@@ -6,9 +6,6 @@ import { FaMapMarkerAlt } from 'react-icons/fa'
 export default function AssociationCard({card}) {
     var date = moment(card.startDate);
     var dateComponent = date.utc().format('DD/MM/YYYY');
-    const logoUrl = card.association.logo 
-    ? '/uploads/' + card.association.logo
-    : null
     return (
         <Link href={`sponsor/campagne/${card.id}`}>
             <Card className='tw-bg-gradient-to-br tw-from-red-600 tw-to-red-700/90 tw-border-0' shadow="md" padding="lg" radius="md" withBorder>
@@ -22,9 +19,9 @@ export default function AssociationCard({card}) {
                     </div>
                     <Image
                     className='tw-object-cover blur'
-                    src={logoUrl}
+                    src={`/uploads/${card.image?.name}`}
                     height={80}
-                    alt={card.association.name}
+                    alt={card.name}
                     />
                 </Card.Section>
 
