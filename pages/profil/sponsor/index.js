@@ -85,15 +85,6 @@ export default function Page(props) {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        
-        <Group className='tw-flex-col tw-absolute tw-right-3 tw-top-4' spacing={'md'}>
-            <ActionIcon 
-                className='tw-text-black tw-rounded-full tw-bg-white tw-shadow-sm'><IoMdSettings /></ActionIcon>
-            <ActionIcon 
-                className='tw-text-black tw-rounded-full tw-bg-white tw-shadow-sm'><MdQrCode2 /></ActionIcon>
-            <ActionIcon component='a' href='/communication/add?prev=/profil/sponsor' 
-                className='tw-text-black tw-rounded-full tw-bg-white tw-shadow-sm'><GoMegaphone /></ActionIcon>
-        </Group>
 
         <div className={ `${styles.main}` } >
             <main className='container'>
@@ -168,9 +159,16 @@ export async function getServerSideProps(context) {
   )
   associations = await associations.json();
   
+  let backgroundImage = await fetch(`${process.env.API_URL}/api/sponsor/background`, {
+    headers: new Headers({
+            'JWTAuthorization': `Bearer ${token}`,
+    })}
+  )
+  backgroundImage = await backgroundImage.json();
 
   // // Pass data to the page via props
   return { props: { 
+    backgroundImage: backgroundImage.filename,
     cards: JSON.parse(data.data),
     avatar: avatar.filename,
     associations: JSON.parse(associations.data)

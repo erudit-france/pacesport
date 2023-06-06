@@ -14,8 +14,8 @@ const { RxCross2, RxCheck } = require("react-icons/rx");
 const HeroSection = ({avatar, background}) => {
     const router = useRouter()
     const originalImage = '/uploads/'.concat(avatar);
-    const originalBackgroundImage = background ? background : '/hand-in-hand.jpg'
-    const [backgroundImage, setBackground] = useState(background ? background : '/hand-in-hand.jpg')
+    const originalBackgroundImage = background ? '/uploads/'+background : '/hand-in-hand.jpg'
+    const [backgroundImage, setBackground] = useState(background ? '/uploads/'+background : '/hand-in-hand.jpg')
     const [image, setImage] = useState(originalImage)
     const [editing, edit] = useDisclosure(false)
     const [editingBackground, editBackground] = useDisclosure(false)

@@ -1,6 +1,9 @@
 import Toast from "@/services/Toast";
 import fileUploader from "@/utils/fileUploader";
-import { Image } from "@mantine/core";
+import { Group, Image } from "@mantine/core";
+import { GoMegaphone } from "react-icons/go";
+import { IoMdSettings } from "react-icons/io";
+import { MdQrCode2 } from "react-icons/md";
 
 const { Box, Flex, ActionIcon, FileButton, Avatar } = require("@mantine/core");
 const { useDisclosure } = require("@mantine/hooks");
@@ -9,12 +12,58 @@ const { useState } = require("react");
 const { RiImageAddFill } = require("react-icons/ri");
 const { RxCross2, RxCheck } = require("react-icons/rx");
 
-const HeroSection = ({avatar}) => {
+const HeroSection = ({avatar, background}) => {
     const originalImage = '/uploads/'.concat(avatar);
     const [image, setImage] = useState(originalImage)
     const [editing, edit] = useDisclosure(false)
     const [imageFile, setImageFile] = useState(null)
+    const originalBackgroundImage = background ? '/uploads/'+background : '/hand-in-hand.jpg'
+    const [backgroundImage, setBackground] = useState(background ? '/uploads/'+background : '/hand-in-hand.jpg')
+    const [backgroundImageFile, setBackgroundImageFile] = useState(null)
+    const [editingBackground, editBackground] = useDisclosure(false)
     
+    const backgroundHandler = (file) => {
+        const url = URL.createObjectURL(file)
+        setBackground(url)
+        setBackgroundImageFile(file)
+        editBackground.open()
+    }
+
+    const cancelBackgroundEdit = () => {
+        editBackground.close()
+        setBackground(originalBackgroundImage)
+    }
+
+    const confirmBackgroundEdit = () => {
+        if (!backgroundImageFile) {
+            Toast.error('Erreur pendant le téléchargement de l\'image')
+            resetImage()
+            edit.close()
+            return
+        }
+        fileUploader(backgroundImageFile)
+            .then((response) => {
+                let body = new FormData();
+                body.append('filename', response.data.filename)
+                fetch(`/api/sponsor/backgroundimage`, {
+                    method: 'POST',
+                    type: 'cors',
+                    headers: new Headers({
+                      'JWTAuthorization': `Bearer ${getCookie('token')}`
+                    }),
+                    body: body
+                  })
+                  .then(res => res.json())
+                    .then(res => {
+                        res.data.code == 1 
+                            ? Toast.success(res.data.message)
+                            : Toast.error(res.data.message)
+                    })
+                    .catch((error) => { Toast.error('Erreur pendant le téléchargement de l\'image') })
+            });
+        edit.close()
+    }
+
     const uploadHandler = (file) => {
         const url = URL.createObjectURL(file)
         setImage(url)
@@ -83,9 +132,28 @@ const HeroSection = ({avatar}) => {
         )
     }
 
+    const BackgroundButtons = () => {
+        if (editingBackground) {
+            return (
+                <Group className='tw-absolute tw-right-14 tw-top-16'>
+                    <ActionIcon onClick={cancelBackgroundEdit} className='tw-bg-gray-200/80 tw-relative tw-left-1' color='dark' variant='light' radius={'xl'}><RxCross2 /></ActionIcon>
+                    <ActionIcon onClick={confirmBackgroundEdit} className='tw-bg-teal-300/60' color='teal' variant='outline' radius={'xl'}><RxCheck /></ActionIcon>
+                </Group>
+            )
+        }
+        return (
+            <FileButton onChange={backgroundHandler} accept="image/png,image/jpeg">
+                {(props) => <ActionIcon {...props}  radius={'xl'} size={'md'}
+                    className="tw-bg-white tw-text-gray-900 tw-absolute tw-right-14 tw-top-16">
+                    <RiImageAddFill />
+                </ActionIcon>}
+            </FileButton>
+        )
+    }
+
     return (
         <header className='tw-flex tw-justify-center tw-h-36 tw-relative'>
-            <Image className='tw-w-full tw-h-full tw-absolute tw-object-cover -tw-z-10 tw-blur-sm tw-scale-110' fullwidth='true' src={'/hand-in-hand.jpg'} placeholder='blur' alt="Hero image"/>
+            <Image className='tw-w-full tw-h-full tw-absolute tw-object-cover -tw-z-10 tw-blur-sm tw-scale-110' fullwidth='true' src={backgroundImage} placeholder='blur' alt="Hero image"/>
             <div className='tw-flex tw-flex-col tw-justify-center tw-z-30'>
                 <Box className="tw-relative tw-rounded-full">
                     <Avatar radius={9999} size={70} src={`${image}`}  alt="Logo Pace'sport" 
@@ -93,6 +161,17 @@ const HeroSection = ({avatar}) => {
                     <LogoButtons />
                 </Box>
             </div>
+
+            <Group className='tw-flex-col tw-absolute tw-right-3 tw-top-4 tw-z-20' spacing={'md'}>
+                <ActionIcon 
+                    className='tw-text-black tw-rounded-full tw-bg-white tw-shadow-sm'><IoMdSettings /></ActionIcon>
+                <ActionIcon 
+                    className='tw-text-black tw-rounded-full tw-bg-white tw-shadow-sm'><MdQrCode2 /></ActionIcon>
+                <ActionIcon component='a' href='/communication/add?prev=/profil/sponsor' 
+                    className='tw-text-black tw-rounded-full tw-bg-white tw-shadow-sm'><GoMegaphone /></ActionIcon>
+            </Group>
+
+            <BackgroundButtons />
         </header>
     )
 }
