@@ -101,8 +101,8 @@ export default function Page() {
             <TextInput mt="sm" variant="filled" description="Description" placeholder="Description" radius="lg" size="sm" withAsterisk
                 {...form.getInputProps('description')}/>
             <Flex className="tw-border-[1px] tw-border-gray-800 tw-bg-gray-900 tw-rounded-md tw-my-2 tw-py-2" direction={"column"}>
-                <Text align="center" className="tw-text-gray-300 tw-text-sm">Justificatifs</Text>
-                <FileInput className="tw-text-white placeholder:tw-text-white tw-bg-gray-100 tw-rounded-md" placeholder="Justificatif" size="sm" m={'xs'} withAsterisk/>
+                <Text align="center" className="tw-text-gray-300 tw-text-sm">Status</Text>
+                <FileInput className="tw-text-white placeholder:tw-text-white tw-bg-gray-100 tw-rounded-md" placeholder="Status" size="sm" m={'xs'} withAsterisk/>
             </Flex>
 
         </Paper>
