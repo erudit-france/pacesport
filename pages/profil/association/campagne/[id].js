@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Layout from "./ajouter/layout";
 import { useEffect, useState } from 'react';
-import { Stepper, Button, Group, TextInput, Text, Box, NumberInput, Flex, Modal, Skeleton, Progress, Title, Dialog, Space, Spoiler, Image, Accordion } from '@mantine/core';
+import { Stepper, Button, Group, TextInput, Text, Box, NumberInput, Flex, Modal, Skeleton, Progress, Title, Dialog, Space, Spoiler, Image, Accordion, Paper, ActionIcon, Avatar } from '@mantine/core';
 import { DateInput, DatePicker } from '@mantine/dates'
 import { useForm } from '@mantine/form';
 import 'dayjs/locale/fr';
@@ -15,8 +15,10 @@ import CampagneHeaderEditable from "@/components/CampagneHeaderEditable";
 import fileUploader from "@/utils/fileUploader";
 import { useRouter } from "next/navigation";
 import PreviousPageButton from "@/components/PreviousPageButton";
+import AssociationAcceptedOffers from "@/components/AssociationAcceptedOffers";
+import AssociationPendingOffers from "@/components/AssociationPendingOffers";
 
-export default function Page({card, previousUrl}){
+export default function Page({card, previousUrl, offers, acceptedOffers}){
     const [imageFile, setImageFile] = useState(null)
     const [image, setImage] = useState('/uploads/'+card.image.name)
     const [progress, setProgress] = useState(100)
@@ -214,14 +216,14 @@ export default function Page({card, previousUrl}){
                 <Box mt={'md'}>
                     <Title align="center" color="white" className="tw-bg-red-600 tw-font-light tw-pb-1" order={6}>Nouvelles offres de partenariat</Title>
                     <Accordion chevronPosition="right" variant="contained">
-                        {/* <AccordionComponent id={'Carol'} label={'Auchan'} content={'lorem ipsum'} image={null} />
-                        <AccordionComponent id={'Carol'} label={'Grand Frais'} content={'lorem ipsum'} image={null} />
-                        <AccordionComponent id={'Carol'} label={'Leclerc'} content={'lorem ipsum'} image={null} /> */}
+                        <AssociationPendingOffers offers={offers} />
                     </Accordion>
                 </Box>       
 
                 <Box mt={'md'}>
                     <Title align="center" color="white" className="tw-bg-red-600 tw-font-light tw-pb-1" order={6}>Offres validées de partenaire</Title>
+                    <AssociationAcceptedOffers offers={acceptedOffers} />
+                    <Space my={'lg'} />
                 </Box>  
 
                 <Space h={'xl'} mt={'xl'} />
@@ -243,19 +245,28 @@ export async function getServerSideProps(context) {
       )
     const data = await res.json()
   
-    if(data.code == 401) 
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/login"
-      }
-    }
+    let offerRes = await fetch(`${process.env.API_URL}/api/discount-enseigne-all-offer-pending/${id}`, {
+        headers: new Headers({
+                'JWTAuthorization': `Bearer ${token}`,
+        })}
+        )
+    let offersData = await offerRes.json()
+
+    let AcceptedoffersRes = await fetch(`${process.env.API_URL}/api/discount-enseigne-all-offer-accepted/${id}`, {
+        headers: new Headers({
+                'JWTAuthorization': `Bearer ${token}`,
+        })}
+        )
+    let acceptedOffersData = await AcceptedoffersRes.json()
+    
     let url = context.req.headers.referer
     let previousUrl = url === undefined ? '/profil/association/' : url
     // // Pass data to the page via props
     return { props: { 
         card: JSON.parse(data.data),
         previousUrl: previousUrl,
+        offers: JSON.parse(offersData.data),
+        acceptedOffers: JSON.parse(acceptedOffersData.data),
     } }
 }
 

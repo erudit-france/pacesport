@@ -26,23 +26,6 @@ const DiscountCardsGrid = ({cards}) => {
   )
 }
 
-const DiscountCardsGridBusiness = ({cards}) => {
-    return (
-        <Box className='tw-bg-yellow-600/60 tw-p-3'>
-            <Title order={5} className='tw-text-gray-100 tw-pb-2'>A la une</Title>
-            <Grid gutter={12} className="mt-4">
-            {cards.map(function(card) {
-            return (
-                <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
-                    <AssociationCard card={card} />
-                </Grid.Col>
-                )
-            }
-            )}
-        </Grid>
-      </Box>
-    )
-  }
 
 const CardsSection = (props) => (
         <section className='tw-mt-8'>
@@ -55,24 +38,25 @@ const CardsSection = (props) => (
 
 export default function Page(props) {
 
+  console.log('props', props)
   const associations = props.associations.map((card) => 
     <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
       <OrganisationCard organisation={card} />
     </Grid.Col>
   )
 
-  const associationsBusiness = props.associations.length > 2 
+  const associationsBusiness = props.associations?.length > 2 
     ? props.associations.slice(0,2).map((card) => 
     <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
       <OrganisationCard organisation={card} />
     </Grid.Col>)
     : ''
 
-  const associationsGrid = props.associations.length == 0
+  const associationsGrid = props.associations?.length == 0
     ? <Text fz={'sm'} align="center" color="dimmed">Aucune association enregistrée</Text>
     : <Grid gutter={12} className="mt-4 tw-px-3">{associations}</Grid>
 
-  const associationsGridBusiness = props.associations.length == 0
+  const associationsGridBusiness = props.associations?.length == 0
     ? <Text fz={'sm'} align="center" color="dimmed">Aucune association enregistrée</Text>
     : <Grid gutter={12} className="mt-4 tw-px-3">{associationsBusiness}</Grid>
 
