@@ -91,8 +91,7 @@ export default function Page(){
             offres: 0,
         },
         validate: {
-            prix: (v) => v > 0 ? null : 'Veuillez saisir un prix',
-            offres: (v) => v > 0 ? null : 'Veuillez saisir un nombre d\'offres'
+            prix: (v) => v > 0 ? null : 'Veuillez saisir un prix'
         }
     })
 
@@ -175,9 +174,6 @@ export default function Page(){
                                         <NumberInput size="xs" mb={'sm'} label="Montant de la carte"
                                                 withAsterisk
                                                 {...form2.getInputProps('prix')}/>
-                                        <NumberInput size="xs" mb={'sm'} label="Nombre d'offres"
-                                                withAsterisk
-                                                {...form2.getInputProps('offres')}/>
                                     </div>
                                 </Flex>
                                 <Flex justify={'center'} mt={'xs'}>

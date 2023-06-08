@@ -26,7 +26,7 @@ export default function AssociationCard({card}) {
                 </Card.Section>
 
                 <Group position="apart" mt="xs" mb="0">
-                    <Text className='tw-text-gray-200' weight={300}>Voir {card.discountOffers.length} enseignes</Text>
+                    <Text className='tw-text-gray-200' weight={300}>Voir {card.acceptedDiscountOffersCount} enseignes</Text>
                 </Group>
 
                 <Text  className='tw-flex tw-text-gray-200' size="sm">

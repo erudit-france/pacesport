@@ -91,8 +91,7 @@ export default function Page({card, previousUrl, offers, acceptedOffers}){
             offres: card.nbOffers,
         },
         validate: {
-            prix: (v) => v > 0 ? null : 'Veuillez saisir un prix',
-            offres: (v) => v > 0 ? null : 'Veuillez saisir un nombre d\'offres'
+            prix: (v) => v > 0 ? null : 'Veuillez saisir un prix'
         }
     })
 
@@ -199,16 +198,11 @@ export default function Page({card, previousUrl, offers, acceptedOffers}){
                                 <PageStatusIndicator page={2} currentPage={page} relative={false}/>
                                 <Flex direction={'column'} className="tw-flex-1 tw-ml-3">
                                     <Text size={'sm'} className="tw-font-semibold">Montant {form2.values.prix}€</Text>
-                                    <Text size={'sm'}>Nombre de cartes: {form2.values.offres}</Text>
+                                    <Text size={'sm'}>Nombre de cartes: {acceptedOffers ? acceptedOffers.length : 0}</Text>
                                 </Flex>
                             </Flex>
                         </div>
                     }
-                    
-                    {/* <Button className="tw-w-full tw-mx-auto tw-bg-teal-600 hover:tw-bg-teal-700 disabled:tw-border-2 disabled:tw-border-gray-100" 
-                        mt={'md'} radius={'lg'} size="sm" variant="filled" 
-                        disabled
-                        onClick={() => submitHandler()}>Enregister</Button> */}
                 </section>  
 
                 <Space h={'xl'} my={'xl'} />

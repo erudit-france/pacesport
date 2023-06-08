@@ -112,7 +112,7 @@ export default function Page(props) {
                   <PageStatusIndicator page={2} currentPage={2} relative={false}/>
                   <Flex direction={'column'} className="tw-flex-1 tw-ml-3">
                       <Text size={'sm'} className="">Montant {card.prix}</Text>
-                      <Text size={'sm'}>Nombre de cartes {card.offers}</Text>
+                      <Text size={'sm'}>Nombre de cartes {acceptedOffers.length}</Text>
                   </Flex>
               </Flex>
           </div>
