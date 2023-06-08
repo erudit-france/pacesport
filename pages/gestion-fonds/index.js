@@ -1,4 +1,4 @@
-import { Button, Flex, Loader, Select, Space, Table, Text, TextInput, createStyles } from "@mantine/core"
+import { Avatar, Button, Flex, Group, Loader, Select, Space, Table, Text, TextInput, createStyles } from "@mantine/core"
 import { useDebouncedState } from "@mantine/hooks"
 import Link from "next/link"
 import { useState } from "react"
@@ -11,6 +11,8 @@ import { SlChart } from 'react-icons/sl'
 import { FaChevronDown } from "react-icons/fa"
 import { useRouter } from "next/router"
 import { getCookie } from "cookies-next"
+import { AiOutlineArrowDown, AiOutlineArrowUp } from "react-icons/ai"
+import { forwardRef } from 'react'
 
 const useStyles = createStyles((theme) => ({
     td: {
@@ -19,6 +21,18 @@ const useStyles = createStyles((theme) => ({
 }))
 
 
+const SelectItem = forwardRef(
+    ({label, icon, ...others}, ref) => (
+      <div ref={ref} {...others}>
+        <Flex justify={'space-between'}>
+            <Text size="sm">{label}</Text>
+            {icon}
+        </Flex>
+      </div>
+    )
+  );
+
+  SelectItem.displayName = 'SelectItem';
 
 const FilterHeader = ({ sort, sortHandler }) => (
     <Flex justify='space-between' px={'md'} py={'md'}>
@@ -38,11 +52,12 @@ const FilterHeader = ({ sort, sortHandler }) => (
                 value={sort}
                 onChange={sortHandler}
                 defaultValue="dateDESC"
+                itemComponent={SelectItem}
                 data={[
-                    { value: 'dateASC', label: 'Date ASC' },
-                    { value: 'dateDESC', label: 'Date DESC' },
-                    { value: 'prixASC', label: 'Prix ASC' },
-                    { value: 'prixDESC', label: 'Prix DESC' },
+                    { value: 'dateASC', label: 'Date', icon: <AiOutlineArrowUp size={18}/> },
+                    { value: 'dateDESC', label: 'Date', icon: <AiOutlineArrowDown size={18}/>},
+                    { value: 'prixASC', label: 'Prix', icon: <AiOutlineArrowUp size={18}/> },
+                    { value: 'prixDESC', label: 'Prix', icon: <AiOutlineArrowDown size={18}/>}
                 ]}
             />
     </Flex>
