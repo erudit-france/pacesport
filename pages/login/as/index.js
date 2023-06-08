@@ -70,6 +70,7 @@ export default function Page({status, loggedUser}){
         context.setUser(loggedUser)
     }
 
+    const usernameParticulier = loggedUser?.prenom ? loggedUser?.prenom : 'Particulier'
     const associationLink = status.association == true 
             ? '/profil/association'
             : '/inscription/association';
@@ -87,14 +88,14 @@ export default function Page({status, loggedUser}){
                 <Title order={6} align="center" weight={600} color="white">
                         Se connecter en tant que</Title>
                 <Flex justify='center' direction='column' mb='md' gap="xl">
-                    <LinkButton className={'tw-px-16 tw-mb-0'} text='Particulier' href='/' />
+                    <LinkButton className={'tw-px-16 tw-mb-0'} text={usernameParticulier} href='/' />
                 </Flex>
                 <Flex className="tw-overflow-hidden" justify='center' direction='column'>
                     <Box className="tw-bg-zinc-900 tw-px-16 tw-skew-y-3 tw-h-6 tw-relative tw-top-4"></Box>
                     <Box className="tw-bg-zinc-900 tw-px-16" py={'md'}>
                         <Flex justify='center' direction='column' my='xs' py={'sm'} gap="xs">
                             <Title order={6} align="center" weight={600} color="white">Compte pro</Title>
-                            <LinkButton className={''} text='Sponsor' href={sponsorLink} lock={true}/>
+                            <LinkButton className={''} text='Sponsor/Partenaire' href={sponsorLink} lock={true}/>
                             <LinkButton className={' tw-mb-2'} text='Association' href={associationLink} lock={true} />
                         </Flex>
                     </Box>
