@@ -202,6 +202,7 @@ export default function Page(){
                     
                     <Button className="tw-w-full tw-mx-auto tw-bg-teal-600 hover:tw-bg-teal-700 disabled:tw-border-2 disabled:tw-border-gray-100" 
                         mt={'md'} radius={'lg'} size="sm" variant="filled" 
+                        disabled={page < 3}
                         onClick={() => submitHandler()}>Enregister</Button>
                 </section>  
 
