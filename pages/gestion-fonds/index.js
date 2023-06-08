@@ -76,7 +76,7 @@ export default function Page() {
             <Link href={''}><Button variant="filled" size="sm"
                 className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
                 hover:tw-bg-gray-100 hover:tw-text-black" 
-                radius={'xl'}>Ajouter un RIB</Button></Link>
+                radius={'xl'}>Rapatrier sur mon compte</Button></Link>
             <Link href={'/gestion-fonds/statistiques'}><Button variant="filled" size="sm"
                 className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
                 hover:tw-bg-gray-100 hover:tw-text-black" 

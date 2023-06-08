@@ -3,7 +3,7 @@ import moment from "moment";
 
 export default function AssociationCardToAdd({card, addToCardList}){
     console.log('availablecard', card)
-    const status = 1
+    const status = card.status ? card.status : 0;
     const statusString = (status) => { return status == 1 ? 'Active' : 'En attente' }
 
     return (

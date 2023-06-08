@@ -92,7 +92,7 @@ export default function Navbar(props){
         return (
             <>
                 {loginAsLink}
-                <NavbarLink toggleMenu={ toggleMenu } href={'/'} name={<>Mon pace&lsquo;sport (carte)</>} />
+                <NavbarLink toggleMenu={ toggleMenu } href={'/profil/association'} name={<>Mon pace&lsquo;sport (carte)</>} />
                 <NavbarLink toggleMenu={ toggleMenu } href={'/sponsoring'} name={'Offres de partenariat'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={'/parametres?prev=/profil/association'} name={'Mon compte'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Invitations partenaires'} />

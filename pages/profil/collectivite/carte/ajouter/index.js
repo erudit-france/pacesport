@@ -57,7 +57,7 @@ export default function Page(props){
 
     
     const addedCards = cardList.map((card) => 
-        <CollectiviteAssociationCard key={card.id} card={card} removeFromCardList={removeFromCardList}
+        <CollectiviteAssociationCard status={card.status} key={card.id} card={card} removeFromCardList={removeFromCardList}
             cardList={cardList} setCardList={setCardList} setProgress={setProgress}/>
     )
     const addedCardsList = cardList.length == 0

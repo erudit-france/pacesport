@@ -2,8 +2,7 @@ import { AspectRatio, Badge, Box, Button, Flex, Image, Text } from "@mantine/cor
 import moment from "moment";
 import Link from "next/link";
 
-export default function CampagneCard({id, title, image, startDate}){
-    const status = 1
+export default function CampagneCard({id, title, image, startDate, status}){
     const statusString = (status) => { return status == 1 ? 'Active' : 'En attente' }
 
     return (

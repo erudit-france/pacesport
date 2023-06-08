@@ -6,7 +6,7 @@ import { BsPercent } from "react-icons/bs";
 import { FiMinus, FiPlus } from "react-icons/fi";
 import { IMaskInput } from 'react-imask';
 
-export default function CollectiviteAssociationCard({card, setCardList, setProgress, removeFromCardList }){
+export default function CollectiviteAssociationCard({card, setCardList, setProgress, removeFromCardList, status }){
     console.log('CollectiviteAssociationCard', card)
     const [count, handlers] = useCounter(0, { min: 0, max: 100 });
     const updateSelectedCards = (newCount) => {
@@ -47,7 +47,6 @@ export default function CollectiviteAssociationCard({card, setCardList, setProgr
         return cardList.findIndex(x => x.id == props.id)
     }
     const id = useId();
-    const status = 1
     const statusString = (status) => { return status == 1 ? 'Active' : 'En attente' }
 
     return (

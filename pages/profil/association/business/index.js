@@ -19,7 +19,7 @@ ChartJS.register(ArcElement, Tooltip, Legend, ChartTitle);
 export default function Page(props){
     const isAccountLimited = false
     const Cards = props.cards.map((card) => 
-        <CampagneCard id={card.id} key={card.name + card.id} title={card.name} image={card.image?.name} startDate={card.startDate} />
+        <CampagneCard status={card.status} id={card.id} key={card.name + card.id} title={card.name} image={card.image?.name} startDate={card.startDate} />
     )
     const CardList = props.cards.length == 0
         ? <Text align="center" color="dimmed">Aucune carte enregistrée</Text>
