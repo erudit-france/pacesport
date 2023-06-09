@@ -37,7 +37,7 @@ export default function Page(props) {
         <>
             <div className="tw-container tw-mx-auto tw-px-2">
                 <Box my={'sm'}>
-                    <PreviousPageButton href={props.query?.prev || '/'}/>
+                    <PreviousPageButton href={props.previousUrl}/>
                 </Box>
                 <form onSubmit={form.onSubmit((values) => submitHandler(values))}>
                     <Textarea
@@ -74,9 +74,16 @@ export default function Page(props) {
     )
 }
 
-Page.getInitialProps = ({query}) => {
-    return {query}
+
+export async function getServerSideProps(context) {
+    let url = context.req.headers.referer
+    let previousUrl = url === undefined ? '/profil/sponsor/' : url
+    // // Pass data to the page via props
+    return { props: { 
+        previousUrl: previousUrl
+    } }
 }
+
 
 Page.getLayout = function getLayout(page) {
     return (

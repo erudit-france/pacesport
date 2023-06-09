@@ -110,7 +110,7 @@ export default function Navbar(props){
         return (
             <>
                 {loginAsLink}
-                <NavbarLink toggleMenu={ toggleMenu } href={''} name={'Mes cartes / partenariats actifs'} />
+                <NavbarLink toggleMenu={ toggleMenu } href={'/profil/sponsor/offers'} name={'Mes cartes / partenariats actifs'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={'/sponsoring'} name={'Offres de partenariat'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={'/communication/add'} name={'Communication'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/annuaire?prev=${router.pathname}`} name={'Annuaire'} />
@@ -182,7 +182,7 @@ export default function Navbar(props){
                                     <Avatar src={isBusiness == true ? `/logo-business.png` : '/logo.png'} size={70}/>
                                 </Center>
                                 {role == 'particulier' && <NavParticulier toggleMenu={toggleMenu} />}
-                                {role == 'sponsor' && <NavSponsor toggleMenu={toggleMenu} />}
+                                {role == 'sponsor/partenaire' && <NavSponsor toggleMenu={toggleMenu} />}
                                 {role == 'association' && <NavAssociation toggleMenu={toggleMenu} />}
                             </ul>
                         </div>

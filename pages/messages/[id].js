@@ -1,4 +1,4 @@
-import { Avatar, Button, Flex, ScrollArea, Skeleton, Text, TextInput } from "@mantine/core"
+import { Avatar, Box, Button, Flex, ScrollArea, Skeleton, Text, TextInput } from "@mantine/core"
 import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -12,6 +12,8 @@ import { getCookie } from "cookies-next"
 import { useForm } from "@mantine/form"
 import { FiArrowRight } from 'react-icons/fi'
 import { serialize } from "object-to-formdata"
+import { AiOutlineFile } from "react-icons/ai"
+import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material"
 
 const ChatHeader = () => {
     const router = useRouter()
@@ -54,6 +56,30 @@ const ChatHeader = () => {
         </header>
     )
 }
+
+const actions = [
+    { icon: <AiOutlineFile />, name: 'Fichier' }
+];
+  
+const BasicSpeedDial = () => {
+    return (
+      <Box sx={{ height: 320, transform: 'translateZ(0px)', flexGrow: 1 }}>
+        <SpeedDial
+          ariaLabel="SpeedDial basic example"
+          sx={{ position: 'absolute', bottom: 16, right: 16 }}
+          icon={<SpeedDialIcon />}
+        >
+          {actions.map((action) => (
+            <SpeedDialAction
+              key={action.name}
+              icon={action.icon}
+              tooltipTitle={action.name}
+            />
+          ))}
+        </SpeedDial>
+      </Box>
+    );
+  }
 
 export default function Page(props) {
     const router = useRouter()
@@ -117,13 +143,14 @@ export default function Page(props) {
                                 ))}
                     </ScrollArea>
                     <form onSubmit={form.onSubmit((values) => submitChat(values))}>
-                        <Flex justify={'space-between'}>
+                        <Flex justify={'space-between'} pos={'relative'}>
                             <TextInput radius='lg' placeholder="message" 
                                     className="tw-flex-grow tw-ml-3"
                                     {...form.getInputProps('message')}/>
-                            <Button type="submit" className="hover:tw-bg-white">
+                            <Button type="submit" className=" tw-absolute tw-right-14 hover:tw-bg-transparent">
                                 <FiArrowRight size={30} className=" tw-bg-teal-600 tw-p-1 tw-rounded-full tw-text-white" />
                             </Button>
+                            <BasicSpeedDial />
                         </Flex>
                     </form>
             </section>
