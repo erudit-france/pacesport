@@ -33,6 +33,10 @@ const NavHeader = ({href}) => (
           className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
           hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
           radius={'xl'}><BsArrowLeft /></Button></Link>
+      <Link href={''}><Button variant="filled" size="sm"
+          className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+          hover:tw-bg-gray-100 hover:tw-text-black" 
+          radius={'xl'}>Rapatrier sur mon compte</Button></Link>
   </Flex>
 )
 
@@ -55,7 +59,7 @@ const OffersChart = ({start, end}) => {
       },
       title: {
         display: false,
-        text: 'Offres',
+        text: 'Sponsoring/mecenat',
       },
     },
   };
@@ -66,7 +70,7 @@ const OffersChart = ({start, end}) => {
       labels,
       datasets: [
         {
-          label: 'Offres',
+          label: 'Sponsoring/mecenat',
           data: labels.map(() => (Math.random() * (24.99 - 2.99)).toFixed(2)),
           backgroundColor: color,
         }
