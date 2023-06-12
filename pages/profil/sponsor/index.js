@@ -10,6 +10,7 @@ import { MdQrCode2 } from 'react-icons/md'
 import { GoMegaphone } from 'react-icons/go'
 import Link from 'next/link'
 import OrganisationCard from '@/components/OrganisationCard'
+import SponsoringOfferCard from '@/components/SponsoringOffer'
 
 const DiscountCardsGrid = ({cards}) => {
   return (
@@ -60,6 +61,20 @@ export default function Page(props) {
     ? <Text fz={'sm'} align="center" color="dimmed">Aucune association enregistrée</Text>
     : <Grid gutter={12} className="mt-4 tw-px-3">{associationsBusiness}</Grid>
 
+  const SponsoringOffersGrid = () => {
+    return (
+      <Grid gutter={12} className="mt-4 tw-px-3">
+        {props.sponsoringOffers.map(function(offer) {
+          return (
+              <Grid.Col key={String(offer.id)} span={6} xs={6} xl={3}>
+                <SponsoringOfferCard offer={offer} />
+              </Grid.Col>
+            )
+        }
+        )}
+      </Grid>
+    )
+  }
 
   return (
     <>
@@ -89,7 +104,13 @@ export default function Page(props) {
               
 
               <CardsSection title="Offres de partenariat de mon réseau">
-                <Text align='center' color='dimmed'>Aucune offre enregistrée</Text>
+                {
+                  props.sponsoringOffers == 0
+                    ? <Text align='center' color='dimmed'>Aucune offre enregistrée</Text>
+                    : <SponsoringOffersGrid />
+                }
+                
+                
               </CardsSection> 
 
               <Space h={'lg'} my={'md'} />
@@ -150,12 +171,20 @@ export async function getServerSideProps(context) {
   )
   backgroundImage = await backgroundImage.json();
 
+  let sponsoringOffers = await fetch(`${process.env.API_URL}/api/sponsoring-offer`, {
+    headers: new Headers({
+            'JWTAuthorization': `Bearer ${token}`,
+    })}
+  )
+  sponsoringOffers = await sponsoringOffers.json();
+
   // // Pass data to the page via props
   return { props: { 
     backgroundImage: backgroundImage.filename,
     cards: JSON.parse(data.data),
     avatar: avatar.filename,
-    associations: JSON.parse(associations.data)
+    associations: JSON.parse(associations.data),
+    sponsoringOffers: JSON.parse(sponsoringOffers.data)
   } }
 }
 
