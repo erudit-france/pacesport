@@ -8,7 +8,7 @@ export default function SponsoringOfferCard({offer}) {
     console.log('offer', offer)
 
     return (
-        <Link href={``}>
+        <Link href={`/profil/sponsor/sponsoring/${offer.id}`}>
             <Card className='tw-bg-gradient-to-br tw-from-gray-50 tw-to-white tw-border-0' shadow="md" padding="lg" radius="md" withBorder>
                 <Card.Section className='tw-relative'>
                     <div className='tw-w-full tw-h-full tw-px-4 tw-absolute tw-bg-slate-700/50 tw-z-20 tw-flex tw-flex-col tw-justify-around'>

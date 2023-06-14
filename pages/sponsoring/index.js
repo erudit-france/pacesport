@@ -3,7 +3,7 @@ import Layout from "./layout"
 import Link from "next/link"
 import { GoPlus } from 'react-icons/go'
 import { IoStatsChartSharp } from 'react-icons/io5'
-import { Button, Flex, Image, Modal, Space, Text, TextInput, Textarea, Title } from "@mantine/core"
+import { Avatar, Box, Button, Divider, Flex, Group, Image, Modal, Space, Text, TextInput, Textarea, Title } from "@mantine/core"
 import { useState } from "react"
 import OfferList from "../partenariat/components/OfferList"
 
@@ -37,33 +37,35 @@ export default function Page(props) {
 
     
     const ActiveOfferRow = ({offer}) => (
-        <Flex  className="tw-shadow-md tw-bg-gray-50" justify={'space-between'} px={'md'}>
+        <Box className="tw-shadow-md tw-bg-gray- tw-py-2">
+        <Flex justify={'space-between'} px={'md'}>
             <Image
                 width={140}
                 height={90}
                 src={offer.images.length > 0 ? '/uploads/' + offer.images[0].filename : null}
                 alt="With default placeholder"
                 />
-            <Flex className="tw-flex-col" justify={'center'} align={'center'}>
-                <Text align="center" fz={'sm'}>{offer.title}</Text>
-                <Text align="center" fz={'sm'} color="dimmed">{offer.description}</Text>
-                {/* <Text align="center" fz={'xs'} className="tw-font-light tw-text-red-700">Attente de paiement</Text> */}
-            </Flex>
-            <Flex justify={'center'} align={'center'}>
-                <Button onClick={() => { setOpened(true); setCurrentOffer(offer) }}
-                    variant="outline" radius={'lg'} 
-                    className="tw-border-yellow-600/70 tw-text-yellow-600/70
-                    hover:tw-bg-yellow-600/80 hover:tw-text-white
-                        tw-border-[1.8px] tw-text-sm tw-py-1 tw-px-2">
-                    Détails</Button>
-            </Flex>
+            <Box className="tw-flex-1">
+                <Text align="left" weight={600} fz={'md'}>{offer.title}</Text>
+                <Text align="left" fz={'sm'} color="dimmed">{offer.description}</Text>
+                <Divider my={'md'} />
+                <Group mb={'md'}>
+                    <Avatar radius={'xl'} size={'sm'} className="tw-shadow-md" src={`/uploads/${offer.activeProposition.sponsor.avatar?.name}`} />
+                    <Text fz={'sm'}>{offer.activeProposition.sponsor.name}</Text>
+                </Group>
+                <Text color="dimmed" fz={'sm'}>
+                    {offer.activeProposition.description}
+                </Text>
+            </Box>
         </Flex>
+        
+        </Box>
     )
 
     const activeOffersList = props.activeOffers.length == 0
             ? <Text align="center" color="dimmed" fz={'xs'}>Aucune offre</Text>
-            : props.sponsoringOffers.map((offer) => (
-                <OfferRow key={offer.title} offer={offer} />
+            : props.activeOffers.map((offer) => (
+                <ActiveOfferRow key={offer.title} offer={offer} />
             ))
 
     const offersList = props.sponsoringOffers.length == 0
@@ -164,11 +166,21 @@ export async function getServerSideProps(context) {
       })}
     )
     sponsoringOffers = await sponsoringOffers.json();
+
+    
+    let activeOffers = await fetch(`${process.env.API_URL}/api/sponsoring-offer-association-active`, {
+        headers: new Headers({
+                'JWTAuthorization': `Bearer ${token}`,
+        })}
+      )
+    activeOffers = await activeOffers.json();
+
+    console.log('activeOffers', activeOffers)
   
     // // Pass data to the page via props
     return { props: { 
       sponsoringOffers: JSON.parse(sponsoringOffers.data),
-      activeOffers: []
+      activeOffers: JSON.parse(activeOffers.data)
     } }
   }
 
