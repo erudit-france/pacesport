@@ -3,7 +3,7 @@ import Layout from "./layout"
 import Link from "next/link"
 import { GoPlus } from 'react-icons/go'
 import { IoStatsChartSharp } from 'react-icons/io5'
-import { Avatar, Box, Button, Divider, Flex, Group, Image, Modal, Space, Text, TextInput, Textarea, Title } from "@mantine/core"
+import { Avatar, Box, Button, Center, Divider, Flex, Group, Image, Modal, Space, Text, TextInput, Textarea, Title } from "@mantine/core"
 import { useState } from "react"
 import OfferList from "../partenariat/components/OfferList"
 
@@ -58,9 +58,29 @@ export default function Page(props) {
                 </Text>
             </Box>
         </Flex>
-        
         </Box>
     )
+
+    const OfferPropositionRow = ({offer}) => {
+        var sponsoringOfferImg = offer.sponsoringOffer.images.length != 0 ? '/uploads/' + offer.sponsoringOffer.images[0].name : null
+        return (
+            <Box className="tw-flex-1 tw-border-b-2 tw-m-3 tw-p-3 tw-rounded-md tw-shadow-sm">
+                <Group mb={'md'}>
+                    <Avatar radius={'xl'} size={'md'} className="tw-shadow-md" src={`${sponsoringOfferImg}`} />
+                    <Text fz={'md'} weight={600}>{offer.sponsoringOffer.title}</Text>
+                </Group>
+                <Group mb={'md'}>
+                    <Avatar radius={'xl'} size={'sm'} className="tw-shadow-md" src={`/uploads/${offer.sponsor.avatar?.name}`} />
+                    <Text fz={'sm'}>{offer.sponsor.name}</Text>
+                </Group>
+                <Text align="left" fz={'sm'}>{offer.description}</Text>
+                <Flex justify={'space-around'} my={('lg')}>
+                    <Button size="sm" color="green" variant="outline">Accepter</Button>
+                    <Button size="sm" color="red" variant="outline">Refuser</Button>
+                </Flex>
+            </Box>
+        )
+    }
 
     const activeOffersList = props.activeOffers.length == 0
             ? <Text align="center" color="dimmed" fz={'xs'}>Aucune offre</Text>
@@ -73,6 +93,12 @@ export default function Page(props) {
             : props.sponsoringOffers.map((offer) => (
                 <OfferRow key={offer.title} offer={offer} />
             ))
+
+    const pendingPropositionsList = props.pendingPropositions.length == 0
+        ? <Text align="center" color="dimmed" fz={'xs'}>Aucune proposition</Text>
+        : props.pendingPropositions.map((offer) => (
+            <OfferPropositionRow key={offer.title} offer={offer} />
+        ))
 
     const SponsoringOfferModal = () => {
         if (currentOffer == null) {
@@ -148,6 +174,11 @@ export default function Page(props) {
             {activeOffersList}
 
             <Space  h={'lg'} my={'xl'} />
+            
+            <Title order={1} className="tw-bg-yellow-600/70 tw-text-white tw-py-1 tw-shadow-sm tw-mt-8" mb={'md'} size='h6' align="center">Propositions en attentes</Title>
+            {pendingPropositionsList}
+
+            <Space  h={'lg'} my={'xl'} />
 
             <Title order={1} className="tw-bg-yellow-600/70 tw-text-white tw-py-1 tw-shadow-sm tw-mt-6" mb={'md'} size='h6' align="center">Mes offres</Title>
             {offersList}
@@ -175,12 +206,21 @@ export async function getServerSideProps(context) {
       )
     activeOffers = await activeOffers.json();
 
-    console.log('activeOffers', activeOffers)
+    let pendingPropositions = await fetch(`${process.env.API_URL}/api/sponsoring-offer-propositions-by-association/pending/`, {
+        headers: new Headers({
+                'JWTAuthorization': `Bearer ${token}`,
+        })}
+      )
+    pendingPropositions = await pendingPropositions.json();
+    
+
+    console.log('pendingPropositions', pendingPropositions)
   
     // // Pass data to the page via props
     return { props: { 
       sponsoringOffers: JSON.parse(sponsoringOffers.data),
-      activeOffers: JSON.parse(activeOffers.data)
+      activeOffers: JSON.parse(activeOffers.data),
+      pendingPropositions: JSON.parse(pendingPropositions.data),
     } }
   }
 
