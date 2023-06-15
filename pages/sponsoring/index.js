@@ -6,11 +6,59 @@ import { IoStatsChartSharp } from 'react-icons/io5'
 import { Avatar, Box, Button, Center, Divider, Flex, Group, Image, Modal, Space, Text, TextInput, Textarea, Title } from "@mantine/core"
 import { useState } from "react"
 import OfferList from "../partenariat/components/OfferList"
+import Toast from "@/services/Toast"
+import { getCookie } from "cookies-next"
+import { useRouter } from "next/router"
 
 export default function Page(props) {
-    console.log('props', props)
+    const router = useRouter()
     const [opened, setOpened] = useState(false);
+    const [loading, setLoading] = useState(false);
     const [currentOffer, setCurrentOffer] = useState(null);
+    const refresh = () => { router.reload(window.location.pathname) }
+
+    const acceptOffer = (id) => {
+        setLoading(true)
+        fetch(`/api/sponsoring-offer-proposition/accept`, {
+            method: 'POST',
+            type: 'cors',
+            headers: new Headers({
+              'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: JSON.stringify({offerId: id})
+          })
+            .then(res => res.json())
+            .then(res => {
+                res.data.code == 1 
+                    ? Toast.success(res.data.message)
+                    : Toast.error(res.data.message)
+                refresh()
+            })
+            .catch((error) => { Toast.error('Erreur') })
+        setLoading(false)
+    }
+
+    const declineOffer = (id) => {
+        setLoading(true)
+        fetch(`/api/sponsoring-offer-proposition/decline`, {
+            method: 'POST',
+            type: 'cors',
+            headers: new Headers({
+              'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: JSON.stringify({offerId: id})
+          })
+            .then(res => res.json())
+            .then(res => {
+                res.data.code == 1 
+                    ? Toast.success(res.data.message)
+                    : Toast.error(res.data.message)
+                refresh()
+            })
+            .catch((error) => { Toast.error('Erreur') })
+        setLoading(false)
+    }
+
     const OfferRow = ({offer}) => (
         <Flex  className="tw-shadow-md tw-bg-gray-50" justify={'space-between'} px={'md'} mb={'xs'}>
             <Image
@@ -74,12 +122,34 @@ export default function Page(props) {
                     <Text fz={'sm'}>{offer.sponsor.name}</Text>
                 </Group>
                 <Text align="left" fz={'sm'}>{offer.description}</Text>
-                <Flex justify={'space-around'} my={('lg')}>
-                    <Button size="sm" color="green" variant="outline">Accepter</Button>
-                    <Button size="sm" color="red" variant="outline">Refuser</Button>
-                </Flex>
+                <OfferPropositionStatus offer={offer} />
             </Box>
         )
+    }
+
+    const OfferPropositionStatus = ({offer}) => {
+        if (offer.accepted == null && offer.declined == null) {
+            return <>
+                <Flex justify={'space-around'} my={('lg')}>
+                    <Button size="sm" color="green" disabled={loading} variant="outline"
+                        onClick={() => acceptOffer(offer.id)}>Accepter</Button>
+                    <Button size="sm" color="red" disabled={loading} variant="outline"
+                        onClick={() => declineOffer(offer.id)}>Refuser</Button>
+                </Flex>
+            </>
+        }
+
+        if (offer.accepted == true && offer.paid == null) {
+            return (
+                <Text align="center" my={'md'} className="tw-text-yellow-900 tw-font-semibold">Offre acceptée, en attente de paiement</Text>
+            )
+        }
+        
+        if (offer.accepted == true && offer.paid == true) {
+            return (
+                <Text align="center" my={'md'} className="tw-text-green-900 tw-font-semibold">Offre acceptée et payée</Text>
+            )
+        }
     }
 
     const activeOffersList = props.activeOffers.length == 0

@@ -70,10 +70,12 @@ export default function Page(props) {
                         ? props.proposition.paid
                             ? <Text className="tw-bg-green-200/80" fz={'sm'} align="center">Validée et payée</Text>
                             : <><Text align="center" fz={'sm'} className="tw-bg-yellow-200/60">En attente de paiement</Text>
-                                <Center><Button component="a" href="" className="tw-my-2 tw-mx-auto tw-bg-lime-600 hover:tw-bg-teal-600" 
+                                <Center><Button component="a" href={props.paymentLink} className="tw-my-2 tw-mx-auto tw-bg-lime-600 hover:tw-bg-teal-600" 
                                     radius={'lg'} size="sm" variant="filled">Payer</Button></Center>
                                 </>
-                        : <Text>En attente d&lsquo;une réponse</Text>
+                        : props.proposition.declined == true
+                            ? <Text color="red" align="center">Proposition refusée</Text>
+                            : <Text color="dimmed" align="center">En attente d&lsquo;une réponse</Text>
                     }
                 </>
                 )
@@ -137,11 +139,25 @@ export async function getServerSideProps(context) {
     )
     proposition = await proposition.json();
 
+    let stripe = await fetch(`${process.env.API_URL}/api/stripe/sponsoringOffer`, {
+        method: 'POST',
+        headers: new Headers({
+                'JWTAuthorization': `Bearer ${token}`,
+        }),
+        body: JSON.stringify({
+            cancelUrl: `${process.env.NEXT_URL}${context.resolvedUrl}`,
+            baseUrl: `${process.env.NEXT_URL}`,
+            sponsoringOfferId: id
+        })
+    })
+    stripe = await stripe.json();
+
       // // Pass data to the page via props
     return { props: { 
         sponsoringOffer: JSON.parse(sponsoringOffer.data),
         proposition: proposition.data ? JSON.parse(proposition.data) : null,
-        previousUrl: previousUrl
+        previousUrl: previousUrl,
+        paymentLink: stripe.sponsoringOfferUrl
     } }
 }
 
