@@ -9,6 +9,7 @@ export default function AssociationCardParticulier({card}) {
     const logoUrl = card.image?.name 
         ? '/uploads/' + card.image.name
         : null
+
     return (
         <Link href={`/profil/particulier/campagne/${card.id}`}>
             <Card className='tw-bg-gradient-to-br tw-from-red-600/60 tw-to-red-700/90 tw-border-0' shadow="md" padding="lg" radius="md" withBorder>
@@ -29,7 +30,9 @@ export default function AssociationCardParticulier({card}) {
                 </Card.Section>
                 <Box>
                     <Text color='white' pt={'md'} fz={'xs'}>
-                        Valable dans {card.discountOffers?.length} enseignes
+                        Valable dans {
+                            card.acceptedDiscountOffersCount
+                        } enseignes
                     </Text>
                     <Button variant="outline" color="gray" fullWidth mt="md" size='xs' radius="md" className='tw-bg-gradient-to-l tw-from-red-500/60 tw-to-red-500/90 tw-text-gray-50'>
                         Détail

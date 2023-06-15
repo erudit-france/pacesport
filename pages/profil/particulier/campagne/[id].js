@@ -1,4 +1,4 @@
-import { AspectRatio, BackgroundImage, Box, Center, Container, Image, Text, Title } from "@mantine/core"
+import { AspectRatio, Avatar, BackgroundImage, Box, Center, Container, Group, Image, Space, Text, Title } from "@mantine/core"
 import CampagneCard from "../../association/components/CampagneCard"
 import Layout from "../layout"
 import moment from "moment"
@@ -6,10 +6,11 @@ import Link from "next/link"
 import Head from "next/head"
 
 export default function Page(props) {
+  console.log('props.acceptedOffers', props.acceptedOffers)
   const PurchaseLink = () => {
     if (props.isOwned == true) {
       return (
-        <Text className="tw-border-[1px] tw-px-8 tw-py-0.5 tw-border-green-500 tw-bg-green-400 tw-text-gray-50 tw-rounded-xl tw-shadow-md">En possession</Text>
+        <Text className="tw-border-[1px] tw-px-8 tw-py-0.5 tw-border-green-500 tw-bg-green-400 tw-text-gray-50 tw-rounded-xl tw-shadow-md">Possédée</Text>
       )
     } else {
       return (
@@ -19,7 +20,7 @@ export default function Page(props) {
     }
   }
 
-  const standaloneCard = <>
+    const standaloneCard = <>
       <Center>
         <Box className="tw-rounded-xl tw-shadow-lg tw-relative">
             <Image
@@ -40,6 +41,19 @@ export default function Page(props) {
         </Box>
       </Center>
     </>
+
+    const AcceptedOffers = props.acceptedOffers.map((offer) => (
+        <Box key={offer.id} className="tw-bg-white tw-shadow-lg tw-rounded-2xl tw-relative tw-z-0 tw-mb-3" p={'md'}>
+          <Group>
+            <Avatar className="tw-shadow-md" radius='xl' src={`/uploads/${offer.enseigne.avatar?.name}`} />
+            <Title order={6}>{offer.enseigne.name}</Title>
+          </Group>
+          <Text fz={'sm'} p={'sm'}>
+            {offer.description}
+          </Text>
+        </Box>
+    ))
+
     return (
       <>
         <Head><title>Pace&lsquo;sport - Détails campagne {props.card.name}</title></Head>
@@ -54,9 +68,15 @@ export default function Page(props) {
             <Center mt={'md'}>
               <PurchaseLink />
             </Center>
-
           </Box>
         </Container>
+
+        <Space h={'md'} />
+        {props.acceptedOffers.length > 0 &&
+          <Box px={'md'}>
+            {AcceptedOffers}
+          </Box>
+          }
       </>
     )
 }
@@ -90,10 +110,10 @@ export async function getServerSideProps(context) {
       })}
       )
     const isOwned = await isOwnedData.json()
-    console.log('card', card)
     // // Pass data to the page via props
     return { props: { 
       card: JSON.parse(card.data),
+      acceptedOffers: JSON.parse(card.offersData),
       cardPurchaseLink: stripe.discountCardUrl,
       isOwned: isOwned.data.isOwned
     } }

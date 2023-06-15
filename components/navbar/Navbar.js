@@ -49,9 +49,6 @@ export default function Navbar(props){
         })
         .then(res => res.json())
         .then(res => {
-            console.log('---------------');
-            console.log('---------------');
-            console.log('---------------');
             if (res.date != null) {
                 setIsBusiness(true)
                 setSubscriptionEndDate(`Business jusqu'à '. ${moment(JSON.parse(res.data.end)).format('DD/MM/YYYY')}`)
@@ -180,6 +177,9 @@ export default function Navbar(props){
                                 <Center mb={'md'}>
                                     <Avatar src={isBusiness == true ? `/logo-business.png` : '/logo.png'} size={70}/>
                                 </Center>
+                                { !['particulier', 'sponsor/partenaire', 'association'].includes(role)
+                                    && <NavParticulier toggleMenu={toggleMenu} />
+                                }
                                 {role == 'particulier' && <NavParticulier toggleMenu={toggleMenu} />}
                                 {role == 'sponsor/partenaire' && <NavSponsor toggleMenu={toggleMenu} />}
                                 {role == 'association' && <NavAssociation toggleMenu={toggleMenu} />}

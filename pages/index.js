@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import SearchInput from '@/components/SearchInput'
-import { Grid, Space, Text, Title } from '@mantine/core'
+import { Box, Center, Grid, Space, Text, Title } from '@mantine/core'
 import AssociationCard from '@/components/AssociationCard'
 import Layout from './layout'
 import { useEffect, useState } from 'react'
@@ -12,6 +12,7 @@ import { useRouter } from 'next/router'
 import OrganisationCard from '@/components/OrganisationCard'
 import OrganisationCardParticulier from '@/components/OrganisationCardParticulier'
 import AssociationCardParticulier from '@/components/AssociationCardParticulier'
+import CommunicationAdsCarousel from '@/components/CommunicationAdsCarousel'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -52,7 +53,7 @@ export default function Page(props) {
     )
   }
 
-  console.log('props.associations', props.cards)
+  console.log('props.communications', props.communications)
   const associations = props.associations.map((card) => 
     <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
       <OrganisationCardParticulier organisation={card} />
@@ -84,6 +85,12 @@ export default function Page(props) {
                 <PossessedCardsGrid />
               </section>
               <Space my={'xl'} h={'md'} />
+
+              {props.communications.length > 0 &&
+                <Center p={'sm'}>
+                  <CommunicationAdsCarousel communications={props.communications} />
+                </Center>
+              }
 
               {/* carte proche */}
               <section className='tw-mt-8'>
@@ -137,12 +144,21 @@ export async function getServerSideProps(context) {
   associations = await associations.json();
 
 
+  let communications = await fetch(`${process.env.API_URL}/api/communication/all`, {
+    headers: new Headers({
+            'JWTAuthorization': `Bearer ${token}`,
+    })}
+  )
+  communications = await communications.json();
+  
+
   // // Pass data to the page via props
   return { props: {
     cards: JSON.parse(data.data),
     avatar: avatar.filename,
     associations: JSON.parse(associations.data),
     possessedCards: JSON.parse(possessedCardsRes.data),
+    communications: JSON.parse(communications.data)
   } }
 }
 
