@@ -8,8 +8,6 @@ import moment from "moment";
 export default function Page(props) {
     const {discountOffers} = props
 
-    console.log('discountOffers', discountOffers)
-
     const OffersSection = () => (
         discountOffers.length == 0 
             ? <Text color="dimmed" fz={'sm'} align="center">Aucune offre en cours</Text>

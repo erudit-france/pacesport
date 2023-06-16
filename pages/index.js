@@ -54,7 +54,6 @@ export default function Page(props) {
     )
   }
 
-  console.log('props.communications', props.communications)
   const associations = props.associations.map((card) => 
     <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
       <OrganisationCardParticulier organisation={card} />

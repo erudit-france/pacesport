@@ -62,7 +62,6 @@ export default function PanneauForm() {
     const submitHandler = async (values) => {
         setLoading(true)
         let filesUploadRes = await multipleFilesUploader(files);
-        console.log('filesUploadRes', filesUploadRes);
 
         multipleFilesUploader(files)
             .then((res) => {

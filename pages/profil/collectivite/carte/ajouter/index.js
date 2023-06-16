@@ -21,11 +21,7 @@ export default function Page(props){
     const [page, setPage] = useState(1)
     const { push } = useRouter()
     const addToCardList = (id) => {
-        console.log('adding new card')
         let idx = availableCards.findIndex(x => x.id == id)
-        console.log('availableCards', availableCards)
-        console.log('id', id)
-        console.log('idx', idx)
         if (idx > -1) {
             console.log('availableCards', availableCards)
             let newCards = [...availableCards]

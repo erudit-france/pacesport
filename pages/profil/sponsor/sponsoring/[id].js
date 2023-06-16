@@ -26,7 +26,6 @@ export default function Page(props) {
     const submitHandler = (values) => {
         setLoading(true)
         let body = serialize({...values, offerId: props.sponsoringOffer.id});
-        console.log('body', body)
         fetch(`/api/sponsoring-offer-proposition`, {
             method: 'POST',
             headers: new Headers({

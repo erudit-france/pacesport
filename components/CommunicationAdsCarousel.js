@@ -2,7 +2,6 @@ import { Carousel } from "@mantine/carousel";
 import { Avatar, Card, Group, Image, Text } from "@mantine/core";
 
 export default function CommunicationAdsCarousel({communications}) {
-    console.log('CommunicationAdsCarousel', communications)
     const CommunicationCard = ({communication}) => {
         let backgroundImg = communication.enseigne 
                         ? '/uploads/' + communication.enseigne.backgroundImage?.name 
