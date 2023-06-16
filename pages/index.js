@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import SearchInput from '@/components/SearchInput'
-import { Box, Center, Grid, Space, Text, Title } from '@mantine/core'
+import { Box, Button, Center, Grid, Group, Modal, Space, Text, Title } from '@mantine/core'
 import AssociationCard from '@/components/AssociationCard'
 import Layout from './layout'
 import { useEffect, useState } from 'react'
@@ -36,6 +36,7 @@ const DiscountCardsGrid = ({cards}) => {
 }
 
 export default function Page(props) {
+  const [opened, setOpened] = useState(false);
   const PossessedCardsGrid = () => {
     return (
       props.possessedCards.length == 0 
@@ -43,7 +44,7 @@ export default function Page(props) {
       : <Grid gutter={12} className="mt-4 tw-px-3">
         {props.possessedCards.map(function(card) {
           return (
-              <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
+              <Grid.Col key={String(card.id)} span={12} xs={12} xl={12}>
                 <AssociationCardParticulier card={card} />
               </Grid.Col>
             )
@@ -79,12 +80,23 @@ export default function Page(props) {
                 <SearchInput />
               </section>
 
+              <Group position="center" m={'md'}>
+                <Button size='lg'
+                    className='tw-text-black 
+                              tw-bg-gradient-to-br tw-from-gray-200 tw-to-white
+                              tw-shadow-md tw-w-full tw-rounded-2xl
+                              tw-border-2 tw-border-white
+                              hover:tw-bg-gray-200'
+                    onClick={() => setOpened(true)}>Mes cartes</Button>
+              </Group>
               {/* Mes cartes */}
-              <section className='tw-mt-8'>
-                <SectionTitle title='Mes cartes' />
+              <Modal
+                opened={opened}
+                onClose={() => setOpened(false)}
+                title="Mes cartes"
+              >
                 <PossessedCardsGrid />
-              </section>
-              <Space my={'xl'} h={'md'} />
+              </Modal>
 
               {props.communications.length > 0 &&
                 <Center p={'sm'}>

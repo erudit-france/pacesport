@@ -24,7 +24,7 @@ export default function AssociationCardParticulier({card}) {
                     <Image
                     className='tw-object-cover blur'
                     src={logoUrl}
-                    height={120}
+                    height={90}
                     alt={card.association.name}
                     />
                 </Card.Section>
