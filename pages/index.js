@@ -87,7 +87,7 @@ export default function Page(props) {
                               tw-shadow-md tw-w-full tw-rounded-2xl
                               tw-border-2 tw-border-white
                               hover:tw-bg-gray-200'
-                    onClick={() => setOpened(true)}>Mes cartes</Button>
+                    onClick={() => setOpened(true)}>J&lsquo;utilise ma carte</Button>
               </Group>
               {/* Mes cartes */}
               <Modal
