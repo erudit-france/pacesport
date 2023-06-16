@@ -44,7 +44,7 @@ export default function Page(props){
                     <Divider className="tw-border-gray-200 tw-mx-3 md:tw-mx-8" size="sm" orientation="vertical" />
                     <SponsorInvitation />
                 </Flex>
-                <ActionIcon component='a' href='/communication/add?prev=/profil/association' className="tw-bg-white tw-absolute tw-right-4 tw-top-4 tw-p-1.5" radius={'xl'}>
+                <ActionIcon component='a' href='/communication/add/association?prev=/profil/association' className="tw-bg-white tw-absolute tw-right-4 tw-top-4 tw-p-1.5" radius={'xl'}>
                     <BsMegaphoneFill className="tw-text-black" size={18} />
                 </ActionIcon>
             </section>

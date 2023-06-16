@@ -167,7 +167,7 @@ const HeroSection = ({avatar, background}) => {
                     className='tw-text-black tw-rounded-full tw-bg-white tw-shadow-sm'><IoMdSettings /></ActionIcon>
                 <ActionIcon 
                     className='tw-text-black tw-rounded-full tw-bg-white tw-shadow-sm'><MdQrCode2 /></ActionIcon>
-                <ActionIcon component='a' href='/communication/add?prev=/profil/sponsor' 
+                <ActionIcon component='a' href='/communication/add/sponsor?prev=/profil/sponsor' 
                     className='tw-text-black tw-rounded-full tw-bg-white tw-shadow-sm'><GoMegaphone /></ActionIcon>
             </Group>
 

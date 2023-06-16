@@ -1,7 +1,12 @@
-import { Box, Flex, Text, Textarea } from "@mantine/core"
-import Layout from "./layout"
+import { Box, Button, Flex, Text, Textarea } from "@mantine/core"
+import Layout from "../layout"
 import { useForm } from "@mantine/form";
 import PreviousPageButton from "@/components/PreviousPageButton";
+import { getCookie } from "cookies-next";
+import Toast from "@/services/Toast";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import { serialize } from "object-to-formdata";
 
 const PriceRow = ({credits, price, oldPrice}) => {
     return (
@@ -20,6 +25,8 @@ const PriceRow = ({credits, price, oldPrice}) => {
 }
 
 export default function Page(props) {
+    const [loading, setLoading] = useState(false);
+    const router = useRouter()
     const form = useForm({
         initialValues: {
             message: '',
@@ -29,8 +36,29 @@ export default function Page(props) {
         },
     });
 
-    const submitHandler = (values) => {
-        console.log('values', values)
+    const submitHandler = (data) => {
+        console.log('data', data)
+        let body = serialize({...data});
+        if (data === undefined) return
+        setLoading(true)
+
+        fetch(`/api/communication/association`, {
+            method: 'POST',
+            headers: new Headers({
+              'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: body
+          })
+        .then(res => res.json())
+        .then(res => {
+            if (res.data) {
+              Toast.success(res.data.message)
+              router.push('/profil/association')
+            }
+          })
+        .catch((error) => { Toast.error('Erreur pendant l\'enregistrement de l\'offre') })
+        form.reset();
+        setLoading(false)
     }
 
     return (
@@ -48,12 +76,12 @@ export default function Page(props) {
                         {...form.getInputProps('message')}/>
 
                     <Flex justify={'center'} mt={'md'}>
-                        <button type="submit" 
+                        <Button type="submit" disabled={loading}
                             className="tw-bg-gray-200 hover:tw-bg-gray-300/75
-                                    tw-rounded-3xl tw-shadow-sm tw-px-4 tw-py-3">
-                            <span className="tw-text-gray-800">Envoyer</span>
+                                    tw-rounded-3xl tw-shadow-sm">
+                            <span className="tw-text-gray-800">Envoyer &nbsp;</span>
                             <span className="tw-text-yellow-700"> 1 crédit</span>
-                        </button>
+                        </Button>
                     </Flex>
 
                     <Text className="tw-text-gray-700" mt="xl" mb='xs' size={'sm'} align="center">Un crédit Offert par mois</Text>
@@ -62,12 +90,12 @@ export default function Page(props) {
             </div>
 
             {/* gold pricing section */}
-            <section className="tw-bg-yellow-600/60 tw-mt-4">
+            {/* <section className="tw-bg-yellow-600/60 tw-mt-4">
                 <PriceRow credits={3} price={5.99} />
                 <PriceRow credits={10} price={12.99} oldPrice={19.99} />
                 <PriceRow credits={20} price={15.99} oldPrice={39.99} />
                 <PriceRow credits={40} price={19.99} oldPrice={79.99} />
-            </section>
+            </section> */}
 
 
         </>
@@ -76,6 +104,24 @@ export default function Page(props) {
 
 
 export async function getServerSideProps(context) {
+    const token = context.req.cookies['token']
+    let hasActiveSubscriptionRes = await fetch(`${process.env.API_URL}/api/user/hasActiveSubscription`, {
+        headers: new Headers({
+                'JWTAuthorization': `Bearer ${token}`,
+        })}
+    )
+    hasActiveSubscriptionRes = await hasActiveSubscriptionRes.json();
+
+    if (hasActiveSubscriptionRes.data == null) {
+        return {
+            redirect: {
+                permanent: false,
+                destination: "/profil/association/business",
+            },
+            props:{},
+        };
+    }
+
     let url = context.req.headers.referer
     let previousUrl = url === undefined ? '/profil/sponsor/' : url
     // // Pass data to the page via props

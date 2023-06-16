@@ -6,15 +6,15 @@ export const Toast = {
             title: 'Succès',
             message: message,
             color: 'teal',
-            autoClose: 5000,
+            autoClose: 2500,
         })
     },
     error: (message) => {
         showNotification({
             title: 'Erreur',
             message: message,
-            color: 'teal',
-            autoClose: 5000,
+            color: 'red',
+            autoClose: 2500,
         })
     },
 }
