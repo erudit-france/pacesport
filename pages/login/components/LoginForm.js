@@ -22,8 +22,8 @@ export default function LoginForm({loading}) {
   const [error, setError] = useState('');
   const form = useForm({
     initialValues: {
-        email: 'admin@example.com',
-        password: '123+aze'
+        email: '',
+        password: ''
     },
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Veuillez saisir un E-mail valide'),

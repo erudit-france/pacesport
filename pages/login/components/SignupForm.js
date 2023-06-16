@@ -18,11 +18,11 @@ export default function SignupForm({loading}) {
   const [cguChecked, setCguChecked] = useState('');
   const form = useForm({
     initialValues: {
-        nom: 'toto',
-        prenom: 'toto',
-        email: 'toto@example.com',
-        password: '123',
-        passwordConfirmation: '1234',
+        nom: '',
+        prenom: '',
+        email: '',
+        password: '',
+        passwordConfirmation: '',
         cgu: false,
         isCollectivitePublique: false,
     },
