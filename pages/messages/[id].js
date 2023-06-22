@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Flex, Group, ScrollArea, Skeleton, Text, TextInput } from "@mantine/core"
+import { Avatar, Box, Button, CloseButton, FileButton, Flex, Group, Image, ScrollArea, Skeleton, Text, TextInput } from "@mantine/core"
 import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -56,41 +56,28 @@ const ChatHeader = () => {
         </header>
     )
 }
-
-const actions = [
-    { icon: <AiOutlineFile color="white" />, name: 'Fichier' }
-];
   
-const BasicSpeedDial = () => {
-    return (
-      <Box className="tw-relative tw-w-[36px]" 
-        sx={{ transform: 'translateZ(0px)', flexGrow: 1 }}>
-        <SpeedDial
-            ariaLabel="SpeedDial basic example"
-            sx={{
-                 position: 'absolute', bottom: -8, right: 8, height: 36, width: 36,
-                 '& .MuiButtonBase-root': {width: 36, backgroundColor: '#077067'},
-                 '& .MuiSpeedDialAction-fab': {backgroundColor: '#1a8f85'},
-            }}
-            icon={<SpeedDialIcon size={12} />}
-        >
-          {actions.map((action) => (
-            <SpeedDialAction
-              key={action.name}
-              icon={action.icon}
-              tooltipTitle={action.name}
-            />
-          ))}
-        </SpeedDial>
-      </Box>
-    );
-  }
+
 
 export default function Page(props) {
     const router = useRouter()
     const contactId = router.query.id
-
+    const [attachment, setAttachment] = useState(null);
+    const [attachmentPreview, setAttachmentPreview] = useState(null);
     const [messages, setMessages] = useState([])
+
+    const attachmentHandler = (file) => {
+        if (file == null) {
+            setAttachment(null)
+            setAttachmentPreview(null)
+            return
+        }
+        setAttachment(file)
+        const url = URL.createObjectURL(file)
+        setAttachmentPreview(url)
+        console.log('file', file)
+    }
+
     useEffect(() => {
         if (contactId === undefined) return
         fetch(`/api/chat/messages?id=${contactId}`, {
@@ -131,6 +118,46 @@ export default function Page(props) {
         })
     }
 
+    const BasicSpeedDial = () => {
+        return (
+          <Box className="tw-relative tw-w-[36px]" 
+            sx={{ transform: 'translateZ(0px)', flexGrow: 1 }}>
+            <SpeedDial
+                ariaLabel="SpeedDial basic example"
+                sx={{
+                     position: 'absolute', bottom: 0, right: 8, height: 36, width: 36,
+                     '& .MuiButtonBase-root': {width: 36, backgroundColor: '#077067'},
+                     '& .MuiSpeedDialAction-fab': {backgroundColor: '#1a8f85'},
+                }}
+                icon={<SpeedDialIcon size={12} />}
+            >
+                <FileButton onChange={attachmentHandler} accept="image/png,image/jpeg">
+                {(props) => 
+                    <SpeedDialAction
+                    {...props}
+                    key={'Fichier'}
+                    icon={<AiOutlineFile color="white" />}
+                    tooltipTitle={'Fichier'}
+                    />
+                }
+                </FileButton>
+            </SpeedDial>
+          </Box>
+        );
+    }
+
+    const AttachmentPreview = () => (
+        <Box className="tw-h-[90px] tw-w-full tw-bg-gray-100/50 tw-p-1 tw-px-4">
+            <Group className="">
+                <Group className="tw-relative">
+                    <CloseButton aria-label="Supprimer image" 
+                        onClick={() => attachmentHandler(null)}
+                        className="tw-absolute -tw-right-3 -tw-top-1 tw-z-40 tw-bg-white tw-rounded-3xl tw-shadow-md tw-border-[1px] tw-border-gray-300/40" color="dark"/>
+                    <Image src={attachmentPreview} height={85} alt="Preview de l'image à télécharger"/>
+                </Group>
+            </Group>
+        </Box>
+    )
 
     return (
         <>
@@ -141,24 +168,30 @@ export default function Page(props) {
                     style={{ height: 'calc(100vh - 170px)' }}>
                     <ChatHeader  />
                     <ScrollArea className="tw-p-2" 
-                                style={{ height: 'calc(100vh - 286px)' }}
+                                style={{ height: 
+                                    attachmentPreview ? 'calc(100vh - 340px)' : 'calc(100vh - 280px)' 
+                                }}
                                 offsetScrollbars>
                                 {messages.map((message,i) => (
                                     <ChatMessage message={message} key={i}/>
                                 ))}
                     </ScrollArea>
-                    <form onSubmit={form.onSubmit((values) => submitChat(values))}>
-                        <Group grow>
-                            <Box>
+                    <form className="tw-relative"
+                        onSubmit={form.onSubmit((values) => submitChat(values))}>
+                        {attachmentPreview &&
+                            <AttachmentPreview />
+                        }
+                        <Flex>
+                            <Box className="tw-max-w-[calc(100vw-80px)]">
                                 <TextInput radius='lg' placeholder="message" 
-                                        className="tw-ml-3 tw-w-[calc(100vw - 80px)]"
+                                        className="tw-ml-3 tw-w-[calc(100vw-80px)]"
                                         {...form.getInputProps('message')}/>
-                                <Button type="submit" className=" tw-absolute tw-right-[3.8rem] tw-bottom-9 tw-p-0 hover:tw-bg-transparent">
+                                <Button type="submit" className=" tw-absolute tw-right-[3.8rem] tw-bottom-0 tw-p-0 hover:tw-bg-transparent">
                                     <FiArrowRight size={30} className=" tw-bg-teal-600 tw-p-1 tw-rounded-full tw-text-white" />
                                 </Button>
                             </Box>
                             <BasicSpeedDial />
-                        </Group>
+                        </Flex>
                     </form>
             </section>
         </>
