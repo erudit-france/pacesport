@@ -1,7 +1,7 @@
-import { Avatar, Box, Center, Container, Flex, Stack, Text, Title } from "@mantine/core"
+import { Avatar, Box, Center, Container, Flex, Modal, SimpleGrid, Stack, Text, Title } from "@mantine/core"
 import Layout from "./layout"
 import Head from "next/head"
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { AppContext } from "@/context/AppContext"
 import PreviousPageButton from "@/components/PreviousPageButton"
 import SearchInput from "@/components/SearchInput"
@@ -9,8 +9,22 @@ import SearchInput from "@/components/SearchInput"
 
 
 export default function Page({user, users, query}) {
+    const [opened, setOpened] = useState(false)
+    const [currentUser, setCurrentUser] = useState(null)
+    const modalHandler = (state, user) => {
+        setOpened(state)
+        setCurrentUser(user)
+    }
+    const InfoText = ({title, value}) => (
+        <SimpleGrid cols={2}>
+            <Text fz={'sm'} className="tw-font-semibold">{title}</Text>
+            <Text fz={'sm'}>{value || '-'}</Text>
+        </SimpleGrid>
+    )
+
     const ContactCards = users.map((user) => 
-        <Flex key={user.id}>
+        <Flex key={user.id} p={'sm'} onClick={() => modalHandler(true, user)}
+            className="hover:tw-cursor-pointer hover:tw-bg-gray-100/50 hover:tw-shadow-inner tw-rounded-lg">
             <Avatar src={`uploads/${user.avatar?.name}`} radius={'xl'} size={'lg'} className="tw-shadow-lg" />
             <Center>
                 <Text ml={'md'} fz={'lg'} weight={600} color="black" align="center">{user.prenom}</Text>
@@ -33,8 +47,33 @@ export default function Page({user, users, query}) {
                     </Center>
                     <SearchInput className='tw-flex-1' />
                 </Flex>
-                <Container>{ContactList}</Container>
+                <Container m={'lg'} p={'lg'} className="tw-border-[1px] tw-border-gray-200 tw-rounded-xl tw-bg-gray-50/50">
+                    {ContactList}
+                </Container>
             </Box>
+            <Modal centered
+                size="calc(100vw - 1%)"
+                opened={opened}
+                onClose={() => modalHandler(false, null)}
+                title="Détails"
+                radius={'lg'}
+            >
+                <Flex className="">
+                    <Avatar src={`uploads/${user.avatar?.name}`} radius={'xl'} size={'lg'} className="tw-shadow-lg" />
+                    <Title className="tw-self-center" ml={'md'} order={3}>{user.name}&nbsp;{user.prenom}</Title>
+                </Flex>
+                <SimpleGrid cols={2} p={'lg'} className="tw-bg-gray-100/70 tw-rounded-lg" mt={'lg'}
+                      breakpoints={[
+                        { maxWidth: 'md', cols: 1, spacing: 'md' }
+                        ]}>
+                    <InfoText title={'Nom'} value={currentUser?.name} />
+                    <InfoText title={'Prénom'} value={currentUser?.prenom} />
+                    <InfoText title={'E-mail'} value={currentUser?.email} />
+                    <InfoText title={'Téléphone'} value={currentUser?.phone} />
+                    <InfoText title={'Association'} value={currentUser?.association?.name} />
+                    <InfoText title={'Enseigne'} value={currentUser?.enseigne?.name} />
+                </SimpleGrid>
+            </Modal>
         </>
     )
 }

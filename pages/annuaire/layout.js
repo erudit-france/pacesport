@@ -8,7 +8,7 @@ export default function Layout({children}){
     return (
         <>
             <Navbar />
-            <main className="tw-w-screen tw-h-screen">
+            <main className="tw-h-screen">
                 <BackgroundImage className="tw-h-full tw-opacity-10 tw-absolute tw-top-0 -tw-z-10" src='/doodle-pattern.png' />
                 <Box className="tw-h-[9rem] tw-w-full tw-relative tw-top-0 -tw-z-9 tw-rounded-br-[3rem] tw-overflow-hidden">
                     <BackgroundImage className="tw-h-full tw-absolute -tw-z-8 tw-blur-[1px]" src='/stadium_chairs.jpg' />
