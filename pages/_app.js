@@ -12,8 +12,8 @@ import { useContext, useState } from 'react';
 import { Router } from 'next/router';
 import { getCookie } from 'cookies-next';
 import axios from 'axios';
-
-
+import { ThemeProvider } from '@mui/material';
+import lightTheme from '../styles/theme/lightTheme';
 
 export default function App({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page)
@@ -22,9 +22,11 @@ export default function App({ Component, pageProps }) {
     <>
       <Context>
         <MantineProvider withGlobalStyles withNormalizeCSS>
-          <NotificationsProvider>
-            {getLayout(<Component {...pageProps} />)}
-          </NotificationsProvider>
+          <ThemeProvider theme={lightTheme}>
+              <NotificationsProvider>
+                {getLayout(<Component {...pageProps} />)}
+              </NotificationsProvider>
+          </ThemeProvider>
         </MantineProvider>
       </Context>
     </>

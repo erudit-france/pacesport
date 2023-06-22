@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Flex, ScrollArea, Skeleton, Text, TextInput } from "@mantine/core"
+import { Avatar, Box, Button, Flex, Group, ScrollArea, Skeleton, Text, TextInput } from "@mantine/core"
 import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -13,7 +13,7 @@ import { useForm } from "@mantine/form"
 import { FiArrowRight } from 'react-icons/fi'
 import { serialize } from "object-to-formdata"
 import { AiOutlineFile } from "react-icons/ai"
-import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material"
+import { Slider, SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material"
 
 const ChatHeader = () => {
     const router = useRouter()
@@ -58,16 +58,21 @@ const ChatHeader = () => {
 }
 
 const actions = [
-    { icon: <AiOutlineFile />, name: 'Fichier' }
+    { icon: <AiOutlineFile color="white" />, name: 'Fichier' }
 ];
   
 const BasicSpeedDial = () => {
     return (
-      <Box sx={{ height: 320, transform: 'translateZ(0px)', flexGrow: 1 }}>
+      <Box className="tw-relative tw-w-[36px]" 
+        sx={{ transform: 'translateZ(0px)', flexGrow: 1 }}>
         <SpeedDial
-          ariaLabel="SpeedDial basic example"
-          sx={{ position: 'absolute', bottom: 16, right: 16 }}
-          icon={<SpeedDialIcon />}
+            ariaLabel="SpeedDial basic example"
+            sx={{
+                 position: 'absolute', bottom: -8, right: 8, height: 36, width: 36,
+                 '& .MuiButtonBase-root': {width: 36, backgroundColor: '#077067'},
+                 '& .MuiSpeedDialAction-fab': {backgroundColor: '#1a8f85'},
+            }}
+            icon={<SpeedDialIcon size={12} />}
         >
           {actions.map((action) => (
             <SpeedDialAction
@@ -143,15 +148,17 @@ export default function Page(props) {
                                 ))}
                     </ScrollArea>
                     <form onSubmit={form.onSubmit((values) => submitChat(values))}>
-                        <Flex justify={'space-between'} pos={'relative'}>
-                            <TextInput radius='lg' placeholder="message" 
-                                    className="tw-flex-grow tw-ml-3"
-                                    {...form.getInputProps('message')}/>
-                            <Button type="submit" className=" tw-absolute tw-right-14 hover:tw-bg-transparent">
-                                <FiArrowRight size={30} className=" tw-bg-teal-600 tw-p-1 tw-rounded-full tw-text-white" />
-                            </Button>
+                        <Group grow>
+                            <Box>
+                                <TextInput radius='lg' placeholder="message" 
+                                        className="tw-ml-3 tw-w-[calc(100vw - 80px)]"
+                                        {...form.getInputProps('message')}/>
+                                <Button type="submit" className=" tw-absolute tw-right-[3.8rem] tw-bottom-9 tw-p-0 hover:tw-bg-transparent">
+                                    <FiArrowRight size={30} className=" tw-bg-teal-600 tw-p-1 tw-rounded-full tw-text-white" />
+                                </Button>
+                            </Box>
                             <BasicSpeedDial />
-                        </Flex>
+                        </Group>
                     </form>
             </section>
         </>
