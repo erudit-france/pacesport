@@ -58,80 +58,83 @@ export default function Page(props){
     }
 
     return (
-        <>
-            <Head>
-                <title>PACE&lsquo;SPORT - Mon compte</title>
-                <meta name="description" content="PACE&lsquo;SPORT" />
-                <meta name="viewport" content="width=device-width, initial-scale=1" />
-                <link rel="icon" href="/favicon.ico" />
-            </Head>
-            <section className="tw-px-4 tw-pt-8 tw-relative">
-                {isAccountLimited && 
-                    <Text fz={"sm"} className="tw-font-semibold" align="center" p='lg'>Votre accès est limité le temps que votre association soit validée</Text>}
-                {!isAccountLimited && 
-                    <Space py={'sm'} />}
-                <SearchSponsor />
-                <Flex mt={'md'} justify={'space-between'}>
-                    <UserListButton prev='/profil/association/business' />
-                    <Divider className="tw-border-gray-200 tw-mx-3 md:tw-mx-8" size="sm" orientation="vertical" />
-                    <SponsorInvitation />
-                </Flex>
-                <ActionIcon component='a' href='/communication/add/association?prev=profil/association/business' className="tw-bg-white tw-absolute tw-right-4 tw-top-4 tw-p-1.5" radius={'xl'}>
-                    <BsMegaphoneFill className="tw-text-black" size={18} />
-                </ActionIcon>
-            </section>
+        <></>
+    )
+    // return (
+    //     <>
+    //         <Head>
+    //             <title>PACE&lsquo;SPORT - Mon compte</title>
+    //             <meta name="description" content="PACE&lsquo;SPORT" />
+    //             <meta name="viewport" content="width=device-width, initial-scale=1" />
+    //             <link rel="icon" href="/favicon.ico" />
+    //         </Head>
+    //         <section className="tw-px-4 tw-pt-8 tw-relative">
+    //             {isAccountLimited && 
+    //                 <Text fz={"sm"} className="tw-font-semibold" align="center" p='lg'>Votre accès est limité le temps que votre association soit validée</Text>}
+    //             {!isAccountLimited && 
+    //                 <Space py={'sm'} />}
+    //             <SearchSponsor />
+    //             <Flex mt={'md'} justify={'space-between'}>
+    //                 <UserListButton prev='/profil/association/business' />
+    //                 <Divider className="tw-border-gray-200 tw-mx-3 md:tw-mx-8" size="sm" orientation="vertical" />
+    //                 <SponsorInvitation />
+    //             </Flex>
+    //             <ActionIcon component='a' href='/communication/add/association?prev=profil/association/business' className="tw-bg-white tw-absolute tw-right-4 tw-top-4 tw-p-1.5" radius={'xl'}>
+    //                 <BsMegaphoneFill className="tw-text-black" size={18} />
+    //             </ActionIcon>
+    //         </section>
 
-            <section className="tw-bg-white tw-mt-6 tw-shadow-inner tw-py-5 tw-px-4">
-                <Flex justify={'space-between'} pb={'sm'}>
-                    <Text fz={'sm'} fw={'bold'} align={'center'} transform={'uppercase'} py={2}>Mon Pace&lsquo;sport</Text>
-                    <Link href="/profil/association/campagne/ajouter">
-                        <Button size="xs" rightIcon={<GoPlus size="1rem" />}
-                            className="tw-bg-gray-900 tw-text-gray-100 tw-text-xs tw-rounded-xl
-                                        hover:tw-bg-black" 
-                            >
-                            Nouvelle campagne
-                        </Button>
-                    </Link>
-                </Flex>
-                <Box>{CardList}</Box>
-            </section>
+    //         <section className="tw-bg-white tw-mt-6 tw-shadow-inner tw-py-5 tw-px-4">
+    //             <Flex justify={'space-between'} pb={'sm'}>
+    //                 <Text fz={'sm'} fw={'bold'} align={'center'} transform={'uppercase'} py={2}>Mon Pace&lsquo;sport</Text>
+    //                 <Link href="/profil/association/campagne/ajouter">
+    //                     <Button size="xs" rightIcon={<GoPlus size="1rem" />}
+    //                         className="tw-bg-gray-900 tw-text-gray-100 tw-text-xs tw-rounded-xl
+    //                                     hover:tw-bg-black" 
+    //                         >
+    //                         Nouvelle campagne
+    //                     </Button>
+    //                 </Link>
+    //             </Flex>
+    //             <Box>{CardList}</Box>
+    //         </section>
 
-            <Space className="tw-mt-1"></Space>
+    //         <Space className="tw-mt-1"></Space>
 
-            <section className="tw-bg-lightgold-50 tw-flex tw-flex-col tw-py-4">
-                <Flex justify={'center'} color="white" align={'center'} pos={'relative'}>
-                    <BsPeople color="white" className="tw-mr-1" size={20}/>
-                    <Text color="white" align="center">
-                        Suivi des partenariats
-                    </Text>
+    //         <section className="tw-bg-lightgold-50 tw-flex tw-flex-col tw-py-4">
+    //             <Flex justify={'center'} color="white" align={'center'} pos={'relative'}>
+    //                 <BsPeople color="white" className="tw-mr-1" size={20}/>
+    //                 <Text color="white" align="center">
+    //                     Suivi des partenariats
+    //                 </Text>
 
-                    <Link href={'/gestion-fonds/statistiques?prev=/profil/association/business'}><Button variant="filled" size="sm"
-                        className="tw-bg-gray-100 tw-text-black tw-border-[1px] tw-border-gray-600 tw-shadow-sm
-                        tw-absolute tw-right-3 -tw-top-1
-                        tw-h-8
-                        hover:tw-bg-gray-200 hover:tw-text-black" 
-                        radius={'xl'}><SlChart /></Button></Link>
-                </Flex>
+    //                 <Link href={'/gestion-fonds/statistiques?prev=/profil/association/business'}><Button variant="filled" size="sm"
+    //                     className="tw-bg-gray-100 tw-text-black tw-border-[1px] tw-border-gray-600 tw-shadow-sm
+    //                     tw-absolute tw-right-3 -tw-top-1
+    //                     tw-h-8
+    //                     hover:tw-bg-gray-200 hover:tw-text-black" 
+    //                     radius={'xl'}><SlChart /></Button></Link>
+    //             </Flex>
                 
-                <Center p={'lg'} mah={280}>
-                    <Pie data={pieData} options={pieOptions}/>
-                </Center>
-            </section>
+    //             <Center p={'lg'} mah={280}>
+    //                 <Pie data={pieData} options={pieOptions}/>
+    //             </Center>
+    //         </section>
 
             
-            <section className="tw-flex tw-flex-col tw-py-4 tw-bg-red-700/80">
-                <Link href='/messages' className="tw-mx-auto tw-mt-3">
-                    <Button color="white" variant="filled" size="sm" leftIcon={<BiMessage />} miw={200}
-                        className="tw-bg-white tw-text-black hover:tw-bg-gray-200" radius={'lg'}>
-                            Messagerie</Button></Link>
-                <Link href='/gestion-fonds?prev=/profil/association/business' className="tw-mx-auto tw-mt-3">
-                        <Button color="white" variant="filled" size="sm" leftIcon={<GrMoney />} miw={200}
-                        className="tw-bg-white tw-text-black hover:tw-bg-gray-200" radius={'lg'}>
-                            Gestion de fonds</Button></Link>
-            </section>
+    //         <section className="tw-flex tw-flex-col tw-py-4 tw-bg-red-700/80">
+    //             <Link href='/messages' className="tw-mx-auto tw-mt-3">
+    //                 <Button color="white" variant="filled" size="sm" leftIcon={<BiMessage />} miw={200}
+    //                     className="tw-bg-white tw-text-black hover:tw-bg-gray-200" radius={'lg'}>
+    //                         Messagerie</Button></Link>
+    //             <Link href='/gestion-fonds?prev=/profil/association/business' className="tw-mx-auto tw-mt-3">
+    //                     <Button color="white" variant="filled" size="sm" leftIcon={<GrMoney />} miw={200}
+    //                     className="tw-bg-white tw-text-black hover:tw-bg-gray-200" radius={'lg'}>
+    //                         Gestion de fonds</Button></Link>
+    //         </section>
                 
-        </>
-    )
+    //     </>
+    // )
 }
 
 export async function getServerSideProps(context) {

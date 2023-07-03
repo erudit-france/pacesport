@@ -7,7 +7,7 @@ export default function CampagneCard({id, title, image, startDate, status}){
 
     return (
         <>
-            <Flex className="tw-mb-7">
+            <Flex className="tw-mb-7 tw-justify-around lg:tw-max-w-2xl lg:tw-mx-auto">
                     <Box className="tw-rounded-xl tw-shadow-md tw-relative">
                         <Image
                             className="tw-absolute tw-right-1 tw-z-10 tw-opacity-80 -tw-translate-y-full tw-top-1/2"

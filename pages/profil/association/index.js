@@ -2,7 +2,7 @@ import { ActionIcon, Box, Button, Center, Divider, Flex, Modal, Overlay, Space, 
 import Head from "next/head";
 import SearchSponsor from "./components/SearchSponsor";
 import UserListButton from "./components/UserListButton";
-import Layout from "./layout";
+import Layout from "./business/layout";
 import SponsorInvitation from "./components/SponsorInvitation";
 import { GoPlus } from 'react-icons/go'
 import Link from "next/link";
@@ -12,6 +12,25 @@ import { BiMessage } from "react-icons/bi";
 import CampagneCard from "./components/CampagneCard";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title as ChartTitle,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  ChartTitle,
+  Tooltip,
+  Legend
+);
 
 export default function Page(props){
     const [modalFirst, setModalFirst] = useState(false)
@@ -20,12 +39,56 @@ export default function Page(props){
     const hasFinishedTutorial = props.hasFinishedTutorial
     const [openedBusinessModal, { open, close }] = useDisclosure(false);
     const isAccountLimited = true
+    const nbSponsorsNeeded = 3
     const Cards = props.cards.map((card) => 
         <CampagneCard status={card.status} id={card.id} key={card.name + card.id} title={card.name} image={card.image?.name} startDate={card.startDate} />
     )
     const CardList = props.cards.length == 0
         ? <Text align="center" color="dimmed">Aucune carte enregistrée</Text>
         : Cards
+
+    const AssociationSearchInvitation = () => <section className="tw-px-4 tw-pt-8 tw-relative">
+        {isAccountLimited && 
+            <Text fz={"sm"} className="tw-font-semibold" align="center" p='lg'>Votre accès est limité le temps que votre association soit validée</Text>}
+        <SearchSponsor />
+        <Flex mt={'md'} justify={'space-between'}>
+            <UserListButton prev={'/profil/association'} />
+            <Divider className="tw-border-gray-200 tw-mx-3 md:tw-mx-8" size="sm" orientation="vertical" />
+            <SponsorInvitation />
+        </Flex>
+        <ActionIcon component='a' href='/communication/add/association?prev=/profil/association' className="tw-bg-white tw-absolute tw-right-4 tw-top-4 tw-p-1.5" radius={'xl'}>
+            <BsMegaphoneFill className="tw-text-black" size={18} />
+        </ActionIcon>
+    </section>
+
+    const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+    const options = {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false,
+            position: 'top',
+          },
+          title: {
+            display: false,
+            text: '',
+          },
+        },
+    };
+    const ChartData = {
+        labels,
+        datasets: [
+          {
+            label: '',
+            data: labels.map(() => (Math.random() * (15 - 2)).toFixed(0)),
+            backgroundColor: 'rgba(150, 150, 150, 0.8)',
+          },
+        ],
+      };
+
+    const ChartSection = (props) => <Center {...props}>
+        <Bar options={options} data={ChartData} />
+    </Center>
 
     return (
         <>
@@ -35,45 +98,36 @@ export default function Page(props){
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
+
             <section className="tw-px-4 tw-pt-8 tw-relative">
-                {isAccountLimited && 
-                    <Text fz={"sm"} className="tw-font-semibold" align="center" p='lg'>Votre accès est limité le temps que votre association soit validée</Text>}
-                <SearchSponsor />
-                <Flex mt={'md'} justify={'space-between'}>
-                    <UserListButton prev={'/profil/association'} />
-                    <Divider className="tw-border-gray-200 tw-mx-3 md:tw-mx-8" size="sm" orientation="vertical" />
-                    <SponsorInvitation />
-                </Flex>
-                <ActionIcon component='a' href='/communication/add/association?prev=/profil/association' className="tw-bg-white tw-absolute tw-right-4 tw-top-4 tw-p-1.5" radius={'xl'}>
-                    <BsMegaphoneFill className="tw-text-black" size={18} />
-                </ActionIcon>
+                <Box className="tw-relative">
+                    <Title my={'md'} order={4} align="center">Asso 1</Title>
+                    <ActionIcon component='a' href='/communication/add/association?prev=/profil/association' className="tw-bg-white tw-absolute tw-right-1.5 tw-bottom-0 tw-p-1.5" radius={'xl'}>
+                        <BsMegaphoneFill className="tw-text-black" size={18} />
+                    </ActionIcon>
+                </Box>
+                <SponsorInvitation />
             </section>
 
-            <section className="tw-bg-white tw-mt-6 tw-shadow-inner tw-py-5 tw-px-4">
+            <section className="tw-bg-white tw-mt-6 tw-shadow-inner tw-py-4 tw-px-4">
                 <Flex justify={'space-between'} my={'lg'} className="tw-relative">
-                    <Text className="tw-flex-1" fz={'sm'} fw={'bold'} align={'center'} transform={'uppercase'} py={2}>Mon Pace&lsquo;sport</Text>
-                        <Center>
-                            <Link href="/profil/association/campagne/ajouter" 
-                                className="tw-absolute tw-right-0 tw-bg-gray-900 tw-text-gray-100 tw-text-xs tw-rounded-3xl
-                                hover:tw-bg-black tw-p-1.5">
-                                <GoPlus size="1.2rem" />
-                            </Link>
-                        </Center>
+                    <Text className="tw-flex-1" color="red" fz={'sm'} fw={'bold'} align={'center'} py={2}>Ajoutez encore {nbSponsorsNeeded} partenaires pour valider votre pace&lsquo;sport</Text>
                 </Flex>
-                <Box>{CardList}</Box>
+                <CampagneCard status={1} id={1} title={'Titre carte'} image={null} startDate={Date.now()} />
             </section>
 
             <Space className="tw-mt-1"></Space>
+            <ChartSection className="tw-bg-white tw-p-8" />
 
-            <section className="tw-bg-lightgold-50 tw-flex tw-flex-col tw-py-4">
+            {/* <section className="tw-bg-lightgold-50 tw-flex tw-flex-col tw-py-4">
                 <Text color="white" align="center">Offre de sponsoring</Text>
                 <Text className="tw-flex tw-justify-center" align="center">Uniquement avec Pace&lsquo;sport Business<BsLock className='tw-my-auto tw-ml-1'/></Text>
                 <Button onClick={open} color="white" variant="filled" size="xs" 
                     className="tw-bg-white tw-text-black hover:tw-bg-gray-200 tw-mx-auto tw-mt-3" radius={'lg'}>En savoir plus</Button>
-            </section>
+            </section> */}
 
             
-            <section className="tw-flex tw-flex-col tw-py-4">
+            <section className="tw-flex tw-flex-col tw-py-4 tw-bg-red-700/30">
                 <Link href='/messages' className="tw-mx-auto tw-mt-3">
                     <Button color="white" variant="filled" size="sm" leftIcon={<BiMessage />} miw={200}
                         className="tw-bg-white tw-text-black hover:tw-bg-gray-200" radius={'lg'}>
@@ -84,7 +138,7 @@ export default function Page(props){
                             Gestion de fonds</Button></Link>
             </section>  
                 
-            <Modal radius={'lg'} className="modal-gold" opened={openedBusinessModal} onClose={close} centered
+            {/* <Modal radius={'lg'} className="modal-gold" opened={openedBusinessModal} onClose={close} centered
                 title={<Title color="white" style={{textShadow: '#631 1px 0 10px'}} className="tw-mx-auto text-sha" transform="uppercase" align="center" order={3}>Pace&lsquo;Sport Business</Title>}>
                 <Text className='tw-text-gray-100' fz={'sm'} mb={'sm'}>Ces fonctionnalités ne sont disponibles que dans l&lsquo;offre Pace&lsquo;Sport Business</Text>
                 <Text className='tw-text-gray-100' fz={'sm'}>Débloquez des outils professionnels pour faciliter la gestion de votre association</Text>
@@ -107,7 +161,7 @@ export default function Page(props){
                     </Link>
                 </Flex>
                 </Box>
-            </Modal>
+            </Modal> */}
         </>
     )
 }
@@ -123,15 +177,15 @@ export async function getServerSideProps(context) {
     )
     hasActiveSubscriptionRes = await hasActiveSubscriptionRes.json();
 
-    if (hasActiveSubscriptionRes.data != null) {
-        return {
-            redirect: {
-                permanent: false,
-                destination: "/profil/association/business",
-            },
-            props:{},
-        };
-    }
+    // if (hasActiveSubscriptionRes.data != null) {
+    //     return {
+    //         redirect: {
+    //             permanent: false,
+    //             destination: "/profil/association/business",
+    //         },
+    //         props:{},
+    //     };
+    // }
 
     let avatar = await fetch(`${process.env.API_URL}/api/association/avatar`, {
       headers: new Headers({
