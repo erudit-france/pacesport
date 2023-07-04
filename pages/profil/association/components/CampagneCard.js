@@ -3,7 +3,16 @@ import moment from "moment";
 import Link from "next/link";
 
 export default function CampagneCard({id, title, image, startDate, status}){
+    const nbCartes = 1
     const statusString = (status) => { return status == 1 ? 'Active' : 'En attente' }
+    const Status = () => (
+        <Text fz={'sm'} my={'xs'} transform="uppercase">
+        Status: 
+        <Badge className="tw-font-normal tw-uppercase tw-ml-3" 
+            size="sm" 
+            color={status == 1 ? 'teal' : 'indigo'}>
+            {statusString(status)}</Badge></Text>
+    )
 
     return (
         <>
@@ -24,19 +33,13 @@ export default function CampagneCard({id, title, image, startDate, status}){
                         />
                     </Box>
                     <Flex direction={'column'} ml={'lg'} justify={'space-around'}>
-                        <Text fz={'md'} weight={550} className="tw-capitalize">{title}</Text>
-                        <Text color="dimmed" fz={'xs'}>{moment(startDate).format('DD/MM/YYYY')}</Text>
-                        <Text fz={'xs'} color={"gray"} my={'sm'}>
-                            Status: 
-                            <Badge className="tw-font-normal tw-uppercase tw-ml-3" 
-                                size="sm" 
-                                color={status == 1 ? 'teal' : 'indigo'}>
-                                {statusString(status)}</Badge></Text>
-                            <Link href={`/profil/association/campagne/${id}`}>
-                                <Button size="xs" className="tw-bg-gray-900 tw-text-gray-100 tw-text-xs tw-rounded-xl tw-px-10 tw-h-6
-                                        hover:tw-bg-black">
-                                        Détail</Button>
-                            </Link>
+                        <Status />
+                        <Text fz={'sm'} className="tw-capitalize">{nbCartes}&nbsp; Carte{nbCartes > 1 ? 's' : ''}</Text>
+                        <Link href={`/profil/association/campagne/${id}`} >
+                            <Button size="xs" className="tw-bg-gold-400/90 tw-text-gray-100 tw-text-xs tw-rounded-3xl tw-px-10 tw-h-8 tw-my-2 tw-shadow-md
+                                    hover:tw-bg-gold-400">
+                                    Détail</Button>
+                        </Link>
                     </Flex>
             </Flex>
         </>

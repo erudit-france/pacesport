@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Button, Center, Divider, Flex, Modal, Overlay, Space, Text, Title, useMantineTheme } from "@mantine/core";
+import { ActionIcon, Box, Button, Center, Divider, Flex, Modal, Overlay, Paper, Space, Text, TextInput, Title, useMantineTheme } from "@mantine/core";
 import Head from "next/head";
 import SearchSponsor from "./components/SearchSponsor";
 import UserListButton from "./components/UserListButton";
@@ -22,6 +22,7 @@ import {
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
+import { useForm } from "@mantine/form";
 
 ChartJS.register(
   CategoryScale,
@@ -33,13 +34,24 @@ ChartJS.register(
 );
 
 export default function Page(props){
-    const [modalFirst, setModalFirst] = useState(false)
-    const [tutorialOpened, setTutorialOpened] = useState(true);
-    const theme = useMantineTheme();
-    const hasFinishedTutorial = props.hasFinishedTutorial
-    const [openedBusinessModal, { open, close }] = useDisclosure(false);
+    const [openInvitationModal, { open, close }] = useDisclosure(false);
+    const [additionalEmails, setAdditionalEmails] = useState([]);
     const isAccountLimited = true
     const nbSponsorsNeeded = 3
+    const form = useForm({
+        initialValues: {
+            email: '',
+        },
+        validate: {
+          email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Veuillez saisir un E-mail'),
+        },
+    });
+
+    const submitHandler = (values) => {
+        console.log('values', values)
+        close()
+    }
+
     const Cards = props.cards.map((card) => 
         <CampagneCard status={card.status} id={card.id} key={card.name + card.id} title={card.name} image={card.image?.name} startDate={card.startDate} />
     )
@@ -114,10 +126,25 @@ export default function Page(props){
                     <Text className="tw-flex-1" color="red" fz={'sm'} fw={'bold'} align={'center'} py={2}>Ajoutez encore {nbSponsorsNeeded} partenaires pour valider votre pace&lsquo;sport</Text>
                 </Flex>
                 <CampagneCard status={1} id={1} title={'Titre carte'} image={null} startDate={Date.now()} />
+                <Divider  my={'sm'} className="tw-w-2/3 tw-mx-auto"/>
+                
+                <Center>
+                    <Button size="xs" 
+                        onClick={() => open(true)}
+                        className="tw-bg-orange-700/90 tw-text-gray-100 tw-text-xs tw-rounded-3xl tw-px-10 tw-h-6 tw-my-2 tw-shadow-md
+                        hover:tw-bg-orange-700">
+                        Inviter des partenaires par email</Button>
+                </Center>
             </section>
 
-            <Space className="tw-mt-1"></Space>
-            <ChartSection className="tw-bg-white tw-p-8" />
+            <Box className="tw-bg-white tw-w-[110%] tw-h-8 -tw-skew-y-3 tw-relative -tw-top-4"></Box>
+
+            <Space className="tw-pt-3"></Space>
+            <Box className="tw-relative">
+                <Paper color="white" className="tw-absolute -tw-top-4 tw-left-0 -tw-z-1 tw-w-[110%] tw-h-[110%] -tw-skew-y-3" />
+                <ChartSection className="tw-bg-white tw-p-10 tw-z-10 tw-relative" />
+            </Box>
+            <Space className="tw-mt-8"></Space>
 
             {/* <section className="tw-bg-lightgold-50 tw-flex tw-flex-col tw-py-4">
                 <Text color="white" align="center">Offre de sponsoring</Text>
@@ -138,30 +165,21 @@ export default function Page(props){
                             Gestion de fonds</Button></Link>
             </section>  
                 
-            {/* <Modal radius={'lg'} className="modal-gold" opened={openedBusinessModal} onClose={close} centered
-                title={<Title color="white" style={{textShadow: '#631 1px 0 10px'}} className="tw-mx-auto text-sha" transform="uppercase" align="center" order={3}>Pace&lsquo;Sport Business</Title>}>
-                <Text className='tw-text-gray-100' fz={'sm'} mb={'sm'}>Ces fonctionnalités ne sont disponibles que dans l&lsquo;offre Pace&lsquo;Sport Business</Text>
-                <Text className='tw-text-gray-100' fz={'sm'}>Débloquez des outils professionnels pour faciliter la gestion de votre association</Text>
-                <Box align='center' mt={'md'}>
-                <Flex>
-                    <Link href={props.stripeMonthPaymentLink}>
-                        1 mois 5€
-                        <Button radius={'lg'} 
-                            className="tw-border-[1] tw-border-black tw-bg-gray-100 hover:tw-bg-gray-200 tw-shadow-md">
-                            <Text color="dark">Rejoindre</Text>
-                            <span>&nbsp;</span><Text className="tw-text-yellow-700"> BUSINESS</Text></Button>
-                    </Link>
-                    
-                    <Link href={props.stripeYearPaymentLink}>
-                        1 An 42,99€
-                        <Button radius={'lg'} 
-                            className="tw-border-[1] tw-border-black tw-bg-gray-100 hover:tw-bg-gray-200 tw-shadow-md">
-                            <Text color="dark">Rejoindre</Text>
-                            <span>&nbsp;</span><Text className="tw-text-yellow-700"> BUSINESS</Text></Button>
-                    </Link>
-                </Flex>
+            <Modal radius={'lg'} className="" opened={openInvitationModal} onClose={close} centered
+                title={<Title className="tw-mx-auto" transform="uppercase" align="center" order={6}>Inviter des partenaires</Title>}>
+                <Box align='' mt={'md'} p={'xs'}>
+                    <form onSubmit={form.onSubmit((values) => submitHandler(values))} className="tw-my-4">
+                        <TextInput mt="sm" variant="filled" className="" description="E-mail" placeholder="E-mail" radius="md" size="sm" withAsterisk
+                            {...form.getInputProps('email')}/>
+                            
+                        <Center>
+                            <Button type="submit" size="xs" className="tw-bg-gold-400/90 tw-text-gray-100 tw-text-xs tw-rounded-3xl tw-px-10 tw-h-8 tw-mt-8 tw-shadow-md
+                                    hover:tw-bg-gold-400">
+                                    Envoyer</Button>
+                        </Center>
+                    </form>
                 </Box>
-            </Modal> */}
+            </Modal>
         </>
     )
 }

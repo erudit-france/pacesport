@@ -62,7 +62,7 @@ export default function Page(props) {
 
   const associationsGrid = props.associations.length == 0
     ? <Text fz={'sm'} align="center" color="dimmed">Aucune association enregistrée</Text>
-    : <Grid gutter={12} className="mt-4 tw-px-3">{associations}</Grid>
+    : <Grid gutter={14} className="mt-4 tw-px-3">{associations}</Grid>
 
   return (
     <>
@@ -79,7 +79,7 @@ export default function Page(props) {
                 <SearchInput />
               </section>
 
-              <Group position="center" m={'md'}>
+              {/* <Group position="center" m={'md'}>
                 <Button size='lg'
                     className='tw-text-black 
                               tw-bg-gradient-to-br tw-from-gray-200 tw-to-white
@@ -87,28 +87,14 @@ export default function Page(props) {
                               tw-border-2 tw-border-white
                               hover:tw-bg-gray-200'
                     onClick={() => setOpened(true)}>J&lsquo;utilise ma carte</Button>
-              </Group>
-              {/* Mes cartes */}
-              <Modal
-                opened={opened}
-                onClose={() => setOpened(false)}
-                title="Mes cartes"
-              >
-                <PossessedCardsGrid />
-              </Modal>
+              </Group> */}
 
-              {props.communications.length > 0 &&
+              {/* Communication */}
+              {/* {props.communications.length > 0 &&
                 <Center p={'sm'}>
                   <CommunicationAdsCarousel communications={props.communications} />
                 </Center>
-              }
-
-              {/* carte proche */}
-              <section className='tw-mt-8'>
-                <SectionTitle title='Carte proche de vous' />
-                <DiscountCardsGrid cards={props.cards} />
-              </section>
-              <Space my={'xl'} h={'md'} />
+              } */}
 
               {/* Enseigne proche */}
               <section className='tw-mt-12'>
