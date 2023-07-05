@@ -135,7 +135,7 @@ const HeroSection = ({avatar, background}) => {
     const BackgroundButtons = () => {
         if (editingBackground) {
             return (
-                <Group className='tw-absolute tw-right-14 tw-top-16'>
+                <Group className='tw-absolute tw-right-3 tw-top-24'>
                     <ActionIcon onClick={cancelBackgroundEdit} className='tw-bg-gray-200/80 tw-relative tw-left-1' color='dark' variant='light' radius={'xl'}><RxCross2 /></ActionIcon>
                     <ActionIcon onClick={confirmBackgroundEdit} className='tw-bg-teal-300/60' color='teal' variant='outline' radius={'xl'}><RxCheck /></ActionIcon>
                 </Group>
@@ -144,7 +144,7 @@ const HeroSection = ({avatar, background}) => {
         return (
             <FileButton onChange={backgroundHandler} accept="image/png,image/jpeg">
                 {(props) => <ActionIcon {...props}  radius={'xl'} size={'md'}
-                    className="tw-bg-white tw-text-gray-900 tw-absolute tw-right-14 tw-top-16">
+                    className="tw-bg-white tw-text-gray-900 tw-absolute tw-right-3 tw-top-24">
                     <RiImageAddFill />
                 </ActionIcon>}
             </FileButton>
@@ -165,8 +165,6 @@ const HeroSection = ({avatar, background}) => {
             <Group className='tw-flex-col tw-absolute tw-right-3 tw-top-4 tw-z-20' spacing={'md'}>
                 <ActionIcon 
                     className='tw-text-black tw-rounded-full tw-bg-white tw-shadow-sm'><IoMdSettings /></ActionIcon>
-                <ActionIcon 
-                    className='tw-text-black tw-rounded-full tw-bg-white tw-shadow-sm'><MdQrCode2 /></ActionIcon>
                 <ActionIcon component='a' href='/communication/add/sponsor?prev=/profil/sponsor' 
                     className='tw-text-black tw-rounded-full tw-bg-white tw-shadow-sm'><GoMegaphone /></ActionIcon>
             </Group>

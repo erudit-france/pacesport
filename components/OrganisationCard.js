@@ -6,14 +6,14 @@ import { FaMapMarkerAlt } from 'react-icons/fa'
 export default function OrganisationCard({organisation}) {
     return (
         <Link href={`/profil/sponsor/association/${organisation.id}`}>
-            <Card className='tw-bg-gradient-to-br tw-from-red-600 tw-to-red-700/90 tw-border-0' shadow="md" padding="lg" radius="md" withBorder>
+            <Card className='tw-bg-gradient-to-br tw-from-red-600 tw-to-red-700/90 tw-border-0 tw-mx-2' shadow="md" radius="md" withBorder>
                 <Card.Section className='tw-relative'>
                     <div className='tw-w-full tw-h-full tw-px-4 tw-absolute tw-bg-slate-700/20 tw-z-20'>
                     </div>
                     <Image
                     className='tw-object-cover blur'
                     src={`/uploads/${organisation.avatar?.name}`}
-                    height={60}
+                    height={50}
                     alt={organisation.name}
                     />
                 </Card.Section>
