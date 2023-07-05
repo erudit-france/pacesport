@@ -2,7 +2,9 @@ import { Button, Flex } from "@mantine/core";
 import Link from "next/link";
 import { BsArrowLeft } from "react-icons/bs";
 
-export default function PreviousPageButton({href, className}) {
+export default function PreviousPageButton(props) {
+    const className = props.className ? props.className : ''
+    const href = props.href ? props.href : ''
     return (
         <Flex justify='space-between' className={className}>
             <Link href={href}><Button variant="filled" size="sm"

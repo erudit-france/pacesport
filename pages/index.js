@@ -13,11 +13,12 @@ import OrganisationCard from '@/components/OrganisationCard'
 import OrganisationCardParticulier from '@/components/OrganisationCardParticulier'
 import AssociationCardParticulier from '@/components/AssociationCardParticulier'
 import CommunicationAdsCarousel from '@/components/CommunicationAdsCarousel'
+import AssociationCarte from '@/components/AssociationCarte'
 
 const inter = Inter({ subsets: ['latin'] })
 
-const SectionTitle = ({title}) => (
-    <Title order={4} align='center' transform='uppercase' mb={"lg"}>{title}</Title>
+const SectionTitle = (props) => (
+    <Title {...props} order={4} align='center' transform='uppercase' mb={"lg"}>{props.children}</Title>
 )
 
 const DiscountCardsGrid = ({cards}) => {
@@ -37,32 +38,15 @@ const DiscountCardsGrid = ({cards}) => {
 
 export default function Page(props) {
   const [opened, setOpened] = useState(false);
-  const PossessedCardsGrid = () => {
-    return (
-      props.possessedCards.length == 0 
-      ? <Text color='dimmed' fz={'sm'} align='center'>Vous ne possédez aucune carte pour le moment</Text>
-      : <Grid gutter={12} className="mt-4 tw-px-3">
-        {props.possessedCards.map(function(card) {
-          return (
-              <Grid.Col key={String(card.id)} span={12} xs={12} xl={12}>
-                <AssociationCardParticulier card={card} />
-              </Grid.Col>
-            )
-        }
-        )}
-      </Grid>
-    )
-  }
-
   const associations = props.associations.map((card) => 
     <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
-      <OrganisationCardParticulier organisation={card} />
+      <AssociationCarte organisation={card} />
     </Grid.Col>
   )
 
   const associationsGrid = props.associations.length == 0
     ? <Text fz={'sm'} align="center" color="dimmed">Aucune association enregistrée</Text>
-    : <Grid gutter={14} className="mt-4 tw-px-3">{associations}</Grid>
+    : <Grid gutter={18} className="tw-px-4">{associations}</Grid>
 
   return (
     <>
@@ -74,9 +58,17 @@ export default function Page(props) {
         </Head>
         
         <div className={''} >
-              {/* search input */}
-              <section>
-                <SearchInput />
+              <SectionTitle className='tw-text-white tw-text-xl tw-mb-6'>Bienvenue sur Pace&lsquo;Sport</SectionTitle>
+
+              {/* Enseigne proche */}
+              <section className='tw-mt-2'>
+                <SectionTitle className='tw-text-gray-800 tw-text-base'>Associations proche de vous</SectionTitle>
+                {/* search input */}
+                <section className='tw-px-8 tw-mb-4'>
+                  <SearchInput />
+                </section>
+                {/* <EnseigneGrid /> */}
+                {associationsGrid}
               </section>
 
               {/* <Group position="center" m={'md'}>
@@ -96,12 +88,7 @@ export default function Page(props) {
                 </Center>
               } */}
 
-              {/* Enseigne proche */}
-              <section className='tw-mt-12'>
-                <SectionTitle title='Associations proche de vous' />
-                {/* <EnseigneGrid /> */}
-                {associationsGrid}
-              </section>
+
         </div>
 
     </>
