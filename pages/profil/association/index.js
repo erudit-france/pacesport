@@ -118,7 +118,7 @@ export default function Page(props){
                         <BsMegaphoneFill className="tw-text-black" size={18} />
                     </ActionIcon>
                 </Box>
-                <SponsorInvitation />
+                {/* <SponsorInvitation /> */}
             </section>
 
             <section className="tw-bg-white tw-mt-6 tw-shadow-inner tw-py-4 tw-px-4">
