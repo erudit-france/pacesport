@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import SearchInput from '@/components/SearchInput'
-import { ActionIcon, Avatar, Box, Button, Card, Center, Flex, Grid, Group, Modal, Select, Space, Text, Title } from '@mantine/core'
+import { ActionIcon, Avatar, Box, Button, Card, Center, Flex, Grid, Group, Modal, Select, Space, Text, Textarea, Title } from '@mantine/core'
 import AssociationCard from '@/components/AssociationCard'
 import Layout from './layout'
 import { IoMdSettings } from 'react-icons/io'
@@ -15,22 +15,8 @@ import AssociationCarte from '@/components/AssociationCarte'
 import { forwardRef, useState } from 'react'
 import { getOffers } from '@/domain/repository/CardOffersRepository'
 import { FaMapMarkerAlt } from 'react-icons/fa'
-
-const DiscountCardsGrid = ({cards}) => {
-  return (
-    <Grid gutter={12} className="mt-4 tw-px-3">
-      {cards.map(function(card) {
-        return (
-            <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
-              <AssociationCard card={card} />
-            </Grid.Col>
-          )
-      }
-      )}
-    </Grid>
-  )
-}
-
+import { useForm } from '@mantine/form'
+import Toast from '@/services/Toast'
 
 const CardsSection = (props) => (
         <section className='tw-mt-8'>
@@ -42,7 +28,45 @@ const CardsSection = (props) => (
 )
 
 export default function Page(props) {
+  const [sponsorOffers, setSponsorOffers] = useState(props.offers);
   const [opened, setOpened] = useState(false);
+  const categoriesOffre = [
+    { value: 'Alimentaire', label: 'Alimentaire' },
+    { value: 'Vêtements', label: 'Vêtements' },
+    { value: 'Sports', label: 'Sports' },
+    { value: 'Electronique', label: 'Electronique' },
+  ]
+
+  const form = useForm({
+      initialValues: {
+          association: '',
+          categorie: '',
+          description: '',
+      },
+      validate: {
+        association: (value) => (value != '' ? null : 'Veuillez saisir une association'),
+        categorie: (value) => (value != '' ? null : 'Veuillez saisir une catégorie'),
+        description: (value) => (value != '' ? null : 'Veuillez saisir une description'),
+      },
+  });
+
+  const submitHandler = (values) => {
+    console.log('values', values)
+    let newOffer = {
+      city: "Lyon2",
+      description: "5% de réduction sur les articles ...",
+      img: "https://logo-marque.com/wp-content/uploads/2021/02/Auchan-Logo.png",
+      title: "Auchan"
+    }
+    setSponsorOffers([...sponsorOffers, newOffer])
+    setOpened(false)
+    Toast.success('Offre envoyée')
+  }
+
+  // add label to existing array
+  const associationsSelect = props.associations.map((a) => (
+    {...a, label: a.description, value: a.id}
+  ))
 
   const SelectItem = forwardRef(
     ({ avatar, description, ...others }, ref) => {
@@ -90,7 +114,7 @@ export default function Page(props) {
 
   const offersList = <>
     <section style={styles} className='tw-px-3'>
-      {props.offers.map((offer) => (
+      {sponsorOffers.map((offer) => (
         <OfferRow key={offer.title} offer={offer} />
       ))}
     </section>
@@ -145,13 +169,38 @@ export default function Page(props) {
               onClose={() => setOpened(false)}
               title="Soutenir une association"
             >
-              <Select
-                  label="Choisir une association"
-                  placeholder="Association à soutenir"
-                  itemComponent={SelectItem}
-                  data={props.associations}
-                  maxDropdownHeight={400}
-                />
+
+              <form className='tw-p-4'onSubmit={form.onSubmit((values) => submitHandler(values))}>
+                <Select
+                    label="Association à soutenir"
+                    placeholder="Choisir"
+                    itemComponent={SelectItem}
+                    data={associationsSelect}
+                    maxDropdownHeight={400}
+                    mb={'md'}
+                    onDropdownClose={() => console.log('closing')}
+                    {...form.getInputProps('association')}/>
+
+                <Select
+                      label="Catégorie de l'offre"
+                      placeholder="Choisir"
+                      data={categoriesOffre}
+                      mb={'md'}
+                      {...form.getInputProps('categorie')}/>
+
+                <Textarea size="xs" mb={'sm'} label="Description de l'offre"
+                      minRows={3}
+                      autosize
+                      withAsterisk
+                      {...form.getInputProps('description')}/>
+
+                <Center>
+                  <Button className='tw-bg-lime-600 hover:tw-bg-teal-600'
+                          radius={'lg'} size="sm" variant="filled"
+                          type='submit'>
+                    Envoyer mon offre</Button>
+                </Center>
+              </form>
             </Modal>
         </div>
 
@@ -200,7 +249,6 @@ export async function getServerSideProps(context) {
 
   let offers = await getOffers()
 
-  console.log('offers', offers)
   // // Pass data to the page via props
   return { props: { 
     backgroundImage: backgroundImage.filename,
