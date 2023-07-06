@@ -40,7 +40,7 @@ export default function Page(props) {
   const [opened, setOpened] = useState(false);
   const associations = props.associations.map((card) => 
     <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
-      <AssociationCarte organisation={card} />
+      <AssociationCarte organisation={card} href={`/profil/particulier/carte`} />
     </Grid.Col>
   )
 

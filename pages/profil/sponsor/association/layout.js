@@ -6,7 +6,7 @@ export default function Layout({children}){
     return (
         <>
             <Navbar />
-            <main className="tw-w-screen tw-h-screen tw-relative">
+            <main className="tw-min-h-screen">
                 <div className="">
                     <HeroSection  editable={false} avatar={children ? children.props.avatar : null} />
                     <section className="tw-z-20">{children}</section>

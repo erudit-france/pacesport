@@ -3,9 +3,9 @@ import moment from 'moment';
 import Link from 'next/link';
 import { FaMapMarkerAlt } from 'react-icons/fa'
 
-export default function AssociationCarte({organisation}) {
+export default function AssociationCarte({organisation, href}) {
     return (
-        <Link href={`/profil/particulier/carte`}>
+        <Link href={href}>
             <Card className='tw-bg-gradient-to-br tw-from-gray-50 tw-to-white tw-border-0 tw-relative tw-mx-3 tw-py-3 tw-shadow-md' shadow="md" radius="lg" withBorder>
                 <Card.Section className='tw-relative'>
                     <div className='tw-w-full tw-h-full tw-px-4 tw-absolute tw-bg-slate-700/20 tw-z-20'>
