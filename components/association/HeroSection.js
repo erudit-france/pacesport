@@ -156,9 +156,8 @@ const HeroSection = ({avatar, background}) => {
             <Image className='tw-w-full tw-h-full tw-absolute tw-object-cover -tw-z-10 tw-blur-sm tw-scale-110' src={backgroundImage} placeholder='blur' alt="Hero image"/>
             <div className='tw-flex tw-flex-col tw-justify-center tw-z-30'>
                 <Box className="tw-rounded-full tw-relative tw-top-16 tw-shadow-md">
-                    <Avatar radius={9999} size={80} src={`${image}`}  alt="Logo Pace'sport" 
+                    <Image radius={'lg'} height={140} width={240} src={`${image}`}  alt="Logo Pace'sport" 
                         className='hadow-sm tw-bg-transparent tw-z-20'/>
-                    <LogoButtons />
                 </Box>
             </div>
             <ActionIcon component="a" href={`/parametres?prev=${router.pathname}`} radius={'xl'} size={'md'}

@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import SearchInput from '@/components/SearchInput'
-import { ActionIcon, Avatar, Box, Button, Card, Center, Flex, Grid, Group, Modal, Space, Text, Title } from '@mantine/core'
+import { ActionIcon, Avatar, Box, Button, Card, Center, Flex, Grid, Group, Modal, Select, Space, Text, Title } from '@mantine/core'
 import AssociationCard from '@/components/AssociationCard'
 import Layout from './layout'
 import { IoMdSettings } from 'react-icons/io'
@@ -12,7 +12,7 @@ import Link from 'next/link'
 import OrganisationCard from '@/components/OrganisationCard'
 import SponsoringOfferCard from '@/components/SponsoringOffer'
 import AssociationCarte from '@/components/AssociationCarte'
-import { useState } from 'react'
+import { forwardRef, useState } from 'react'
 import { getOffers } from '@/domain/repository/CardOffersRepository'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 
@@ -43,6 +43,22 @@ const CardsSection = (props) => (
 
 export default function Page(props) {
   const [opened, setOpened] = useState(false);
+
+  const SelectItem = forwardRef(
+    ({ avatar, description, ...others }, ref) => {
+      return (
+        <div ref={ref} {...others}>
+          <Group noWrap>
+            <Avatar radius={'xl'} src={avatar == null ? null : `/uploads/${avatar.name}`} />
+            <div>
+              <Text size="sm">{description}</Text>
+            </div>
+          </Group>
+        </div>
+      )
+    }
+  );
+  SelectItem.displayName = 'SelectItem';
 
   const associations = props.associations.map((card) => 
     <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
@@ -129,7 +145,13 @@ export default function Page(props) {
               onClose={() => setOpened(false)}
               title="Soutenir une association"
             >
-
+              <Select
+                  label="Choisir une association"
+                  placeholder="Association à soutenir"
+                  itemComponent={SelectItem}
+                  data={props.associations}
+                  maxDropdownHeight={400}
+                />
             </Modal>
         </div>
 

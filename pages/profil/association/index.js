@@ -73,7 +73,7 @@ export default function Page(props){
         </ActionIcon>
     </section>
 
-    const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+    const labels = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet'];
     const options = {
         responsive: true,
         plugins: {

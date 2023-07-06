@@ -56,8 +56,9 @@ export default function AssociationPendingOffers({offers}) {
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Accordion.Control>
                     <Flex>
-                        <Avatar radius={'xl'} className="tw-shadow-md" src={`/uploads/${offer.enseigne.avatar?.name}`} alt={offer.description} />
-                        <Text className='tw-my-auto tw-ml-2 tw-font-semibold'>{offer.enseigne?.name}</Text>
+                        <Avatar radius={'xl'} className="tw-shadow-md" src={offer.img} alt={offer.description} />
+                        {/* <Avatar radius={'xl'} className="tw-shadow-md" src={`/uploads/${offer.enseigne.avatar?.name}`} alt={offer.description} /> */}
+                        <Text className='tw-my-auto tw-ml-2 tw-font-semibold'>{offer.title}</Text>
                     </Flex>
                 </Accordion.Control>
             </Box>
@@ -67,20 +68,20 @@ export default function AssociationPendingOffers({offers}) {
     const items = offers == null || offers.length == 0 
         ? <Text align='center' fz={'xs'} color="dimmed">Aucune offre proposée</Text>
         : offers.map((offer) => (
-        <Accordion.Item value={(offer.description)} key={offer.id}>
-            <AccordionControl offer={offer} />
-            <Accordion.Panel>
-                <Text className='tw-text-gray-900 tw-font-semibold tw-p-2' size="sm">{offer.description}</Text>
-                <Flex>
-                    <Button className="tw-mx-auto tw-bg-red-600 hover:tw-bg-red-600" 
-                        radius={'lg'} size="sm" variant="filled" 
-                        onClick={() => declineOffer(offer.id)} disabled={loading}>Refuser</Button>
-                    <Button className="tw-mx-auto tw-bg-lime-600 hover:tw-bg-teal-600" 
-                        radius={'lg'} size="sm" variant="filled" 
-                        onClick={() => acceptOffer(offer.id)} disabled={loading}>Valider</Button>
-                </Flex>
-            </Accordion.Panel>
-        </Accordion.Item>
+            <Accordion.Item value={(offer.title)} key={offer.id}>
+                <AccordionControl offer={offer} />
+                <Accordion.Panel>
+                    <Text className='tw-text-gray-900 tw-font-semibold tw-p-2' size="sm">{offer.description}</Text>
+                    <Flex>
+                        <Button className="tw-mx-auto tw-bg-red-600 hover:tw-bg-red-600" 
+                            radius={'lg'} size="sm" variant="filled" 
+                            onClick={() => declineOffer(offer.id)} disabled={loading}>Refuser</Button>
+                        <Button className="tw-mx-auto tw-bg-lime-600 hover:tw-bg-teal-600" 
+                            radius={'lg'} size="sm" variant="filled" 
+                            onClick={() => acceptOffer(offer.id)} disabled={loading}>Valider</Button>
+                    </Flex>
+                </Accordion.Panel>
+            </Accordion.Item>
         ))
 
     return (
