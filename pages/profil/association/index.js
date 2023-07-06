@@ -125,7 +125,7 @@ export default function Page(props){
                 <Flex justify={'space-between'} my={'lg'} className="tw-relative">
                     <Text className="tw-flex-1" color="red" fz={'sm'} fw={'bold'} align={'center'} py={2}>Ajoutez encore {nbSponsorsNeeded} partenaires pour valider votre pace&lsquo;sport</Text>
                 </Flex>
-                <CampagneCard status={1} id={1} title={'Titre carte'} image={null} startDate={Date.now()} />
+                <CampagneCard status={1} id={1} title={'Titre carte'} image={props.avatar} startDate={Date.now()} />
                 <Divider  my={'sm'} className="tw-w-2/3 tw-mx-auto"/>
                 
                 <Center>
