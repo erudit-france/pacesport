@@ -35,7 +35,7 @@ export default function CampagneCard({id, title, image, startDate, status}){
                     <Flex direction={'column'} ml={'lg'} justify={'space-around'}>
                         <Status />
                         <Text fz={'sm'} className="tw-capitalize">{nbCartes}&nbsp; Carte{nbCartes > 1 ? 's' : ''}</Text>
-                        <Link href={`/profil/association/carte`} >
+                        <Link href={`/profil/association/carte/souscrire`} >
                             <Button size="xs" className="tw-bg-gold-400/90 tw-text-gray-100 tw-text-xs tw-rounded-3xl tw-px-10 tw-h-8 tw-my-2 tw-shadow-md
                                     hover:tw-bg-gold-400">
                                     Détail</Button>

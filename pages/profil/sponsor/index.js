@@ -170,7 +170,7 @@ export default function Page(props) {
               title="Soutenir une association"
             >
 
-              <form className='tw-p-4'onSubmit={form.onSubmit((values) => submitHandler(values))}>
+              <form className='tw-p-4' onSubmit={form.onSubmit((values) => submitHandler(values))}>
                 <Select
                     label="Association à soutenir"
                     placeholder="Choisir"

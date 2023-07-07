@@ -2,9 +2,9 @@ import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import SearchInput from '@/components/SearchInput'
-import { Avatar, Box, Button, Card, Center, Container, Flex, Grid, Group, Image, Modal, Paper, Space, Text, Title, Transition } from '@mantine/core'
+import { Avatar, Badge, Box, Button, Card, Center, Container, Flex, Grid, Group, Image, Modal, Paper, Select, Space, Text, Title, Transition } from '@mantine/core'
 import AssociationCard from '@/components/AssociationCard'
-import Layout from '../../../layout'
+import Layout from '../../../../layout'
 import { useEffect, useState } from 'react'
 import { getCookie } from 'cookies-next'
 import * as cookie from 'cookie'
@@ -17,25 +17,46 @@ import PreviousPageButton from '@/components/PreviousPageButton'
 import moment from 'moment'
 import { getOffers } from '@/domain/repository/CardOffersRepository'
 import { FaMapMarkerAlt } from 'react-icons/fa'
+import { AiOutlineSync } from 'react-icons/ai'
+import { useForm } from '@mantine/form'
 
 
 export default function Page(props) {
-  const [showOffers, setShowOffers] = useState(false);
+    const { push } = useRouter()
+    const [showOffers, setShowOffers] = useState(true);
+    const associationsSelect = props.associations.map((association) => (
+        {...association, label: association.description, value: association.id}
+    ))
+
+    const form = useForm({
+        initialValues: {
+            association: '',
+        },
+        validate: {
+            association: (value) => (value != '' ? null : 'Veuillez saisir choisir une association'),
+        },
+    });
+
+    const submitHandler = (values) => {
+        console.log('values', values)
+        push('/profil/particulier/carte')
+    }
+
   const standaloneCard = <>
       <Center>
           <Box className="tw-rounded-xl tw-shadow-lg tw-relative">
               <Image
                   className="tw-absolute tw-z-20 tw-right-1 tw-opacity-80 -tw-translate-y-1/2 tw-top-1/2"
-                  width={36}
-                  height={36}
+                  width={24}
+                  height={24}
                   src={`/sim.png`}
                   alt="logo sim"
               />
               <Image
               className="tw-opacity-95"
               radius={'lg'}
-              width={240}
-              height={140}
+              width={200}
+              height={110}
               src={`/uploads/${props.card.image?.name}`}
               alt="Photo de campagne"
               withPlaceholder
@@ -45,7 +66,7 @@ export default function Page(props) {
       </>
 
     const OfferRow = ({offer}) => (
-      <Card className='tw-flex tw-bg-gray-50 tw-mb-2' radius={'lg'}>
+      <Card className='tw-flex tw-bg-gray-200 tw-mb-2' radius={'lg'}>
         <Center>
           <Avatar className='tw-shadow-md' radius={'lg'} src={offer.img} />
         </Center>
@@ -63,7 +84,7 @@ export default function Page(props) {
     const offersList = <>
       <Transition mounted={setShowOffers} transition="slide-down" duration={400} timingFunction="ease">
         {(styles) => 
-          <section style={styles} className='tw-relative -tw-top-6'>
+          <section style={styles} className='tw-mt-1'>
             {props.offers.map((offer) => (
               <OfferRow key={offer.title} offer={offer} />
             ))}
@@ -81,52 +102,53 @@ export default function Page(props) {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         
-        <Container>
+        <Box className='tw-min-h-[calc(100vh-180px)]'>
             <Box className='tw-relative'>
               <Center className='tw-absolute tw-left-2 tw-top-0.5'>
                 <PreviousPageButton href='/' className='' />
               </Center>
-              <Flex justify={'center'}>
-                <Group position="center" className=''>
-                    <Button size='md'
-                        className='tw-text-black
-                                  tw-px-8 tw-py-3 
-                                  tw-bg-gradient-to-br tw-from-gray-200 tw-to-white
-                                  tw-shadow-md tw-w-full tw-rounded-2xl
-                                  tw-border-2 tw-border-white
-                                  hover:tw-bg-gray-200'>J&lsquo;utilise ma carte</Button>
-                  </Group>
-              </Flex>
             </Box>
             
-            <Box>
-                <Container className="tw-mt-6">
+            <Box className='tw-min-h-full'>
+                <section className="tw-mt-6 tw-mx-2">
                 <Box className="tw-relative tw-z-[1]">
                     {standaloneCard}
                 </Box>
-                <Box className="tw-bg-gradient-to-br tw-from-slate-100 tw-to-gray-100 tw-shadow-lg tw-rounded-2xl tw-pt-12 tw-relative -tw-top-10 tw-z-0" p={'md'}>
-                    <Title order={3} mb={'sm'} align="center">Pace&lsquo;Sport</Title>
-                    <Title order={6} mb={'sm'} align="center">Abonné</Title>
-                    <Text className="tw-text-gray-800" align="center" fz={'sm'}>Jusqu&lsquo;au {moment(props.card.endDate).format('DD/MM/YYYY')}</Text>
-                    <Center mt={'md'}>
-                      <Button onClick={() => setShowOffers(!showOffers)} color='white' variant='outline' className='tw-border-gray-700' radius={'lg'}>
-                        <Text className='tw-text-gray-800' transform='uppercase' fz={'sm'}>Voir {showOffers ? 'moins' : 'les offres' }</Text>
-                      </Button>
-                      {/* <Text className="tw-border-[1px] tw-px-8 tw-py-0.5 tw-border-green-500 tw-bg-green-400 tw-text-gray-50 tw-rounded-xl tw-shadow-md">Possédée</Text> */}
-                    </Center>
+                <Box className="tw-h-full tw-bg-gradient-to-br tw-from-slate-100 tw-to-gray-100 tw-shadow-lg tw-rounded-2xl tw-pt-4 tw-relative tw-mt-4 tw-z-0" p={'md'}>
+                    <Title order={3} mb={'sm'} align="center">J&lsquo;adhère à Pace&lsquo;Sport</Title>
+
+                    <Container className='tw-border-2 tw-rounded-md tw-shadow-sm tw-border-red-500 tw-p-4'>
+                        <form onSubmit={form.onSubmit((values) => submitHandler(values))}>
+                            <Title align='center' order={6}>Pace&lsquo;Sport</Title>
+                            <Select
+                                label={
+                                    <Flex className='tw-mb-2'>
+                                        <Center>
+                                            <Badge className='tw-bg-red-500 tw-px-2 tw-max-h-4 tw-max-w-4 tw-rounded-full'></Badge>
+                                        </Center>
+                                        <Text ml={'md'} fz={'lg'}>15€/An</Text>
+                                        </Flex>
+                                }
+                                placeholder="Association"
+                                rightSection={<AiOutlineSync size={14} />}
+                                rightSectionWidth={30}
+                                styles={{ rightSection: { pointerEvents: 'none' } }}
+                                data={associationsSelect}
+                                {...form.getInputProps('association')}/>
+                            <Center>
+                                <Button type='submit' color='red' variant='filled' mt={"md"} radius={'lg'} px={'xl'} size='sm'
+                                     className='tw-bg-red-600/90 tw-shadow-sm'>
+                                    Souscrire</Button>
+                            </Center>
+                        </form>
+                    </Container>
+
+                    <Title order={6} mt={'lg'} align='center'>Les offres</Title>
+                    {offersList}
                 </Box>
-                  {showOffers && 
-                    <Transition mounted={setShowOffers} transition="fade" duration={800} timingFunction="ease">
-                      {(styles) => 
-                        <section style={styles} className='tw-relative -tw-top-6'>
-                          {props.offers.map((offer) => (
-                            <OfferRow key={offer.title} offer={offer} />
-                          ))}
-                        </section>}
-                  </Transition>}
-                </Container>
+                </section>
             </Box>
-        </Container>
+        </Box>
 
     </>
   )
@@ -140,12 +162,20 @@ export async function getServerSideProps(context) {
     })}
   )
   avatar = await avatar.json();
+  // fetch Associations
+  let associations = await fetch(`${process.env.API_URL}/api/association/list`, {
+    headers: new Headers({
+            'JWTAuthorization': `Bearer ${token}`,
+    })}
+  )
+  associations = await associations.json();
 
   let offers = await getOffers()
 
   // // Pass data to the page via props
   return { props: {
     avatar: avatar.filename,
+    associations: JSON.parse(associations.data),
     card: {
         image: {
             name: null
