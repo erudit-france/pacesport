@@ -7,8 +7,22 @@ import { useState } from "react";
 import { AiOutlineFileText } from "react-icons/ai";
 import AssociationPendingOffers from "@/components/AssociationPendingOffers";
 import { getOffers } from "@/domain/repository/CardOffersRepository";
+import { useForm } from "@mantine/form";
 
 export default function Page(props){
+    const form = useForm({
+        initialValues: {
+          statut: '',
+        },
+        validate: {
+          statut: (value) => (value instanceof File ? null : 'Veuillez importer un fichier'),
+        },
+    });
+
+    const submitHandler = (values) => {
+        console.log('values', values.statut instanceof File)
+    }
+
     const hasUploadedStatus = false
     const hasEnoughOffers = true
     let fakeOffers = [
@@ -34,7 +48,6 @@ export default function Page(props){
             img: 'https://www.cerise-et-potiron.fr/wp-content/uploads/2021/06/logo-cp.png'
         }
     ]
-    console.log('fakeOffers', fakeOffers)
 
     return (
         <>
@@ -53,23 +66,32 @@ export default function Page(props){
 
             <main className="tw-bg-white tw-rounded-t-3xl tw-w-full tw-min-h-[calc(100vh-242px)]">
                 <Space h={'sm'} />
-                <Box className="tw-border-[1px] tw-border-gray-300 tw-shadow-sm tw-rounded-3xl" mx={'xs'} px={'md'} py={'md'}>
-                    <Text fz={'sm'} mb={'sm'}>Nb offres: <span>3</span></Text>
-                    <FileInput
-                        className="placeholder:tw-text-red-500"
-                        rightSection={<AiOutlineFileText className="tw-text-gray-800" size={18} />}
-                        placeholder="Ajouter un fichier"
-                        label="Statut"
-                        withAsterisk
-                        mb={'sm'}
-                        />
-                    <List className="tw-list-disc" type="unordered" size={'sm'} mt={'md'}>
-                        <List.Item className={hasEnoughOffers ? 'tw-text-emerald-600/80' : ''}>
-                            Vous avez au moins 3 offres</List.Item>
-                        <List.Item className={hasUploadedStatus ? 'tw-text-emerald-600/80' : ''}>
-                            Vous avez joint vos statuts</List.Item>
-                    </List>
-                </Box>
+                <form onSubmit={form.onSubmit((values) => submitHandler(values))}>
+                    <Box className="tw-border-[1px] tw-border-gray-300 tw-shadow-sm tw-rounded-3xl" mx={'xs'} px={'md'} py={'md'}>
+                            <Text fz={'sm'} mb={'sm'}>Nb offres: <span>3</span></Text>
+                            <FileInput
+                                className="placeholder:tw-text-red-500"
+                                rightSection={<AiOutlineFileText className="tw-text-gray-800" size={18} />}
+                                placeholder="Ajouter un fichier"
+                                label="Statut"
+                                withAsterisk
+                                mb={'sm'}
+                                {...form.getInputProps('statut')}/>
+                            <List className="tw-list-disc" type="unordered" size={'sm'} mt={'md'}>
+                                <List.Item className={hasEnoughOffers ? 'tw-text-emerald-600/80' : ''}>
+                                    Vous avez au moins 3 offres</List.Item>
+                                <List.Item className={hasUploadedStatus ? 'tw-text-emerald-600/80' : ''}>
+                                    Vous avez joint vos statuts</List.Item>
+                            </List>
+                    </Box>
+                    <Center>
+                        <Button type="submit" size="xs" 
+                                className="tw-border-[1px] tw-border-gray-300 tw-bg-white tw-text-gray-600 
+                                tw-text-xs tw-rounded-3xl tw-px-10 tw-h-8 tw-mt-4 tw-mb-5 tw-shadow-md
+                                hover:tw-bg-gray-200">
+                                Envoyer pour  validation</Button>
+                    </Center>
+                </form>
 
                 <Title align="center" color="white" order={6}
                     className="tw-bg-gray-400 tw-font-light tw-pb-1 tw-mt-4">Nouvelles offres de partenariat</Title>
