@@ -49,10 +49,10 @@ export default function LoginForm({loading}) {
           if (res.payload) {
             if(res.payload.token) {
               setCookie('token', res.payload.token)
+              nextPage()
             }
           }
           if (res.code == 401) {setError(res.message)}
-          nextPage()
         })
       .catch((error) => {
         loading(false)
