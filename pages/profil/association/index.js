@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Button, Center, Divider, Flex, Modal, Overlay, Paper, Space, Text, TextInput, Title, useMantineTheme } from "@mantine/core";
+import { ActionIcon, Box, Button, Center, Divider, Flex, Loader, Modal, Overlay, Paper, Space, Text, TextInput, Title, useMantineTheme } from "@mantine/core";
 import Head from "next/head";
 import SearchSponsor from "./components/SearchSponsor";
 import UserListButton from "./components/UserListButton";
@@ -23,6 +23,9 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { useForm } from "@mantine/form";
+import { serialize } from "object-to-formdata";
+import { getCookie } from "cookies-next";
+import Toast from "@/services/Toast";
 
 ChartJS.register(
   CategoryScale,
@@ -34,6 +37,7 @@ ChartJS.register(
 );
 
 export default function Page(props){
+    const [loading, setLoading] = useState(false)
     const [openInvitationModal, { open, close }] = useDisclosure(false);
     const [additionalEmails, setAdditionalEmails] = useState([]);
     const isAccountLimited = true
@@ -48,8 +52,27 @@ export default function Page(props){
     });
 
     const submitHandler = (values) => {
-        console.log('values', values)
-        close()
+        setLoading(true)
+        let body = serialize(values)
+        fetch(`/api/mail/invitation`, {
+            method: 'POST',
+            headers: new Headers({
+              'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: body
+          }).then(res => res.json())
+                .then(res => {
+                    if(res.data) {
+                        Toast.success('Invitation envoyée')
+                    }
+                    setLoading(false)
+                    close()
+                })
+            .catch((error) => { 
+                Toast.error('Erreur pendant l\'envoi du mail') 
+                setLoading(false)
+                close()
+            })
     }
 
     const Cards = props.cards.map((card) => 
@@ -173,9 +196,11 @@ export default function Page(props){
                             {...form.getInputProps('email')}/>
                             
                         <Center>
-                            <Button type="submit" size="xs" className="tw-bg-gold-400/90 tw-text-gray-100 tw-text-xs tw-rounded-3xl tw-px-10 tw-h-8 tw-mt-8 tw-shadow-md
+                            <Button type="submit" size="xs" 
+                                    disabled={loading}
+                                    className="tw-bg-gold-400/90 tw-text-gray-100 tw-text-xs tw-rounded-3xl tw-px-10 tw-h-8 tw-mt-8 tw-shadow-md
                                     hover:tw-bg-gold-400">
-                                    Envoyer</Button>
+                                    { loading ? <Loader color="orange" size="xs" /> : ' Envoyer'}</Button>
                         </Center>
                     </form>
                 </Box>

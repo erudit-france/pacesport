@@ -105,7 +105,7 @@ export default function Page(props) {
         <Box className='tw-min-h-[calc(100vh-180px)]'>
             <Box className='tw-relative'>
               <Center className='tw-absolute tw-left-2 tw-top-0.5'>
-                <PreviousPageButton href='/' className='' />
+                <PreviousPageButton href='/' className='tw-z-20' />
               </Center>
             </Box>
             
