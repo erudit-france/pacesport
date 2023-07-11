@@ -16,7 +16,7 @@ export function middleware(req) {
         if (res.code == 401) {
             console.log('-------------- res', res.code);
             req.nextUrl.pathname = '/login'
-            return NextResponse.redirect(req.nextUrl)
+            return NextResponse.redirect(req.nextUrl);
         }
         return NextResponse.rewrite(req.nextUrl);
     })
@@ -30,8 +30,8 @@ export function middleware(req) {
 
 export const config = {
     matcher: [
-        '/gestion-fonds/',
-        '/sponsoring/'
+        '/profil/:path*',
+        '/admin/:path*'
     ],
 }
   
