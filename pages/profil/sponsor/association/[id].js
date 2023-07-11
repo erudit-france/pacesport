@@ -1,13 +1,16 @@
 import Head from "next/head"
 import Layout from "./layout"
-import { Box, Button, Center, Container, Flex, Grid, Group, Modal, Select, Space, Text, TextInput, Textarea, Title } from "@mantine/core"
+import { Box, Button, Center, Container, Flex, Grid, Group, Loader, Modal, Select, Space, Text, TextInput, Textarea, Title } from "@mantine/core"
 import AssociationCard from "@/components/AssociationCard"
 import { useForm } from "@mantine/form";
 import { useState } from "react";
 import Toast from "@/services/Toast";
+import { serialize } from "object-to-formdata";
+import { getCookie } from "cookies-next";
 
 export default function Page(props) {
     const association = props.association
+    const [loading, setLoading] = useState(false);
     const [opened, setOpened] = useState(false);
     const categoriesOffre = [
         { value: 'Alimentaire', label: 'Alimentaire' },
@@ -28,10 +31,28 @@ export default function Page(props) {
     });
 
     const submitHandler = (values) => {
-        console.log('values', values)
-        setOpened(false)
-        form.reset()
-        Toast.success('Offre envoyée')
+        setLoading(true)
+        let body = serialize(values)
+        fetch(`/api/sponsoring-offer`, {
+            method: 'POST',
+            headers: new Headers({
+              'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: body
+          }).then(res => res.json())
+            .then(res => {
+                if(res.data) {
+                        Toast.success('Offre envoyée')
+                    }
+                    setLoading(false)
+                    setOpened(false)
+                    form.reset()
+                })
+            .catch((error) => { 
+                Toast.error('Erreur pendant l\'enregistrement de l\'offre') 
+                setLoading(false)
+                setOpened(false)
+        })
     }
 
     const Information = ({label, value}) => (
@@ -108,7 +129,7 @@ export default function Page(props) {
                   <Button className='tw-bg-lime-600 hover:tw-bg-teal-600'
                           radius={'lg'} size="sm" variant="filled"
                           type='submit'>
-                    Envoyer mon offre</Button>
+                    {loading ? <Loader size={'xs'} color='teal' /> : 'Envoyer mon offre'}</Button>
                 </Center>
               </form>
             </Modal>

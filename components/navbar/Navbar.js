@@ -90,7 +90,6 @@ export default function Navbar(props){
             <>
                 {loginAsLink}
                 <NavbarLink toggleMenu={ toggleMenu } href={'/profil/association'} name={<>Mon pace&lsquo;sport (carte)</>} />
-                <NavbarLink toggleMenu={ toggleMenu } href={'/sponsoring'} name={'Offres de partenariat'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={'/parametres?prev=/profil/association'} name={'Mon compte'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/annuaire?prev=${router.pathname}`} name={'Annuaire'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/gestion-fonds?prev=${router.pathname}`} name={'Gestion de fonds'} />

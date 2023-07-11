@@ -17,6 +17,9 @@ import { getOffers } from '@/domain/repository/CardOffersRepository'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 import { useForm } from '@mantine/form'
 import Toast from '@/services/Toast'
+import { getCookie } from 'cookies-next'
+import { serialize } from 'object-to-formdata'
+import { useRouter } from 'next/router'
 
 const CardsSection = (props) => (
         <section className='tw-mt-8'>
@@ -28,6 +31,9 @@ const CardsSection = (props) => (
 )
 
 export default function Page(props) {
+  const router = useRouter()
+  const { asPath } = useRouter()
+  const [loading, setLoading] = useState(false)
   const [sponsorOffers, setSponsorOffers] = useState(props.offers);
   const [opened, setOpened] = useState(false);
   const categoriesOffre = [
@@ -50,17 +56,32 @@ export default function Page(props) {
       },
   });
 
+    
   const submitHandler = (values) => {
-    console.log('values', values)
-    let newOffer = {
-      city: "Lyon2",
-      description: "5% de réduction sur les articles ...",
-      img: "https://logo-marque.com/wp-content/uploads/2021/02/Auchan-Logo.png",
-      title: "Auchan"
-    }
-    setSponsorOffers([...sponsorOffers, newOffer])
-    setOpened(false)
-    Toast.success('Offre envoyée')
+      setLoading(true)
+      let body = serialize(values)
+      fetch(`/api/sponsoring-offer`, {
+          method: 'POST',
+          headers: new Headers({
+            'JWTAuthorization': `Bearer ${getCookie('token')}`
+          }),
+          body: body
+        }).then(res => res.json())
+          .then(res => {
+              if(res.data) {
+                      Toast.success('Offre envoyée')
+                  }
+                  setLoading(false)
+                  setOpened(false)
+                  form.reset()
+                  router.replace(router.pathname)
+              })
+          .catch((error) => { 
+            console.log('error', error)
+            Toast.error('Erreur pendant l\'enregistrement de l\'offre') 
+            setLoading(false)
+            setOpened(false)
+      })
   }
 
   // add label to existing array
@@ -197,7 +218,8 @@ export default function Page(props) {
                 <Center>
                   <Button className='tw-bg-lime-600 hover:tw-bg-teal-600'
                           radius={'lg'} size="sm" variant="filled"
-                          type='submit'>
+                          type='submit'
+                          disabled={loading}>
                     Envoyer mon offre</Button>
                 </Center>
               </form>
@@ -240,13 +262,6 @@ export async function getServerSideProps(context) {
   )
   backgroundImage = await backgroundImage.json();
 
-  let sponsoringOffers = await fetch(`${process.env.API_URL}/api/sponsoring-offer`, {
-    headers: new Headers({
-            'JWTAuthorization': `Bearer ${token}`,
-    })}
-  )
-  sponsoringOffers = await sponsoringOffers.json();
-
   let offers = await getOffers()
 
   // // Pass data to the page via props
@@ -255,7 +270,6 @@ export async function getServerSideProps(context) {
     cards: JSON.parse(data.data),
     avatar: avatar.filename,
     associations: JSON.parse(associations.data),
-    sponsoringOffers: JSON.parse(sponsoringOffers.data),
     offers: offers.data
   } }
 }
