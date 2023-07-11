@@ -105,7 +105,7 @@ export default function Navbar(props){
         return (
             <>
                 {loginAsLink}
-                <NavbarLink toggleMenu={ toggleMenu } href={'/profil/sponsor/offers'} name={'Mes cartes / partenariats actifs'} />
+                <NavbarLink toggleMenu={ toggleMenu } href={'/profil/sponsor'} name={'Mes cartes / partenariats actifs'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={'/communication/add/sponsor'} name={'Communication'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/annuaire?prev=${router.pathname}`} name={'Annuaire'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/messages?prev=${router.pathname}`} name={'Messagerie'} />

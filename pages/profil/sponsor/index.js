@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import SearchInput from '@/components/SearchInput'
-import { ActionIcon, Avatar, Box, Button, Card, Center, Flex, Grid, Group, Modal, Select, Space, Text, Textarea, Title } from '@mantine/core'
+import { ActionIcon, Avatar, Badge, Box, Button, Card, Center, Flex, Grid, Group, Modal, Select, Space, Text, Textarea, Title } from '@mantine/core'
 import AssociationCard from '@/components/AssociationCard'
 import Layout from './layout'
 import { IoMdSettings } from 'react-icons/io'
@@ -29,6 +29,14 @@ const CardsSection = (props) => (
                     {props.children}
         </section>
 )
+
+const Status = ({status}) => {
+  let text = status == 0 ? 'En attente' : 'Validé'
+  return (
+    <Badge className='tw-font-semibold tw-shadow-sm' size={'sm'} color={status == 0 ? 'yellow' : 'teal'}>
+      {text}</Badge>
+  )
+}
 
 export default function Page(props) {
   const router = useRouter()
@@ -119,16 +127,16 @@ export default function Page(props) {
   const OfferRow = ({offer}) => (
     <Card className='tw-flex tw-bg-gray-50 tw-mb-2' radius={'lg'}>
       <Center>
-        <Avatar className='tw-shadow-md' radius={'lg'} src={offer.img} />
+        <Avatar className='tw-shadow-md' radius={'lg'} src={offer.association?.avatar?.name} />
       </Center>
       <Flex direction={'column'} className='tw-flex-1 tw-px-5'>
         <Flex justify={'space-between'}>
-          <Text fz={'sm'} weight={550}>{offer.title}</Text>
+          <Text fz={'sm'} weight={550}>{offer.association?.description}</Text>
         </Flex>
         <Text color='dimmed'>{offer.description}</Text>
       </Flex>
       <Center>
-        <Text className='tw-font-semibold' fz={'sm'}>Status</Text>
+        <Status status={offer.status} />
       </Center>
     </Card>
   )
@@ -171,7 +179,9 @@ export default function Page(props) {
               </Flex>
 
               <CardsSection title="Mes offres">
-                  {offersList}
+                  {sponsorOffers.length == 0
+                    ? <Text color='dimmed' size={'sm'} align='center'>Aucune offre</Text>
+                    : offersList}
               </CardsSection>
 
 
@@ -262,7 +272,8 @@ export async function getServerSideProps(context) {
   )
   backgroundImage = await backgroundImage.json();
 
-  let offers = await getOffers()
+  let offers = await getOffers(token)
+  console.log('offers', offers)
 
   // // Pass data to the page via props
   return { props: { 
@@ -270,7 +281,7 @@ export async function getServerSideProps(context) {
     cards: JSON.parse(data.data),
     avatar: avatar.filename,
     associations: JSON.parse(associations.data),
-    offers: offers.data
+    offers: JSON.parse(offers.data)
   } }
 }
 
