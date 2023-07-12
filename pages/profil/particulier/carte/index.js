@@ -15,7 +15,7 @@ import AssociationCardParticulier from '@/components/AssociationCardParticulier'
 import CommunicationAdsCarousel from '@/components/CommunicationAdsCarousel'
 import PreviousPageButton from '@/components/PreviousPageButton'
 import moment from 'moment'
-import { getOffers } from '@/domain/repository/CardOffersRepository'
+import { getActiveOffers } from '@/domain/repository/CardOffersRepository'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 
 
@@ -47,13 +47,13 @@ export default function Page(props) {
     const OfferRow = ({offer}) => (
       <Card className='tw-flex tw-bg-gray-50 tw-mb-2' radius={'lg'}>
         <Center>
-          <Avatar className='tw-shadow-md' radius={'lg'} src={offer.img} />
+          <Avatar className='tw-shadow-md' radius={'lg'} src={`/uploads/${offer.enseigne?.avatar?.name}`} />
         </Center>
         <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
           <Flex justify={'space-between'}>
-            <Text weight={550}>{offer.title}</Text>
+            <Text weight={550}>{offer.enseigne.description}</Text>
             <Text className='tw-flex tw-font-light' fz={'sm'}>
-              <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer.city}</Text>
+              <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer.enseigne?.city}</Text>
           </Flex>
           <Text color='dimmed'>{offer.description}</Text>
         </Flex>
@@ -141,7 +141,7 @@ export async function getServerSideProps(context) {
   )
   avatar = await avatar.json();
 
-  let offers = await getOffers()
+  let offers = await getActiveOffers(token)
 
   // // Pass data to the page via props
   return { props: {
@@ -154,7 +154,7 @@ export async function getServerSideProps(context) {
         endDate: Date.now(),
         price: 11.99
     },
-    offers: offers.data
+    offers: JSON.parse(offers.data)
   } }
 }
 

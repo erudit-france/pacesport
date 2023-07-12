@@ -6,7 +6,7 @@ import { useState } from "react";
 import { BsCheckLg } from "react-icons/bs";
 import { ImCross } from "react-icons/im";
 
-export default function AssociationPendingOffers({offers}) {
+export default function AssociationPacesportPendingOffers({offers}) {
     const router = useRouter()
     const [loading, setLoading] = useState(false);
     const refresh = () => { router.reload(window.location.pathname) }
@@ -73,15 +73,11 @@ export default function AssociationPendingOffers({offers}) {
                 <AccordionControl offer={offer} />
                 <Accordion.Panel>
                     <Flex justify={'space-between'}>
-                        <Text className='tw-text-gray-900 tw-p-2' size="sm">{offer.description}</Text>
+                        <Text className='tw-text-gray-900 tw-font-semibold tw-p-2' size="sm">{offer.description}</Text>
                         <Flex direction={'column'} justify={'space-between'}>
                             <ActionIcon variant="light" color="red" mb={'md'}
                                 size={'lg'}
                                 onClick={() => declineOffer(offer.id)} disabled={loading}><ImCross /></ActionIcon>
-                            <ActionIcon variant="light"
-                                size={'lg'}
-                                color="teal"
-                                onClick={() => acceptOffer(offer.id)} disabled={loading}><BsCheckLg /></ActionIcon>
                         </Flex>
                     </Flex>
                 </Accordion.Panel>
@@ -90,11 +86,9 @@ export default function AssociationPendingOffers({offers}) {
 
     return (
         <Paper p={'xs'}>
-            {offers.length == 0 
-            ?   <Text color="dimmed" fz={'sm'} align="center">Aucune offre</Text>
-            :   <Accordion variant="contained">
-                    {items}
-                </Accordion>}
+            <Accordion variant="contained">
+                {items}
+            </Accordion>
         </Paper>
       )
 }

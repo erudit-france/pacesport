@@ -1,12 +1,10 @@
 import Toast from "@/services/Toast";
-import { Accordion, ActionIcon, Avatar, Box, Button, Flex, Paper, Text } from "@mantine/core";
+import { Accordion, Avatar, Box, Button, Flex, Paper, Text } from "@mantine/core";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { BsCheckLg } from "react-icons/bs";
-import { ImCross } from "react-icons/im";
 
-export default function AssociationPendingOffers({offers}) {
+export default function AssociationActiveOffers({offers}) {
     const router = useRouter()
     const [loading, setLoading] = useState(false);
     const refresh = () => { router.reload(window.location.pathname) }
@@ -72,29 +70,16 @@ export default function AssociationPendingOffers({offers}) {
             <Accordion.Item value={(offer.description)} key={offer.id}>
                 <AccordionControl offer={offer} />
                 <Accordion.Panel>
-                    <Flex justify={'space-between'}>
-                        <Text className='tw-text-gray-900 tw-p-2' size="sm">{offer.description}</Text>
-                        <Flex direction={'column'} justify={'space-between'}>
-                            <ActionIcon variant="light" color="red" mb={'md'}
-                                size={'lg'}
-                                onClick={() => declineOffer(offer.id)} disabled={loading}><ImCross /></ActionIcon>
-                            <ActionIcon variant="light"
-                                size={'lg'}
-                                color="teal"
-                                onClick={() => acceptOffer(offer.id)} disabled={loading}><BsCheckLg /></ActionIcon>
-                        </Flex>
-                    </Flex>
+                    <Text className='tw-text-gray-900 tw-font-semibold tw-p-2' size="sm">{offer.description}</Text>
                 </Accordion.Panel>
             </Accordion.Item>
         ))
 
     return (
         <Paper p={'xs'}>
-            {offers.length == 0 
-            ?   <Text color="dimmed" fz={'sm'} align="center">Aucune offre</Text>
-            :   <Accordion variant="contained">
-                    {items}
-                </Accordion>}
+            <Accordion variant="contained">
+                {items}
+            </Accordion>
         </Paper>
       )
 }

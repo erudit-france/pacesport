@@ -6,10 +6,16 @@ import { randomId, useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 import { AiOutlineFileText } from "react-icons/ai";
 import AssociationPendingOffers from "@/components/AssociationPendingOffers";
-import { getOffers } from "@/domain/repository/CardOffersRepository";
+import { getAssociationPacesportPendingOffers, getAssociationPendingOffers, getCardActiveOffers, getOffers } from "@/domain/repository/CardOffersRepository";
 import { useForm } from "@mantine/form";
+import AssociationPacesportPendingOffers from "@/components/AssociationPacesportPendingOffers";
+import AssociationActiveOffers from "@/components/AssociationActiveOffers";
 
 export default function Page(props){
+    const [pendingOffers, setPendingOffers] = useState(props.pendingOffers)
+    const [pacesportPendingOffers, setPacesportPendingOffers] = useState(props.pacesportPendingOffers)
+    const [activeOffers, setActiveOffers] = useState(props.activeOffers)
+    pacesportPendingOffers
     const form = useForm({
         initialValues: {
           statut: '',
@@ -95,15 +101,15 @@ export default function Page(props){
 
                 <Title align="center" color="white" order={6}
                     className="tw-bg-gray-400 tw-font-light tw-pb-1 tw-mt-4">Nouvelles offres de partenariat</Title>
-                <AssociationPendingOffers offers={[fakeOffers[0]]} />
+                <AssociationPendingOffers offers={pendingOffers} />
 
                 <Title align="center" color="white" order={6}
                     className="tw-bg-orange-700 tw-font-light tw-pb-1 tw-mt-4">En attente de validation Pace&lsquo;Sport</Title>
-                <AssociationPendingOffers offers={[fakeOffers[1]]} />
+                <AssociationPacesportPendingOffers offers={pacesportPendingOffers} />
 
                 <Title align="center" color="white" order={6}
-                    className="tw-bg-green-600 tw-font-light tw-pb-1 tw-mt-4">Nouvelles offres de partenariat</Title>
-                <AssociationPendingOffers offers={fakeOffers} />
+                    className="tw-bg-green-600 tw-font-light tw-pb-1 tw-mt-4">Offres de partenariat validées</Title>
+                <AssociationActiveOffers offers={activeOffers} />
 
             </main>
 
@@ -113,24 +119,6 @@ export default function Page(props){
 
 export async function getServerSideProps(context) {
     const token = context.req.cookies['token']
-
-    
-    let hasActiveSubscriptionRes = await fetch(`${process.env.API_URL}/api/user/hasActiveSubscription`, {
-        headers: new Headers({
-                'JWTAuthorization': `Bearer ${token}`,
-        })}
-    )
-    hasActiveSubscriptionRes = await hasActiveSubscriptionRes.json();
-
-    // if (hasActiveSubscriptionRes.data != null) {
-    //     return {
-    //         redirect: {
-    //             permanent: false,
-    //             destination: "/profil/association/business",
-    //         },
-    //         props:{},
-    //     };
-    // }
 
     let avatar = await fetch(`${process.env.API_URL}/api/association/avatar`, {
       headers: new Headers({
@@ -147,32 +135,13 @@ export async function getServerSideProps(context) {
         }
     }
 
-    let cards = await fetch(`${process.env.API_URL}/api/discount-card/association/`, {
-        headers: new Headers({
-                'JWTAuthorization': `Bearer ${token}`,
-        })}
-    )
-    cards = await cards.json();
-
     let enseigne = await fetch(`${process.env.API_URL}/api/enseigne/auth/`, {
         headers: new Headers({
                 'JWTAuthorization': `Bearer ${token}`,
         })}
     )
     enseigne = await enseigne.json();
-    
-    let cancelUrl = context.req.headers.referer
-    let stripe = await fetch(`${process.env.API_URL}/api/stripe/subscriptionLinks`, {
-        method: 'POST',
-        headers: new Headers({
-                'JWTAuthorization': `Bearer ${token}`,
-        }),
-        body: JSON.stringify({
-            cancelUrl: `${process.env.NEXT_URL}${context.resolvedUrl}`,
-            baseUrl: `${process.env.NEXT_URL}`
-        })
-    })
-    stripe = await stripe.json();
+
 
     let backgroundImage = await fetch(`${process.env.API_URL}/api/association/background`, {
         headers: new Headers({
@@ -180,15 +149,18 @@ export async function getServerSideProps(context) {
         })}
       )
     backgroundImage = await backgroundImage.json();
+
+    let pendingOffers = await getAssociationPendingOffers(token)
+    let pacesportPendingOffers = await getAssociationPacesportPendingOffers(token)
+    let activeOffers = await getCardActiveOffers(token)
+
     // // Pass data to the page via props
     return { props: {
         backgroundImage: backgroundImage.filename,
         avatar: avatar.filename,
-        cards: JSON.parse(cards.data),
-        hasFinishedTutorial: JSON.parse(enseigne.data).hasFinishedTutorial,
-        stripeMonthPaymentLink: stripe.monthUrl,
-        stripeYearPaymentLink: stripe.yearUrl,
-        hasActiveSubscription: hasActiveSubscriptionRes.data == null ? false : true
+        pendingOffers: JSON.parse(pendingOffers.data),
+        pacesportPendingOffers: JSON.parse(pacesportPendingOffers.data),
+        activeOffers: JSON.parse(activeOffers.data)
     }}
   }
 
