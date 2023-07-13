@@ -8,6 +8,7 @@ import { AppContext } from "@/context/AppContext";
 import { deleteCookie, setCookie } from "cookies-next";
 import { useRouter } from "next/router";
 import { FiSettings } from "react-icons/fi";
+import { RiAdminLine } from "react-icons/ri";
 
 const LinkButton = ({text, href, lock, className, onClick}) => {
     const router = useRouter()
@@ -89,6 +90,9 @@ export default function Page({status, loggedUser}){
                         Se connecter en tant que</Title>
                 <Flex justify='center' direction='column' mb='md' gap="xl">
                     <LinkButton className={'tw-px-16 tw-mb-0'} text={usernameParticulier} href='/' />
+                </Flex>
+                <Flex justify='center' direction='column' mb='md' gap="xl">
+                    <LinkButton className={'tw-px-16 tw-mb-0'} text={<><RiAdminLine className="tw-mr-1" />Panel admin</>} href='/admin' />
                 </Flex>
                 <Flex className="tw-overflow-hidden" justify='center' direction='column'>
                     <Box className="tw-bg-zinc-900 tw-px-16 tw-skew-y-3 tw-h-6 tw-relative tw-top-4"></Box>

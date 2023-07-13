@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Table, Tabs, Title } from "@mantine/core";
+import { ActionIcon, Box, Flex, Select, Table, Tabs, Title } from "@mantine/core";
 import Head from "next/head";
 import Layout from "./layout";
 import { FiUsers } from "react-icons/fi";
@@ -6,19 +6,13 @@ import { MdOutlineLocalOffer, MdOutlineStore } from "react-icons/md";
 
 export default function Page(props){
     const elements = [
-        { position: 6, mass: 12.011, symbol: 'C', name: 'Carbon' },
-        { position: 7, mass: 14.007, symbol: 'N', name: 'Nitrogen' },
-        { position: 39, mass: 88.906, symbol: 'Y', name: 'Yttrium' },
-        { position: 56, mass: 137.33, symbol: 'Ba', name: 'Barium' },
-        { position: 58, mass: 140.12, symbol: 'Ce', name: 'Cerium' },
     ]
     
     const ths = (
         <tr>
-          <th>Element position</th>
-          <th>Element name</th>
-          <th>Symbol</th>
-          <th>Atomic mass</th>
+          <th>Compte</th>
+          <th>Type</th>
+          <th>Status</th>
         </tr>
     )
     
@@ -26,15 +20,30 @@ export default function Page(props){
         <tr key={element.name}>
             <td>{element.position}</td>
             <td>{element.name}</td>
-            <td>{element.symbol}</td>
-            <td>{element.mass}</td>
         </tr>
     ))
     
     return (
         <>
             <Tabs.Panel value="comptes-pro" p={"md"}>
-            <Title order={4} align="center">Comptes pro</Title>
+            <Flex justify={'space-between'} py={"sm"}>
+                <Title order={4} align="center">Comptes pro</Title>
+                <Select
+                    styles={ {
+                        root: { display: 'flex', flexDirection: 'row' },
+                        label: { display: 'flex', alignSelf: 'center', marginRight: '5px' }
+                    }}
+                    data={[
+                        { value: 'all', label: 'Tout' },
+                        { value: 'enseigne', label: 'Sponsors' },
+                        { value: 'association', label: 'Associations' }
+                    ]}
+                    defaultValue="all"
+                    label="Filtre"
+                    placeholder="Sélectionner"
+                    size="sm"
+                    />
+            </Flex>
             <Table striped withColumnBorders>
                 <thead>{ths}</thead>
                 <tbody>{rows}</tbody>

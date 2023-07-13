@@ -1,5 +1,5 @@
 import Toast from "@/services/Toast";
-import { Accordion, ActionIcon, Avatar, Box, Button, Flex, Paper, Text } from "@mantine/core";
+import { Accordion, ActionIcon, Avatar, Box, Button, Flex, Group, Modal, Paper, Text } from "@mantine/core";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -8,18 +8,21 @@ import { ImCross } from "react-icons/im";
 
 export default function AssociationPendingOffers({offers}) {
     const router = useRouter()
-    const [loading, setLoading] = useState(false);
+    const [offerIdConfirmation, setOfferIdConfirmation] = useState(null)
+    const [loading, setLoading] = useState(false)
+    const [openDecline, setOpenDecline] = useState(false)
+    const [openAccept, setOpenAccept] = useState(false)
     const refresh = () => { router.reload(window.location.pathname) }
 
     const acceptOffer = (id) => {
         setLoading(true)
-        fetch(`/api/discountoffer/accept`, {
+        fetch(`/api/sponsoring-offer-association-accept`, {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
               'JWTAuthorization': `Bearer ${getCookie('token')}`
             }),
-            body: JSON.stringify({discountOfferId: id})
+            body: JSON.stringify({offer: id})
           })
             .then(res => res.json())
             .then(res => {
@@ -33,14 +36,15 @@ export default function AssociationPendingOffers({offers}) {
     }
 
     const declineOffer = (id) => {
+        console.log('declining');
         setLoading(true)
-        fetch(`/api/discountoffer/decline`, {
+        fetch(`/api/sponsoring-offer-association-decline`, {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
               'JWTAuthorization': `Bearer ${getCookie('token')}`
             }),
-            body: JSON.stringify({discountOfferId: id})
+            body: JSON.stringify({offer: id})
           })
             .then(res => res.json())
             .then(res => {
@@ -77,24 +81,69 @@ export default function AssociationPendingOffers({offers}) {
                         <Flex direction={'column'} justify={'space-between'}>
                             <ActionIcon variant="light" color="red" mb={'md'}
                                 size={'lg'}
-                                onClick={() => declineOffer(offer.id)} disabled={loading}><ImCross /></ActionIcon>
+                                onClick={() => { setOpenDecline(true); setOfferIdConfirmation(offer.id) }} disabled={loading}><ImCross /></ActionIcon>
                             <ActionIcon variant="light"
                                 size={'lg'}
                                 color="teal"
-                                onClick={() => acceptOffer(offer.id)} disabled={loading}><BsCheckLg /></ActionIcon>
+                                onClick={() => { setOpenAccept(true); setOfferIdConfirmation(offer.id) }} disabled={loading}><BsCheckLg /></ActionIcon>
                         </Flex>
                     </Flex>
                 </Accordion.Panel>
             </Accordion.Item>
         ))
 
+        
     return (
-        <Paper p={'xs'}>
-            {offers.length == 0 
-            ?   <Text color="dimmed" fz={'sm'} align="center">Aucune offre</Text>
-            :   <Accordion variant="contained">
-                    {items}
-                </Accordion>}
-        </Paper>
+        <>
+            <Paper p={'xs'}>
+                {offers.length == 0 
+                ?   <Text color="dimmed" fz={'sm'} align="center">Aucune offre</Text>
+                :   <Accordion variant="contained">
+                        {items}
+                    </Accordion>}
+            </Paper>
+
+            <Modal
+                centered
+                opened={openDecline}
+                onClose={() => { setOpenDecline(false); setOfferIdConfirmation(null) }}
+                title="Refuser l'offre?"
+                >
+                <Group mt="xl" position="right">
+                    <Button variant="outline" 
+                        color="red"
+                        onClick={() => { setOpenDecline(false); setOfferIdConfirmation(null) }}
+                        >
+                        Annuler
+                    </Button>
+                    <Button variant="outline" 
+                        color="teal"
+                        onClick={() => declineOffer(offerIdConfirmation)}>
+                        Confirmer
+                    </Button>
+                </Group>
+            </Modal>
+
+            <Modal
+                centered
+                opened={openAccept}
+                onClose={() => { setOpenAccept(false); setOfferIdConfirmation(null) }}
+                title="Valider l'offre?"
+                >
+                <Group mt="xl" position="right">
+                    <Button variant="outline" 
+                        color="red"
+                        onClick={() => { setOpenAccept(false); setOfferIdConfirmation(null) }}
+                        >
+                        Annuler
+                    </Button>
+                    <Button variant="outline" 
+                        color="teal"
+                        onClick={() => { acceptOffer(offerIdConfirmation) }}>
+                        Confirmer
+                    </Button>
+                </Group>
+            </Modal>
+        </>
       )
 }

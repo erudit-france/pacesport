@@ -1,40 +1,121 @@
-import { ActionIcon, Box, Table, Tabs, Title } from "@mantine/core";
+import { ActionIcon, Avatar, Badge, Box, Flex, Group, Select, Table, Tabs, Text, Title } from "@mantine/core";
 import Head from "next/head";
 import Layout from "./layout";
 import { FiUsers } from "react-icons/fi";
 import { MdOutlineLocalOffer, MdOutlineStore } from "react-icons/md";
+import { getAssociationPacesportPendingOffers } from "@/domain/repository/CardOffersRepository";
+import { useState } from "react";
+import { ImCross } from "react-icons/im";
+import { BsCheckLg } from "react-icons/bs";
+import { useRouter } from "next/router";
+import { getCookie } from "cookies-next";
+import Toast from "@/services/Toast";
 
 export default function Page(props){
-    const elements = [
-        { position: 6, mass: 12.011, symbol: 'C', name: 'Carbon' },
-        { position: 7, mass: 14.007, symbol: 'N', name: 'Nitrogen' },
-        { position: 39, mass: 88.906, symbol: 'Y', name: 'Yttrium' },
-        { position: 56, mass: 137.33, symbol: 'Ba', name: 'Barium' },
-        { position: 58, mass: 140.12, symbol: 'Ce', name: 'Cerium' },
-    ]
+    const router = useRouter()
+    const refresh = () => { router.reload(window.location.pathname) }
+    const [offersPendingPacesport, setOffersPendingPacesport] = useState(props.offersPendingPacesport)
+
+    const acceptOffer = (id) => {
+        fetch(`/api/sponsoring-offer-admin-accept`, {
+            method: 'POST',
+            type: 'cors',
+            headers: new Headers({
+              'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: JSON.stringify({offer: id})
+          })
+            .then(res => res.json())
+            .then(res => {
+                res.data.code == 1 
+                    ? Toast.success(res.data.message)
+                    : Toast.error(res.data.message)
+                refresh()
+            })
+            .catch((error) => { Toast.error('Erreur') })
+    }
+
+    const declineOffer = (id) => {
+        fetch(`/api/sponsoring-offer-admin-decline`, {
+            method: 'POST',
+            type: 'cors',
+            headers: new Headers({
+              'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: JSON.stringify({offer: id})
+          })
+            .then(res => res.json())
+            .then(res => {
+                res.data.code == 1 
+                    ? Toast.success(res.data.message)
+                    : Toast.error(res.data.message)
+                refresh()
+            })
+            .catch((error) => { Toast.error('Erreur') })
+    }
     
     const ths = (
         <tr>
-          <th>Element position</th>
-          <th>Element name</th>
-          <th>Symbol</th>
-          <th>Atomic mass</th>
+          <th>Sponsor</th>
+          <th>Association</th>
+          <th>Status</th>
+          <th></th>
         </tr>
     )
     
-    const rows = elements.map((element) => (
-        <tr key={element.name}>
-            <td>{element.position}</td>
-            <td>{element.name}</td>
-            <td>{element.symbol}</td>
-            <td>{element.mass}</td>
+    const rows = offersPendingPacesport.map((element) => (
+        <tr key={element.id}>
+            <td>
+                <Group>
+                    <Avatar className="tw-shadow-md" size={'sm'} radius={'xl'}  src={`/uploads/${element.enseigne.avatar?.name}`} />
+                    <Text fz={'sm'}>{element.enseigne.description}</Text>
+                </Group>
+            </td>
+            <td>
+                <Group>
+                    <Avatar className="tw-shadow-md" size={'sm'} radius={'xl'}  src={`/uploads/${element.association.avatar?.name}`} />
+                    <Text fz={'sm'}>{element.description}</Text>
+                </Group>
+            </td>
+            <td><Badge color="yellow" size="xs">En attente admin</Badge></td>
+            <td>
+                <Group>
+                    
+                    <ActionIcon variant="light" color="red"
+                                size={'lg'}
+                                onClick={() => declineOffer(element.id) }><ImCross /></ActionIcon>
+                    <ActionIcon variant="light"
+                        size={'lg'}
+                        color="teal"
+                        onClick={() => acceptOffer(element.id) }><BsCheckLg /></ActionIcon>
+                </Group>
+            </td>
         </tr>
     ))
     
     return (
         <>
             <Tabs.Panel value="offres" p={"md"}>
-            <Title order={4} align="center">Gestion des offres</Title>
+            <Flex justify={'space-between'} py={"sm"}>
+                <Title order={4} align="center">Offres</Title>
+                <Select
+                    styles={ {
+                        root: { display: 'flex', flexDirection: 'row' },
+                        label: { display: 'flex', alignSelf: 'center', marginRight: '5px' }
+                    }}
+                    data={[
+                        { value: 'all', label: 'Tout' },
+                        { value: 'pendingPacesport', label: 'En attente admin' },
+                        { value: 'pendingAssociation', label: 'En attente association' },
+                        { value: 'active', label: 'actives' }
+                    ]}
+                    disabled
+                    defaultValue="pendingPacesport"
+                    label="Filtre"
+                    placeholder="Sélectionner"
+                    size="sm"
+                    />
+            </Flex>
             <Table striped withColumnBorders>
                 <thead>{ths}</thead>
                 <tbody>{rows}</tbody>
@@ -69,11 +150,13 @@ export async function getServerSideProps(context) {
       )
     backgroundImage = await backgroundImage.json();
 
+    let offersPendingPacesport = await getAssociationPacesportPendingOffers(token)
+
     // // Pass data to the page via props
     return { props: {
         backgroundImage: backgroundImage.filename,
         avatar: avatar.filename,
-        currentTab: 'hello'
+        offersPendingPacesport: JSON.parse(offersPendingPacesport.data)
     }}
   }
 
