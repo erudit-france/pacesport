@@ -1,6 +1,5 @@
 import { Box, Button, Divider, Flex, Group, Space, Text, TextInput, Textarea, Title } from "@mantine/core"
 import Layout from "./layout"
-import PageStatusIndicator from "../../association/campagne/ajouter/components/PageStatusIndicator"
 import moment from "moment"
 import PreviousPageButton from "@/components/PreviousPageButton"
 import Head from "next/head"
@@ -98,7 +97,6 @@ export default function Page(props) {
           </Group>
           <div className="tw-rounded-xl tw-border-[1px] tw-border-gray-400 tw-shadow-sm tw-p-3">
               <Flex>
-                  <PageStatusIndicator page={1} currentPage={1} relative={false}/>
                   <Flex direction={'column'} className="tw-flex-1 tw-ml-3">
                       <Text size={'sm'} className="tw-font-semibold">{card.nom}</Text>
                       <Text size={'sm'}>Du {moment(card.dateDebut).format('DD/MM/YYYY')} au {moment(card.dateFin).format('DD/MM/YYYY')}</Text>
