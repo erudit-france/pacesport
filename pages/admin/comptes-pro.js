@@ -33,21 +33,48 @@ export default function Page(props){
     
     return (
         <>
+            <Tabs.Panel value="comptes-pro" p={"md"}>
+            <Title order={4} align="center">Comptes pro</Title>
             <Table striped withColumnBorders>
                 <thead>{ths}</thead>
                 <tbody>{rows}</tbody>
             </Table>
+            </Tabs.Panel>
         </>
     )
 }
 
 export async function getServerSideProps(context) {
-    return {
-        redirect: {
-        permanent: false,
-        destination: "/admin/utilisateurs"
+    const token = context.req.cookies['token']
+
+    let avatar = await fetch(`${process.env.API_URL}/api/association/avatar`, {
+      headers: new Headers({
+              'JWTAuthorization': `Bearer ${token}`,
+      })}
+    )
+    avatar = await avatar.json();
+    if (avatar.code == 401) {
+        return {
+            redirect: {
+            permanent: false,
+            destination: "/login"
+            }
         }
     }
+
+    let backgroundImage = await fetch(`${process.env.API_URL}/api/association/background`, {
+        headers: new Headers({
+                'JWTAuthorization': `Bearer ${token}`,
+        })}
+      )
+    backgroundImage = await backgroundImage.json();
+
+    // // Pass data to the page via props
+    return { props: {
+        backgroundImage: backgroundImage.filename,
+        avatar: avatar.filename,
+        currentTab: 'hello'
+    }}
   }
 
 Page.getLayout = function getLayout(page) {
