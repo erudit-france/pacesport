@@ -66,9 +66,16 @@ export default function Page() {
                             src={mockup.src} width={300} />
                     </Center>
                     <Link href='/login'>
-                    <Button className="tw-bg-white tw-px-14 tw-py-2 tw-absolute tw-bottom-3 tw-left-0 tw-right-0 tw-mx-auto
+                    <Button className="tw-bg-white tw-px-14 tw-py-2 tw-absolute tw-bottom-28 tw-left-0 tw-right-0 tw-mx-auto
                             tw-invert hover:tw-bg-gray-100 tw-rounded-xl tw-text-black tw-text-md">
                             S&lsquo;inscrire</Button></Link>
+                    <Box pos={'absolute'} className="tw-bottom-0 tw-bg-black tw-py-6 tw-w-full tw-rounded-t-xl tw-px-8">
+                        <Flex justify={'space-between'}>
+                            <Link href={'/conditions-generales-vente'} className="tw-text-white tw-text-sm">CGU</Link>
+                            <Link href={'/conditions-generales-utilisation'} className="tw-text-white tw-text-sm">{`Conditions générales d'utilisation`}</Link>
+                            <Link href={'/politique-de-confidentialite'} className="tw-text-white tw-text-sm">Polique de confidentialité</Link>
+                        </Flex>
+                    </Box>
                 </section>
             </Box>
         </>
