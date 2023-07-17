@@ -97,14 +97,11 @@ export default function Page({status}){
                 <Flex justify='center' direction='column' mb='lg' p={'xl'} mx={'md'} gap="xl">
                     <Flex justify='center' direction='column' my='xs' py={'sm'} gap="xs">
                         <LinkButton className={''} text='Mes informations' href={''}/>
-                        <LinkButton className={''} text='Mes abonnements' href={''} />
                         <Space my={'xs'} />
-                        <LinkButton className={''} text='Paramètres généraux' href={''}/>
-                        <LinkButton className={''} text='Paramètres association' href={''} />
-                        <LinkButton className={''} text='Paramètres partenaire' href='#'/>
                         <Space my={'xs'} />
-                        <LinkButton className={''} text='Aide et contact' href={''}/>
-                        <LinkButton className={''} text='Conditions d&lsquo;utilisation' href={''} />
+                        <LinkButton className={''} text='Conditions d&lsquo;utilisation' href={'/conditions-generales-utilisation'} />
+                        <LinkButton className={''} text='Conditions générales de vente' href={'/conditions-generales-vente'} />
+                        <LinkButton className={''} text='Politique de confidentialité' href={'/politique-de-confidentialite'} />
                         <Space my={'xs'} />
                     </Flex>
                     <LinkButton className={''} text='Déconnexion' href={''} onClick={() => logout()} />
