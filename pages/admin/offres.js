@@ -164,7 +164,10 @@ export default function Page(props){
                         size="sm"
                     />
             </Flex>
-            <OffresTable offres={offers} refresh={refresh} fetching={fetching} />
+            <OffresTable 
+                offres={offers} refresh={refresh} fetching={fetching} 
+                editOffer={editOffer}
+                />
             </Tabs.Panel>
             <Modal
                 opened={open}

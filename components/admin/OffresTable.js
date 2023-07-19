@@ -4,9 +4,8 @@ import { getCookie } from "cookies-next";
 import { BsCheckLg, BsFillGearFill } from "react-icons/bs";
 import { ImCross } from "react-icons/im";
 
-export default function OffresTable({offres, refresh, fetching}) {
+export default function OffresTable({offres, refresh, fetching, editOffer}) {
     const StatusBadge = ({offer}) => {
-        console.log('offer', offer)
         let color = ''
         let text = ''
         if (offer.validated == true && offer.status == 1) {
