@@ -30,8 +30,8 @@ export function middleware(req) {
 
 export const config = {
     matcher: [
-        '/profil/:path*',
-        '/admin/:path*'
+        '/home',
+        '/conditions-generales-vente',
     ],
 }
   

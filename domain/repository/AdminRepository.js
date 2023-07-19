@@ -1,7 +1,7 @@
 export const getOffers = async (token, local = false) => {
     let base = process.env.API_URL;
     if (local) base = ''
-    let offers = await fetch(`${base}/api/sponsoring-offer-sponsor/`, {
+    let offers = await fetch(`${base}/api/admin/sponsoring-offer/all`, {
         headers: new Headers({
                 'JWTAuthorization': `Bearer ${token}`,
         })}
@@ -13,7 +13,7 @@ export const getOffers = async (token, local = false) => {
 export const getActiveOffers = async (token, local = false) => {
     let base = process.env.API_URL;
     if (local) base = ''
-    let offers = await fetch(`${base}/api/sponsoring-offer-sponsor-active/`, {
+    let offers = await fetch(`${base}/api/admin/sponsoring-offer/active/`, {
         headers: new Headers({
                 'JWTAuthorization': `Bearer ${token}`,
         })}
@@ -25,7 +25,7 @@ export const getActiveOffers = async (token, local = false) => {
 export const getAssociationPendingOffers = async (token, local = false) => {
     let base = process.env.API_URL;
     if (local) base = ''
-    let offers = await fetch(`${base}/api/sponsoring-offer-sponsor-pending/`, {
+    let offers = await fetch(`${base}/api/admin/sponsoring-offer/pending-association`, {
         headers: new Headers({
                 'JWTAuthorization': `Bearer ${token}`,
         })}
@@ -37,20 +37,7 @@ export const getAssociationPendingOffers = async (token, local = false) => {
 export const getAssociationPacesportPendingOffers = async (token, local = false) => {
     let base = process.env.API_URL;
     if (local) base = ''
-    let offers = await fetch(`${base}/api/sponsoring-offer-card-pending-pacesport/`, {
-        headers: new Headers({
-                'JWTAuthorization': `Bearer ${token}`,
-        })}
-    )
-    offers = await offers.json();
-    return offers;
-}
-
-
-export const getCardActiveOffers = async (token, local = false) => {
-    let base = process.env.API_URL;
-    if (local) base = ''
-    let offers = await fetch(`${base}/api/sponsoring-offer-card-active/`, {
+    let offers = await fetch(`${base}/api/admin/sponsoring-offer/pending-pacesport`, {
         headers: new Headers({
                 'JWTAuthorization': `Bearer ${token}`,
         })}
