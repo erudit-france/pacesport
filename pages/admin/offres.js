@@ -158,7 +158,7 @@ export default function Page(props){
                             { value: 'active', label: 'Actives' }
                         ]}
                         onChange={reloadFilter}
-                        defaultValue="pendingPacesport"
+                        defaultValue="all"
                         label="Filtre"
                         placeholder="Sélectionner"
                         size="sm"

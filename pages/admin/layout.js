@@ -25,7 +25,7 @@ export default function Layout({children}){
                     </Box>
                     <section className="tw-bg-white tw-mt-2 tw-shadow-inner tw-py-2 tw-px-1 tw-min-h-[calc(100vh-218px)] tw-rounded-t-3xl">
                     <Tabs defaultValue="offres" color="yellow"
-                        value={router.query.activeTab}
+                        default="offres"
                         onTabChange={(value) => router.push(`/admin/${value}`)}
                       >
                         <NavigationTabs />

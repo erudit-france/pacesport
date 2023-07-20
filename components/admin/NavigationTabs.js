@@ -7,7 +7,8 @@ export default function NavigationTabs(props) {
         <Tabs.List px={'md'}>
             {/* <Tabs.Tab p={'sm'} value="utilisateurs" icon={<FiUsers size={14} />}>Utilisateurs</Tabs.Tab> */}
             <Tabs.Tab p={'sm'} value="offres" icon={<MdOutlineLocalOffer size={14} />}>Offres</Tabs.Tab>
-            <Tabs.Tab p={'sm'} value="comptes-pro" icon={<MdOutlineStore size={14} />}>Comptes pro</Tabs.Tab>
+            <Tabs.Tab p={'sm'} value="associations" icon={<MdOutlineStore size={14} />}>Associations</Tabs.Tab>
+            <Tabs.Tab p={'sm'} value="sponsors" icon={<MdOutlineStore size={14} />}>Sponsors</Tabs.Tab>
         </Tabs.List>
     )
 }

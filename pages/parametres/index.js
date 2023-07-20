@@ -21,7 +21,7 @@ const LinkButton = ({text, href, lock, className, onClick}) => {
         ? <Button 
             onClick={text == 'Déconnexion' 
             ? () => logout()
-            : () => context.setRole(text.toLowerCase())}
+            : () => context.setRole(text?.toLowerCase())}
             className={`
                         tw-w-full 
                         ${text == 'Déconnexion' 
@@ -40,7 +40,7 @@ const LinkButton = ({text, href, lock, className, onClick}) => {
             <Button 
                 onClick={text == 'Déconnexion' 
                 ? () => logout()
-                : () => context.setRole(text.toLowerCase())}
+                : () => context.setRole(text?.toLowerCase())}
                 className={`
                             tw-w-full 
                             ${text == 'Déconnexion' 
