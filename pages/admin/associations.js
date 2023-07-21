@@ -10,6 +10,7 @@ import Toast from "@/services/Toast";
 import { useRouter } from "next/router";
 import { BsCheckLg, BsFillGearFill } from "react-icons/bs";
 import { ImCross } from "react-icons/im";
+import Link from "next/link";
 
 export default function Page(props){
     const [associations, setAssociations] = useState(props.associations)
@@ -19,7 +20,7 @@ export default function Page(props){
     const reloadFilter = async (val) => {
         switch (val) {
             case 'all':
-                setAssociations(props.sponsors)
+                setAssociations(props.associations)
                 break;
             case 'pending':
                 setAssociations(props.pendingAssociations)
@@ -63,7 +64,12 @@ export default function Page(props){
             <td>
                 <StatusBadge association={element} />
             </td>
-            <td></td>
+            <td>
+                {element.contrat != null &&
+                    <Link className="tw-text-blue-400 tw-text-sm tw-font-light tw-underline" 
+                        href={`/uploads/${element.contrat.name}`} target='_blank'>{element.contrat.name}</Link>
+                }
+            </td>
             <td>
                 <Group>
                     <ActionIcon variant="light" color="red"

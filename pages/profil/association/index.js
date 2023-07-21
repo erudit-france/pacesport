@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Button, Center, Divider, Flex, Loader, Modal, Overlay, Paper, Space, Text, TextInput, Title, useMantineTheme } from "@mantine/core";
+import { ActionIcon, Box, Button, Center, Divider, FileInput, Flex, List, Loader, Modal, Overlay, Paper, Space, Text, TextInput, Title, useMantineTheme } from "@mantine/core";
 import Head from "next/head";
 import SearchSponsor from "./components/SearchSponsor";
 import UserListButton from "./components/UserListButton";
@@ -26,6 +26,9 @@ import { useForm } from "@mantine/form";
 import { serialize } from "object-to-formdata";
 import { getCookie } from "cookies-next";
 import Toast from "@/services/Toast";
+import { AiOutlineFileText } from "react-icons/ai";
+import { getAssociationInvitationRequest, getAssociationSponsorInvitations } from "@/domain/repository/AssociationRepository";
+import fileUploader from "@/utils/fileUploader";
 
 ChartJS.register(
   CategoryScale,
@@ -37,12 +40,58 @@ ChartJS.register(
 );
 
 export default function Page(props){
+    const validationRequest = props.validationRequest
     const [loading, setLoading] = useState(false)
     const [openInvitationModal, { open, close }] = useDisclosure(false);
     const [additionalEmails, setAdditionalEmails] = useState([]);
+    const [contrat, setContrat] = useState(null)
+    const [hasEnoughOffers, setHasEnoughOffers] = useState(props.invitations.length > 0)
+    const [hasUploadedStatus, setHasUploadedStatus] = useState(false)
     const isAccountLimited = true
     const nbSponsorsNeeded = 3
+    
     const form = useForm({
+        initialValues: {
+          statut: '',
+        },
+        validate: {
+          statut: (value) => (value instanceof File ? null : 'Veuillez importer un fichier'),
+        },
+    });
+
+    const submitHandler = (values) => {
+        setLoading(true)
+        fileUploader(values.statut)
+            .then((response) => {
+                let body = new FormData();
+                body.append('filename', response.data.filename)
+                fetch(`/api/association/validation-request`, {
+                    method: 'POST',
+                    type: 'cors',
+                    headers: new Headers({
+                      'JWTAuthorization': `Bearer ${getCookie('token')}`
+                    }),
+                    body: body
+                  })
+                  .then(res => res.json())
+                    .then(res => {
+                        res.data.code == 1 
+                            ? Toast.success(res.data.message)
+                            : Toast.error(res.data.message)
+                        setLoading(false)
+                    })
+                    .catch((error) => { 
+                        Toast.error('Erreur pendant l\'enregistrement de la demande') 
+                        setLoading(false)
+                    })
+                .catch((error) => { 
+                    Toast.error('Erreur pendant le téléchargement du fichier') 
+                    setLoading(false)
+                })
+            });
+    }
+
+    const emailForm = useForm({
         initialValues: {
             email: '',
         },
@@ -51,7 +100,7 @@ export default function Page(props){
         },
     });
 
-    const submitHandler = (values) => {
+    const emailSubmitHandler = (values) => {
         setLoading(true)
         let body = serialize(values)
         fetch(`/api/mail/invitation`, {
@@ -74,27 +123,6 @@ export default function Page(props){
                 close()
             })
     }
-
-    const Cards = props.cards.map((card) => 
-        <CampagneCard status={card.status} id={card.id} key={card.name + card.id} title={card.name} image={card.image?.name} startDate={card.startDate} />
-    )
-    const CardList = props.cards.length == 0
-        ? <Text align="center" color="dimmed">Aucune carte enregistrée</Text>
-        : Cards
-
-    const AssociationSearchInvitation = () => <section className="tw-px-4 tw-pt-8 tw-relative">
-        {isAccountLimited && 
-            <Text fz={"sm"} className="tw-font-semibold" align="center" p='lg'>Votre accès est limité le temps que votre association soit validée</Text>}
-        <SearchSponsor />
-        <Flex mt={'md'} justify={'space-between'}>
-            <UserListButton prev={'/profil/association'} />
-            <Divider className="tw-border-gray-200 tw-mx-3 md:tw-mx-8" size="sm" orientation="vertical" />
-            <SponsorInvitation />
-        </Flex>
-        <ActionIcon component='a' href='/communication/add/association?prev=/profil/association' className="tw-bg-white tw-absolute tw-right-4 tw-top-4 tw-p-1.5" radius={'xl'}>
-            <BsMegaphoneFill className="tw-text-black" size={18} />
-        </ActionIcon>
-    </section>
 
     const labels = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet'];
     const options = {
@@ -145,6 +173,41 @@ export default function Page(props){
             </section>
 
             <section className="tw-bg-white tw-mt-6 tw-shadow-inner tw-py-4 tw-px-4">
+                    {validationRequest && <Center className="tw-z-50"><Text color="orange">Votre demande est en attente de validation</Text></Center>}
+                    {validationRequest.validated == false &&
+                        <form className="tw-relative" onSubmit={form.onSubmit((values) => submitHandler(values))}>
+                        {validationRequest && <Overlay className="tw-rounded-3xl tw-mx-1 tw-mb-1"  opacity={0.1} color="#000" blur={1} />}
+                        <Box className="tw-border-[1px] tw-border-gray-300 tw-shadow-sm tw-rounded-3xl" mx={'xs'} px={'md'} py={'md'}>
+                                <Text fz={'sm'} mb={'sm'}>Nb offres: <span>3</span></Text>
+                                <FileInput
+                                    className="placeholder:tw-text-red-500"
+                                    rightSection={<AiOutlineFileText className="tw-text-gray-800" size={18} />}
+                                    placeholder="Ajouter un fichier"
+                                    label="Statut"
+                                    withAsterisk
+                                    mb={'sm'}
+                                    {...form.getInputProps('statut')}/>
+                                <List className="tw-list-disc" type="unordered" size={'sm'} mt={'md'}>
+                                    <List.Item className={hasEnoughOffers ? 'tw-text-emerald-600/80' : 'tw-text-red-500'}>
+                                        Vous avez au moins 3 offres</List.Item>
+                                    <List.Item className={hasUploadedStatus ? 'tw-text-emerald-600/80' : ''}>
+                                        Vous avez joint vos statuts</List.Item>
+                                    <List.Item className="">
+                                        <Link className="tw-text-blue-600 hover:tw-text-blue-700 tw-underline" target="_blank" 
+                                            href="/Contrat_partenaire_PACESPORT.pdf">Contrat à remplir et joindre</Link>
+                                    </List.Item>
+                                </List>
+                        </Box>
+                        <Center>
+                            <Button type="submit" size="xs" 
+                                    className="tw-border-[1px] tw-border-gray-300 tw-bg-white tw-text-gray-600 
+                                    tw-text-xs tw-rounded-3xl tw-px-10 tw-h-8 tw-mt-4 tw-mb-5 tw-shadow-md
+                                    hover:tw-bg-gray-200"
+                                    disabled={loading || validationRequest != null }>
+                                    Envoyer pour  validation</Button>
+                        </Center>
+                        </form>}
+                    {validationRequest.validated == false && <Text color="green" align="center">Association validée</Text>}
                 <Flex justify={'space-between'} my={'lg'} className="tw-relative">
                     <Text className="tw-flex-1" color="red" fz={'sm'} fw={'bold'} align={'center'} py={2}>Ajoutez encore {nbSponsorsNeeded} partenaires pour valider votre pace&lsquo;sport</Text>
                 </Flex>
@@ -191,9 +254,9 @@ export default function Page(props){
             <Modal radius={'lg'} className="" opened={openInvitationModal} onClose={close} centered
                 title={<Title className="tw-mx-auto" transform="uppercase" align="center" order={6}>Inviter des partenaires</Title>}>
                 <Box align='' mt={'md'} p={'xs'}>
-                    <form onSubmit={form.onSubmit((values) => submitHandler(values))} className="tw-my-4">
+                    <form onSubmit={emailForm.onSubmit((values) => emailSubmitHandler(values))} className="tw-my-4">
                         <TextInput mt="sm" variant="filled" className="" description="E-mail" placeholder="E-mail" radius="md" size="sm" withAsterisk
-                            {...form.getInputProps('email')}/>
+                            {...emailForm.getInputProps('email')}/>
                             
                         <Center>
                             <Button type="submit" size="xs" 
@@ -219,16 +282,6 @@ export async function getServerSideProps(context) {
         })}
     )
     hasActiveSubscriptionRes = await hasActiveSubscriptionRes.json();
-
-    // if (hasActiveSubscriptionRes.data != null) {
-    //     return {
-    //         redirect: {
-    //             permanent: false,
-    //             destination: "/profil/association/business",
-    //         },
-    //         props:{},
-    //     };
-    // }
 
     let avatar = await fetch(`${process.env.API_URL}/api/association/avatar`, {
       headers: new Headers({
@@ -258,19 +311,6 @@ export async function getServerSideProps(context) {
         })}
     )
     enseigne = await enseigne.json();
-    
-    let cancelUrl = context.req.headers.referer
-    let stripe = await fetch(`${process.env.API_URL}/api/stripe/subscriptionLinks`, {
-        method: 'POST',
-        headers: new Headers({
-                'JWTAuthorization': `Bearer ${token}`,
-        }),
-        body: JSON.stringify({
-            cancelUrl: `${process.env.NEXT_URL}${context.resolvedUrl}`,
-            baseUrl: `${process.env.NEXT_URL}`
-        })
-    })
-    stripe = await stripe.json();
 
     let backgroundImage = await fetch(`${process.env.API_URL}/api/association/background`, {
         headers: new Headers({
@@ -279,15 +319,18 @@ export async function getServerSideProps(context) {
       )
     backgroundImage = await backgroundImage.json();
 
+    let invitations = await getAssociationSponsorInvitations(token)
+    let validationRequest = await getAssociationInvitationRequest(token)
+
     // // Pass data to the page via props
     return { props: {
         backgroundImage: backgroundImage.filename,
         avatar: avatar.filename,
         cards: JSON.parse(cards.data),
         hasFinishedTutorial: JSON.parse(enseigne.data).hasFinishedTutorial,
-        stripeMonthPaymentLink: stripe.monthUrl,
-        stripeYearPaymentLink: stripe.yearUrl,
-        hasActiveSubscription: hasActiveSubscriptionRes.data == null ? false : true
+        hasActiveSubscription: hasActiveSubscriptionRes.data == null ? false : true,
+        invitations: JSON.parse(invitations.data),
+        validationRequest: JSON.parse(validationRequest.data)
     }}
   }
 

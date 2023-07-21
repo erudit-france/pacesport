@@ -3,7 +3,7 @@ import Head from "next/head";
 import Layout from "./layout";
 import { FiUsers } from "react-icons/fi";
 import { MdOutlineLocalOffer, MdOutlineStore } from "react-icons/md";
-import { getActiveSponsors, getAllSponsors, getPendingSponsors } from "@/domain/repository/AdminRepository";
+import { getActiveAssociations, getActiveSponsors, getAllAssociations, getAllSponsors, getPendingAssociations, getPendingSponsors } from "@/domain/repository/AdminRepository";
 import { useState } from "react";
 import { getCookie } from "cookies-next";
 import Toast from "@/services/Toast";
@@ -170,17 +170,17 @@ export async function getServerSideProps(context) {
         })}
       )
     backgroundImage = await backgroundImage.json();
-    let associations = await getAllassociations(token)
-    let pendingAssociations = await getPendingAssociations(token)
-    let activeAssociations = await getActiveAssociations(token)
+    let sponsors = await getAllSponsors(token)
+    let pendingSponsors = await getPendingSponsors(token)
+    let activeSponsors = await getActiveSponsors(token)
 
     // // Pass data to the page via props
     return { props: {
         backgroundImage: backgroundImage.filename,
         avatar: avatar.filename,
-        associations: JSON.parse(associations.data),
-        pendingAssociations: JSON.parse(pendingAssociations.data),
-        activeAssociations: JSON.parse(activeAssociations.data)
+        sponsors: JSON.parse(sponsors.data),
+        pendingSponsors: JSON.parse(pendingSponsors.data),
+        activeSponsors: JSON.parse(activeSponsors.data)
     }}
   }
 
