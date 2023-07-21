@@ -103,6 +103,13 @@ export async function getServerSideProps(context) {
     })}
     )
   const data = await res.json()
+  if (data.code == 401) 
+  return {
+    redirect: {
+      permanent: false,
+      destination: "/login"
+    }
+  }
 
   let possessedCardsRes = await fetch(`${process.env.API_URL}/api/discount-card-user`, {
     headers: new Headers({
