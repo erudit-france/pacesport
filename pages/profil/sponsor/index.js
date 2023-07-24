@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import SearchInput from '@/components/SearchInput'
-import { ActionIcon, Avatar, Badge, Box, Button, Card, Center, Flex, Grid, Group, Modal, Select, Space, Text, Textarea, Title } from '@mantine/core'
+import { ActionIcon, Avatar, Badge, Box, Button, Card, Center, Flex, Grid, Group, Modal, SegmentedControl, Select, Space, Text, Textarea, Title } from '@mantine/core'
 import AssociationCard from '@/components/AssociationCard'
 import Layout from './layout'
 import { IoMdSettings } from 'react-icons/io'
@@ -44,6 +44,7 @@ export default function Page(props) {
   const [loading, setLoading] = useState(false)
   const [sponsorOffers, setSponsorOffers] = useState(props.offers);
   const [opened, setOpened] = useState(false);
+  const [tab, setTab] = useState('Nationale');
   const categoriesOffre = [
     { value: 'Alimentaire', label: 'Alimentaire' },
     { value: 'Vêtements', label: 'Vêtements' },
@@ -58,7 +59,17 @@ export default function Page(props) {
           description: '',
       },
       validate: {
-        association: (value) => (value != '' ? null : 'Veuillez saisir une association'),
+        association: (value) => {
+          if (tab == 'Nationale') {
+            return null
+          } else {
+            if (value != '') {
+              return null 
+            } else {
+              return 'Veuillez saisir une association'
+            }
+          }
+        },
         categorie: (value) => (value != '' ? null : 'Veuillez saisir une catégorie'),
         description: (value) => (value != '' ? null : 'Veuillez saisir une description'),
       },
@@ -66,30 +77,31 @@ export default function Page(props) {
 
     
   const submitHandler = (values) => {
-      setLoading(true)
-      let body = serialize(values)
-      fetch(`/api/sponsoring-offer`, {
-          method: 'POST',
-          headers: new Headers({
-            'JWTAuthorization': `Bearer ${getCookie('token')}`
-          }),
-          body: body
-        }).then(res => res.json())
-          .then(res => {
-              if(res.data) {
-                      Toast.success('Offre envoyée')
-                  }
-                  setLoading(false)
-                  setOpened(false)
-                  form.reset()
-                  router.replace(router.pathname)
-              })
-          .catch((error) => { 
-            console.log('error', error)
-            Toast.error('Erreur pendant l\'enregistrement de l\'offre') 
-            setLoading(false)
-            setOpened(false)
-      })
+    console.log('values', values)
+      // setLoading(true)
+      // let body = serialize(values)
+      // fetch(`/api/sponsoring-offer`, {
+      //     method: 'POST',
+      //     headers: new Headers({
+      //       'JWTAuthorization': `Bearer ${getCookie('token')}`
+      //     }),
+      //     body: body
+      //   }).then(res => res.json())
+      //     .then(res => {
+      //         if(res.data) {
+      //                 Toast.success('Offre envoyée')
+      //             }
+      //             setLoading(false)
+      //             setOpened(false)
+      //             form.reset()
+      //             router.replace(router.pathname)
+      //         })
+      //     .catch((error) => { 
+      //       console.log('error', error)
+      //       Toast.error('Erreur pendant l\'enregistrement de l\'offre') 
+      //       setLoading(false)
+      //       setOpened(false)
+      // })
   }
 
   // add label to existing array
@@ -202,6 +214,23 @@ export default function Page(props) {
             >
 
               <form className='tw-p-4' onSubmit={form.onSubmit((values) => submitHandler(values))}>
+                
+                <SegmentedControl
+                  styles={{
+                    root: { 
+                    }
+                  }}
+                  fullWidth 
+                  value={tab}
+                  onChange={setTab}
+                  radius="xl"
+                  size="md"
+                  data={['Nationale', 'Locale']}
+                  color="gray"
+                  className='tw-border-[1px] tw-border-b-0 tw-border-white tw-mb-4'
+                />
+
+                {tab == 'Locale' &&
                 <Select
                     label="Association à soutenir"
                     placeholder="Choisir"
@@ -211,6 +240,8 @@ export default function Page(props) {
                     mb={'md'}
                     onDropdownClose={() => console.log('closing')}
                     {...form.getInputProps('association')}/>
+                }
+
 
                 <Select
                       label="Catégorie de l'offre"
