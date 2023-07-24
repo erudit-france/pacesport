@@ -28,36 +28,12 @@ export default function Navbar(props){
     const menuBgAnimate = { transform: "translateX(0%) translateY(0%)"}
     const menuInitial = { transform: "translateX(-100%) translateY(-100%)"}
     const menuAnimate = { transform: "translateX(0%) translateY(0%)"}
-    const [isBusiness, setIsBusiness] = useState(null)
-    const [subscriptionEndDate, setSubscriptionEndDate] = useState('')
-    const logoSrc = isBusiness ? '/logo-business.png' : '/logo.png'
 
     useScrollLock(lockScroll);
     const toggleMenu = () => { 
         setOpen(!open)
         setLockScroll(!lockScroll)
     }
-    useEffect(() => {
-        setToken(getCookie('token'))
-        
-        fetch(`/api/user/hasActiveSubscription`, {
-            method: 'GET',
-            headers: new Headers({
-            'JWTAuthorization': `Bearer ${getCookie('token')}`,
-            'Content-Type': 'application/json'
-            })
-        })
-        .then(res => res.json())
-        .then(res => {
-            if (res.date != null) {
-                setIsBusiness(true)
-                setSubscriptionEndDate(`Business jusqu'à '. ${moment(JSON.parse(res.data.end)).format('DD/MM/YYYY')}`)
-            } else {
-                setIsBusiness(false)
-            }
-        })
-        .catch(err => console.log(err))
-    }, []);
 
     const loginAsLink = 
         <>
@@ -94,9 +70,6 @@ export default function Navbar(props){
                 <NavbarLink toggleMenu={ toggleMenu } href={`/annuaire?prev=${router.pathname}`} name={'Annuaire'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/gestion-fonds?prev=${router.pathname}`} name={'Gestion de fonds'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/messages?prev=${router.pathname}`} name={'Messagerie'} />
-                {!isBusiness &&
-                    <NavbarLink toggleMenu={ toggleMenu } href={'/profil/association/business'} name={<>Pace&lsquo;sport business <BsLock size={18} className='tw-text-gold-400 tw-my-auto tw-ml-1 tw-font-extrabold'/></>} />
-                }
             </>
         )
     }
@@ -110,7 +83,6 @@ export default function Navbar(props){
                 <NavbarLink toggleMenu={ toggleMenu } href={`/annuaire?prev=${router.pathname}`} name={'Annuaire'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/messages?prev=${router.pathname}`} name={'Messagerie'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/gestion-fonds?prev=${router.pathname}`} name={'Gestion de fonds'} />
-                <NavbarLink toggleMenu={ toggleMenu } href={''} name={<>Pace&lsquo;sport business <BsLock className='tw-text-red-600 tw-my-auto tw-ml-1'/></>} />
             </>
         )
     }
@@ -118,7 +90,7 @@ export default function Navbar(props){
     return (
         <>
             <div className={`tw-h-screen ${open ? ' tw-w-screen' : ''} tw-fixed  tw-z-[900] tw-top-0`}>
-                {open == true && <Overlay onClick={() => setOpen(false)} opacity={0.9} color={isBusiness ? '#850' : '#000'} zIndex={0} />}
+                {open == true && <Overlay onClick={() => setOpen(false)} opacity={0.9} color={'#000'} zIndex={0} />}
                     <motion.button className='tw-bg-white tw-shadow-lg tw-p-2 tw-px-3 tw-rounded-r-lg tw-text-xl tw-fixed -tw-left-1 tw-top-10 tw-z-[999]'
                             onClick={toggleMenu}
                             initial={{transform: "translateX(0%)" }}
@@ -126,22 +98,6 @@ export default function Navbar(props){
                         <HiMenuAlt2 className='tw-text-3xl' />
                     </motion.button>
 
-                    {isBusiness && 
-                        <>
-                            <motion.div className='tw-bg-gold-400 tw-w-[127vw] tw-h-[38.5rem] tw-absolute -tw-left-10 tw-shadow-lg tw-z-100'
-                                style={{ borderRadius: "0% 0% 63% 37% / 0% 34% 70% 3%"}}
-                                initial={menuBgInitial}
-                                animate={ open ? menuBgAnimate : menuBgInitial }
-                                ></motion.div>
-
-                            <motion.div className='tw-bg-black tw-w-[117vw] tw-h-[37rem] tw-absolute -tw-left-10 tw-shadow-lg tw-z-100'
-                                style={{ borderRadius: "0 0 63%"}}
-                                initial={menuBgInitial}
-                                animate={ open ? menuBgAnimate : menuBgInitial }
-                                ></motion.div>
-                        </>
-                    }
-                    {!isBusiness &&
                     <>
                         <motion.div className='tw-bg-black tw-w-[117vw] tw-h-[40.5rem] tw-absolute -tw-left-10 tw-shadow-lg tw-z-100'
                             style={{ borderRadius: "0% 0% 63% 37% / 0% 34% 70% 3%"}}
@@ -154,7 +110,6 @@ export default function Navbar(props){
                             animate={ open ? menuBgAnimate : menuBgInitial }
                             ></motion.div>
                     </>
-                    }
                     {/* menu */}
                     <motion.div className='tw-bg-gray-100 tw-w-screen tw-h-[36.5rem] tw-absolute tw-flex tw-justify-center tw-shadow-lg tw-z-20'
                         style={{ borderRadius: "0 0 70%"}}
@@ -173,7 +128,7 @@ export default function Navbar(props){
                         <div className='tw-flex tw-flex-col tw-justify-center'>
                             <ul className='tw-relative -tw-top-4'>
                                 <Center mb={'md'}>
-                                    <Avatar src={isBusiness == true ? `/logo-business.png` : '/logo.png'} size={70}/>
+                                    <Avatar src={'/logo.png'} size={70}/>
                                 </Center>
                                 { !['particulier', 'sponsor/partenaire', 'association'].includes(role)
                                     && <NavParticulier toggleMenu={toggleMenu} />
