@@ -8,7 +8,7 @@ const AutoCompleteItem = forwardRef(
   ({ description, value, image, ...others }, ref) => (
     <div ref={ref} {...others} onClick={() => console.log('opening link')}>
       <Group noWrap>
-        <Avatar className='tw-shadow-md p-2' size="md"  radius="xl" src={"https://logo-marque.com/wp-content/uploads/2021/02/Auchan-Logo.png"} />
+        <Avatar className='tw-shadow-md p-2' size="md"  radius="xl" src={""} />
         <div>
             <Text size="md">{value}</Text>
         </div>
@@ -36,7 +36,7 @@ export default function SearchInput({className}) {
       setLoading(true);
       timeoutRef.current = window.setTimeout(() => {
         setLoading(false);
-        setData(['gmail.com', 'outlook.com', 'yahoo.com', 'yandex.com', 'hotmail.com', 'hostinger.com'].map((provider) => `${val}@${provider}`));
+        setData([''].map((provider) => `${val}`));
       }, 100);
     }
   };
@@ -50,7 +50,7 @@ export default function SearchInput({className}) {
       size={"md"}
       dropdownPosition="bottom" 
       radius={"xl"}
-      placeholder="Auchan Lyon 1..."
+      placeholder="Nom de l'association..."
       itemComponent={AutoCompleteItem}
       rightSection={loading ? <Loader className="tw-mr-5" color='red' size={16} /> : <GoSearch className='tw-mr-5' />}
       value={value}
