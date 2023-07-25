@@ -173,8 +173,8 @@ export default function Page(props){
             </section>
 
             <section className="tw-bg-white tw-mt-6 tw-shadow-inner tw-py-4 tw-px-4">
-                    {validationRequest.validated == false && <Center className="tw-z-50"><Text color="orange">Votre demande est en attente de validation</Text></Center>}
-                    {validationRequest.validated == false &&
+                    {validationRequest?.validated == false && <Center className="tw-z-50"><Text color="orange">Votre demande est en attente de validation</Text></Center>}
+                    {validationRequest?.validated == false &&
                         <form className="tw-relative" onSubmit={form.onSubmit((values) => submitHandler(values))}>
                         {validationRequest && <Overlay className="tw-rounded-3xl tw-mx-1 tw-mb-1"  opacity={0.1} color="#000" blur={1} />}
                         <Box className="tw-border-[1px] tw-border-gray-300 tw-shadow-sm tw-rounded-3xl" mx={'xs'} px={'md'} py={'md'}>
@@ -207,8 +207,8 @@ export default function Page(props){
                                     Envoyer pour  validation</Button>
                         </Center>
                         </form>}
-                    {validationRequest.validated == false && <Text color="green" align="center">Association validée</Text>}
-                {validationRequest.validated == false && 
+                    {validationRequest?.validated == false && <Text color="green" align="center">Association validée</Text>}
+                {validationRequest?.validated == false && 
                     <Flex justify={'space-between'} my={'lg'} className="tw-relative">
                         <Text className="tw-flex-1" color="red" fz={'sm'} fw={'bold'} align={'center'} py={2}>Ajoutez encore {nbSponsorsNeeded} partenaires pour valider votre pace&lsquo;sport</Text>
                     </Flex>}
