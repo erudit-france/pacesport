@@ -81,7 +81,7 @@ export default function Page({status}){
     const context = useContext(AppContext)
     const logout = () => {
         deleteCookie('token')
-        router.push('/home')
+        router.push('/login')
     }
     return (
         <>
