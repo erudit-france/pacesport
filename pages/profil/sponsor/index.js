@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import SearchInput from '@/components/SearchInput'
-import { ActionIcon, Avatar, Badge, Box, Button, Card, Center, Flex, Grid, Group, Modal, SegmentedControl, Select, Space, Text, Textarea, Title } from '@mantine/core'
+import { ActionIcon, Avatar, Badge, Box, Button, Card, Center, FileButton, Flex, Grid, Group, Modal, SegmentedControl, Select, Space, Stack, Text, Textarea, Title } from '@mantine/core'
 import AssociationCard from '@/components/AssociationCard'
 import Layout from './layout'
 import { IoMdSettings } from 'react-icons/io'
@@ -20,6 +20,10 @@ import Toast from '@/services/Toast'
 import { getCookie } from 'cookies-next'
 import { serialize } from 'object-to-formdata'
 import { useRouter } from 'next/router'
+import { AiOutlineFileText, AiOutlineUpload } from 'react-icons/ai'
+import { RxCheck, RxCross2 } from 'react-icons/rx'
+import fileUploader from '@/utils/fileUploader'
+
 
 const CardsSection = (props) => (
         <section className='tw-mt-8'>
@@ -30,11 +34,76 @@ const CardsSection = (props) => (
         </section>
 )
 
-const Status = ({status}) => {
-  let text = status == 0 ? 'En attente' : 'Validé'
+const Status = ({offer}) => {
+  const [contrat, setContrat] = useState(null)
+  const [edit, setEdit] = useState(null)
+  const status = offer.status
+  const uploadHandler = (file) => {
+    setContrat(file)
+    setEdit(true)
+  }
+  const upload = () => {
+    fileUploader(contrat)
+    .then((response) => {
+        let body = new FormData();
+        body.append('filename', response.data.filename)
+        body.append('offer', offer.id)
+        fetch(`/api/sponsoring-offer/contrat`, {
+            method: 'POST',
+            type: 'cors',
+            headers: new Headers({
+              'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: body
+          })
+          .then(res => res.json())
+            .then(res => {
+                res.data.code == 1 
+                    ? Toast.success(res.data.message)
+                    : Toast.error(res.data.message)
+                setEdit(false)
+            })
+            .catch((error) => { 
+              Toast.error('Erreur pendant le téléchargement du contrat') 
+              cancel()
+            })
+    });
+  }
+  const cancel = () => {
+    setContrat(null)
+    setEdit(false)
+  }
+
+  if (offer.contrat == null) {
+    return (
+      <Flex direction={'column'}>
+        <Badge className='tw-font-semibold tw-shadow-sm tw-underline tw-text-blue-500 tw-flex tw-flex-row' size={'sm'} color={'yellow'}>
+          <Group>En attente de signature contrat <AiOutlineFileText /></Group>
+        </Badge>
+        <Stack align="flex-end" mt='sm'>
+          <FileButton onChange={uploadHandler} accept=""
+            className=''>
+           {(props) => <Group {...props} className='tw-float-right tw-text-xs tw-underline tw-px-1 hover:tw-cursor-pointer
+              tw-text-blue-500 tw-border-[1px] tw-border-blue-200 tw-shadow-sm tw-rounded-xl'>
+                {contrat ? contrat.name : 'Déposer'}
+                {contrat == null && <AiOutlineUpload />}</Group>}
+          </FileButton>
+          {edit &&
+            <Group position="right">
+              <ActionIcon onClick={cancel} className='tw-bg-gray-200/50' 
+                    color='dark' variant='light' radius={'xl'}><RxCross2 /></ActionIcon>
+              <ActionIcon onClick={upload} className='tw-bg-teal-300/50' 
+                    color='teal' variant='light' radius={'xl'}><RxCheck /></ActionIcon>
+            </Group>
+          }
+        </Stack>
+      </Flex>
+    )
+  }
+
   return (
     <Badge className='tw-font-semibold tw-shadow-sm' size={'sm'} color={status == 0 ? 'yellow' : 'teal'}>
-      {text}</Badge>
+      {status == 0 ? 'En attente' : 'Validé'}</Badge>
   )
 }
 
@@ -148,7 +217,7 @@ export default function Page(props) {
         <Text color='dimmed'>{offer.description}</Text>
       </Flex>
       <Center>
-        <Status status={offer.status} />
+        <Status offer={offer} />
       </Center>
     </Card>
   )

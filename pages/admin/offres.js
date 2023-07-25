@@ -1,4 +1,4 @@
-import { ActionIcon, Avatar, Badge, Box, Button, Flex, Group, Modal, Select, Table, Tabs, Text, TextInput, Title } from "@mantine/core";
+import { ActionIcon, Avatar, Badge, Box, Button, Flex, Group, Modal, ScrollArea, Select, Table, Tabs, Text, TextInput, Title } from "@mantine/core";
 import Head from "next/head";
 import Layout from "./layout";
 import { FiUsers } from "react-icons/fi";
@@ -164,10 +164,12 @@ export default function Page(props){
                         size="sm"
                     />
             </Flex>
-            <OffresTable 
-                offres={offers} refresh={refresh} fetching={fetching} 
-                editOffer={editOffer}
-                />
+            <ScrollArea className="tw-w-screen">
+                <OffresTable 
+                    offres={offers} refresh={refresh} fetching={fetching} 
+                    editOffer={editOffer}
+                    />
+            </ScrollArea>
             </Tabs.Panel>
             <Modal
                 opened={open}

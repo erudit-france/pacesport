@@ -119,7 +119,7 @@ export default function Page(props){
         <>
             <Tabs.Panel value="sponsors" p={"md"}>
             <Flex justify={'space-between'} py={"sm"}>
-                <Title order={4} align="center">Comptes pro</Title>
+                <Title order={4} align="center">Comptes sponsors</Title>
                 <Select
                     styles={ {
                         root: { display: 'flex', flexDirection: 'row' },

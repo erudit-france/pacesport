@@ -126,7 +126,7 @@ export default function Page(props){
         <>
             <Tabs.Panel value="associations" p={"md"}>
             <Flex justify={'space-between'} py={"sm"}>
-                <Title order={4} align="center">Comptes pro</Title>
+                <Title order={4} align="center">Comptes associations</Title>
                 <Select
                     styles={ {
                         root: { display: 'flex', flexDirection: 'row' },

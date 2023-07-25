@@ -1,7 +1,9 @@
 import Toast from "@/services/Toast";
 import { ActionIcon, Avatar, Badge, Group, Loader, Table, Text } from "@mantine/core";
 import { getCookie } from "cookies-next";
+import Link from "next/link";
 import { BsCheckLg, BsFillGearFill } from "react-icons/bs";
+import { FaDownload } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
 
 export default function OffresTable({offres, refresh, fetching, editOffer}) {
@@ -67,6 +69,7 @@ export default function OffresTable({offres, refresh, fetching, editOffer}) {
           <th>Sponsor</th>
           <th>Association</th>
           <th>Status</th>
+          <th>Contrat</th>
           <th>Catégorie</th>
           <th></th>
         </tr>
@@ -91,6 +94,12 @@ export default function OffresTable({offres, refresh, fetching, editOffer}) {
             <td>
                 <StatusBadge offer={element} />
             </td>
+            <td>
+                {element.contrat &&
+                <ActionIcon color="violet" component="a" href={`/uploads/${element.contrat.name}`}>
+                    <FaDownload />
+                </ActionIcon>}
+            </td>
             <td>{element.category?.label}</td>
             <td>
                 <Group>
@@ -114,7 +123,7 @@ export default function OffresTable({offres, refresh, fetching, editOffer}) {
 
     return (
         <>
-            <Table striped withColumnBorders>
+            <Table striped withColumnBorders fontSize={'sm'}>
                 <thead>{ths}</thead>
                 <tbody>{rows}</tbody>
             </Table>
