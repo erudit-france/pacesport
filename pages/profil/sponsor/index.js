@@ -113,18 +113,16 @@ export default function Page(props) {
   const [loading, setLoading] = useState(false)
   const [sponsorOffers, setSponsorOffers] = useState(props.offers);
   const [opened, setOpened] = useState(false);
-  const [tab, setTab] = useState('Nationale');
-  const categoriesOffre = [
-    { value: 'Alimentaire', label: 'Alimentaire' },
-    { value: 'Vêtements', label: 'Vêtements' },
-    { value: 'Sports', label: 'Sports' },
-    { value: 'Electronique', label: 'Electronique' },
-  ]
+  const [tab, setTab] = useState('Nationale')
+  const tabHandler = (state) => {
+    if (state == 'Nationale')
+      form.setValues({association: null})
+      setTab(state)
+  }
 
   const form = useForm({
       initialValues: {
           association: '',
-          categorie: '',
           description: '',
       },
       validate: {
@@ -132,45 +130,43 @@ export default function Page(props) {
           if (tab == 'Nationale') {
             return null
           } else {
-            if (value != '') {
+            if (value != '' && value != null) {
               return null 
             } else {
               return 'Veuillez saisir une association'
             }
           }
         },
-        categorie: (value) => (value != '' ? null : 'Veuillez saisir une catégorie'),
         description: (value) => (value != '' ? null : 'Veuillez saisir une description'),
       },
   });
 
     
   const submitHandler = (values) => {
-    console.log('values', values)
-      // setLoading(true)
-      // let body = serialize(values)
-      // fetch(`/api/sponsoring-offer`, {
-      //     method: 'POST',
-      //     headers: new Headers({
-      //       'JWTAuthorization': `Bearer ${getCookie('token')}`
-      //     }),
-      //     body: body
-      //   }).then(res => res.json())
-      //     .then(res => {
-      //         if(res.data) {
-      //                 Toast.success('Offre envoyée')
-      //             }
-      //             setLoading(false)
-      //             setOpened(false)
-      //             form.reset()
-      //             router.replace(router.pathname)
-      //         })
-      //     .catch((error) => { 
-      //       console.log('error', error)
-      //       Toast.error('Erreur pendant l\'enregistrement de l\'offre') 
-      //       setLoading(false)
-      //       setOpened(false)
-      // })
+      setLoading(true)
+      let body = serialize(values)
+      fetch(`/api/sponsoring-offer`, {
+          method: 'POST',
+          headers: new Headers({
+            'JWTAuthorization': `Bearer ${getCookie('token')}`
+          }),
+          body: body
+        }).then(res => res.json())
+          .then(res => {
+              if(res.data) {
+                      Toast.success('Offre envoyée')
+                  }
+                  setLoading(false)
+                  setOpened(false)
+                  form.reset()
+                  router.replace(router.pathname)
+              })
+          .catch((error) => { 
+            console.log('error', error)
+            Toast.error('Erreur pendant l\'enregistrement de l\'offre') 
+            setLoading(false)
+            setOpened(false)
+      })
   }
 
   // add label to existing array
@@ -291,7 +287,7 @@ export default function Page(props) {
                   }}
                   fullWidth 
                   value={tab}
-                  onChange={setTab}
+                  onChange={tabHandler}
                   radius="xl"
                   size="md"
                   data={['Nationale', 'Locale']}
@@ -310,14 +306,6 @@ export default function Page(props) {
                     onDropdownClose={() => console.log('closing')}
                     {...form.getInputProps('association')}/>
                 }
-
-
-                <Select
-                      label="Catégorie de l'offre"
-                      placeholder="Choisir"
-                      data={categoriesOffre}
-                      mb={'md'}
-                      {...form.getInputProps('categorie')}/>
 
                 <Textarea size="xs" mb={'sm'} label="Description de l'offre"
                       minRows={3}

@@ -5,15 +5,16 @@ import Link from "next/link";
 import { BsCheckLg, BsFillGearFill } from "react-icons/bs";
 import { FaDownload } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
+import SponsoringOfferTypeBadge from "../SponsoringOfferTypeBadge";
 
 export default function OffresTable({offres, refresh, fetching, editOffer}) {
     const StatusBadge = ({offer}) => {
         let color = ''
         let text = ''
-        if (offer.validated == true && offer.status == 1) {
+        if (offer.validated == 1 && offer.status == 1 || offer.association == null && offer.validated == 1) {
             color = 'teal'
             text = 'Active'
-        } else if (offer.validated == null && offer.status == 1) {
+        } else if (offer.validated == null && offer.status == 1 || offer.association == null && offer.validated == null) {
             color = 'yellow'
             text = 'En attente admin'
         } else if (offer.validated == null && offer.status == 0 || offer.validated == true) {
@@ -87,7 +88,9 @@ export default function OffresTable({offres, refresh, fetching, editOffer}) {
             </td>
             <td>
                 <Group>
-                    <Avatar className="tw-shadow-md" size={'sm'} radius={'xl'}  src={`/uploads/${element.association.avatar?.name}`} />
+                    {element.association 
+                    ? <Avatar className="tw-shadow-md" size={'sm'} radius={'xl'}  src={`/uploads/${element.association?.avatar?.name}`} />
+                    : <SponsoringOfferTypeBadge offer={element} />}
                     <Text fz={'sm'}>{element.description}</Text>
                 </Group>
             </td>

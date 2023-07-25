@@ -17,6 +17,7 @@ import PreviousPageButton from '@/components/PreviousPageButton'
 import moment from 'moment'
 import { getActiveOffers } from '@/domain/repository/CardOffersRepository'
 import { FaMapMarkerAlt } from 'react-icons/fa'
+import SponsoringOfferTypeBadge from '@/components/SponsoringOfferTypeBadge'
 
 
 export default function Page(props) {
@@ -51,7 +52,7 @@ export default function Page(props) {
         </Center>
         <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
           <Flex justify={'space-between'}>
-            <Text weight={550}>{offer.enseigne.description}</Text>
+            <Text weight={550}>{offer.enseigne.description} <SponsoringOfferTypeBadge offer={offer} /></Text>
             <Text className='tw-flex tw-font-light' fz={'sm'}>
               <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer.enseigne?.city}</Text>
           </Flex>

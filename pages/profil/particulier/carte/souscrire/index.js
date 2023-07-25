@@ -19,6 +19,7 @@ import { getActiveOffers } from '@/domain/repository/CardOffersRepository'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 import { AiOutlineSync } from 'react-icons/ai'
 import { useForm } from '@mantine/form'
+import SponsoringOfferTypeBadge from '@/components/SponsoringOfferTypeBadge'
 
 
 export default function Page(props) {
@@ -72,7 +73,7 @@ export default function Page(props) {
         </Center>
         <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
           <Flex justify={'space-between'}>
-            <Text weight={550}>{offer.association.description}</Text>
+            <Text weight={550}>{offer.association.description} <SponsoringOfferTypeBadge offer={offer} /></Text>
             <Text className='tw-flex tw-font-light' fz={'sm'}>
               <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer.association.ville}</Text>
           </Flex>

@@ -1,4 +1,5 @@
 import { Accordion, Avatar, Box, Flex, Paper, Text } from "@mantine/core";
+import SponsoringOfferTypeBadge from "./SponsoringOfferTypeBadge";
 
 export default function AssociationAcceptedOffers({offers}) {
     console.log('AssociationAcceptedOffers')
@@ -9,7 +10,8 @@ export default function AssociationAcceptedOffers({offers}) {
             <Accordion.Control>
                 <Flex>
                     <Avatar radius={'xl'} className="tw-shadow-md" src={`/uploads/${offer.enseigne.avatar?.name}`} alt={offer.description} />
-                    <Text className='tw-my-auto tw-ml-2 tw-font-semibold'>{offer.enseigne?.name}</Text>
+                    <Text className='tw-my-auto tw-ml-2 tw-font-semibold'>{offer.enseigne.description} <SponsoringOfferTypeBadge offer={offer}/>
+                    </Text>
                 </Flex>
             </Accordion.Control>
             {/* <ActionIcon size="lg" m={'md'}> */}

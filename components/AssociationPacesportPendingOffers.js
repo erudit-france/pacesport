@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { BsCheckLg } from "react-icons/bs";
 import { ImCross } from "react-icons/im";
+import SponsoringOfferTypeBadge from "./SponsoringOfferTypeBadge";
 
 export default function AssociationPacesportPendingOffers({offers}) {
     const router = useRouter()
@@ -59,7 +60,8 @@ export default function AssociationPacesportPendingOffers({offers}) {
                 <Accordion.Control>
                     <Flex>
                         <Avatar radius={'xl'} className="tw-shadow-md" src={`/uploads/${offer.enseigne?.avatar?.name}`} alt={offer.description} />
-                        <Text className='tw-my-auto tw-ml-2 tw-font-semibold'>{offer.enseigne.description}</Text>
+                        <Text className='tw-my-auto tw-ml-2 tw-font-semibold'>{offer.enseigne.description} <SponsoringOfferTypeBadge offer={offer}/>
+                        </Text>
                     </Flex>
                 </Accordion.Control>
             </Box>

@@ -1,8 +1,9 @@
 import Toast from "@/services/Toast";
-import { Accordion, Avatar, Box, Button, Flex, Paper, Text } from "@mantine/core";
+import { Accordion, Avatar, Badge, Box, Button, Flex, Paper, Text } from "@mantine/core";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import SponsoringOfferTypeBadge from "./SponsoringOfferTypeBadge";
 
 export default function AssociationActiveOffers({offers}) {
     const router = useRouter()
@@ -57,7 +58,8 @@ export default function AssociationActiveOffers({offers}) {
                 <Accordion.Control>
                     <Flex>
                         <Avatar radius={'xl'} className="tw-shadow-md" src={`/uploads/${offer.enseigne?.avatar?.name}`} alt={offer.description} />
-                        <Text className='tw-my-auto tw-ml-2 tw-font-semibold'>{offer.enseigne.description}</Text>
+                        <Text className='tw-my-auto tw-ml-2 tw-font-semibold'>{offer.enseigne.description} <SponsoringOfferTypeBadge offer={offer}/>
+                        </Text>
                     </Flex>
                 </Accordion.Control>
             </Box>

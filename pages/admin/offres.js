@@ -164,7 +164,7 @@ export default function Page(props){
                         size="sm"
                     />
             </Flex>
-            <ScrollArea className="tw-w-screen">
+            <ScrollArea className="tw-max-w-[100%]">
                 <OffresTable 
                     offres={offers} refresh={refresh} fetching={fetching} 
                     editOffer={editOffer}

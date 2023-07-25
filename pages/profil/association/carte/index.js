@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Button, Center, Divider, FileInput, Flex, List, Modal, Overlay, Paper, Space, Text, TextInput, Title, useMantineTheme } from "@mantine/core";
+import { ActionIcon, Badge, Box, Button, Center, Divider, FileInput, Flex, List, Modal, Overlay, Paper, Space, Text, TextInput, Title, useMantineTheme } from "@mantine/core";
 import Head from "next/head";
 import Layout from "./layout";
 import { BsLink, BsLock, BsMegaphoneFill } from "react-icons/bs";
