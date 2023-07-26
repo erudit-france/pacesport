@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { HiMenuAlt2 } from 'react-icons/hi';
 import { GrClose } from "react-icons/gr";
 import { BsLock } from "react-icons/bs";
@@ -74,22 +74,22 @@ export default function Navbar(props){
         )
     }
     
-    const NavSponsor = () => {
+    const NavSponsor = ({props}) => {
         return (
-            <>
+            <React.Fragment {...props}>
                 {loginAsLink}
-                <NavbarLink toggleMenu={ toggleMenu } href={'/profil/sponsor'} name={'Mes cartes / partenariats actifs'} />
+                <NavbarLink toggleMenu={ toggleMenu } href={'/profil/sponsor'} name={'Mes cartes / partenariats actifs'}/>
                 <NavbarLink toggleMenu={ toggleMenu } href={'/communication/add/sponsor'} name={'Communication'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/annuaire?prev=${router.pathname}`} name={'Annuaire'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/messages?prev=${router.pathname}`} name={'Messagerie'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/gestion-fonds?prev=${router.pathname}`} name={'Gestion de fonds'} />
-            </>
+            </React.Fragment>
         )
     }
 
     return (
         <>
-            <div className={`tw-h-screen ${open ? ' tw-w-screen' : ''} tw-fixed  tw-z-[900] tw-top-0`}>
+            <div className={`tw-h-screen ${open ? ' tw-w-screen' : ''} tw-fixed  tw-z-[900] tw-top-0`} suppressHydrationWarning >
                 {open == true && <Overlay onClick={() => setOpen(false)} opacity={0.9} color={'#000'} zIndex={0} />}
                     <motion.button className='tw-bg-white tw-shadow-lg tw-p-2 tw-px-3 tw-rounded-r-lg tw-text-xl tw-fixed -tw-left-1 tw-top-10 tw-z-[999]'
                             onClick={toggleMenu}
@@ -134,7 +134,7 @@ export default function Navbar(props){
                                     && <NavParticulier toggleMenu={toggleMenu} />
                                 }
                                 {role == 'particulier' && <NavParticulier toggleMenu={toggleMenu} />}
-                                {role == 'sponsor/partenaire' && <NavSponsor toggleMenu={toggleMenu} />}
+                                {role == 'sponsor/partenaire' && <NavSponsor toggleMenu={toggleMenu} suppressHydrationWarning/>}
                                 {role == 'association' && <NavAssociation toggleMenu={toggleMenu} />}
                             </ul>
                         </div>

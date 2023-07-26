@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import SearchInput from '@/components/SearchInput'
-import { ActionIcon, Avatar, Badge, Box, Button, Card, Center, FileButton, Flex, Grid, Group, Modal, SegmentedControl, Select, Space, Stack, Text, Textarea, Title } from '@mantine/core'
+import { ActionIcon, Avatar, Badge, Box, Button, Card, Center, FileButton, Flex, Grid, Group, Modal, MultiSelect, SegmentedControl, Select, Space, Stack, Text, Textarea, Title } from '@mantine/core'
 import AssociationCard from '@/components/AssociationCard'
 import Layout from './layout'
 import { IoMdSettings } from 'react-icons/io'
@@ -115,58 +115,48 @@ export default function Page(props) {
   const [opened, setOpened] = useState(false);
   const [tab, setTab] = useState('Nationale')
   const tabHandler = (state) => {
-    if (state == 'Nationale')
-      form.setValues({association: null})
       setTab(state)
+      form.setValues({type: state})
   }
 
   const form = useForm({
       initialValues: {
-          association: '',
+          association: [],
           description: '',
+          type: 'Nationale',
       },
       validate: {
-        association: (value) => {
-          if (tab == 'Nationale') {
-            return null
-          } else {
-            if (value != '' && value != null) {
-              return null 
-            } else {
-              return 'Veuillez saisir une association'
-            }
-          }
-        },
+        association: (value) => (value.length > 0 ? null : 'Veuillez séléctionner l(es) association(s)'),
         description: (value) => (value != '' ? null : 'Veuillez saisir une description'),
       },
   });
 
     
   const submitHandler = (values) => {
-      setLoading(true)
-      let body = serialize(values)
-      fetch(`/api/sponsoring-offer`, {
-          method: 'POST',
-          headers: new Headers({
-            'JWTAuthorization': `Bearer ${getCookie('token')}`
-          }),
-          body: body
-        }).then(res => res.json())
-          .then(res => {
-              if(res.data) {
-                      Toast.success('Offre envoyée')
-                  }
-                  setLoading(false)
-                  setOpened(false)
-                  form.reset()
-                  router.replace(router.pathname)
-              })
-          .catch((error) => { 
-            console.log('error', error)
-            Toast.error('Erreur pendant l\'enregistrement de l\'offre') 
-            setLoading(false)
-            setOpened(false)
-      })
+    setLoading(true)
+    let body = serialize(values)
+    fetch(`/api/sponsoring-offer`, {
+        method: 'POST',
+        headers: new Headers({
+          'JWTAuthorization': `Bearer ${getCookie('token')}`
+        }),
+        body: body
+      }).then(res => res.json())
+        .then(res => {
+            if(res.data) {
+                    Toast.success('Offre envoyée')
+                }
+                setLoading(false)
+                setOpened(false)
+                form.reset()
+                router.replace(router.pathname)
+            })
+        .catch((error) => { 
+          console.log('error', error)
+          Toast.error('Erreur pendant l\'enregistrement de l\'offre') 
+          setLoading(false)
+          setOpened(false)
+    })
   }
 
   // add label to existing array
@@ -295,8 +285,7 @@ export default function Page(props) {
                   className='tw-border-[1px] tw-border-b-0 tw-border-white tw-mb-4'
                 />
 
-                {tab == 'Locale' &&
-                <Select
+                <MultiSelect
                     label="Association à soutenir"
                     placeholder="Choisir"
                     itemComponent={SelectItem}
@@ -305,7 +294,6 @@ export default function Page(props) {
                     mb={'md'}
                     onDropdownClose={() => console.log('closing')}
                     {...form.getInputProps('association')}/>
-                }
 
                 <Textarea size="xs" mb={'sm'} label="Description de l'offre"
                       minRows={3}
@@ -361,7 +349,6 @@ export async function getServerSideProps(context) {
   backgroundImage = await backgroundImage.json();
 
   let offers = await getOffers(token)
-  console.log('offers', offers)
 
   // // Pass data to the page via props
   return { props: { 

@@ -2,8 +2,6 @@ import { Accordion, Avatar, Box, Flex, Paper, Text } from "@mantine/core";
 import SponsoringOfferTypeBadge from "./SponsoringOfferTypeBadge";
 
 export default function AssociationAcceptedOffers({offers}) {
-    console.log('AssociationAcceptedOffers')
-    console.log('offers', offers)
     const AccordionControl = ({offer}) => {
         return (
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
