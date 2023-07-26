@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import SearchInput from '@/components/SearchInput'
-import { Box, Button, Center, Grid, Group, Modal, Space, Text, Title } from '@mantine/core'
+import { Box, Button, Center, CloseButton, Grid, Group, Modal, Space, Text, TextInput, Title } from '@mantine/core'
 import AssociationCard from '@/components/AssociationCard'
 import Layout from './layout'
 import { useEffect, useState } from 'react'
@@ -14,8 +14,8 @@ import OrganisationCardParticulier from '@/components/OrganisationCardParticulie
 import AssociationCardParticulier from '@/components/AssociationCardParticulier'
 import CommunicationAdsCarousel from '@/components/CommunicationAdsCarousel'
 import AssociationCarte from '@/components/AssociationCarte'
+import { useDebouncedValue } from '@mantine/hooks'
 
-const inter = Inter({ subsets: ['latin'] })
 
 const SectionTitle = (props) => (
     <Title {...props} order={4} align='center' transform='uppercase' mb={"lg"}>{props.children}</Title>
@@ -38,13 +38,40 @@ const DiscountCardsGrid = ({cards}) => {
 
 export default function Page(props) {
   const [opened, setOpened] = useState(false);
-  const associations = props.associations.map((card) => 
+  const [search, setSearch] = useState('')
+  const [filteredAssociations, setFilteredAssociations] = useState(props.associations)
+  const [debouncedSearch, cancel] = useDebouncedValue(search, 300)
+
+  useEffect(() => {
+    const results = props.associations.filter(o =>
+      o.name.toLowerCase().includes(debouncedSearch.toLowerCase()))
+    setFilteredAssociations(results)
+  }, [debouncedSearch, props.associations])
+  
+  
+  const handleSearch = (event) => {
+    setSearch(event.currentTarget.value)
+    // if (props.associations.length == 0) {
+    //   setFilteredAssociations([]) 
+    //   return
+    // }
+    // const results = props.associations.filter(o =>
+    //   o.name.toLowerCase().includes(search.toLowerCase()))
+    // setFilteredAssociations(results)
+  }
+
+  const clear = () => {
+    setSearch('')
+    setFilteredAssociations(props.associations)
+  }
+  
+  const associations = filteredAssociations.map((card) => 
     <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
       <AssociationCarte organisation={card} href={`/profil/particulier/carte/souscrire`} />
     </Grid.Col>
   )
 
-  const associationsGrid = props.associations.length == 0
+  const associationsGrid = filteredAssociations.length == 0
     ? <Text fz={'sm'} align="center" color="dimmed">Aucune association enregistrée</Text>
     : <Grid gutter={18} className="tw-px-4">{associations}</Grid>
 
@@ -65,7 +92,15 @@ export default function Page(props) {
                 <SectionTitle className='tw-text-gray-800 tw-text-base'>Associations proche de vous</SectionTitle>
                 {/* search input */}
                 <section className='tw-px-8 tw-mb-4'>
-                  <SearchInput />
+                  <TextInput
+                    className={`focus:tw-border-red-600`}
+                    size={"md"}
+                    radius={"xl"}
+                    placeholder="Nom de l'association..."
+                    rightSection={search == '' ? '' : <CloseButton mr={'sm'} radius={'lg'} aria-label="Vider" onClick={clear} />}
+                    value={search}
+                    onChange={handleSearch}
+                  />
                 </section>
                 {/* <EnseigneGrid /> */}
                 {associationsGrid}

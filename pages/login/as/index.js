@@ -22,7 +22,7 @@ const LinkButton = ({text, href, lock, className, onClick}) => {
             className={`tw-w-full ${className}`}
             onClick={text == 'Déconnexion' 
                         ? logout
-                        : () => setCookie('role', text?.toLowerCase())}
+                        : () => setCookie('role', text?.toString().toLowerCase())}
             >
             <Button 
                 className={`
