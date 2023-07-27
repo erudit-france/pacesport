@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { BsCheckLg, BsFillGearFill } from "react-icons/bs";
 import { ImCross } from "react-icons/im";
 import Link from "next/link";
+import { getUser } from "@/domain/repository/UserRepository";
 
 export default function Page(props){
     const [associations, setAssociations] = useState(props.associations)
@@ -180,6 +181,16 @@ export async function getServerSideProps(context) {
     let associations = await getAllAssociations(token)
     let pendingAssociations = await getPendingAssociations(token)
     let activeAssociations = await getActiveAssociations(token)
+    let user = await getUser(token)
+    user = JSON.parse(user.data)
+    if (!user.roles.includes('ROLE_ADMIN')) {
+        return {
+            redirect: {
+            permanent: false,
+            destination: "/login/as"
+            }
+        }
+    }
 
     // // Pass data to the page via props
     return { props: {

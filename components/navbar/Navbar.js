@@ -17,6 +17,8 @@ import { BiHome } from 'react-icons/bi';
 
 
 export default function Navbar(props){
+    const context = useContext(AppContext)
+    const user = context.user
     const role = getCookie('role') || 'particulier';
     const [token, setToken] = useState(false);
     const router = useRouter()

@@ -3,6 +3,7 @@ import Head from "next/head";
 import Layout from "./layout";
 import { FiUsers } from "react-icons/fi";
 import { MdOutlineLocalOffer, MdOutlineStore } from "react-icons/md";
+import { getUser } from "@/domain/repository/UserRepository";
 
 export default function Page(props){
     const elements = [
@@ -42,13 +43,26 @@ export default function Page(props){
 }
 
 export async function getServerSideProps(context) {
-    return {
-        redirect: {
-        permanent: false,
-        destination: "/admin/offres"
+    const token = context.req.cookies['token']
+    
+    let user = await getUser(token)
+    user = JSON.parse(user.data)
+    if (!user.roles.includes('ROLE_ADMIN')) {
+        return {
+            redirect: {
+            permanent: false,
+            destination: "/login/as"
+            }
+        }
+    }else {
+        return {
+            redirect: {
+            permanent: false,
+            destination: "/admin/offres"
+            }
         }
     }
-  }
+}
 
 Page.getLayout = function getLayout(page) {
     return (

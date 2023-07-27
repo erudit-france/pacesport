@@ -10,6 +10,7 @@ import Toast from "@/services/Toast";
 import { useRouter } from "next/router";
 import { BsCheckLg, BsFillGearFill } from "react-icons/bs";
 import { ImCross } from "react-icons/im";
+import { getUser } from "@/domain/repository/UserRepository";
 
 export default function Page(props){
     const [sponsors, setSponsors] = useState(props.sponsors)
@@ -148,7 +149,16 @@ export default function Page(props){
 
 export async function getServerSideProps(context) {
     const token = context.req.cookies['token']
-
+    let user = await getUser(token)
+    user = JSON.parse(user.data)
+    if (!user.roles.includes('ROLE_ADMIN')) {
+        return {
+            redirect: {
+            permanent: false,
+            destination: "/login/as"
+            }
+        }
+    }
     let avatar = await fetch(`${process.env.API_URL}/api/association/avatar`, {
       headers: new Headers({
               'JWTAuthorization': `Bearer ${token}`,

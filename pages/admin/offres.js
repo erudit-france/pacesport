@@ -14,6 +14,7 @@ import { useForm } from "@mantine/form";
 import { serialize } from "object-to-formdata";
 import { getSponsoringOfferCategories } from "@/domain/repository/CategoryRepository";
 import OffresTable from "@/components/admin/OffresTable";
+import { getUser } from "@/domain/repository/UserRepository";
 
 export default function Page(props){
     const [loading, setLoading] = useState(false)
@@ -236,6 +237,16 @@ export default function Page(props){
 
 export async function getServerSideProps(context) {
     const token = context.req.cookies['token']
+    let user = await getUser(token)
+    user = JSON.parse(user.data)
+    if (!user.roles.includes('ROLE_ADMIN')) {
+        return {
+            redirect: {
+            permanent: false,
+            destination: "/login/as"
+            }
+        }
+    }
     const query = context.query
     const filter = query.filter
 

@@ -16,7 +16,6 @@ const LinkButton = ({text, href, lock, className, onClick}) => {
         deleteCookie('token')
         router.push('/home')
     }
-    const context = useContext(AppContext)
     return (
         <Link href={href} 
             className={`tw-w-full ${className}`}
@@ -61,15 +60,18 @@ const logout = () => {
 }
 
 export default function Page({status, loggedUser}){
+    const context = useContext(AppContext)
     const router = useRouter()
     const logout = () => {
         deleteCookie('token')
         router.push('/home')
     }
-    const context = useContext(AppContext)
     if (!context.user) {
         context.setUser(loggedUser)
     }
+
+    const user = context.user
+    const isAdmin = user?.roles.includes('ROLE_ADMIN') ? true : false
 
     const usernameParticulier = loggedUser?.prenom ? loggedUser?.prenom : 'Particulier'
     const associationLink = status.association == true 
@@ -91,9 +93,10 @@ export default function Page({status, loggedUser}){
                 <Flex justify='center' direction='column' mb='md' gap="xl">
                     <LinkButton className={'tw-px-16 tw-mb-0'} text={usernameParticulier} href='/' />
                 </Flex>
+                {isAdmin &&
                 <Flex justify='center' direction='column' mb='md' gap="xl">
                     <LinkButton className={'tw-px-16 tw-mb-0'} text={<><RiAdminLine className="tw-mr-1" />Panel admin</>} href='/admin' />
-                </Flex>
+                </Flex>}
                 <Flex className="tw-overflow-hidden" justify='center' direction='column'>
                     <Box className="tw-bg-zinc-900 tw-px-16 tw-skew-y-3 tw-h-6 tw-relative tw-top-4"></Box>
                     <Box className="tw-bg-zinc-900 tw-px-16" py={'md'}>
