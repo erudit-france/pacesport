@@ -15,7 +15,6 @@ const nextConfig = {
   },
   reactStrictMode: true,
   images: {
-    domains: ['pacesport.fr'],
     domains: ['images.unsplash.com'],
   },
   async rewrites() {
