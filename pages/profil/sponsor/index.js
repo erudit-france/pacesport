@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import SearchInput from '@/components/SearchInput'
-import { ActionIcon, Avatar, Badge, Box, Button, Card, Center, FileButton, Flex, Grid, Group, Modal, MultiSelect, SegmentedControl, Select, Space, Stack, Text, Textarea, Title } from '@mantine/core'
+import { ActionIcon, Avatar, Badge, Box, Button, Card, Center, FileButton, Flex, Grid, Group, Modal, MultiSelect, Popover, SegmentedControl, Select, Space, Stack, Text, Textarea, Title } from '@mantine/core'
 import AssociationCard from '@/components/AssociationCard'
 import Layout from './layout'
 import { IoMdSettings } from 'react-icons/io'
@@ -23,6 +23,7 @@ import { useRouter } from 'next/router'
 import { AiOutlineFileText, AiOutlineUpload } from 'react-icons/ai'
 import { RxCheck, RxCross2 } from 'react-icons/rx'
 import fileUploader from '@/utils/fileUploader'
+import { useDisclosure } from '@mantine/hooks'
 
 
 const CardsSection = (props) => (
@@ -191,6 +192,20 @@ export default function Page(props) {
     : <Grid gutter={12} className="mt-4 tw-px-3">{associations}</Grid>
 
     
+  const TextPopOver = ({text}) => {
+    const [opened, { close, open }] = useDisclosure(false);
+    return (
+      <Popover width={300} position="bottom" withArrow shadow="md" opened={opened}>
+        <Popover.Target>
+            <Text onMouseEnter={open} onMouseLeave={close} fz={'sm'} weight={550} lineClamp={1}>{text}</Text>
+        </Popover.Target>
+        <Popover.Dropdown sx={{ pointerEvents: 'none', bottom: '5px' }} >
+          <Text className='tw-relative tw-bottom-[9px]' size="sm">{text}</Text>
+        </Popover.Dropdown>
+      </Popover>
+    )
+  }
+
   const OfferRow = ({offer}) => (
     <Card className='tw-flex tw-bg-gray-50 tw-mb-2' radius={'lg'}>
       <Center>
@@ -198,7 +213,7 @@ export default function Page(props) {
       </Center>
       <Flex direction={'column'} className='tw-flex-1 tw-px-5'>
         <Flex justify={'space-between'}>
-          <Text fz={'sm'} weight={550}>{offer.association?.description}</Text>
+          <TextPopOver text={offer.association?.description} />
         </Flex>
         <Text color='dimmed'>{offer.description}</Text>
       </Flex>

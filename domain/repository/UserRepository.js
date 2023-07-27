@@ -9,3 +9,15 @@ export const getUser = async (token, local = false) => {
     user = await user.json();
     return user;
 }
+
+export const getUsers = async (token, local = false) => {
+    let base = process.env.API_URL;
+    if (local) base = ''
+    let users = await fetch(`${base}/api/users`, {
+        headers: new Headers({
+                'JWTAuthorization': `Bearer ${token}`,
+        })}
+    )
+    users = await users.json();
+    return users;
+}

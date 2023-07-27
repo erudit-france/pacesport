@@ -78,14 +78,14 @@ export default function SignupForm({loading}) {
     <>
       <form onSubmit={form.onSubmit((values) => submitHandler(values))}>
         <Paper className='tw-bg-gray-900 tw-rounded-t-none tw-border-[1px] tw-border-white tw-border-t-0' shadow="xl" p="md" radius="lg">
-        <Checkbox
+        {/* <Checkbox
             ml="xs"
             my="lg"
             color="dark"
             size="sm"
             label={<Text color='white'>Je suis une collectivité publique</Text>}
             {...form.getInputProps('isCollectivitePublique', { type: 'checkbox' })}
-          />
+          /> */}
           <TextInput {...inputOptions} {...form.getInputProps('nom')} placeholder='Nom' />
           <TextInput {...inputOptions} {...form.getInputProps('prenom')} placeholder='Prénom' />
           {/* <Input
