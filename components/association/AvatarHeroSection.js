@@ -1,4 +1,3 @@
-import { upload } from "@/domain/repository/FileRepository";
 import Toast from "@/services/Toast";
 import fileUploader from "@/utils/fileUploader";
 import { useRouter } from "next/router";
@@ -42,33 +41,30 @@ const AvatarHeroSection = ({avatar, background}) => {
     }
 
     const confirmEdit = () => {
-        // if (!imageFile) {
-        //     Toast.error('Erreur pendant le téléchargement de l\'image')
-        //     resetImage()
-        //     edit.close()
-        //     return
-        // }
+        if (!imageFile) {
+            Toast.error('Erreur pendant le téléchargement de l\'image')
+            resetImage()
+            edit.close()
+            return
+        }
         // /api/file/upload
-
-        console.log('getCookie', getCookie('token'))
-        const res = upload(imageFile, getCookie('token'))
-        console.log('res', res)
-        return
-        // fetch(`/api/file/upload`, {
-        //     method: 'POST',
-        //     type: 'cors',
-        //     headers: new Headers({
-        //         'JWTAuthorization': `Bearer ${getCookie('token')}`
-        //     }),
-        //     body: formData
-        //     })
-        //     .then(res => res.json())
-        //     .then(res => {
-        //         res.data.code == 1 
-        //             ? Toast.success(res.data.message)
-        //             : Toast.error(res.data.message)
-        //     })
-        //     .catch((error) => { Toast.error('Erreur pendant le téléchargement de l\'image') })
+        const formData = new FormData()
+        formData.append('file', imageFile)
+        fetch(`/api/file/upload`, {
+            method: 'POST',
+            type: 'cors',
+            headers: new Headers({
+                'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: formData
+            })
+            .then(res => res.json())
+            .then(res => {
+                res.data.code == 1 
+                    ? Toast.success(res.data.message)
+                    : Toast.error(res.data.message)
+            })
+            .catch((error) => { Toast.error('Erreur pendant le téléchargement de l\'image') })
         // fileUploader(imageFile)
         //     .then((response) => {
         //         let body = new FormData();
