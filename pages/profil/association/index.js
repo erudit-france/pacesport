@@ -40,8 +40,6 @@ ChartJS.register(
 );
 
 export default function Page(props){
-    console.log('avatar', props.avatar)
-    console.log('bg', props.backgroundImage)
     const validationRequest = props.validationRequest
     const [loading, setLoading] = useState(false)
     const [openInvitationModal, { open, close }] = useDisclosure(false);
@@ -62,7 +60,7 @@ export default function Page(props){
     });
 
     const submitHandler = (values) => {
-        setLoading(true)
+        setLoading(true)        
         fileUploader(values.statut)
             .then((response) => {
                 let body = new FormData();

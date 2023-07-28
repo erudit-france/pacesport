@@ -47,26 +47,44 @@ const AvatarHeroSection = ({avatar, background}) => {
             edit.close()
             return
         }
-        fileUploader(imageFile)
-            .then((response) => {
-                let body = new FormData();
-                body.append('filename', response.data.filename)
-                fetch(`/api/association/avatar`, {
-                    method: 'POST',
-                    type: 'cors',
-                    headers: new Headers({
-                      'JWTAuthorization': `Bearer ${getCookie('token')}`
-                    }),
-                    body: body
-                  })
-                  .then(res => res.json())
-                    .then(res => {
-                        res.data.code == 1 
-                            ? Toast.success(res.data.message)
-                            : Toast.error(res.data.message)
-                    })
-                    .catch((error) => { Toast.error('Erreur pendant le téléchargement de l\'image') })
-            });
+        // /api/file/upload
+        const formData = new FormData()
+        formData.append('file', imageFile)
+        fetch(`/api/file/upload`, {
+            method: 'POST',
+            type: 'cors',
+            headers: new Headers({
+                'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: formData
+            })
+            .then(res => res.json())
+            .then(res => {
+                res.data.code == 1 
+                    ? Toast.success(res.data.message)
+                    : Toast.error(res.data.message)
+            })
+            .catch((error) => { Toast.error('Erreur pendant le téléchargement de l\'image') })
+        // fileUploader(imageFile)
+        //     .then((response) => {
+        //         let body = new FormData();
+        //         body.append('filename', response.data.filename)
+        //         fetch(`/api/association/avatar`, {
+        //             method: 'POST',
+        //             type: 'cors',
+        //             headers: new Headers({
+        //               'JWTAuthorization': `Bearer ${getCookie('token')}`
+        //             }),
+        //             body: body
+        //           })
+        //           .then(res => res.json())
+        //             .then(res => {
+        //                 res.data.code == 1 
+        //                     ? Toast.success(res.data.message)
+        //                     : Toast.error(res.data.message)
+        //             })
+        //             .catch((error) => { Toast.error('Erreur pendant le téléchargement de l\'image') })
+        //     });
         edit.close()
     }
 
