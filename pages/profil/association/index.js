@@ -40,6 +40,8 @@ ChartJS.register(
 );
 
 export default function Page(props){
+    console.log('avatar', props.avatar)
+    console.log('bg', props.backgroundImage)
     const validationRequest = props.validationRequest
     const [loading, setLoading] = useState(false)
     const [openInvitationModal, { open, close }] = useDisclosure(false);
