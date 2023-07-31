@@ -1,3 +1,4 @@
+import { upload } from "@/domain/repository/FileRepository";
 import Toast from "@/services/Toast";
 import fileUploader from "@/utils/fileUploader";
 import { useRouter } from "next/router";
@@ -41,13 +42,6 @@ const AvatarHeroSection = ({avatar, background}) => {
     }
 
     const confirmEdit = () => {
-        if (!imageFile) {
-            Toast.error('Erreur pendant le téléchargement de l\'image')
-            resetImage()
-            edit.close()
-            return
-        }
-        // /api/file/upload
         const formData = new FormData()
         formData.append('file', imageFile)
         fetch(`/api/file/upload`, {
@@ -60,31 +54,34 @@ const AvatarHeroSection = ({avatar, background}) => {
             })
             .then(res => res.json())
             .then(res => {
-                res.data.code == 1 
-                    ? Toast.success(res.data.message)
-                    : Toast.error(res.data.message)
+                if (res.data.code == 1) {
+                    let body = new FormData();
+                    body.append('filename', res.data.filename)
+                    fetch(`/api/association/avatar`, {
+                        method: 'POST',
+                        type: 'cors',
+                        headers: new Headers({
+                        'JWTAuthorization': `Bearer ${getCookie('token')}`
+                        }),
+                        body: body
+                    })
+                    .then(res => res.json())
+                        .then(res => {
+                            res.data.code == 1 
+                                ? Toast.success(res.data.message)
+                                : Toast.error(res.data.message)
+                        })
+                        .catch((error) => { 
+                            Toast.error('Erreur pendant le téléchargement de l\'image') 
+                        })
+                } else {
+                    Toast.error(res.data.message)
+                }
             })
-            .catch((error) => { Toast.error('Erreur pendant le téléchargement de l\'image') })
-        // fileUploader(imageFile)
-        //     .then((response) => {
-        //         let body = new FormData();
-        //         body.append('filename', response.data.filename)
-        //         fetch(`/api/association/avatar`, {
-        //             method: 'POST',
-        //             type: 'cors',
-        //             headers: new Headers({
-        //               'JWTAuthorization': `Bearer ${getCookie('token')}`
-        //             }),
-        //             body: body
-        //           })
-        //           .then(res => res.json())
-        //             .then(res => {
-        //                 res.data.code == 1 
-        //                     ? Toast.success(res.data.message)
-        //                     : Toast.error(res.data.message)
-        //             })
-        //             .catch((error) => { Toast.error('Erreur pendant le téléchargement de l\'image') })
-        //     });
+            .catch((error) => { 
+                console.log('error', error)
+                Toast.error('Erreur pendant le téléchargement de l\'image') 
+            })
         edit.close()
     }
 
