@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const isProd = process.env.NODE_ENV === 'production'
+
 const nextConfig = {
   webpack(config) {
     config.experiments = { ...config.experiments, topLevelAwait: true }
@@ -17,16 +19,17 @@ const nextConfig = {
   images: {
     domains: ['images.unsplash.com'],
   },
+  assetPrefix: isProd ? process.env.API_URL : '',
   async rewrites() {
     return [
       {
         source: '/api/:path*',
         destination: `${process.env.API_URL}/api/:path*`
       },
-      // {
-      //   source: '/uploads/:path*',
-      //   destination: `${process.env.API_URL}/uploads/:path*`
-      // },
+      {
+        source: '/uploads/:path*',
+        destination: `${process.env.API_URL}/uploads/:path*`
+      },
       {
         source: '/local/:path*',
         destination: `${process.env.NEXT_URL}/:path*`
