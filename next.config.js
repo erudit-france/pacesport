@@ -19,7 +19,7 @@ const nextConfig = {
   images: {
     domains: ['images.unsplash.com'],
   },
-  assetPrefix: isProd ? process.env.API_URL : '',
+  // assetPrefix: isProd ? process.env.API_URL : '',  
   async rewrites() {
     return [
       {
