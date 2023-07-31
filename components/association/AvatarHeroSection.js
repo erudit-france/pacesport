@@ -98,31 +98,50 @@ const AvatarHeroSection = ({avatar, background}) => {
     const confirmBackgroundEdit = () => {
         if (!backgroundImageFile) {
             Toast.error('Erreur pendant le téléchargement de l\'image')
-            resetImage()
-            edit.close()
+            cancelBackgroundEdit()
             return
         }
-        fileUploader(backgroundImageFile)
-            .then((response) => {
-                let body = new FormData();
-                body.append('filename', response.data.filename)
-                fetch(`/api/association/backgroundimage`, {
-                    method: 'POST',
-                    type: 'cors',
-                    headers: new Headers({
-                      'JWTAuthorization': `Bearer ${getCookie('token')}`
-                    }),
-                    body: body
-                  })
-                  .then(res => res.json())
-                    .then(res => {
-                        res.data.code == 1 
-                            ? Toast.success(res.data.message)
-                            : Toast.error(res.data.message)
+        const formData = new FormData()
+        formData.append('file', backgroundImageFile)
+        fetch(`/api/file/upload`, {
+            method: 'POST',
+            type: 'cors',
+            headers: new Headers({
+                'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: formData
+            })
+            .then(res => res.json())
+            .then(res => {
+                if (res.data.code == 1) {
+                    let body = new FormData();
+                    body.append('filename', res.data.filename)
+                    fetch(`/api/association/backgroundimage`, {
+                        method: 'POST',
+                        type: 'cors',
+                        headers: new Headers({
+                        'JWTAuthorization': `Bearer ${getCookie('token')}`
+                        }),
+                        body: body
                     })
-                    .catch((error) => { Toast.error('Erreur pendant le téléchargement de l\'image') })
-            });
-        edit.close()
+                    .then(res => res.json())
+                        .then(res => {
+                            res.data.code == 1 
+                                ? Toast.success(res.data.message)
+                                : Toast.error(res.data.message)
+                        })
+                        .catch((error) => { 
+                            Toast.error('Erreur pendant le téléchargement de l\'image') 
+                        })
+                } else {
+                    Toast.error(res.data.message)
+                }
+            })
+            .catch((error) => { 
+                console.log('error', error)
+                Toast.error('Erreur pendant le téléchargement de l\'image') 
+            })
+            editBackground.close()
     }
 
     const LogoButtons = () => {
