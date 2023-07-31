@@ -1,6 +1,5 @@
 import { upload } from "@/domain/repository/FileRepository";
 import Toast from "@/services/Toast";
-import fileUploader from "@/utils/fileUploader";
 import { useRouter } from "next/router";
 import { FiSettings } from "react-icons/fi";
 
