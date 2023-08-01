@@ -37,6 +37,14 @@ export default function Navbar(props){
         setLockScroll(!lockScroll)
     }
 
+    const [readyToRender, setIsReadyToRender] = useState(false);
+
+    useEffect(() => {
+      if (typeof window !== 'undefined') {
+        setIsReadyToRender(true);
+      }
+    }, []);
+
     const loginAsLink = 
         <>
             <Flex justify={'space-between'} align={'center'}>
@@ -89,8 +97,8 @@ export default function Navbar(props){
         )
     }
 
-    return (
-        <>
+    if (readyToRender) {
+        return (
             <div className={`tw-h-screen ${open ? ' tw-w-screen' : ''} tw-fixed  tw-z-[900] tw-top-0`} suppressHydrationWarning >
                 {open == true && <Overlay onClick={() => setOpen(false)} opacity={0.9} color={'#000'} zIndex={0} />}
                     <motion.button className='tw-bg-white tw-shadow-lg tw-p-2 tw-px-3 tw-rounded-r-lg tw-text-xl tw-fixed -tw-left-1 tw-top-10 tw-z-[999]'
@@ -152,6 +160,9 @@ export default function Navbar(props){
                         <GrClose />
                     </motion.button>
             </div>
-        </>
+        )
+    }
+    return (
+        <></>
     )
 }
