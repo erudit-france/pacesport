@@ -4,6 +4,14 @@ import Link from 'next/link';
 import { FaMapMarkerAlt } from 'react-icons/fa'
 
 export default function AssociationCarte({organisation, href}) {
+    const avatarSrc = organisation.avatar?.name
+        ? `/uploads/${organisation.avatar?.name}`
+        : null
+
+    const backgroundSrc = organisation.backgroundImage?.name
+        ? `/uploads/${organisation.backgroundImage?.name}`
+        : null
+    
     return (
         <Link href={href}>
             <Card className='tw-bg-gradient-to-br tw-from-gray-50 tw-to-white tw-border-0 tw-relative tw-mx-3 tw-py-3 tw-shadow-md' shadow="md" radius="lg" withBorder>
@@ -12,7 +20,7 @@ export default function AssociationCarte({organisation, href}) {
                     </div>
                     <Image
                     className='tw-object-cover blur'
-                    src={`/uploads/${organisation.backgroundImage?.name}`}
+                    src={`${backgroundSrc}`}
                     height={50}
                     alt={organisation.name}
                     />
@@ -21,7 +29,7 @@ export default function AssociationCarte({organisation, href}) {
                 <Avatar
                     className='tw-shadow-md tw-relative -tw-top-4 tw-opacity-100'
                     radius={'xl'}
-                    src={`/uploads/${organisation.avatar?.name}`}
+                    src={`${avatarSrc}`}
                  />
 
                 <Box className='tw-relative -tw-top-2'>
