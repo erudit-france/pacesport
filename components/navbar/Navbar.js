@@ -70,7 +70,7 @@ export default function Navbar(props){
                 <NavbarLink toggleMenu={ toggleMenu } href={'/profil/association'} name={<>Mon pace&lsquo;sport (carte)</>} />
                 <NavbarLink toggleMenu={ toggleMenu } href={'/parametres?prev=/profil/association'} name={'Mon compte'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/annuaire?prev=${router.pathname}`} name={'Annuaire'} />
-                <NavbarLink toggleMenu={ toggleMenu } href={`/gestion-fonds?prev=${router.pathname}`} name={'Gestion de fonds'} />
+                <NavbarLink toggleMenu={ toggleMenu } href={`/profil/association/gestion-fonds?prev=${router.pathname}`} name={'Gestion de fonds'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/messages?prev=${router.pathname}`} name={'Messagerie'} />
             </>
         )
@@ -84,7 +84,7 @@ export default function Navbar(props){
                 <NavbarLink toggleMenu={ toggleMenu } href={'/communication/add/sponsor'} name={'Communication'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/annuaire?prev=${router.pathname}`} name={'Annuaire'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/messages?prev=${router.pathname}`} name={'Messagerie'} />
-                <NavbarLink toggleMenu={ toggleMenu } href={`/gestion-fonds?prev=${router.pathname}`} name={'Gestion de fonds'} />
+                <NavbarLink toggleMenu={ toggleMenu } href={`/profil/sponsor/gestion-fonds?prev=${router.pathname}`} name={'Gestion de fonds'} />
             </React.Fragment>
         )
     }

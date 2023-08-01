@@ -101,7 +101,7 @@ const CardsChart = ({start, end}) => {
       },
       title: {
         display: false,
-        text: 'Offres',
+        text: 'Abonnements (€)',
       },
     },
   };
@@ -112,7 +112,7 @@ const CardsChart = ({start, end}) => {
       labels,
       datasets: [
         {
-          label: 'Offres',
+          label: 'Abonnements (€)',
           data: labels.map(() => (Math.random() * (24.99 - 2.99)).toFixed(2)),
           backgroundColor: color,
         }
@@ -151,7 +151,7 @@ export default function Page(props) {
               onChange={dateChangeHandler}
             />
             <Box p={'xs'} py={'xl'}>
-              <OffersChart start={value[0]} end={value[1]}/>
+              {/* <OffersChart start={value[0]} end={value[1]}/> */}
               <Space h={'lg'} my={'lg'}/>
               <CardsChart start={value[0]} end={value[1]}/>
             </Box>
@@ -162,7 +162,7 @@ export default function Page(props) {
 
 export async function getServerSideProps(context) {
   let url = context.req.headers.referer
-  let previousUrl = url === undefined ? '/gestion-fonds/' : url
+  let previousUrl = url === undefined ? '/' : url
   // // Pass data to the page via props
   return { props: { 
       previousUrl: previousUrl,

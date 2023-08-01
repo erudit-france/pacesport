@@ -35,8 +35,8 @@ const SelectItem = forwardRef(
   SelectItem.displayName = 'SelectItem';
 
 const FilterHeader = ({ sort, sortHandler }) => (
-    <Flex justify='space-between' px={'md'} py={'md'}>
-        <Text>Trier par</Text>
+    <Flex justify='flex-end' px={'md'} py={'md'}>
+        {/* <Text>Trier par</Text>
         <Button variant="filled" size="xs"
             className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
             hover:tw-bg-gray-100 hover:tw-text-black" 
@@ -44,7 +44,7 @@ const FilterHeader = ({ sort, sortHandler }) => (
         <Button variant="filled" size="xs"
             className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
             hover:tw-bg-gray-100 hover:tw-text-black" 
-            radius={'xl'}>Offres</Button>
+            radius={'xl'}>Offres</Button> */}
         <Select placeholder="Trier"
                 rightSection={<FaChevronDown/>}
                 size="xs"
