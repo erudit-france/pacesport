@@ -35,13 +35,11 @@ export default function AssociationCarte({organisation, href}) {
 
     
     const AvatarImage = () => {
-        if (backgroundSrc == null){
+        if (avatarSrc == null){
             return (
-                <Image
-                className='tw-object-cover blur'
-                withPlaceholder
-                height={50}
-                alt={organisation.name}
+                <Avatar
+                    className='tw-shadow-md tw-relative -tw-top-4 tw-opacity-100'
+                    radius={'xl'}
                 />
             )
         }
@@ -49,7 +47,8 @@ export default function AssociationCarte({organisation, href}) {
             <Avatar
                 className='tw-shadow-md tw-relative -tw-top-4 tw-opacity-100'
                 radius={'xl'}
-            />
+                src={avatarSrc}
+                />
         )
     }
     
