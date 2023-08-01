@@ -11,7 +11,7 @@ const { RiImageAddFill } = require("react-icons/ri");
 const { RxCross2, RxCheck } = require("react-icons/rx");
 
 
-const AvatarHeroSection = ({avatar, background}) => {
+const AvatarHeroSection = ({user, avatar, background}) => {
     const router = useRouter()
     const originalImage = '/uploads/'.concat(avatar);
     const originalBackgroundImage = background ? '/uploads/'+background : '/hand-in-hand.jpg'
@@ -191,16 +191,18 @@ const AvatarHeroSection = ({avatar, background}) => {
                 <Box className="tw-rounded-full tw-relative tw-top-16 tw-shadow-md">
                     <Avatar radius={9999} size={80} src={`${image}`}  alt="Logo Pace'sport" 
                         className='hadow-sm tw-bg-transparent tw-z-20'/>
-                    <LogoButtons />
+                    {user.roles.includes('ROLE_ADMIN') && 
+                        <LogoButtons />
+                    }
                 </Box>
             </div>
             <ActionIcon component="a" href={`/parametres?prev=${router.pathname}`} radius={'xl'} size={'md'}
                 className="tw-bg-white tw-text-gray-900 tw-absolute tw-right-4 tw-top-16">
                 <FiSettings />
             </ActionIcon>
-
-
-            <BackgroundButtons />
+            {user.roles.includes('ROLE_ADMIN') && 
+                <BackgroundButtons />
+            }
         </header>
     )
 }

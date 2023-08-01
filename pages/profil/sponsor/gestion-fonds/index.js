@@ -73,11 +73,11 @@ export default function Page() {
                 className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
                 hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
                 radius={'xl'}><BsArrowLeft /></Button></Link>
-            <Link href={''}><Button variant="filled" size="sm"
+            {/* <Link href={''}><Button variant="filled" size="sm"
                 className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
                 hover:tw-bg-gray-100 hover:tw-text-black" 
-                radius={'xl'}>Rapatrier sur mon compte</Button></Link>
-            <Link href={'/gestion-fonds/statistiques'}><Button variant="filled" size="sm"
+                radius={'xl'}>Rapatrier sur mon compte</Button></Link> */}
+            <Link href={'/profil/sponsor/gestion-fonds/statistiques'}><Button variant="filled" size="sm"
                 className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
                 hover:tw-bg-gray-100 hover:tw-text-black" 
                 radius={'xl'}><SlChart /></Button></Link>

@@ -29,6 +29,7 @@ import Toast from "@/services/Toast";
 import { AiOutlineFileText } from "react-icons/ai";
 import { getAssociationInvitationRequest, getAssociationSponsorInvitations } from "@/domain/repository/AssociationRepository";
 import fileUploader from "@/utils/fileUploader";
+import { getUser } from "@/domain/repository/UserRepository";
 
 ChartJS.register(
   CategoryScale,
@@ -322,6 +323,7 @@ export async function getServerSideProps(context) {
 
     let invitations = await getAssociationSponsorInvitations(token)
     let validationRequest = await getAssociationInvitationRequest(token)
+    let user = await getUser(token)
 
     // // Pass data to the page via props
     return { props: {
@@ -331,7 +333,8 @@ export async function getServerSideProps(context) {
         hasFinishedTutorial: JSON.parse(enseigne.data).hasFinishedTutorial,
         hasActiveSubscription: hasActiveSubscriptionRes.data == null ? false : true,
         invitations: JSON.parse(invitations.data),
-        validationRequest: JSON.parse(validationRequest.data)
+        validationRequest: JSON.parse(validationRequest.data),
+        user: JSON.parse(user.data)
     }}
   }
 

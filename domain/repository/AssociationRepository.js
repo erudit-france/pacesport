@@ -15,3 +15,7 @@ export const getAssociationSponsorInvitations = async (token, local = false) => 
 export const getAssociationInvitationRequest = async (token, local = false) => {
     return fetchApi(token, '/api/association/user/validation-request')
 }
+
+export const getCurrentRapatriement = async (token, local = false) => {
+    return fetchApi(token, '/api/association/rapatriement/current')
+}
