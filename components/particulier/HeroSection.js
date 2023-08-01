@@ -32,27 +32,47 @@ const HeroSection = ({avatar, editable = true}) => {
             edit.close()
             return
         }
-        fileUploader(imageFile)
-            .then((response) => {
-                let body = new FormData();
-                body.append('filename', response.data.filename)
-                fetch(`/api/user/avatar`, {
-                    method: 'POST',
-                    type: 'cors',
-                    headers: new Headers({
-                      'JWTAuthorization': `Bearer ${getCookie('token')}`
-                    }),
-                    body: body
-                  })
-                  .then(res => res.json())
-                    .then(res => {
-                        res.data.code == 1 
-                            ? Toast.success(res.data.message)
-                            : Toast.error(res.data.message)
+        const formData = new FormData()
+        formData.append('file', imageFile)
+        fetch(`/api/file/upload`, {
+            method: 'POST',
+            type: 'cors',
+            headers: new Headers({
+                'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: formData
+            })
+            .then(res => res.json())
+            .then(res => {
+                if (res.data.code == 1) {
+                    let body = new FormData();
+                    body.append('filename', res.data.filename)
+                    fetch(`/api/user/avatar`, {
+                        method: 'POST',
+                        type: 'cors',
+                        headers: new Headers({
+                        'JWTAuthorization': `Bearer ${getCookie('token')}`
+                        }),
+                        body: body
                     })
-                    .catch((error) => { Toast.error('Erreur pendant le téléchargement de l\'image') })
-            });
-        edit.close()
+                    .then(res => res.json())
+                        .then(res => {
+                            res.data.code == 1 
+                                ? Toast.success(res.data.message)
+                                : Toast.error(res.data.message)
+                        })
+                        .catch((error) => { 
+                            Toast.error('Erreur pendant le téléchargement de l\'image') 
+                        })
+                } else {
+                    Toast.error(res.data.message)
+                }
+            })
+            .catch((error) => { 
+                console.log('error', error)
+                Toast.error('Erreur pendant le téléchargement de l\'image') 
+            })
+            edit.close()
     }
 
     const cancelEdit = () => {
