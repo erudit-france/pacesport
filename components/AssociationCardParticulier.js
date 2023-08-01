@@ -6,7 +6,7 @@ import { FaMapMarkerAlt } from 'react-icons/fa'
 export default function AssociationCardParticulier({card}) {
     var date = moment(card.startDate);
     var dateComponent = date.utc().format('DD/MM/YYYY');
-    const logoUrl = card.image?.name 
+    const logoUrl = card.image?.name !== undefined
         ? '/uploads/' + card.image.name
         : null
 
