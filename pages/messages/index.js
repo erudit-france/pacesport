@@ -62,13 +62,13 @@ const ChatHeader = ({previousUrl}) => {
                                 tw-border-gray-300 hover:tw-bg-gray-50'>
                         Annuaire
                     </Link>
-                    <Link href={''} 
+                    {/* <Link href={''} 
                         className='tw-text-sm tw-border-[1px] tw-px-3 tw-py-1.5 tw-rounded-2xl
                                 tw-border-gray-300 hover:tw-bg-gray-50 tw-flex'>
                     
                         Groupe
                         <Center  className="tw-ml-1"><FiPlus/></Center>
-                    </Link>
+                    </Link> */}
                 </Flex>
             </div>
             
@@ -113,16 +113,6 @@ export default function Page(props){
                 <ScrollArea className="tw-bg-white/10 tw-p-2 tw-py-5 tw-rounded-3xl tw-mt-2" 
                     offsetScrollbars
                     style={{ height: 'calc(100vh - 290px)' }}>
-                    <ContactList chatRooms={props.chatRooms} />
-                    <ContactList chatRooms={props.chatRooms} />
-                    <ContactList chatRooms={props.chatRooms} />
-                    <ContactList chatRooms={props.chatRooms} />
-                    <ContactList chatRooms={props.chatRooms} />
-                    <ContactList chatRooms={props.chatRooms} />
-                    <ContactList chatRooms={props.chatRooms} />
-                    <ContactList chatRooms={props.chatRooms} />
-                    <ContactList chatRooms={props.chatRooms} />
-                    <ContactList chatRooms={props.chatRooms} />
                     <ContactList chatRooms={props.chatRooms} />
                 </ScrollArea>
             </section>

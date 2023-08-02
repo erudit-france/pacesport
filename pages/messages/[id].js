@@ -14,6 +14,8 @@ import { FiArrowRight } from 'react-icons/fi'
 import { serialize } from "object-to-formdata"
 import { AiOutlineFile } from "react-icons/ai"
 import { Slider, SpeedDial, SpeedDialAction, SpeedDialIcon } from "@mui/material"
+import { useInterval } from "@mantine/hooks"
+import Toast from "@/services/Toast"
 
 const ChatHeader = () => {
     const router = useRouter()
@@ -33,7 +35,6 @@ const ChatHeader = () => {
         .catch(err => console.log(err))
     }, [contactId])
 
-    if (user.code == 401) router.push('/login')
     const names = user[0];
     return (
         <header className="tw-shadow-sm tw-py-1">
@@ -65,6 +66,7 @@ export default function Page(props) {
     const [attachment, setAttachment] = useState(null);
     const [attachmentPreview, setAttachmentPreview] = useState(null);
     const [messages, setMessages] = useState([])
+    const interval = useInterval(() => fetchChat(), 8000);
 
     const attachmentHandler = (file) => {
         if (file == null) {
@@ -75,10 +77,9 @@ export default function Page(props) {
         setAttachment(file)
         const url = URL.createObjectURL(file)
         setAttachmentPreview(url)
-        console.log('file', file)
     }
 
-    useEffect(() => {
+    const fetchChat = () => {
         if (contactId === undefined) return
         fetch(`/api/chat/messages?id=${contactId}`, {
             headers: new Headers({
@@ -87,6 +88,19 @@ export default function Page(props) {
         })
         .then(res => res.json())
         .then(res => setMessages(JSON.parse(res.data)))
+    }
+
+    useEffect(() => {
+        interval.start();
+        if (contactId === undefined) return
+        fetch(`/api/chat/messages?id=${contactId}`, {
+            headers: new Headers({
+            'JWTAuthorization': `Bearer ${getCookie('token')}`,
+            }),
+        })
+        .then(res => res.json())
+        .then(res => setMessages(JSON.parse(res.data)))
+        return interval.stop;
     }, [contactId])
     
 
@@ -96,26 +110,85 @@ export default function Page(props) {
             message: '',
         },
         validate: {
-          message: (value) => (value != '' ? null : 'Veuillez saisir un message'),
+            message: (value) => {
+                if (value == '') {
+                    // permettre l'envoi de fichier sans message
+                    if (attachment != null) {
+                        return null
+                    }
+                    return 'Veuillez saisir un message'
+
+                }
+            },
         },
     });
     
     const submitChat = (values) => {
-        const body = serialize(values);
-        body.append('chatRoomId', contactId)
-        fetch(`/api/chat`, {
-            body: body,
-            method: 'POST',
-            headers: new Headers({
-            'JWTAuthorization': `Bearer ${getCookie('token')}`,
-            }),
-        })
-        .then(res => res.json())
-        .then(res => {
-            console.log('res', res.data)
-            form.values.message = ''
-            setMessages([...messages, JSON.parse(res.data)])
-        })
+        if (attachment) {
+            const formData = new FormData()
+            formData.append('file', attachment)
+            fetch(`/api/file/upload`, {
+                method: 'POST',
+                type: 'cors',
+                headers: new Headers({
+                    'JWTAuthorization': `Bearer ${getCookie('token')}`
+                }),
+                body: formData
+                })
+                .then(res => res.json())
+                .then(res => {
+                    const body = serialize(values);
+                    if (res.data.code == 1) {
+                        body.append('filename', res.data.filename)
+                    }
+                    fetch(`/api/chat`, {
+                        body: body,
+                        method: 'POST',
+                        headers: new Headers({
+                        'JWTAuthorization': `Bearer ${getCookie('token')}`,
+                        }),
+                    })
+                    .then(res => res.json())
+                    .then(res => {
+                        if (res.code == 401) {
+                            Toast.error('Session expirée')
+                            router.push('/login')
+                            return
+                        }
+                        console.log('res', res.data)
+                        form.values.message = ''
+                        setMessages([...messages, JSON.parse(res.data)])
+                        console.log('res.data', JSON.parse(res.data))
+                    })
+                    attachmentHandler(null)
+                })
+                .catch((error) => { 
+                    console.log('error', error)
+                    Toast.error('Erreur pendant le téléchargement de l\'image') 
+                })
+        } else {
+            // saving chat without attachment
+            const body = serialize(values);
+            fetch(`/api/chat`, {
+                body: body,
+                method: 'POST',
+                headers: new Headers({
+                'JWTAuthorization': `Bearer ${getCookie('token')}`,
+                }),
+            })
+            .then(res => res.json())
+            .then(res => {
+                if (res.code == 401) {
+                    Toast.error('Session expirée')
+                    router.push('/login')
+                    return
+                }
+                console.log('res', res.data)
+                form.values.message = ''
+                setMessages([...messages, JSON.parse(res.data)])
+            })
+            attachmentHandler(null)
+        }
     }
 
     const BasicSpeedDial = () => {
@@ -131,7 +204,7 @@ export default function Page(props) {
                 }}
                 icon={<SpeedDialIcon size={12} />}
             >
-                <FileButton onChange={attachmentHandler} accept="image/png,image/jpeg">
+                <FileButton onChange={attachmentHandler} accept="image/png,image/jpeg,file">
                 {(props) => 
                     <SpeedDialAction
                     {...props}
@@ -146,18 +219,31 @@ export default function Page(props) {
         );
     }
 
-    const AttachmentPreview = () => (
-        <Box className="tw-h-[90px] tw-w-full tw-bg-gray-100/50 tw-p-1 tw-px-4">
-            <Group className="">
-                <Group className="tw-relative">
-                    <CloseButton aria-label="Supprimer image" 
-                        onClick={() => attachmentHandler(null)}
-                        className="tw-absolute -tw-right-3 -tw-top-1 tw-z-40 tw-bg-white tw-rounded-3xl tw-shadow-md tw-border-[1px] tw-border-gray-300/40" color="dark"/>
-                    <Image src={attachmentPreview} height={85} alt="Preview de l'image à télécharger"/>
-                </Group>
-            </Group>
-        </Box>
-    )
+    const AttachmentPreview = () => {
+        const filename = attachment.name
+        const isImage = (/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i).test(filename)
+        console.log('isImage', isImage)
+        if (isImage) {
+            return (
+                <Box className="tw-h-[90px] tw-w-full tw-bg-gray-100/50 tw-p-1 tw-px-4">
+                    <Group className="">
+                        <Group className="tw-relative">
+                            <CloseButton aria-label="Supprimer image" 
+                                onClick={() => attachmentHandler(null)}
+                                className="tw-absolute -tw-right-3 -tw-top-1 tw-z-40 tw-bg-white tw-rounded-3xl tw-shadow-md tw-border-[1px] tw-border-gray-300/40" color="dark"/>
+                            <Image src={attachmentPreview} height={85} alt="Preview de l'image à télécharger"/>
+                        </Group>
+                    </Group>
+                </Box>
+            )
+        } else {
+            return (
+                <Box className="tw-h-[90px] tw-w-full tw-bg-gray-100/50 tw-p-1 tw-px-4">
+                    <Link className="tw-text-[.92rem] tw-text-blue-500 tw-underline" href={``}>{filename}</Link>
+                </Box>
+            )
+        }
+    }
 
     return (
         <>
@@ -208,7 +294,7 @@ export async function getServerSideProps(context) {
         })}
         )
     const userData = await user.json()
-
+    console.log('userData', userData)
     if(userData.code == 401) 
     return {
       redirect: {

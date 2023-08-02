@@ -27,7 +27,7 @@ export default function Page(props){
 
             <section className="tw-px-4 tw-pt-14 tw-relative">
                 <Box className="tw-relative">
-                    <Title my={'md'} order={4} align="center">Asso 1</Title>
+                    <Title my={'md'} order={4} align="center">Carte</Title>
                 </Box>
             </section>
 

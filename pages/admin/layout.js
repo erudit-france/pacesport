@@ -20,9 +20,9 @@ export default function Layout({children}){
             <main className="tw-bg-gradient-to-b tw-from-lightgold-50 tw-to-red-800 tw-rounded-t-[2rem]"
                 style={{ minHeight: 'calc(100vh - 128px)' }}>
                 <section className=" tw-pt-8 tw-relative">
-                    <Box className="tw-relative">
+                    {/* <Box className="tw-relative">
                         <Title my={'md'} order={4} align="center">Asso 1</Title>
-                    </Box>
+                    </Box> */}
                     <section className="tw-bg-white tw-mt-2 tw-shadow-inner tw-py-2 tw-px-1 tw-min-h-[calc(100vh-218px)] tw-rounded-t-3xl">
                     <Tabs defaultValue="offres" color="yellow"
                         default="offres"

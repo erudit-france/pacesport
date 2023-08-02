@@ -46,6 +46,7 @@ export async function getServerSideProps(context) {
     const token = context.req.cookies['token']
     
     let user = await getUser(token)
+    console.log('user', user)
     user = JSON.parse(user.data)
     if (!user.roles.includes('ROLE_ADMIN')) {
         return {

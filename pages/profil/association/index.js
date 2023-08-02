@@ -165,7 +165,7 @@ export default function Page(props){
 
             <section className="tw-px-4 tw-pt-8 tw-relative">
                 <Box className="tw-relative">
-                    <Title my={'md'} order={4} align="center">Asso 1</Title>
+                    <Title my={'md'} order={4} align="center">Carte</Title>
                     <ActionIcon component='a' href='/communication/add/association?prev=/profil/association' className="tw-bg-white tw-absolute tw-right-1.5 tw-bottom-0 tw-p-1.5" radius={'xl'}>
                         <BsMegaphoneFill className="tw-text-black" size={18} />
                     </ActionIcon>
