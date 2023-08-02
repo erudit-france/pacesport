@@ -35,13 +35,16 @@ export default function Page(props){
     const StatusBadge = ({association}) => {
         let color = ''
         let text = ''
-        if (association.validated == true) {
-            color = 'teal'
-            text = 'Active'
-        } else {
+        if (association.validated == null) {
             color = 'yellow'
             text = 'En attente'
-        } 
+        } else if (association.validated == true) {
+            color = 'teal'
+            text = 'Active'
+        } else if (association.validated == false) {
+            color = 'gray'
+            text = 'Refusée'
+        }
         return <Badge color={color} size="xs">{text}</Badge>
     }
 
