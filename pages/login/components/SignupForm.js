@@ -31,7 +31,6 @@ export default function SignupForm({loading}) {
         isCollectivitePublique: false,
     },
     validate: {
-      token: (t) => t == null ? 'Veuillez valider le captcha' : null,
       nom: (v) => v != '' ? null : 'Veuillez saisir un nom',
       prenom: (v) => v != '' ? null : 'Veuillez saisir un prénom',
       email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Veuillez saisir un E-mail valide'),
@@ -66,6 +65,7 @@ export default function SignupForm({loading}) {
   }, [token]);
 
   const submitHandler = (data) => {
+    if (token == null) return
     setError('')
     setSuccess('')
     if (data === undefined) return
