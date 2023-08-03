@@ -25,7 +25,6 @@ import { RxCheck, RxCross2 } from 'react-icons/rx'
 import fileUploader from '@/utils/fileUploader'
 import { useDisclosure } from '@mantine/hooks'
 
-
 const CardsSection = (props) => (
         <section className='tw-mt-8'>
             <Title align={"center"} order={6}
@@ -292,6 +291,13 @@ export default function Page(props) {
                   color="gray"
                   className='tw-border-[1px] tw-border-b-0 tw-border-white tw-mb-4'
                 />
+
+                <Text className='tw-font-light' fz={'sm'} mb={'xl'}>
+                  {tab == 'Nationale'
+                    ? 'Une offre nationale sera accessible pour les abonnés de n\'importe quelle association'
+                    : 'Une offre locale sera accessible pour les abonnés des associations séléctionnées'
+                  }
+                </Text>
 
                 <MultiSelect
                     label="Association à soutenir"
