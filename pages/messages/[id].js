@@ -155,10 +155,8 @@ export default function Page(props) {
                             router.push('/login')
                             return
                         }
-                        console.log('res', res.data)
                         form.values.message = ''
                         setMessages([...messages, JSON.parse(res.data)])
-                        console.log('res.data', JSON.parse(res.data))
                     })
                     attachmentHandler(null)
                 })
@@ -183,7 +181,6 @@ export default function Page(props) {
                     router.push('/login')
                     return
                 }
-                console.log('res', res.data)
                 form.values.message = ''
                 setMessages([...messages, JSON.parse(res.data)])
             })
@@ -191,9 +188,7 @@ export default function Page(props) {
         }
     }
 
-    const BasicSpeedDial = () => {
-        return (
-          <Box className="tw-relative tw-w-[36px]" 
+    const BasicSpeedDial = <Box className="tw-relative tw-w-[36px]" 
             sx={{ transform: 'translateZ(0px)', flexGrow: 1 }}>
             <SpeedDial
                 ariaLabel="SpeedDial basic example"
@@ -204,7 +199,7 @@ export default function Page(props) {
                 }}
                 icon={<SpeedDialIcon size={12} />}
             >
-                <FileButton onChange={attachmentHandler} accept="image/png,image/jpeg,file">
+                <FileButton onChange={(file) => attachmentHandler(file)} accept="image/png,image/jpeg,file">
                 {(props) => 
                     <SpeedDialAction
                     {...props}
@@ -215,14 +210,11 @@ export default function Page(props) {
                 }
                 </FileButton>
             </SpeedDial>
-          </Box>
-        );
-    }
+    </Box>
 
     const AttachmentPreview = () => {
         const filename = attachment.name
         const isImage = (/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i).test(filename)
-        console.log('isImage', isImage)
         if (isImage) {
             return (
                 <Box className="tw-h-[90px] tw-w-full tw-bg-gray-100/50 tw-p-1 tw-px-4">
@@ -276,7 +268,7 @@ export default function Page(props) {
                                     <FiArrowRight size={30} className=" tw-bg-teal-600 tw-p-1 tw-rounded-full tw-text-white" />
                                 </Button>
                             </Box>
-                            <BasicSpeedDial />
+                            {BasicSpeedDial}
                         </Flex>
                     </form>
             </section>
