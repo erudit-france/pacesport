@@ -82,13 +82,6 @@ const Status = ({offer}) => {
           <Group>En attente de signature contrat <AiOutlineFileText /></Group>
         </Badge>
         <Stack align="flex-end" mt='sm'>
-          <FileButton onChange={uploadHandler} accept=""
-            className=''>
-           {(props) => <Group {...props} className='tw-float-right tw-text-xs tw-underline tw-px-1 hover:tw-cursor-pointer
-              tw-text-blue-500 tw-border-[1px] tw-border-blue-200 tw-shadow-sm tw-rounded-xl'>
-                {contrat ? contrat.name : 'Déposer'}
-                {contrat == null && <AiOutlineUpload />}</Group>}
-          </FileButton>
           {edit &&
             <Group position="right">
               <ActionIcon onClick={cancel} className='tw-bg-gray-200/50' 

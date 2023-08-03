@@ -92,7 +92,6 @@ export default function Navbar(props){
                 <NavbarLink toggleMenu={ toggleMenu } href={'/communication/add/sponsor'} name={'Communication'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/annuaire?prev=${router.pathname}`} name={'Annuaire'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/messages?prev=${router.pathname}`} name={'Messagerie'} />
-                <NavbarLink toggleMenu={ toggleMenu } href={`/profil/sponsor/gestion-fonds?prev=${router.pathname}`} name={'Gestion de fonds'} />
             </React.Fragment>
         )
     }
