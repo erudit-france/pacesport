@@ -25,12 +25,13 @@ export default function Page() {
                         <Overlay color="#000" opacity={1}>
                         <BackgroundImage className="tw-h-full tw-opacity-30" 
                                 src={'/doodle-pattern.png'}/>
+                            
                             <div className="tw-absolute tw-z-[201]"
-                                style={ {top: 'calc(50vh - 80px)', left: 'calc(50vw - 56.5px)'} }>
-                                <Image src={logo} height={160} width={160} alt="Logo Pace'sport" 
+                                style={ {top: 'calc(50vh - 80px)', left: 'calc(50vw - 50px)'} }>
+                                <Image src={logo} height={100} width={100} alt="Logo Pace'sport" 
                                     className='tw-rounded-full shadow-sm tw-bg-white/80 tw-p-2 tw-mx-auto'/>
 
-                                <Text transform="uppercase" align="center" color="white" mt={'lg'}>Chargement...</Text>
+                                <Text fz={'xs'} transform="uppercase" align="center" color="white" mt={'lg'}>Chargement...</Text>
                             </div>
                         </Overlay>
                     </>}
