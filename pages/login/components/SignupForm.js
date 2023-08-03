@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { useForm } from '@mantine/form';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
+import { BiLinkExternal } from 'react-icons/bi'
 
 export default function SignupForm({loading}) {
   const inputOptions = {
@@ -112,7 +113,7 @@ export default function SignupForm({loading}) {
                 J&lsquo;accepte les{" "}
                 <Link
                   className="tw-text-blue-400 tw-underline"
-                  href="#"
+                  href="/conditions-generales-vente"
                   target="_blank"
                 >
                   CGU

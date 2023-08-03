@@ -127,7 +127,7 @@ export default function Page(props) {
                                         <Center>
                                             <Badge className='tw-bg-red-500 tw-px-2 tw-max-h-4 tw-max-w-4 tw-rounded-full'></Badge>
                                         </Center>
-                                        <Text ml={'md'} fz={'lg'}>15€/An</Text>
+                                        <Text ml={'md'} fz={'lg'}>14.99€/An</Text>
                                         </Flex>
                                 }
                                 placeholder="Association"
