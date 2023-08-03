@@ -79,7 +79,7 @@ const Status = ({offer}) => {
     return (
       <Flex direction={'column'}>
         <Badge className='tw-font-semibold tw-shadow-sm tw-underline tw-text-blue-500 tw-flex tw-flex-row' size={'sm'} color={'yellow'}>
-          <Group>En attente de signature contrat <AiOutlineFileText /></Group>
+          <Group>En attente contrat</Group>
         </Badge>
         <Stack align="flex-end" mt='sm'>
           {edit &&
