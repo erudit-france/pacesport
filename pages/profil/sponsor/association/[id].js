@@ -7,7 +7,7 @@ import { useState } from "react";
 import Toast from "@/services/Toast";
 import { serialize } from "object-to-formdata";
 import { getCookie } from "cookies-next";
-import { TbCheck } from "react-icons/tb";
+import { TbCopy, TbCheck } from "react-icons/tb"
 
 export default function Page(props) {
     const association = props.association
