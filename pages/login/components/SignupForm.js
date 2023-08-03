@@ -31,6 +31,7 @@ export default function SignupForm({loading}) {
         isCollectivitePublique: false,
     },
     validate: {
+      token: (t) => t == null ? 'Veuillez valider le captcha' : null,
       nom: (v) => v != '' ? null : 'Veuillez saisir un nom',
       prenom: (v) => v != '' ? null : 'Veuillez saisir un prénom',
       email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Veuillez saisir un E-mail valide'),
@@ -60,8 +61,8 @@ export default function SignupForm({loading}) {
   };
   
   useEffect(() => {
-    if (token)
-      console.log(`hCaptcha Token: ${token}`);
+    if (token) {
+    }
   }, [token]);
 
   const submitHandler = (data) => {
