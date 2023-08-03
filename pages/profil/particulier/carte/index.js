@@ -15,7 +15,7 @@ import AssociationCardParticulier from '@/components/AssociationCardParticulier'
 import CommunicationAdsCarousel from '@/components/CommunicationAdsCarousel'
 import PreviousPageButton from '@/components/PreviousPageButton'
 import moment from 'moment'
-import { getActiveOffers } from '@/domain/repository/CardOffersRepository'
+import { getActiveOffers, getCardActiveOffers } from '@/domain/repository/CardOffersRepository'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 import SponsoringOfferTypeBadge from '@/components/SponsoringOfferTypeBadge'
 
@@ -142,7 +142,7 @@ export async function getServerSideProps(context) {
   )
   avatar = await avatar.json();
 
-  let offers = await getActiveOffers(token)
+  let offers = await getCardActiveOffers(token)
 
   // // Pass data to the page via props
   return { props: {

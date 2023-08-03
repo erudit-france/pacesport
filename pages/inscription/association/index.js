@@ -13,7 +13,9 @@ import { useRouter } from "next/router";
 export default function Page() {
     const { push } = useRouter()
     const [logo, setLogo] = useState(null);
+    const [loading, setLoading] = useState(null);
     const [logoFile, setLogoFile] = useState(null);
+    const [statusFile, setStatusFile] = useState(null);
     const [logoError, setLogoError] = useState(null);
     const handleLogo = (file) => {
         const url = URL.createObjectURL(file)
@@ -22,6 +24,7 @@ export default function Page() {
         form.values.logo = file
         setLogoError(null)
     }
+
     const form = useForm({
         initialValues: {
             name: 'Lou',
@@ -29,7 +32,6 @@ export default function Page() {
             email: 'lou@example.com',
             phone: '001239123023',
             description: 'Lou Rugby club',
-            logo: null,
         },
         validate: {
             name: (v) => v > '' ? null : 'Veuillez saisir un nom',
@@ -40,37 +42,94 @@ export default function Page() {
         },
     });
 
-    const submitHandler = (data) => {
+    const submitHandler = async (data) => {
+      setLoading(true)
       const body = serialize(data)
-      fileUploader(logoFile)
-          .then((response) => {
-              body.append('filename', response.data.filename)
-              fetch(`/api/association`, {
-                  method: 'POST',
-                  type: 'cors',
-                  headers: new Headers({
-                    'JWTAuthorization': `Bearer ${getCookie('token')}`
-                  }),
-                  body: body
-                })
-                .then(res => res.json())
-                  .then(res => {
-                      if (res.code == 401) push('/login')
-                      console.log('res', res.data)
-                      if (res.data.code == 1) {
-                          Toast.success(res.data.message)
-                          setTimeout(() => {
-                              push('/profil/association')
-                          }, 2000)
-                      } else {
-                          Toast.error(res.data.message)
-                      }
-                  })
-                  .catch((error) => { 
-                      Toast.error(`Erreur pendant la création de l'association`) 
-                      console.log('error', error)
-                  })
-      });
+      let logoFilename = null
+      let statusFilename = null
+
+      //
+      // Upload logo
+      //
+      if (logoFile) {
+        const formData = new FormData()
+        formData.append('file', logoFile)
+        let avatar = await fetch(`/api/file/upload`, {
+            method: 'POST',
+            type: 'cors',
+            headers: new Headers({
+                'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: formData
+        })
+        avatar = await avatar.json()
+        if (avatar.code == 401) {
+          push('/login')
+          return 
+        }
+        if (avatar.data.code != 1) { 
+          Toast.error('Erreur pendant le téléchargment du logo')
+        } else {
+          logoFilename = avatar.data.filename
+        }
+      }
+
+      //
+      // Upload status
+      //
+      if (statusFile) {
+        let statusForm = new FormData()
+        statusForm.append('file', statusFile)
+        let status = await fetch(`/api/file/upload`, {
+            method: 'POST',
+            type: 'cors',
+            headers: new Headers({
+                'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: statusForm
+        })
+        status = await status.json()
+        if (status.data.code != 1) { 
+          Toast.error('Erreur pendant le téléchargment du status')
+        } else {
+          statusFilename = status.data.filename
+        }
+      }
+
+      //
+      // Continue signup request
+      //
+      if (statusFilename) body.append('status', statusFilename)
+      if (logoFilename) body.append('avatar', logoFilename)
+
+      fetch(`/api/association`, {
+          method: 'POST',
+          type: 'cors',
+          headers: new Headers({
+            'JWTAuthorization': `Bearer ${getCookie('token')}`
+          }),
+          body: body
+        })
+        .then(res => res.json())
+          .then(res => {
+              if (res.code == 401) push('/login')
+              console.log('res', res.data)
+              if (res.data.code == 1) {
+                  Toast.success(res.data.message)
+                  setTimeout(() => {
+                      push('/profil/association')
+                  }, 2000)
+              setLoading(false)
+            } else {
+                  Toast.error(res.data.message)
+                  setLoading(false)
+            }
+          })
+          .catch((error) => { 
+              Toast.error(`Erreur pendant la création de l'association`) 
+              setLoading(false)
+              console.log('error', error)
+          })
     }
   return (
     <>
@@ -102,14 +161,17 @@ export default function Page() {
                 {...form.getInputProps('description')}/>
             <Flex className="tw-border-[1px] tw-border-gray-800 tw-bg-gray-900 tw-rounded-md tw-my-2 tw-py-2" direction={"column"}>
                 <Text align="center" className="tw-text-gray-300 tw-text-sm">Status</Text>
-                <FileInput className="tw-text-white placeholder:tw-text-white tw-bg-gray-100 tw-rounded-md" placeholder="Status" size="sm" m={'xs'} withAsterisk/>
+                <FileInput className="tw-text-white placeholder:tw-text-white tw-bg-gray-100 tw-rounded-md" 
+                  onChange={setStatusFile}
+                  placeholder="Status" size="sm" m={'xs'} withAsterisk/>
             </Flex>
 
         </Paper>
 
         <Flex justify="center" align="center" direction="row" mt="md">
           <Button className="tw-bg-gray-300 hover:tw-bg-gray-300/95 tw-text-gray-700 tw-shadow-sm -tw-top-10" radius="xl" size="md"
-            type='submit'>Terminer
+            type='submit'
+            disabled={loading}>Terminer
           </Button>
         </Flex>
       </form>

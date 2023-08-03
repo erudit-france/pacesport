@@ -52,8 +52,8 @@ export default function Page(props){
     const ths = (
         <tr>
           <th>Association</th>
+          <th className="tw-capitalize">état</th>
           <th>Status</th>
-          <th>Contrat</th>
         </tr>
     )
     
@@ -69,9 +69,9 @@ export default function Page(props){
                 <StatusBadge association={element} />
             </td>
             <td>
-                {element.contrat != null &&
+                {element.status != null &&
                     <Link className="tw-text-blue-400 tw-text-sm tw-font-light tw-underline" 
-                        href={`/uploads/${element.contrat.name}`} target='_blank'>{element.contrat.name}</Link>
+                        href={`/uploads/${element.status.name}`} target='_blank'>{element.status.name}</Link>
                 }
             </td>
             <td>

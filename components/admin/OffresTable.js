@@ -69,7 +69,7 @@ export default function OffresTable({offres, refresh, fetching, editOffer}) {
         <tr>
           <th>Sponsor</th>
           <th>Association</th>
-          <th>Status</th>
+          <th className="tw-capitalize">état</th>
           <th>Contrat</th>
           <th>Catégorie</th>
           <th></th>
