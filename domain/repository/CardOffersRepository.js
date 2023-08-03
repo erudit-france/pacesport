@@ -10,10 +10,10 @@ export const getOffers = async (token, local = false) => {
     return offers;
 }
 
-export const getActiveOffers = async (token, local = false) => {
+export const getActiveOffers = async (token, id, local = false) => {
     let base = process.env.API_URL;
     if (local) base = ''
-    let offers = await fetch(`${base}/api/sponsoring-offer-sponsor-active/`, {
+    let offers = await fetch(`${base}/api/sponsoring-offer-sponsor-active/${id}`, {
         headers: new Headers({
                 'JWTAuthorization': `Bearer ${token}`,
         })}

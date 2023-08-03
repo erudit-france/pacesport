@@ -156,6 +156,7 @@ export default function Page(props) {
 }
 
 export async function getServerSideProps(context) {
+  const id = context.query.id
   const token = context.req.cookies['token']
   let avatar = await fetch(`${process.env.API_URL}/api/user/avatar`, {
     headers: new Headers({

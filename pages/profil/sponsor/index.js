@@ -268,6 +268,7 @@ export default function Page(props) {
             </main>
             <Space py={'xl'} />
             <Modal
+              size="calc(100vw - 5%)" 
               radius={'lg'}
               centered
               opened={opened}
@@ -276,7 +277,6 @@ export default function Page(props) {
             >
 
               <form className='tw-p-4' onSubmit={form.onSubmit((values) => submitHandler(values))}>
-                
                 <SegmentedControl
                   styles={{
                     root: { 
@@ -286,7 +286,7 @@ export default function Page(props) {
                   value={tab}
                   onChange={tabHandler}
                   radius="xl"
-                  size="md"
+                  size="sm"
                   data={['Nationale', 'Locale']}
                   color="gray"
                   className='tw-border-[1px] tw-border-b-0 tw-border-white tw-mb-4'

@@ -67,7 +67,7 @@ export default function Page(props) {
   
   const associations = filteredAssociations.map((card) => 
     <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
-      <AssociationCarte organisation={card} href={`/profil/particulier/carte/souscrire`} />
+      <AssociationCarte organisation={card} href={`/profil/particulier/carte/souscrire/${card.id}`} />
     </Grid.Col>
   )
 
