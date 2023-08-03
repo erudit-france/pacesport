@@ -18,12 +18,17 @@ import moment from 'moment'
 import { getActiveOffers } from '@/domain/repository/CardOffersRepository'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 import SponsoringOfferTypeBadge from '@/components/SponsoringOfferTypeBadge'
+import ReactCardFlip from 'react-card-flip'
+import { getUser } from '@/domain/repository/UserRepository'
 
 
 export default function Page(props) {
-  const [showOffers, setShowOffers] = useState(false);
+  const [showOffers, setShowOffers] = useState(false)
+  const [isFlipped, setIsFlipped] = useState(false)
+
   const standaloneCard = <>
       <Center>
+        <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
           <Box className="tw-rounded-xl tw-shadow-lg tw-relative">
               <Image
                   className="tw-absolute tw-z-20 tw-right-1 tw-opacity-80 -tw-translate-y-1/2 tw-top-1/2"
@@ -35,13 +40,24 @@ export default function Page(props) {
               <Image
               className="tw-opacity-95"
               radius={'lg'}
-              width={240}
-              height={140}
+              width={280}
+              height={160}
               src={`/uploads/${props.card.image?.name}`}
               alt="Photo de campagne"
               withPlaceholder
               />
           </Box>
+          
+          <Box className="tw-shadow-lg tw-relative tw-h-[160px] tw-w-[280px] tw-rounded-2xl tw-overflow-hidden">
+              <Box className='tw-bg-gray-200/60 tw-w-full tw-h-full tw-absolute tw-top-0 tw-left-0'></Box>
+              <Box className='tw-relative tw-h-full tw-rounded-lg' py={'lg'} my={'md'}>
+                <Flex  className="tw-h-full" direction={'column'} justify={'space-between'}>
+                  <Text px={'lg'} className='tw-bg-gray-600/60 text-white tw-py-1'>{props.user?.nom}{' '}{props.user?.prenom}</Text>
+                  <Text className="tw-text-gray-500" align="left" px={'lg'} mb={"md"} fz={'sm'}>Jusqu&lsquo;au {moment(props.card.endDate).format('DD/MM/YYYY')}</Text>
+                </Flex>
+              </Box>
+          </Box>
+        </ReactCardFlip>
       </Center>
       </>
 
@@ -90,6 +106,7 @@ export default function Page(props) {
               <Flex justify={'center'}>
                 <Group position="center" className=''>
                     <Button size='md'
+                        onClick={() => setIsFlipped(!isFlipped)}
                         className='tw-text-black
                                   tw-px-8 tw-py-3 
                                   tw-bg-gradient-to-br tw-from-gray-200 tw-to-white
@@ -143,10 +160,20 @@ export async function getServerSideProps(context) {
   avatar = await avatar.json();
 
   let offers = await getActiveOffers(token)
+  let user = await getUser(token)
+  if (user.code == 401) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/login"
+      }
+    }
+  }
 
   // // Pass data to the page via props
   return { props: {
     avatar: avatar.filename,
+    user: JSON.parse(user.data),
     card: {
         image: {
             name: null
