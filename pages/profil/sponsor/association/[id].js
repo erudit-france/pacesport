@@ -1,12 +1,13 @@
 import Head from "next/head"
 import Layout from "./layout"
-import { Box, Button, Center, Container, Flex, Grid, Group, Loader, Modal, Select, Space, Text, TextInput, Textarea, Title } from "@mantine/core"
+import { ActionIcon, Box, Button, Center, Container, CopyButton, Flex, Grid, Group, Loader, Modal, Select, Space, Text, TextInput, Textarea, Title, Tooltip } from "@mantine/core"
 import AssociationCard from "@/components/AssociationCard"
 import { useForm } from "@mantine/form";
 import { useState } from "react";
 import Toast from "@/services/Toast";
 import { serialize } from "object-to-formdata";
 import { getCookie } from "cookies-next";
+import { TbCheck } from "react-icons/tb";
 
 export default function Page(props) {
     const association = props.association
@@ -21,11 +22,9 @@ export default function Page(props) {
     const form = useForm({
         initialValues: {
             association: association.id,
-            categorie: '',
             description: '',
         },
         validate: {
-          categorie: (value) => (value != '' ? null : 'Veuillez saisir une catégorie'),
           description: (value) => (value != '' ? null : 'Veuillez saisir une description'),
         },
     });
@@ -59,6 +58,17 @@ export default function Page(props) {
         <Flex className="tw-text-sm tw-mt-1">
             <Text>{label}:</Text>
             <Text ml={'lg'} weight={400}>{value}</Text>
+            {label == 'Email' &&
+                <CopyButton value={value} timeout={1500}>
+                    {({ copied, copy }) => (
+                        <Tooltip label={copied ? 'Copié' : 'Copier'} withArrow position="right">
+                        <ActionIcon color={copied ? 'teal' : 'gray'} onClick={copy}>
+                            {copied ? <TbCheck size={14} /> : <TbCopy size={14} />}
+                        </ActionIcon>
+                        </Tooltip>
+                    )}
+                </CopyButton>
+            }
         </Flex>
     )
 
@@ -86,7 +96,7 @@ export default function Page(props) {
                                     tw-border-2 tw-border-white
                                     hover:tw-to-gray-200'>Soutenir l&lsquo;association</Button>
                 </Center>
-                <Center>
+                {/* <Center>
                     <Button size='md'
                         className='tw-text-black
                                     tw-px-8 tw-py-3 
@@ -94,7 +104,7 @@ export default function Page(props) {
                                     tw-shadow-md tw-w-full tw-rounded-2xl
                                     tw-border-2 tw-border-white
                                     hover:tw-to-gray-200'>Contacter</Button>
-                </Center>
+                </Center> */}
             </Container>
             
             <Modal
@@ -112,12 +122,12 @@ export default function Page(props) {
                     label="Association"
                     mb={'md'}
                     />
-                <Select
+                {/* <Select
                       label="Catégorie de l'offre"
                       placeholder="Choisir"
                       data={categoriesOffre}
                       mb={'md'}
-                      {...form.getInputProps('categorie')}/>
+                      {...form.getInputProps('categorie')}/> */}
 
                 <Textarea size="xs" mb={'sm'} label="Description de l'offre"
                       minRows={3}
