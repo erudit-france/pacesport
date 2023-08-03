@@ -130,11 +130,11 @@ export default function Page(props){
         <>
             <Tabs.Panel value="associations" p={"md"}>
             <Flex justify={'space-between'} py={"sm"}>
-                <Title order={4} align="center">Comptes associations</Title>
+                <Title order={6} align="left">Comptes associations</Title>
                 <Select
                     styles={ {
                         root: { display: 'flex', flexDirection: 'row' },
-                        label: { display: 'flex', alignSelf: 'center', marginRight: '5px' }
+                        label: { display: 'flex', alignSelf: 'center', marginRight: '5px', fontSize: '13px' }
                     }}
                     data={[
                         { value: 'all', label: 'Tout' },
@@ -145,7 +145,7 @@ export default function Page(props){
                     defaultValue="all"
                     label="Filtre"
                     placeholder="Sélectionner"
-                    size="sm"
+                    size="xs"
                     />
             </Flex>
             <Table striped withColumnBorders>

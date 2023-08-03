@@ -61,7 +61,7 @@ export default function Page(props){
         <>
             <ScrollArea className="tw-max-w-[100%]">
                 <Tabs.Panel value="utilisateurs" p={"md"}>
-                    <Title order={6} align="center">Utilisateurs</Title>
+                    <Title order={6} align="left">Utilisateurs</Title>
                     <Table  fontSize={'sm'} striped withColumnBorders>
                         <thead>{ths}</thead>
                         <tbody>{rows}</tbody>
