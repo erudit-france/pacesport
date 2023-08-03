@@ -67,10 +67,19 @@ export default function Page(props) {
     });
 
     const submitHandler = (data) => {
-        const body = serialize(data)
-
-        fileUploader(logoFile)
-            .then((response) => {
+        const formData = new FormData()
+        formData.append('file', logoFile)
+        fetch(`/api/file/upload`, {
+            method: 'POST',
+            type: 'cors',
+            headers: new Headers({
+                'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: formData
+            })
+            .then(res => res.json())
+            .then(response => {
+                let body = serialize(data)
                 body.append('filename', response.data.filename)
                 fetch(`/api/enseigne`, {
                     method: 'POST',
@@ -97,7 +106,11 @@ export default function Page(props) {
                         Toast.error('Erreur pendant la création du sponsor') 
                         console.log('error', error)
                     })
-        });
+            })
+            .catch((error) => { 
+                console.log('error', error)
+                Toast.error('Erreur pendant le téléchargement de l\'image') 
+            })
     }
 
     const TypeEnseigne = ({error}) => {
