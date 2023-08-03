@@ -1,12 +1,15 @@
 import { SiMaildotru } from 'react-icons/si'
 import { Alert, Button, Checkbox, Flex, Input, Paper, PasswordInput, Text, TextInput } from "@mantine/core";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from '@mantine/form';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { BiLinkExternal } from 'react-icons/bi'
+import HCaptcha from '@hcaptcha/react-hcaptcha';
 
 export default function SignupForm({loading}) {
+  const [token, setToken] = useState(null);
+  const captchaRef = useRef(null);
   const inputOptions = {
     mt: "sm",
     variant: "filled",
@@ -48,7 +51,19 @@ export default function SignupForm({loading}) {
     },
   });
 
-    
+  const onLoad = () => {
+    // this reaches out to the hCaptcha JS API and runs the
+    // execute function on it. you can use other functions as
+    // documented here:
+    // https://docs.hcaptcha.com/configuration#jsapi
+    captchaRef.current.execute();
+  };
+  
+  useEffect(() => {
+    if (token)
+      console.log(`hCaptcha Token: ${token}`);
+  }, [token]);
+
   const submitHandler = (data) => {
     setError('')
     setSuccess('')
@@ -121,6 +136,12 @@ export default function SignupForm({loading}) {
               </Text>
             }
             {...form.getInputProps('cgu', { type: 'checkbox' })}
+          />
+          <HCaptcha
+            sitekey="c85832b3-48fd-467f-8c81-99b57c67ce33"
+            onLoad={onLoad}
+            onVerify={setToken}
+            ref={captchaRef}
           />
           {error != '' && 
             <Alert icon={<AiOutlineInfoCircle size="1rem" />} p={'md'} mt='md' color="pink" radius="md" withCloseButton closeButtonLabel='fermer' onClose={() => setError('')}>
