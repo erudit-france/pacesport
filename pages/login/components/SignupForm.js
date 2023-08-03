@@ -56,7 +56,7 @@ export default function SignupForm({loading}) {
     // execute function on it. you can use other functions as
     // documented here:
     // https://docs.hcaptcha.com/configuration#jsapi
-    captchaRef.current.execute();
+    // captchaRef.current.execute();
   };
   
   useEffect(() => {
