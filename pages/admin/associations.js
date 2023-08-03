@@ -1,4 +1,4 @@
-import { ActionIcon, Avatar, Badge, Box, Flex, Group, Select, Table, Tabs, Text, Title } from "@mantine/core";
+import { ActionIcon, Avatar, Badge, Box, Flex, Group, ScrollArea, Select, Table, Tabs, Text, Title } from "@mantine/core";
 import Head from "next/head";
 import Layout from "./layout";
 import { FiUsers } from "react-icons/fi";
@@ -148,10 +148,12 @@ export default function Page(props){
                     size="xs"
                     />
             </Flex>
-            <Table striped withColumnBorders>
-                <thead>{ths}</thead>
-                <tbody>{rows}</tbody>
-            </Table>
+            <ScrollArea className="tw-max-w-[100%]">
+                <Table striped withColumnBorders>
+                    <thead>{ths}</thead>
+                    <tbody>{rows}</tbody>
+                </Table>
+            </ScrollArea>
             </Tabs.Panel>
         </>
     )
