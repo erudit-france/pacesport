@@ -250,7 +250,7 @@ export default function Page(props){
                 <Link href='/gestion-fonds?prev=/profil/association' className="tw-mx-auto tw-mt-3">
                         <Button color="white" variant="filled" size="sm" leftIcon={<GrMoney />} miw={200}
                         className="tw-bg-white tw-text-black hover:tw-bg-gray-200" radius={'lg'}>
-                            Gestion de fonds</Button></Link>
+                            Gestion des fonds</Button></Link>
             </section>  
                 
             <Modal radius={'lg'} className="" opened={openInvitationModal} onClose={close} centered
