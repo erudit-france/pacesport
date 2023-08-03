@@ -65,7 +65,7 @@ export default function SignupForm({loading}) {
   }, [token]);
 
   const submitHandler = (data) => {
-    if (token == null) return
+    // if (token == null) return
     setError('')
     setSuccess('')
     if (data === undefined) return
