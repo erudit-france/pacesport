@@ -3,7 +3,7 @@ import moment from "moment";
 import Link from "next/link";
 
 export default function CampagneCard({id, title, image, startDate, status}){
-    const src = image == '/logo.png' || null || undefined ? 'logo.png' : `/uploads/${image}`
+    const src = image == null || undefined ? '/logo.png' : `/uploads/${image}`
     const nbCartes = 1
     const statusString = (status) => { return status == 1 ? 'Active' : 'En attente' }
     const Status = () => (
