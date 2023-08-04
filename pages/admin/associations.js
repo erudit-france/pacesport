@@ -1,4 +1,4 @@
-import { ActionIcon, Avatar, Badge, Box, Flex, Group, ScrollArea, Select, Table, Tabs, Text, Title } from "@mantine/core";
+import { ActionIcon, Avatar, Badge, Box, Button, CopyButton, Divider, Flex, Group, Modal, ScrollArea, Select, Table, Tabs, Text, Title, Tooltip } from "@mantine/core";
 import Head from "next/head";
 import Layout from "./layout";
 import { FiUsers } from "react-icons/fi";
@@ -8,15 +8,37 @@ import { useState } from "react";
 import { getCookie } from "cookies-next";
 import Toast from "@/services/Toast";
 import { useRouter } from "next/router";
-import { BsCheckLg, BsFillGearFill } from "react-icons/bs";
+import { BsCheckLg, BsFillGearFill, BsTrash } from "react-icons/bs";
 import { ImCross } from "react-icons/im";
 import Link from "next/link";
 import { getUser } from "@/domain/repository/UserRepository";
+import { TbCheck, TbCopy } from "react-icons/tb";
 
+const Information = ({label, value}) => (
+    <Flex className="tw-text-sm tw-mt-1">
+        <Text>{label}:</Text>
+        <Text ml={'lg'} weight={400}>{value}</Text>
+        {label == 'Email' &&
+            <CopyButton value={value} timeout={1500}>
+                {({ copied, copy }) => (
+                    <Tooltip label={copied ? 'Copié' : 'Copier'} withArrow position="right">
+                    <ActionIcon color={copied ? 'teal' : 'gray'} onClick={copy}>
+                        {copied ? <TbCheck size={14} /> : <TbCopy size={14} />}
+                    </ActionIcon>
+                    </Tooltip>
+                )}
+            </CopyButton>
+        }
+    </Flex>
+)
 export default function Page(props){
+    const [loading, setLoading] = useState(false)
+    const [openAssociation, setOpenAssociation] = useState(null)
     const [associations, setAssociations] = useState(props.associations)
     const router = useRouter()
-    const refresh = () => { router.reload(window.location.pathname) }
+    const refresh = () => { 
+        router.reload(window.location.pathname) 
+    }
 
     const reloadFilter = async (val) => {
         switch (val) {
@@ -76,19 +98,18 @@ export default function Page(props){
             </td>
             <td>
                 <Group>
-                    <ActionIcon variant="light" color="red"
-                                size={'lg'}
-                                onClick={() => declineAssociation(element.id) }><ImCross /></ActionIcon>
                     <ActionIcon variant="light"
-                        size={'lg'}
-                        color="teal"
-                        onClick={() => acceptAssociation(element.id) }><BsCheckLg /></ActionIcon>
+                            size={'lg'}
+                            color="gray"
+                            onClick={() => setOpenAssociation(element) }
+                            ><BsFillGearFill /></ActionIcon>
                 </Group>
             </td>
         </tr>
     ))
     
     const acceptAssociation = (id) => {
+        setLoading(true)
         fetch(`/api/admin/association/accept`, {
             method: 'POST',
             type: 'cors',
@@ -104,10 +125,15 @@ export default function Page(props){
                     : Toast.error(res.data.message)
                 refresh()
             })
-            .catch((error) => { Toast.error('Erreur') })
+            .catch((error) => { 
+                Toast.error('Erreur') 
+                setLoading(false)
+            })
+        setOpenAssociation(null)
     }
 
     const declineAssociation = (id) => {
+        setLoading(true)
         fetch(`/api/admin/association/decline`, {
             method: 'POST',
             type: 'cors',
@@ -123,7 +149,34 @@ export default function Page(props){
                     : Toast.error(res.data.message)
                 refresh()
             })
-            .catch((error) => { Toast.error('Erreur') })
+            .catch((error) => { 
+                Toast.error('Erreur') 
+                setLoading(false)
+            })
+        setOpenAssociation(null)
+    }
+
+    const deleteAssociation = (id) => {
+        setLoading(true)
+        fetch(`/api/admin/association/delete`, {
+            method: 'POST',
+            type: 'cors',
+            headers: new Headers({
+              'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: JSON.stringify({association: id})
+          })
+            .then(res => res.json())
+            .then(res => {
+                res.data.code == 1 
+                    ? Toast.success(res.data.message)
+                    : Toast.error(res.data.message)
+                refresh()
+            })
+            .catch((error) => { 
+                Toast.error('Erreur') 
+                setLoading(false)
+            })
     }
 
     return (
@@ -155,6 +208,44 @@ export default function Page(props){
                 </Table>
             </ScrollArea>
             </Tabs.Panel>
+
+            
+            <Modal
+                opened={openAssociation}
+                onClose={() => setOpenAssociation(null)}
+                title={<Title order={6}>Association {openAssociation?.name}</Title>}
+                centered
+                size={'95vw'}
+            >
+                <form className="tw-p-4">
+                    <Text weight={600}>Actions</Text>
+                    <Group mt={'sm'}>
+                        <Button variant="outline" color="pink" disabled={loading}
+                            size={'xs'}
+                            leftIcon={<ImCross size={12} />}
+                            onClick={() => declineAssociation(openAssociation?.id) }>Refuser</Button>
+                        <Button variant="outline" disabled={loading}
+                            size={'xs'}
+                            color="teal"
+                            leftIcon={<BsCheckLg size={12} />}
+                            onClick={() => acceptAssociation(openAssociation?.id) }>Accepter</Button>
+                        <Divider size="md" orientation="vertical" />
+                        <Button variant="outline" color="red" disabled={loading}
+                            size={'xs'}
+                            leftIcon={<BsTrash size={12} />}
+                            onClick={() => deleteAssociation(openAssociation?.id) }>Supprimer</Button>
+                    </Group>
+                    <Text weight={600} mt={'md'}>Informations</Text>
+                    <Box className="tw-rounded-2xl tw-shadow-lg tw-bg-white tw-py-7 tw-px-6" >
+                        <Title order={2} weight={600} align="left">{openAssociation?.name}</Title>
+                        <Information label={'Bio'} value={openAssociation?.address}/>
+                        <Information label={'Adresse'} value={openAssociation?.address}/>
+                        <Information label={'Adresse'} value={openAssociation?.address}/>
+                        <Information label={'Téléphone'} value={openAssociation?.phone}/>
+                        <Information label={'Email'} value={openAssociation?.email}/>
+                    </Box>
+                </form>
+            </Modal>
         </>
     )
 }
