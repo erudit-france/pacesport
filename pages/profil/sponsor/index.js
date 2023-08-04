@@ -107,9 +107,17 @@ export default function Page(props) {
   const [sponsorOffers, setSponsorOffers] = useState(props.offers);
   const [opened, setOpened] = useState(false);
   const [tab, setTab] = useState('Nationale')
+  const [maxSelectedAssociations, setMaxSelectedAssociations] = useState(99)
+  const [selectedAssociations, setselectedAssociations] = useState([])
   const tabHandler = (state) => {
-      setTab(state)
-      form.setValues({type: state})
+    if (state == 'Nationale') {
+      setMaxSelectedAssociations(99)
+    } else {
+      setselectedAssociations([])
+      setMaxSelectedAssociations(1)
+    }
+    setTab(state)
+    form.setValues({type: state})
   }
 
   const form = useForm({
@@ -119,7 +127,13 @@ export default function Page(props) {
           type: 'Nationale',
       },
       validate: {
-        association: (value) => (value.length > 0 ? null : 'Veuillez séléctionner l(es) association(s)'),
+        association: (value) => {
+          console.log('selectedAssociations', selectedAssociations)
+          if (selectedAssociations.length == 0) {
+            return 'Veuillez séléctionner l(es) association(s)'
+          }
+          return null
+        },
         description: (value) => (value != '' ? null : 'Veuillez saisir une description'),
       },
   });
@@ -128,6 +142,7 @@ export default function Page(props) {
   const submitHandler = (values) => {
     setLoading(true)
     let body = serialize(values)
+    body.append('association', selectedAssociations)
     fetch(`/api/sponsoring-offer`, {
         method: 'POST',
         headers: new Headers({
@@ -201,7 +216,7 @@ export default function Page(props) {
   const OfferRow = ({offer}) => (
     <Card className='tw-flex tw-bg-gray-50 tw-mb-2' radius={'lg'}>
       <Center>
-        <Avatar className='tw-shadow-md' radius={'lg'} src={offer.association?.avatar?.name} />
+        <Avatar className='tw-shadow-md' radius={'lg'} src={`/uploads/${offer.association?.avatar?.name}`} />
       </Center>
       <Flex direction={'column'} className='tw-flex-1 tw-px-5'>
         <Flex justify={'space-between'}>
@@ -300,14 +315,17 @@ export default function Page(props) {
                 </Text>
 
                 <MultiSelect
+                    maxSelectedValues={maxSelectedAssociations}
                     label="Association à soutenir"
                     placeholder="Choisir"
                     itemComponent={SelectItem}
                     data={associationsSelect}
+                    onChange={setselectedAssociations}
+                    value={selectedAssociations}
                     maxDropdownHeight={400}
                     mb={'md'}
                     onDropdownClose={() => console.log('closing')}
-                    {...form.getInputProps('association')}/>
+                    />
 
                 <Textarea size="xs" mb={'sm'} label="Description de l'offre"
                       minRows={3}

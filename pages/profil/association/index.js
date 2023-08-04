@@ -2,7 +2,7 @@ import { ActionIcon, Box, Button, Center, Divider, FileInput, Flex, List, Loader
 import Head from "next/head";
 import SearchSponsor from "./components/SearchSponsor";
 import UserListButton from "./components/UserListButton";
-import Layout from "./business/layout";
+import Layout from "./layout";
 import SponsorInvitation from "./components/SponsorInvitation";
 import { GoPlus } from 'react-icons/go'
 import Link from "next/link";

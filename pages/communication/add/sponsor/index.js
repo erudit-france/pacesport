@@ -68,24 +68,24 @@ export default function Page(props) {
 
     const getCreditUrl = (credit) => {
         console.log(props.cancelUrl);
-        fetch(`/api/stripe/credit`, {
-            method: 'POST',
-            headers: new Headers({
-              'JWTAuthorization': `Bearer ${getCookie('token')}`
-            }),
-            body: JSON.stringify({
-                credit: credit,
-                cancelUrl: props.cancelUrl,
-                baseUrl: props.baseUrl
-            })
-          })
-        .then(res => res.json())
-        .then(res => {
-            if (res.data) {
-                router.push(res.data.url)
-            }
-          })
-        .catch((err) => Toast.error('Erreur, veuillez réessayer plus tard'))
+        // fetch(`/api/stripe/credit`, {
+        //     method: 'POST',
+        //     headers: new Headers({
+        //       'JWTAuthorization': `Bearer ${getCookie('token')}`
+        //     }),
+        //     body: JSON.stringify({
+        //         credit: credit,
+        //         cancelUrl: props.cancelUrl,
+        //         baseUrl: props.baseUrl
+        //     })
+        //   })
+        // .then(res => res.json())
+        // .then(res => {
+        //     if (res.data) {
+        //         router.push(res.data.url)
+        //     }
+        //   })
+        // .catch((err) => Toast.error('Erreur, veuillez réessayer plus tard'))
     }
 
     return (

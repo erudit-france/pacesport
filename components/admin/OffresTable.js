@@ -88,9 +88,16 @@ export default function OffresTable({offres, refresh, fetching, editOffer}) {
             </td>
             <td>
                 <Group>
+                    <SponsoringOfferTypeBadge offer={element} />
                     {element.association 
-                    ? <Avatar className="tw-shadow-md" size={'sm'} radius={'xl'}  src={`/uploads/${element.association?.avatar?.name}`} />
-                    : <SponsoringOfferTypeBadge offer={element} />}
+                    ? <>
+                        <Avatar className="tw-shadow-md" size={'sm'} radius={'xl'}  src={`/uploads/${element.association?.avatar?.name}`} />
+                        <Text fz={'sm'} weight={600}>{element.association.name}</Text>
+                        </>
+                    :   <>
+                        <Avatar className="tw-shadow-md" size={'sm'} radius={'xl'} />
+                        </>
+                    }
                     <Text fz={'sm'}>{element.description}</Text>
                 </Group>
             </td>

@@ -8,22 +8,23 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { serialize } from "object-to-formdata";
 
-const PriceRow = ({credits, price, oldPrice}) => {
+const PriceRow = ({credits, price, oldPrice, click}) => {
     return (
         <Flex className="tw-py-2">
             <Flex className="tw-w-1/2">
                 <Text className="tw-text-white tw-font-semibold tw-mx-auto tw-my-auto" align="center" weight={'bold'} size={'lg'}>{credits} Crédits</Text>
             </Flex>
             <Flex className="tw-w-1/2 tw-flex tw-flex-col" direction={'col'}>
-                <Text className="tw-text-white tw-font-semibold" align="center" size={'lg'}>{price} €</Text>
-                {oldPrice &&
-                    <Text className="tw-text-gray-600 tw-line-through tw-font-semibold tw-text-sm" align="center" size={'lg'}>{oldPrice} €</Text>
-                }
+                <Button  onClick={click} radius={'lg'} className="tw-border-2 tw-border-gray-100 tw-shadow-md">
+                    <Text className="tw-text-white tw-font-semibold" align="center" size={'lg'}>{price} €</Text>
+                    {oldPrice &&
+                        <Text className="tw-text-gray-600 tw-line-through tw-font-semibold tw-text-sm tw-pl-2" align="center" size={'lg'}>{oldPrice} €</Text>
+                    }
+                </Button>
             </Flex>
         </Flex>
     )
 }
-
 export default function Page(props) {
     const [loading, setLoading] = useState(false);
     const router = useRouter()
@@ -35,6 +36,28 @@ export default function Page(props) {
           message: (value) => (value != '' ? null : 'Veuillez saisir un message'),
         },
     });
+
+    const getCreditUrl = (credit) => {
+        console.log(props.cancelUrl);
+        // fetch(`/api/stripe/credit`, {
+        //     method: 'POST',
+        //     headers: new Headers({
+        //       'JWTAuthorization': `Bearer ${getCookie('token')}`
+        //     }),
+        //     body: JSON.stringify({
+        //         credit: credit,
+        //         cancelUrl: props.cancelUrl,
+        //         baseUrl: props.baseUrl
+        //     })
+        //   })
+        // .then(res => res.json())
+        // .then(res => {
+        //     if (res.data) {
+        //         router.push(res.data.url)
+        //     }
+        //   })
+        // .catch((err) => Toast.error('Erreur, veuillez réessayer plus tard'))
+    }
 
     const submitHandler = (data) => {
         console.log('data', data)
@@ -90,12 +113,12 @@ export default function Page(props) {
             </div>
 
             {/* gold pricing section */}
-            {/* <section className="tw-bg-yellow-600/60 tw-mt-4">
-                <PriceRow credits={3} price={5.99} />
-                <PriceRow credits={10} price={12.99} oldPrice={19.99} />
-                <PriceRow credits={20} price={15.99} oldPrice={39.99} />
-                <PriceRow credits={40} price={19.99} oldPrice={79.99} />
-            </section> */}
+            <section className="tw-bg-yellow-600/60 tw-mt-4">
+                <PriceRow click={() => getCreditUrl(3)} credits={3} price={5.99} />
+                <PriceRow click={() => getCreditUrl(10)} credits={10} price={12.99} oldPrice={19.99} />
+                <PriceRow click={() => getCreditUrl(20)} credits={20} price={15.99} oldPrice={39.99} />
+                <PriceRow click={() => getCreditUrl(40)} credits={40} price={19.99} oldPrice={79.99} />
+            </section>
 
 
         </>
