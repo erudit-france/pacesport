@@ -1,32 +1,30 @@
 import Head from 'next/head'
-import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
-import SearchInput from '@/components/SearchInput'
-import { Avatar, Badge, Box, Button, Card, Center, Container, Flex, Grid, Group, Image, Modal, Paper, Select, Space, Text, Title, Transition } from '@mantine/core'
-import AssociationCard from '@/components/AssociationCard'
+import { Avatar, Badge, Box, Button, Card, Center, Container, Flex, Grid, Group, Image, Loader, Modal, Paper, Select, Space, Text, Title, Transition } from '@mantine/core'
 import Layout from '../../../../layout'
 import { useEffect, useState } from 'react'
 import { getCookie } from 'cookies-next'
 import * as cookie from 'cookie'
 import { useRouter } from 'next/router'
-import OrganisationCard from '@/components/OrganisationCard'
-import OrganisationCardParticulier from '@/components/OrganisationCardParticulier'
-import AssociationCardParticulier from '@/components/AssociationCardParticulier'
-import CommunicationAdsCarousel from '@/components/CommunicationAdsCarousel'
 import PreviousPageButton from '@/components/PreviousPageButton'
-import moment from 'moment'
 import { getActiveOffers } from '@/domain/repository/CardOffersRepository'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 import { AiOutlineSync } from 'react-icons/ai'
 import { useForm } from '@mantine/form'
 import SponsoringOfferTypeBadge from '@/components/SponsoringOfferTypeBadge'
+import Toast from '@/services/Toast'
 
 
 export default function Page(props) {
+    const [offers, setOffers] = useState(props.offers)
     const { push } = useRouter()
-    const [showOffers, setShowOffers] = useState(true);
+    const [showOffers, setShowOffers] = useState(true)
+    const [fetching, setFetching] = useState(false)
+    const [selectedAssociation, setSelectedAssociation] = useState(null)
+    const selectedAssociationHandler = (association) => {
+      setSelectedAssociation(association)
+    }
     const associationsSelect = props.associations.map((association) => (
-        {...association, label: association.description, value: association.id}
+        {label: association.description, value: association.id}
     ))
 
     const form = useForm({
@@ -42,6 +40,32 @@ export default function Page(props) {
         console.log('values', values)
         push('/profil/particulier/carte')
     }
+
+    useEffect(() => {
+      if(selectedAssociation == null){
+        return
+      }
+      console.log('selectedAssociation', selectedAssociation)
+      setFetching(true)
+      setOffers([])
+      fetch(`/api/sponsoring-offer-sponsor-active/${selectedAssociation}`, {
+        headers: new Headers({
+                'JWTAuthorization': `Bearer ${getCookie('token')}`,
+          })}
+      ).then(res => res.json())
+      .then(res => {
+        if (res.code == 401) {
+          Toast.error('Session expirée')
+          push('/login')
+          setFetching(false)
+          return
+        } else {
+          let offers = JSON.parse(res.data)
+          setFetching(false)
+          setOffers(offers)
+        }
+      })
+    }, [selectedAssociation]);
 
   const standaloneCard = <>
       <Center>
@@ -86,7 +110,7 @@ export default function Page(props) {
       <Transition mounted={setShowOffers} transition="slide-down" duration={400} timingFunction="ease">
         {(styles) => 
           <section style={styles} className='tw-mt-1'>
-            {props.offers.map((offer) => (
+            {offers.map((offer) => (
               <OfferRow key={offer.title} offer={offer} />
             ))}
           </section>}
@@ -135,7 +159,8 @@ export default function Page(props) {
                                 rightSectionWidth={30}
                                 styles={{ rightSection: { pointerEvents: 'none' } }}
                                 data={associationsSelect}
-                                {...form.getInputProps('association')}/>
+                                value={selectedAssociation ? selectedAssociation.label : null}
+                                onChange={selectedAssociationHandler}/>
                             <Center>
                                 <Button type='submit' color='red' variant='filled' mt={"md"} radius={'lg'} px={'xl'} size='sm'
                                      className='tw-bg-red-600/90 tw-shadow-sm'>
@@ -144,8 +169,19 @@ export default function Page(props) {
                         </form>
                     </Container>
 
-                    <Title order={6} mt={'lg'} align='center'>Les offres</Title>
-                    {offersList}
+                    <Title order={6} my={'lg'} align='center'>Les offres</Title>
+                    {fetching && 
+                     <Center>
+                      <Loader />
+                     </Center>
+                    }
+                    {offers.length == 0 
+                      ? fetching 
+                        ? <></>
+                        : <Text color='dimmed' align='center'>Aucune offre</Text>
+                      : offersList
+                    }
+                    <Space my={'md'} />
                 </Box>
                 </section>
             </Box>

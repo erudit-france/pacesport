@@ -65,11 +65,13 @@ export default function Page(props) {
     setFilteredAssociations(props.associations)
   }
   
-  const associations = filteredAssociations.map((card) => 
-    <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
-      <AssociationCarte organisation={card} href={`/profil/particulier/carte/souscrire/${card.id}`} />
-    </Grid.Col>
-  )
+  const associations = filteredAssociations.map((card) => {
+    return (
+      <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
+        <AssociationCarte organisation={card} href={`/profil/particulier/carte/souscrire/${card.id}`} />
+      </Grid.Col>
+    )
+  })
 
   const associationsGrid = filteredAssociations.length == 0
     ? <Text fz={'sm'} align="center" color="dimmed">Aucune association enregistrée</Text>
