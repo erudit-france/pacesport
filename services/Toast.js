@@ -17,6 +17,14 @@ export const Toast = {
             autoClose: 2500,
         })
     },
+    info: (message) => {
+        showNotification({
+            title: 'Information',
+            message: message,
+            color: 'cyan',
+            autoClose: 2500,
+        })
+    },
 }
 
 export default Toast;

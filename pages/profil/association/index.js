@@ -30,6 +30,7 @@ import { AiOutlineFileText } from "react-icons/ai";
 import { getAssociationInvitationRequest, getAssociationSponsorInvitations } from "@/domain/repository/AssociationRepository";
 import fileUploader from "@/utils/fileUploader";
 import { getUser } from "@/domain/repository/UserRepository";
+import { getPacesportCard } from "@/domain/repository/PacesportRepository";
 
 ChartJS.register(
   CategoryScale,
@@ -213,7 +214,7 @@ export default function Page(props){
                     <Flex justify={'space-between'} my={'lg'} className="tw-relative">
                         <Text className="tw-flex-1" color="red" fz={'sm'} fw={'bold'} align={'center'} py={2}>Ajoutez encore {nbSponsorsNeeded} partenaires pour valider votre pace&lsquo;sport</Text>
                     </Flex>}
-                <CampagneCard status={1} id={1} title={'Titre carte'} image={props.avatar} startDate={Date.now()} />
+                <CampagneCard status={1} id={1} title={'Carte pacesport'} image={props.pacesportCard?.image?.name} startDate={Date.now()} />
                 <Divider  my={'sm'} className="tw-w-2/3 tw-mx-auto"/>
                 
                 <Center>
@@ -324,6 +325,8 @@ export async function getServerSideProps(context) {
     let invitations = await getAssociationSponsorInvitations(token)
     let validationRequest = await getAssociationInvitationRequest(token)
     let user = await getUser(token)
+    let pacesport = await getPacesportCard(token)
+
 
     // // Pass data to the page via props
     return { props: {
@@ -334,7 +337,8 @@ export async function getServerSideProps(context) {
         hasActiveSubscription: hasActiveSubscriptionRes.data == null ? false : true,
         invitations: JSON.parse(invitations.data),
         validationRequest: JSON.parse(validationRequest.data),
-        user: JSON.parse(user.data)
+        user: JSON.parse(user.data),
+        pacesportCard: JSON.parse(pacesport.data)
     }}
   }
 

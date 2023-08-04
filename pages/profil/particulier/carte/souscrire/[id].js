@@ -12,6 +12,7 @@ import { AiOutlineSync } from 'react-icons/ai'
 import { useForm } from '@mantine/form'
 import SponsoringOfferTypeBadge from '@/components/SponsoringOfferTypeBadge'
 import Toast from '@/services/Toast'
+import { getPacesportCard } from '@/domain/repository/PacesportRepository'
 
 
 export default function Page(props) {
@@ -73,6 +74,7 @@ export default function Page(props) {
       })
     }, [selectedAssociation]);
 
+  const pacesportCardSrc = props.pacesportCard?.image?.name ? `/uploads/${props.pacesportCard?.image?.name}` : '/logo.png'
   const standaloneCard = <>
       <Center>
           <Box className="tw-rounded-xl tw-shadow-lg tw-relative">
@@ -88,7 +90,7 @@ export default function Page(props) {
               radius={'lg'}
               width={200}
               height={110}
-              src={`/uploads/${props.card.image?.name}`}
+              src={`${pacesportCardSrc}`}
               alt="Photo de campagne"
               withPlaceholder
               />
@@ -215,6 +217,8 @@ export async function getServerSideProps(context) {
   associations = await associations.json();
 
   let offers = await getActiveOffers(token)
+  let pacesport = await getPacesportCard(token)
+
 
   // // Pass data to the page via props
   return { props: {
@@ -228,7 +232,8 @@ export async function getServerSideProps(context) {
         endDate: Date.now(),
         price: 11.99
     },
-    offers: JSON.parse(offers.data)
+    offers: JSON.parse(offers.data),
+    pacesportCard: JSON.parse(pacesport.data)
   } }
 }
 

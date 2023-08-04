@@ -20,12 +20,14 @@ import { FaMapMarkerAlt } from 'react-icons/fa'
 import SponsoringOfferTypeBadge from '@/components/SponsoringOfferTypeBadge'
 import ReactCardFlip from 'react-card-flip'
 import { getUser } from '@/domain/repository/UserRepository'
+import { getPacesportCard } from '@/domain/repository/PacesportRepository'
 
 
 export default function Page(props) {
   const [showOffers, setShowOffers] = useState(false)
   const [isFlipped, setIsFlipped] = useState(false)
 
+  const pacesportCardSrc = props.pacesportCard?.image?.name ? `/uploads/${props.pacesportCard?.image?.name}` : '/logo.png'
   const standaloneCard = <>
       <Center>
         <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
@@ -42,7 +44,7 @@ export default function Page(props) {
               radius={'lg'}
               width={280}
               height={160}
-              src={`/uploads/${props.card.image?.name}`}
+              src={`${pacesportCardSrc}`}
               alt="Photo de campagne"
               withPlaceholder
               />
@@ -169,6 +171,7 @@ export async function getServerSideProps(context) {
       }
     }
   }
+  let pacesport = await getPacesportCard(token)
 
   // // Pass data to the page via props
   return { props: {
@@ -182,7 +185,8 @@ export async function getServerSideProps(context) {
         endDate: Date.now(),
         price: 11.99
     },
-    offers: JSON.parse(offers.data)
+    offers: JSON.parse(offers.data),
+    pacesportCard: JSON.parse(pacesport.data)
   } }
 }
 

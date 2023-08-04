@@ -1,4 +1,4 @@
-import { ActionIcon, Badge, Box, Button, Center, Divider, FileInput, Flex, List, Modal, Overlay, Paper, Space, Text, TextInput, Title, useMantineTheme } from "@mantine/core";
+import { ActionIcon, Badge, Box, Button, Card, Center, Divider, FileInput, Flex, List, Modal, Overlay, Paper, Space, Text, TextInput, Title, useMantineTheme } from "@mantine/core";
 import Head from "next/head";
 import Layout from "./layout";
 import { BsLink, BsLock, BsMegaphoneFill } from "react-icons/bs";
@@ -10,11 +10,41 @@ import { getAssociationPacesportPendingOffers, getAssociationPendingOffers, getC
 import { useForm } from "@mantine/form";
 import AssociationPacesportPendingOffers from "@/components/AssociationPacesportPendingOffers";
 import AssociationActiveOffers from "@/components/AssociationActiveOffers";
+import { getPacesportCard } from "@/domain/repository/PacesportRepository";
+import Image from "next/image";
 
 export default function Page(props){
     const [pendingOffers, setPendingOffers] = useState(props.pendingOffers)
     const [pacesportPendingOffers, setPacesportPendingOffers] = useState(props.pacesportPendingOffers)
     const [activeOffers, setActiveOffers] = useState(props.activeOffers)
+    const PacesportCard = ({card}) => {
+        if (!card) return <></>
+        let src = '/logo.png'
+        if (card.image) {
+            src = `/uploads/${card.image.name}`
+        }
+        return (
+            <Center>
+                <Box className="tw-rounded-xl tw-shadow-lg tw-relative tw-h-[110px] tw-w-[200px] tw-overflow-hidden tw-shadow-md">
+                    <Image
+                        className="tw-absolute tw-z-20 tw-right-1 tw-opacity-80 -tw-translate-y-1/2 tw-top-1/2"
+                        width={24}
+                        height={24}
+                        src={`/sim.png`}
+                        alt="logo sim"
+                    />
+                    <Image
+                    className="tw-opacity-95"
+                    radius={'lg'}
+                    width={200}
+                    height={110}
+                    src={`${src}`}
+                    alt="Photo de campagne"
+                    />
+                </Box>
+            </Center>
+        )
+    }
 
     return (
         <>
@@ -32,6 +62,10 @@ export default function Page(props){
             </section>
 
             <main className="tw-bg-white tw-rounded-t-3xl tw-w-full tw-min-h-[calc(100vh-242px)]">
+                <Card radius={'lg'} className="tw-overflow-hidden">
+                    <PacesportCard card={props.pacesportCard} />
+                </Card>
+
                 <Space h={'sm'} />
 
                 <Title align="center" color="white" order={6}
@@ -88,6 +122,7 @@ export async function getServerSideProps(context) {
     let pendingOffers = await getAssociationPendingOffers(token)
     let pacesportPendingOffers = await getAssociationPacesportPendingOffers(token)
     let activeOffers = await getCardActiveOffers(token)
+    let pacesport = await getPacesportCard(token)
 
     // // Pass data to the page via props
     return { props: {
@@ -95,7 +130,8 @@ export async function getServerSideProps(context) {
         avatar: avatar.filename,
         pendingOffers: JSON.parse(pendingOffers.data),
         pacesportPendingOffers: JSON.parse(pacesportPendingOffers.data),
-        activeOffers: JSON.parse(activeOffers.data)
+        activeOffers: JSON.parse(activeOffers.data),
+        pacesportCard: JSON.parse(pacesport.data)
     }}
   }
 
