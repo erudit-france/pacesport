@@ -27,6 +27,9 @@ export default function Layout({children}){
                     <Tabs defaultValue="offres" color="yellow"
                         default="offres"
                         onTabChange={(value) => router.push(`/admin/${value}`)}
+                        styles={{
+                            tab: { fontSize: '13px', padding: '14px 8px !important' }
+                        }}
                       >
                         <NavigationTabs />
                         {children}
