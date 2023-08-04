@@ -32,7 +32,13 @@ export default function Page(props) {
             association: '',
         },
         validate: {
-            association: (value) => (value != '' ? null : 'Veuillez saisir choisir une association'),
+            association: (value) => {
+              if (selectedAssociation != null ) {
+                return null
+              } else {
+                return 'Veuillez saisir choisir une association'
+              }
+            },
         },
     });
 
