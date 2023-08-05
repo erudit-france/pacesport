@@ -24,6 +24,8 @@ import { AiOutlineFileText, AiOutlineUpload } from 'react-icons/ai'
 import { RxCheck, RxCross2 } from 'react-icons/rx'
 import fileUploader from '@/utils/fileUploader'
 import { useDisclosure } from '@mantine/hooks'
+import SponsoringOfferTypeBadge from '@/components/SponsoringOfferTypeBadge'
+import moment from 'moment/moment'
 
 const CardsSection = (props) => (
         <section className='tw-mt-8'>
@@ -77,8 +79,8 @@ const Status = ({offer}) => {
   if (offer.contrat == null) {
     return (
       <Flex direction={'column'}>
-        <Badge className='tw-font-semibold tw-shadow-sm tw-underline tw-text-blue-500 tw-flex tw-flex-row' size={'sm'} color={'yellow'}>
-          <Group>En attente contrat</Group>
+        <Badge className='tw-font-semibold tw-shadow-sm tw-underline tw-text-blue-400/70 tw-flex tw-flex-row' size={'sm'} color={'yellow'}>
+          <Text>En attente contrat</Text>
         </Badge>
         <Stack align="flex-end" mt='sm'>
           {edit &&
@@ -109,6 +111,8 @@ export default function Page(props) {
   const [tab, setTab] = useState('Nationale')
   const [maxSelectedAssociations, setMaxSelectedAssociations] = useState(99)
   const [selectedAssociations, setselectedAssociations] = useState([])
+  const [openOffer, setOpenOffer] = useState(null)
+
   const tabHandler = (state) => {
     if (state == 'Nationale') {
       setMaxSelectedAssociations(99)
@@ -128,7 +132,6 @@ export default function Page(props) {
       },
       validate: {
         association: (value) => {
-          console.log('selectedAssociations', selectedAssociations)
           if (selectedAssociations.length == 0) {
             return 'Veuillez séléctionner l(es) association(s)'
           }
@@ -214,19 +217,36 @@ export default function Page(props) {
   }
 
   const OfferRow = ({offer}) => (
-    <Card className='tw-flex tw-bg-gray-50 tw-mb-2' radius={'lg'}>
-      <Center>
-        <Avatar className='tw-shadow-md' radius={'lg'} src={`/uploads/${offer.association?.avatar?.name}`} />
-      </Center>
-      <Flex direction={'column'} className='tw-flex-1 tw-px-5'>
-        <Flex justify={'space-between'}>
-          <TextPopOver text={offer.association?.description} />
+    <Card className=' tw-bg-gray-100 tw-mb-2' radius={'lg'}>
+      <Flex>
+        <Center>
+          <Avatar className='tw-shadow-md' radius={'lg'} src={`/uploads/${offer.association?.avatar?.name}`} />
+        </Center>
+        <Flex direction={'column'} className='tw-flex-1 tw-px-5'>
+          <Flex justify={'space-between'}>
+            <TextPopOver text={offer.association?.description} />
+          </Flex>
+          <Text color='dimmed'>{offer.description}</Text>
         </Flex>
-        <Text color='dimmed'>{offer.description}</Text>
+        <Center>
+          <Flex direction={'column'}>
+            <Group position='right' mb={'xs'}>
+              <SponsoringOfferTypeBadge offer={offer} />
+            </Group>
+            <Status offer={offer} />
+            <Group position='right'>
+              <Button 
+                onClick={() => setOpenOffer(offer)}
+                styles={{
+                  root: { height: '20px' }
+                }}
+                size='xs' color='gray' 
+                className='tw-bg-gray-500 tw-font-light' radius={'lg'}
+                >Détails</Button>
+            </Group>
+          </Flex>
+        </Center>
       </Flex>
-      <Center>
-        <Status offer={offer} />
-      </Center>
     </Card>
   )
 
@@ -267,7 +287,7 @@ export default function Page(props) {
                   </Group>
               </Flex>
 
-              <CardsSection title="Mes offres">
+              <CardsSection title="Mes partenariats">
                   {sponsorOffers.length == 0
                     ? <Text color='dimmed' size={'sm'} align='center'>Aucune offre</Text>
                     : offersList}
@@ -341,6 +361,51 @@ export default function Page(props) {
                     Envoyer mon offre</Button>
                 </Center>
               </form>
+            </Modal>
+            <Modal
+              size="calc(100vw - 5%)" 
+              radius={'lg'}
+              centered
+              opened={openOffer}
+              onClose={() => setOpenOffer(null)}
+              title="Détail offre"
+            >
+              <Group mb={'sm'}>
+                <Text weight={600} fz={'sm'}>Sponsor</Text>
+                <Flex>
+                  <Avatar className='tw-shadow-md' radius={'lg'} size={'sm'} src={`/uploads/${openOffer?.enseigne?.avatar?.name}`} />
+                  <Text fz={'sm'}>{openOffer?.enseigne?.name}</Text>
+                </Flex>
+              </Group>
+              <Group mb={'sm'}>
+                <Text weight={600} fz={'sm'}>Date création</Text>
+                <Text fz={'sm'}>{moment(openOffer?.createdAt).format('DD/MM/YYYY')}</Text>
+              </Group>
+              <Group mb={'sm'}>
+                <Text weight={600} fz={'sm'}>Description</Text>
+                <Text fz={'sm'}>{openOffer?.description}</Text>
+              </Group>
+              <Group mb={'sm'}>
+                <Text weight={600} fz={'sm'}>Type</Text>
+                {openOffer &&
+                  <SponsoringOfferTypeBadge offer={openOffer} />
+                }
+              </Group>
+              <Flex mb={'sm'}>
+                <Flex className='tw-h-full' direction={'column'} align={'start'} mr={'md'}>
+                  <Text weight={600} fz={'sm'}>Association(s)</Text>
+                </Flex>
+                <Stack>
+                  {openOffer &&
+                    openOffer.associations.map((asso) => (
+                      <Flex key={asso.id}>
+                        <Avatar className='tw-shadow-md' radius={'lg'} size={'sm'} src={`/uploads/${asso.avatar?.name}`} />
+                        <Text fz={'sm'}>{asso.name}</Text>
+                      </Flex>
+                    ))
+                  }
+                </Stack>
+              </Flex>
             </Modal>
         </div>
 
