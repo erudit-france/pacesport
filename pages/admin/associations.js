@@ -238,8 +238,7 @@ export default function Page(props){
                     <Text weight={600} mt={'md'}>Informations</Text>
                     <Box className="tw-rounded-2xl tw-shadow-lg tw-bg-white tw-py-7 tw-px-6" >
                         <Title order={2} weight={600} align="left">{openAssociation?.name}</Title>
-                        <Information label={'Bio'} value={openAssociation?.address}/>
-                        <Information label={'Adresse'} value={openAssociation?.address}/>
+                        <Information label={'Bio'} value={openAssociation?.description}/>
                         <Information label={'Adresse'} value={openAssociation?.address}/>
                         <Information label={'Téléphone'} value={openAssociation?.phone}/>
                         <Information label={'Email'} value={openAssociation?.email}/>
