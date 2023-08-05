@@ -84,7 +84,7 @@ export default function Page(props){
             <td>
                 <Group>
                     <Avatar className="tw-shadow-md" size={'sm'} radius={'xl'}  src={`/uploads/${element.avatar?.name}`} />
-                    <Text fz={'sm'}>{element.description}</Text>
+                    <Text fz={'sm'}>{element.name}</Text>
                 </Group>
             </td>
             <td>
