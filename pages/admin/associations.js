@@ -15,9 +15,9 @@ import { getUser } from "@/domain/repository/UserRepository";
 import { TbCheck, TbCopy } from "react-icons/tb";
 
 const Information = ({label, value}) => (
-    <Flex className="tw-text-sm tw-mt-1">
-        <Text>{label}:</Text>
-        <Text ml={'lg'} weight={400}>{value}</Text>
+    <Group className="tw-text-sm tw-mt-1">
+        <Text weight={600} fz={'sm'}>{label}:</Text>
+        <Text ml={'lg'} weight={400}  fz={'sm'}>{value}</Text>
         {label == 'Email' &&
             <CopyButton value={value} timeout={1500}>
                 {({ copied, copy }) => (
@@ -29,7 +29,7 @@ const Information = ({label, value}) => (
                 )}
             </CopyButton>
         }
-    </Flex>
+    </Group>
 )
 export default function Page(props){
     const [loading, setLoading] = useState(false)
