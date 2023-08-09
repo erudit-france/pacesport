@@ -15,15 +15,19 @@ import Toast from '@/services/Toast'
 import { getPacesportCard } from '@/domain/repository/PacesportRepository'
 import { getAssociationActiveOffers } from '@/domain/repository/SponsoringOfferRepository'
 import { getById } from '@/domain/repository/AssociationRepository'
+import { serialize } from 'object-to-formdata'
 
 
 export default function Page(props) {
+    const [loading, setLoading] = useState(false)
     const [offers, setOffers] = useState(props.associationActiveOffers)
     const { push } = useRouter()
     const [showOffers, setShowOffers] = useState(true)
     const [fetching, setFetching] = useState(false)
     const [selectedAssociation, setSelectedAssociation] = useState(null)
     const [association, setAssociation] = useState(props.association)
+    const router = useRouter()
+    const refresh = () => { router.reload(window.location.pathname) }
     const selectedAssociationHandler = (association) => {
       setSelectedAssociation(association)
     }
@@ -48,8 +52,30 @@ export default function Page(props) {
     });
 
     const submitHandler = (values) => {
-        console.log('values', values)
-        push('/profil/particulier/carte')
+        setLoading(true)
+        let body = serialize(values)
+        fetch(`/api/order/card`, {
+            method: 'POST',
+            headers: new Headers({
+              'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: body
+          })
+        .then(res => res.json())
+        .then(res => {
+            if (res.data) {
+                res.data.code == 1 
+                    ? Toast.success(res.data.message)
+                    : Toast.error(res.data.message)
+                setLoading(false)
+                router.push('/profil/particulier/carte')
+            }
+          })
+        .catch((error) => { 
+            Toast.error('Erreur pendant l\'enregistrement') 
+            setLoading(false)
+        })
+
     }
 
     useEffect(() => {
@@ -180,7 +206,8 @@ export default function Page(props) {
                             </Group>
                             <Center>
                                 <Button type='submit' color='red' variant='filled' mt={"md"} radius={'lg'} px={'xl'} size='sm'
-                                     className='tw-bg-red-600/90 tw-shadow-sm'>
+                                     className='tw-bg-red-600/90 tw-shadow-sm'
+                                     disabled={loading}>
                                     Souscrire</Button>
                             </Center>
                         </form>

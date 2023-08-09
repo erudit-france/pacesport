@@ -21,9 +21,11 @@ import SponsoringOfferTypeBadge from '@/components/SponsoringOfferTypeBadge'
 import ReactCardFlip from 'react-card-flip'
 import { getUser } from '@/domain/repository/UserRepository'
 import { getPacesportCard } from '@/domain/repository/PacesportRepository'
+import { getActiveSubscription } from '@/domain/repository/OrderRepository'
 
 
 export default function Page(props) {
+  console.log('props.', props.pacesportSubscription)
   const [showOffers, setShowOffers] = useState(false)
   const [isFlipped, setIsFlipped] = useState(false)
 
@@ -172,6 +174,7 @@ export async function getServerSideProps(context) {
     }
   }
   let pacesport = await getPacesportCard(token)
+  let pacesportSubscription = await getActiveSubscription(token)
 
   // // Pass data to the page via props
   return { props: {
@@ -186,7 +189,8 @@ export async function getServerSideProps(context) {
         price: 11.99
     },
     offers: JSON.parse(offers.data),
-    pacesportCard: JSON.parse(pacesport.data)
+    pacesportCard: JSON.parse(pacesport.data),
+    pacesportSubscription: JSON.parse(pacesportSubscription.data)
   } }
 }
 
