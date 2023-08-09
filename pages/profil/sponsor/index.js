@@ -2,7 +2,7 @@ import Head from 'next/head'
 import { Inter } from 'next/font/google'
 import styles from '@/styles/Home.module.css'
 import SearchInput from '@/components/SearchInput'
-import { ActionIcon, Avatar, Badge, Box, Button, Card, Center, FileButton, Flex, Grid, Group, Modal, MultiSelect, Popover, SegmentedControl, Select, Space, Stack, Text, Textarea, Title } from '@mantine/core'
+import { ActionIcon, Avatar, Badge, Box, Button, Card, Center, FileButton, Flex, Grid, Group, Modal, MultiSelect, Popover, SegmentedControl, Select, Space, Stack, Text, TextInput, Textarea, Title } from '@mantine/core'
 import AssociationCard from '@/components/AssociationCard'
 import Layout from './layout'
 import { IoMdSettings } from 'react-icons/io'
@@ -23,9 +23,10 @@ import { useRouter } from 'next/router'
 import { AiOutlineFileText, AiOutlineUpload } from 'react-icons/ai'
 import { RxCheck, RxCross2 } from 'react-icons/rx'
 import fileUploader from '@/utils/fileUploader'
-import { useDisclosure } from '@mantine/hooks'
+import { useDisclosure, useId } from '@mantine/hooks'
 import SponsoringOfferTypeBadge from '@/components/SponsoringOfferTypeBadge'
 import moment from 'moment/moment'
+import { BsPlus } from 'react-icons/bs'
 
 const CardsSection = (props) => (
         <section className='tw-mt-8'>
@@ -111,7 +112,31 @@ export default function Page(props) {
   const [tab, setTab] = useState('Nationale')
   const [maxSelectedAssociations, setMaxSelectedAssociations] = useState(99)
   const [selectedAssociations, setselectedAssociations] = useState([])
+  const [editSelectedAssociations, setEditSelectedAssociations] = useState([])
   const [openOffer, setOpenOffer] = useState(null)
+
+  const openOfferHandler = (offer) => {
+    if (offer != null) {
+      setOpenOffer(offer)
+      // set association associations
+      let associatedAssociations = offer.associations.map((a) => a.id)
+      setEditSelectedAssociations(associatedAssociations)
+      // set category
+      if (offer.category) {
+          offerForm.setFieldValue('category', offer.category.id)
+      }
+      
+      offerForm.setValues({
+          title: offer.title,
+          description: offer.description,
+      })
+      return
+    }
+    setOpenOffer(null)
+    setEditSelectedAssociations([])
+    offerForm.reset()
+
+  }
 
   const tabHandler = (state) => {
     if (state == 'Nationale') {
@@ -141,6 +166,46 @@ export default function Page(props) {
       },
   });
 
+  const offerForm = useForm({
+      initialValues: {
+          category: '',
+          title: openOffer ? openOffer.title : '',
+          description: openOffer ? openOffer.description : ''
+      },
+      validate: {
+      },
+  });
+
+  
+  const submitOffer = (values) => {
+    values = {...values, offer: openOffer.id, selectedAssociations: editSelectedAssociations}
+    setLoading(true)
+    let body = serialize(values)
+    fetch(`/api/admin/sponsoring-offer/update`, {
+        method: 'POST',
+        headers: new Headers({
+          'JWTAuthorization': `Bearer ${getCookie('token')}`
+        }),
+        body: body
+      })
+    .then(res => res.json())
+    .then(res => {
+        if (res.data) {
+            res.data.code == 1 
+                ? Toast.success(res.data.message)
+                : Toast.error(res.data.message)
+            setLoading(false)
+            openOfferHandler(null)
+            offerForm.reset()
+            router.reload(window.location.pathname)
+          }
+      })
+    .catch((error) => { 
+        console.log('error', error)
+        Toast.error('Erreur pendant l\'enregistrement') 
+        setLoading(false)
+    })
+  }
     
   const submitHandler = (values) => {
     setLoading(true)
@@ -240,7 +305,7 @@ export default function Page(props) {
         </Center>
         <Flex direction={'column'} className='tw-flex-1 tw-px-5'>
           <Flex justify={'space-between'}>
-            <TextPopOver text={offer.association?.description} />
+            <TextPopOver text={offer.title} />
           </Flex>
           <Text color='dimmed'>{offer.description}</Text>
         </Flex>
@@ -252,7 +317,7 @@ export default function Page(props) {
             <Status offer={offer} />
             <Group position='right'>
               <Button 
-                onClick={() => setOpenOffer(offer)}
+                onClick={() => openOfferHandler(offer)}
                 styles={{
                   root: { height: '20px' }
                 }}
@@ -267,10 +332,11 @@ export default function Page(props) {
     )
   }
 
+  let id = useId();
   const offersList = <>
     <section style={styles} className='tw-px-3'>
       {sponsorOffers.map((offer) => (
-        <OfferRow key={offer.title} offer={offer} />
+        <OfferRow key={`${offer.id}-${id}`} offer={offer} />
       ))}
     </section>
   </>
@@ -324,7 +390,7 @@ export default function Page(props) {
               radius={'lg'}
               centered
               opened={opened}
-              onClose={() => setOpened(false)}
+              onClose={() => setOpened(null)}
               title="Soutenir une association"
             >
 
@@ -384,8 +450,8 @@ export default function Page(props) {
               radius={'lg'}
               centered
               opened={openOffer}
-              onClose={() => setOpenOffer(null)}
-              title="Détail offre"
+              onClose={() => openOfferHandler(null)}
+              title={<Title order={4}>Détails offre</Title>}
             >
               <Group mb={'sm'}>
                 <Text weight={600} fz={'sm'}>Sponsor</Text>
@@ -397,6 +463,10 @@ export default function Page(props) {
               <Group mb={'sm'}>
                 <Text weight={600} fz={'sm'}>Date création</Text>
                 <Text fz={'sm'}>{moment(openOffer?.createdAt).format('DD/MM/YYYY')}</Text>
+              </Group>
+              <Group mb={'sm'}>
+                <Text weight={600} fz={'sm'}>Titre</Text>
+                <Text fz={'sm'}>{openOffer?.title}</Text>
               </Group>
               <Group mb={'sm'}>
                 <Text weight={600} fz={'sm'}>Description</Text>
@@ -423,6 +493,41 @@ export default function Page(props) {
                   }
                 </Stack>
               </Flex>
+              <Title mt={'xl'} order={5}>Modifier offre</Title>
+                <form onSubmit={offerForm.onSubmit((values) => submitOffer(values))} className="tw-p-4">
+                    <TextInput mt="sm" description={"Titre de l'offre"} radius="md" size="sm" withAsterisk
+                        mb={'md'}
+                        {...offerForm.getInputProps('title')}/>
+                        
+                    <Textarea mt="sm" description={"Description de l'offre"} radius="md" size="sm" withAsterisk
+                        minRows={3}
+                        mb={'md'}
+                        {...offerForm.getInputProps('description')}/>
+
+                        
+
+                    <MultiSelect
+                      label="Association à soutenir"
+                      placeholder="Choisir"
+                      itemComponent={SelectItem}
+                      data={associationsSelect}
+                      onChange={setEditSelectedAssociations}
+                      value={editSelectedAssociations}
+                      maxDropdownHeight={400}
+                      mb={'md'}
+                      onDropdownClose={() => console.log('closing')}
+                      />
+                    <Flex justify={'flex-end'} mt={'xl'}>
+                            <Button size="sm" ml={'lg'} px={'sm'} className="tw-text-xs" 
+                                variant="outline"
+                                onClick={() => openOfferHandler(null)}
+                                >Annuler</Button>
+                            <Button size="sm" ml={'lg'} px={'sm'} className="tw-text-xs tw-bg-blue-600" 
+                                type="submit"
+                                disabled={loading}
+                                >Valider</Button>
+                    </Flex>
+                </form>
             </Modal>
         </div>
 

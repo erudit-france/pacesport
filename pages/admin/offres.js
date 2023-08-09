@@ -123,7 +123,7 @@ export default function Page(props){
           )
         }
       );
-      SelectItem.displayName = 'SelectItem';
+    SelectItem.displayName = 'SelectItem';
 
     const submitCategory = (values) => {
         setLoading(true)
