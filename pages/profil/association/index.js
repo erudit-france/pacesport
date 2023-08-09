@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Button, Center, Divider, FileInput, Flex, List, Loader, Modal, Overlay, Paper, Space, Text, TextInput, Title, useMantineTheme } from "@mantine/core";
+import { ActionIcon, Avatar, Badge, Box, Button, Card, Center, Divider, FileInput, Flex, List, Loader, Modal, Overlay, Paper, Select, Space, Text, TextInput, Title, Transition, useMantineTheme } from "@mantine/core";
 import Head from "next/head";
 import SearchSponsor from "./components/SearchSponsor";
 import UserListButton from "./components/UserListButton";
@@ -11,7 +11,7 @@ import { GrMoney } from "react-icons/gr";
 import { BiMessage } from "react-icons/bi";
 import CampagneCard from "./components/CampagneCard";
 import { useDisclosure } from "@mantine/hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -26,11 +26,14 @@ import { useForm } from "@mantine/form";
 import { serialize } from "object-to-formdata";
 import { getCookie } from "cookies-next";
 import Toast from "@/services/Toast";
-import { AiOutlineFileText } from "react-icons/ai";
+import { AiOutlineFileText, AiOutlineSync } from "react-icons/ai";
 import { getAssociationInvitationRequest, getAssociationSponsorInvitations } from "@/domain/repository/AssociationRepository";
 import fileUploader from "@/utils/fileUploader";
 import { getUser } from "@/domain/repository/UserRepository";
 import { getPacesportCard } from "@/domain/repository/PacesportRepository";
+import { getActive } from "@/domain/repository/SponsorRepository";
+import SponsoringOfferTypeBadge from "@/components/SponsoringOfferTypeBadge";
+import { FaMapMarkerAlt } from "react-icons/fa";
 
 ChartJS.register(
   CategoryScale,
@@ -51,6 +54,43 @@ export default function Page(props){
     const [hasUploadedStatus, setHasUploadedStatus] = useState(false)
     const isAccountLimited = true
     const nbSponsorsNeeded = 3
+    const [selectedSponsor, setSelectedSponsor] = useState(null)
+    const [sponsorOffers, setSponsorOffers] = useState([])
+    const [offers, setOffers] = useState([])
+    const [showOffers, setShowOffers] = useState(true)
+    const [fetching, setFetching] = useState(false)
+    const selectedSponsorHandler = (association) => {
+        setSelectedSponsor(association)
+    }
+    const sponsorSelect = props.sponsors.map((sponsor) => (
+        {label: sponsor.description, value: sponsor.id}
+    ))
+
+    
+    useEffect(() => {
+        if(selectedSponsor == null){
+          return
+        }
+        setFetching(true)
+        setOffers([])
+        fetch(`/api/sponsoring-offer-by-enseigne-active/${selectedSponsor}`, {
+          headers: new Headers({
+                  'JWTAuthorization': `Bearer ${getCookie('token')}`,
+            })}
+        ).then(res => res.json())
+        .then(res => {
+          if (res.code == 401) {
+            Toast.error('Session expirée')
+            push('/login')
+            setFetching(false)
+            return
+          } else {
+            let offers = JSON.parse(res.data)
+            setFetching(false)
+            setOffers(offers)
+          }
+        })
+      }, [selectedSponsor]);
     
     const form = useForm({
         initialValues: {
@@ -60,6 +100,34 @@ export default function Page(props){
           statut: (value) => (value instanceof File ? null : 'Veuillez importer un fichier'),
         },
     });
+
+    const OfferRow = ({offer}) => (
+        <Card className='tw-flex tw-bg-gray-200 tw-mb-2' radius={'lg'}>
+          <Center>
+            <Avatar className='tw-shadow-md' radius={'lg'} src={`/uploads/${offer.enseigne?.avatar?.name}`} />
+          </Center>
+          <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
+            <Flex justify={'space-between'}>
+              <Text weight={550}>{offer.association.description} <SponsoringOfferTypeBadge offer={offer} /></Text>
+              <Text className='tw-flex tw-font-light' fz={'sm'}>
+                <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer.association.ville}</Text>
+            </Flex>
+            <Text color='dimmed'>{offer.description}</Text>
+          </Flex>
+        </Card>
+      )
+
+    const offersList = <>
+        <Transition mounted={setShowOffers} transition="slide-down" duration={400} timingFunction="ease">
+        {(styles) => 
+            <section style={styles} className='tw-mt-1'>
+            {offers.map((offer) => (
+                <OfferRow key={offer.title} offer={offer} />
+            ))}
+            </section>}
+        </Transition>
+    </>
+
 
     const submitHandler = (values) => {
         setLoading(true)        
@@ -224,6 +292,34 @@ export default function Page(props){
                         hover:tw-bg-orange-700">
                         Inviter des partenaires par email</Button>
                 </Center>
+
+                <Divider  my={'sm'} className="tw-w-2/3 tw-mx-auto"/>
+
+
+                    <Title align='center' order={6}>Offres partenaires</Title>
+                                <Select
+                                    label={'Choisir partenaire'}
+                                    placeholder={props.sponsors.length > 0 ? 'Partenaire' : 'Aucun partenaire trouvé'}
+                                    rightSection={<AiOutlineSync size={14} />}
+                                    rightSectionWidth={30}
+                                    styles={{ rightSection: { pointerEvents: 'none' } }}
+                                    data={sponsorSelect}
+                                    value={selectedSponsor ? selectedSponsor.label : null}
+                                    onChange={selectedSponsorHandler}/>
+                    <Title order={6} my={'lg'} align='center'>Les offres</Title>
+                    {fetching && 
+                     <Center>
+                      <Loader />
+                     </Center>
+                    }
+                    {offers.length == 0 
+                      ? fetching 
+                        ? <></>
+                        : <Text color='dimmed' align='center'>Aucune offre</Text>
+                      : offersList
+                    }
+                    <Space my={'md'} />
+                
             </section>
 
             <Box className="tw-bg-white tw-w-[110%] tw-h-8 -tw-skew-y-3 tw-relative -tw-top-4"></Box>
@@ -326,6 +422,7 @@ export async function getServerSideProps(context) {
     let validationRequest = await getAssociationInvitationRequest(token)
     let user = await getUser(token)
     let pacesport = await getPacesportCard(token)
+    let sponsors = await getActive(token)
 
 
     // // Pass data to the page via props
@@ -338,7 +435,8 @@ export async function getServerSideProps(context) {
         invitations: JSON.parse(invitations.data),
         validationRequest: JSON.parse(validationRequest.data),
         user: JSON.parse(user.data),
-        pacesportCard: JSON.parse(pacesport.data)
+        pacesportCard: JSON.parse(pacesport.data),
+        sponsors: JSON.parse(sponsors.data)
     }}
   }
 
