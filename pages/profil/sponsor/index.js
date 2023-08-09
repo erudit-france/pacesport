@@ -217,7 +217,6 @@ export default function Page(props) {
   }
 
   const OfferRow = ({offer}) => {
-    console.log('offerrow offer', offer.associations)
     let avatar = <Avatar className='tw-shadow-md' radius={'xl'} src={null} />
     if (offer.associations.length == 1) {
       avatar = <Avatar className='tw-shadow-md' radius={'xl'} src={`/uploads/${offer.associations[0].avatar?.name}`} />
