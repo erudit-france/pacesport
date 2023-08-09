@@ -23,3 +23,7 @@ export const getCurrentRapatriement = async (token, local = false) => {
 export const getAssociations = async (token, local = false) => {
     return fetchApi(token, '/api/association/list')
 }
+
+export const getById = async (token, id, local = false) => {
+    return fetchApi(token, `/api/association/get/${id}`)
+}

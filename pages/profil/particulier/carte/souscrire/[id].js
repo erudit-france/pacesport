@@ -13,14 +13,17 @@ import { useForm } from '@mantine/form'
 import SponsoringOfferTypeBadge from '@/components/SponsoringOfferTypeBadge'
 import Toast from '@/services/Toast'
 import { getPacesportCard } from '@/domain/repository/PacesportRepository'
+import { getAssociationActiveOffers } from '@/domain/repository/SponsoringOfferRepository'
+import { getById } from '@/domain/repository/AssociationRepository'
 
 
 export default function Page(props) {
-    const [offers, setOffers] = useState(props.offers)
+    const [offers, setOffers] = useState(props.associationActiveOffers)
     const { push } = useRouter()
     const [showOffers, setShowOffers] = useState(true)
     const [fetching, setFetching] = useState(false)
     const [selectedAssociation, setSelectedAssociation] = useState(null)
+    const [association, setAssociation] = useState(props.association)
     const selectedAssociationHandler = (association) => {
       setSelectedAssociation(association)
     }
@@ -30,16 +33,17 @@ export default function Page(props) {
 
     const form = useForm({
         initialValues: {
-            association: '',
+            association: props.id,
         },
         validate: {
-            association: (value) => {
-              if (selectedAssociation != null ) {
-                return null
-              } else {
-                return 'Veuillez saisir choisir une association'
-              }
-            },
+            // association: (value) => {
+
+            //   // if (selectedAssociation != null ) {
+            //   //   return null
+            //   // } else {
+            //   //   return 'Veuillez saisir choisir une association'
+            //   // }
+            // },
         },
     });
 
@@ -153,7 +157,7 @@ export default function Page(props) {
                     <Container className='tw-border-2 tw-rounded-md tw-shadow-sm tw-border-red-500 tw-p-4'>
                         <form onSubmit={form.onSubmit((values) => submitHandler(values))}>
                             <Title align='center' order={6}>Pace&lsquo;Sport</Title>
-                            <Select
+                            {/* <Select
                                 label={
                                     <Flex className='tw-mb-2'>
                                         <Center>
@@ -168,7 +172,12 @@ export default function Page(props) {
                                 styles={{ rightSection: { pointerEvents: 'none' } }}
                                 data={associationsSelect}
                                 value={selectedAssociation ? selectedAssociation.label : null}
-                                onChange={selectedAssociationHandler}/>
+                                onChange={selectedAssociationHandler}/> */}
+                                
+                            <Group>
+                              <Avatar className="tw-shadow-md" size={'lg'} radius={'xl'}  src={`/uploads/${association.avatar?.name}`} />
+                              <Text fz={'md'} weight={600}>{association.name}</Text>
+                            </Group>
                             <Center>
                                 <Button type='submit' color='red' variant='filled' mt={"md"} radius={'lg'} px={'xl'} size='sm'
                                      className='tw-bg-red-600/90 tw-shadow-sm'>
@@ -218,6 +227,8 @@ export async function getServerSideProps(context) {
 
   let offers = await getActiveOffers(token)
   let pacesport = await getPacesportCard(token)
+  let associationActiveOffers = await getAssociationActiveOffers(token, id)
+  let association = await getById(token, id)
 
 
   // // Pass data to the page via props
@@ -233,7 +244,10 @@ export async function getServerSideProps(context) {
         price: 11.99
     },
     offers: JSON.parse(offers.data),
-    pacesportCard: JSON.parse(pacesport.data)
+    pacesportCard: JSON.parse(pacesport.data),
+    associationActiveOffers: JSON.parse(associationActiveOffers.data),
+    association: JSON.parse(association.data),
+    id: id
   } }
 }
 
