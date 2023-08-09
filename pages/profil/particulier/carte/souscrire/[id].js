@@ -25,7 +25,7 @@ export default function Page(props) {
       setSelectedAssociation(association)
     }
     const associationsSelect = props.associations.map((association) => (
-        {label: association.description, value: association.id}
+        {label: association.name, value: association.id}
     ))
 
     const form = useForm({
