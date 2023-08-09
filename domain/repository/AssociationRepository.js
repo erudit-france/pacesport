@@ -19,3 +19,7 @@ export const getAssociationInvitationRequest = async (token, local = false) => {
 export const getCurrentRapatriement = async (token, local = false) => {
     return fetchApi(token, '/api/association/rapatriement/current')
 }
+
+export const getAssociations = async (token, local = false) => {
+    return fetchApi(token, '/api/association/list')
+}

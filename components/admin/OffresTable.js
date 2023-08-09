@@ -68,7 +68,7 @@ export default function OffresTable({offres, refresh, fetching, editOffer}) {
     const ths = (
         <tr>
           <th>Sponsor</th>
-          <th>Association</th>
+          <th>Offre</th>
           <th className="tw-capitalize">état</th>
           <th>Contrat</th>
           <th>Catégorie</th>
@@ -89,15 +89,7 @@ export default function OffresTable({offres, refresh, fetching, editOffer}) {
             <td>
                 <Group>
                     <SponsoringOfferTypeBadge offer={element} />
-                    {element.association 
-                    ? <>
-                        <Avatar className="tw-shadow-md" size={'sm'} radius={'xl'}  src={`/uploads/${element.association?.avatar?.name}`} />
-                        <Text fz={'sm'} weight={600}>{element.association.name}</Text>
-                        </>
-                    :   <>
-                        <Avatar className="tw-shadow-md" size={'sm'} radius={'xl'} />
-                        </>
-                    }
+                    <Text fz={'sm'} weight={600}>{element.title}</Text>
                     <Text fz={'sm'}>{element.description}</Text>
                 </Group>
             </td>
