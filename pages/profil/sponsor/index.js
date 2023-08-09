@@ -216,11 +216,28 @@ export default function Page(props) {
     )
   }
 
-  const OfferRow = ({offer}) => (
+  const OfferRow = ({offer}) => {
+    console.log('offerrow offer', offer.associations)
+    let avatar = <Avatar className='tw-shadow-md' radius={'xl'} src={null} />
+    if (offer.associations.length == 1) {
+      avatar = <Avatar className='tw-shadow-md' radius={'xl'} src={`/uploads/${offer.associations[0].avatar?.name}`} />
+    }
+    if (offer.associations.length > 1) {
+      avatar = <Avatar.Group spacing="sm">
+        <Avatar className='tw-shadow-md' size={'sm'} radius={'xl'} src={`/uploads/${offer.associations[0].avatar?.name}`} />
+        <Avatar className='tw-shadow-md' size={'sm'} radius={'xl'} src={`/uploads/${offer.associations[1].avatar?.name}`} />
+        {offer.associations.length > 2 &&
+          <Avatar radius="xl" size={'sm'}>+{offer.associations.length - 2}</Avatar>
+        }
+      </Avatar.Group>
+    }
+    
+
+    return (
     <Card className=' tw-bg-gray-100 tw-mb-2' radius={'lg'}>
       <Flex>
         <Center>
-          <Avatar className='tw-shadow-md' radius={'lg'} src={`/uploads/${offer.association?.avatar?.name}`} />
+          {avatar}
         </Center>
         <Flex direction={'column'} className='tw-flex-1 tw-px-5'>
           <Flex justify={'space-between'}>
@@ -248,7 +265,8 @@ export default function Page(props) {
         </Center>
       </Flex>
     </Card>
-  )
+    )
+  }
 
   const offersList = <>
     <section style={styles} className='tw-px-3'>
