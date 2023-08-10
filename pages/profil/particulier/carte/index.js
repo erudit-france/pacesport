@@ -25,7 +25,7 @@ import { getActiveSubscription } from '@/domain/repository/OrderRepository'
 
 
 export default function Page(props) {
-  console.log('props.', props.pacesportSubscription)
+  const [pacesportSubscription, setPacesportSubscription] = useState(props.pacesportSubscription)
   const [showOffers, setShowOffers] = useState(false)
   const [isFlipped, setIsFlipped] = useState(false)
 
@@ -128,8 +128,16 @@ export default function Page(props) {
                 </Box>
                 <Box className="tw-bg-gradient-to-br tw-from-slate-100 tw-to-gray-100 tw-shadow-lg tw-rounded-2xl tw-pt-12 tw-relative -tw-top-10 tw-z-0" p={'md'}>
                     <Title order={3} mb={'sm'} align="center">Pace&lsquo;Sport</Title>
-                    <Title order={6} mb={'sm'} align="center">Abonné</Title>
-                    <Text className="tw-text-gray-800" align="center" fz={'sm'}>Jusqu&lsquo;au {moment(props.card.endDate).format('DD/MM/YYYY')}</Text>
+                    {pacesportSubscription &&
+                    <Center>
+                      <Group>
+                          <Avatar className="tw-shadow-md" size={'lg'} radius={'xl'}  src={`/uploads/${pacesportSubscription.association.avatar?.name}`} />
+                          <Text fz={'md'} weight={600}>{pacesportSubscription.association.name}</Text>
+                      </Group>
+                    </Center>
+                    }
+
+                    <Text className="tw-text-gray-800" align="center" mt={'sm'} fz={'sm'}>Abonné jusqu&lsquo;au {moment(props.card.endDate).format('DD/MM/YYYY')}</Text>
                     <Center mt={'md'}>
                       <Button onClick={() => setShowOffers(!showOffers)} color='white' variant='outline' className='tw-border-gray-700' radius={'lg'}>
                         <Text className='tw-text-gray-800' transform='uppercase' fz={'sm'}>Voir {showOffers ? 'moins' : 'les offres' }</Text>
@@ -138,14 +146,12 @@ export default function Page(props) {
                     </Center>
                 </Box>
                   {showOffers && 
-                    <Transition mounted={setShowOffers} transition="fade" duration={800} timingFunction="ease">
-                      {(styles) => 
-                        <section style={styles} className='tw-relative -tw-top-6'>
-                          {props.offers.map((offer) => (
-                            <OfferRow key={offer.title} offer={offer} />
-                          ))}
-                        </section>}
-                  </Transition>}
+                    <section className='tw-relative -tw-top-6'>
+                      {props.offers.map((offer) => (
+                        <OfferRow key={offer.title} offer={offer} />
+                      ))}
+                    </section>
+                  }
                 </Container>
             </Box>
         </Container>
@@ -175,6 +181,18 @@ export async function getServerSideProps(context) {
   }
   let pacesport = await getPacesportCard(token)
   let pacesportSubscription = await getActiveSubscription(token)
+  pacesportSubscription = JSON.parse(pacesportSubscription.data)
+  if (user.data == null) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/"
+      }
+    }
+  }
+  let subscriptionActiveOffers = await getActiveOffers(token, pacesportSubscription.association.id)
+  subscriptionActiveOffers = JSON.parse(subscriptionActiveOffers.data)
+  
 
   // // Pass data to the page via props
   return { props: {
@@ -188,9 +206,9 @@ export async function getServerSideProps(context) {
         endDate: Date.now(),
         price: 11.99
     },
-    offers: JSON.parse(offers.data),
+    offers: subscriptionActiveOffers,
     pacesportCard: JSON.parse(pacesport.data),
-    pacesportSubscription: JSON.parse(pacesportSubscription.data)
+    pacesportSubscription: pacesportSubscription
   } }
 }
 

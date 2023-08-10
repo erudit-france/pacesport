@@ -16,6 +16,7 @@ import { getPacesportCard } from '@/domain/repository/PacesportRepository'
 import { getAssociationActiveOffers } from '@/domain/repository/SponsoringOfferRepository'
 import { getById } from '@/domain/repository/AssociationRepository'
 import { serialize } from 'object-to-formdata'
+import { getActiveSubscription } from '@/domain/repository/OrderRepository'
 
 
 export default function Page(props) {
@@ -67,7 +68,6 @@ export default function Page(props) {
                 res.data.code == 1 
                     ? Toast.success(res.data.message)
                     : Toast.error(res.data.message)
-                setLoading(false)
                 router.push('/profil/particulier/carte')
             }
           })
@@ -243,6 +243,29 @@ export async function getServerSideProps(context) {
             'JWTAuthorization': `Bearer ${token}`,
     })}
   )
+  if (avatar.code == 401){
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/login"
+      }
+    }
+  }
+  
+  let pacesportSubscription = await getActiveSubscription(token)
+  pacesportSubscription = JSON.parse(pacesportSubscription.data)
+  console.log('--------------------------', pacesportSubscription)
+  console.log('--------------------------', pacesportSubscription)
+  console.log('--------------------------', pacesportSubscription)
+  console.log('--------------------------', pacesportSubscription)
+  if (pacesportSubscription) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: `/profil/particulier/carte`
+      }
+    }
+  }
   avatar = await avatar.json();
   // fetch Associations
   let associations = await fetch(`${process.env.API_URL}/api/association/list`, {
