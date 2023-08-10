@@ -45,26 +45,21 @@ export default function Navbar(props){
       }
     }, []);
 
-    const loginAsLink = 
-        <>
-            <Flex justify={'space-between'} align={'center'}>
-                <NavbarLink 
-                    border={true} toggleMenu={ toggleMenu } 
-                    href={'/login/as'} 
-                    name={<>Changer de rôle <VscSync className="tw-my-auto tw-ml-1" /></>} />
-                    
-                <NavbarLink 
-                    border={true} toggleMenu={ toggleMenu } 
-                    href={'/'} 
-                    name={<><BiHome size={20} /></>} />
-            
-            </Flex>
-        </>
-    
     const NavParticulier = () => {
         return (
             <>
-                {loginAsLink}
+                <Flex justify={'space-between'} align={'center'}>
+                    <NavbarLink 
+                        border={true} toggleMenu={ toggleMenu } 
+                        href={'/login/as'} 
+                        name={<>Changer de rôle <VscSync className="tw-my-auto tw-ml-1" /></>} />
+                        
+                    <NavbarLink 
+                        border={true} toggleMenu={ toggleMenu } 
+                        href={'/'} 
+                        name={<><BiHome size={20} /></>} />
+                
+                </Flex>
                 <NavbarLink toggleMenu={ toggleMenu } href={'/'} name={<>Mon pace&lsquo;sport (carte)</>} />
                 <NavbarLink toggleMenu={ toggleMenu } href={'/parametres?prev=/'} name={'Paramètres'} />
             </>
@@ -74,7 +69,18 @@ export default function Navbar(props){
     const NavAssociation = () => {
         return (
             <>
-                {loginAsLink}
+                <Flex justify={'space-between'} align={'center'}>
+                    <NavbarLink 
+                        border={true} toggleMenu={ toggleMenu } 
+                        href={'/login/as'} 
+                        name={<>Changer de rôle <VscSync className="tw-my-auto tw-ml-1" /></>} />
+                        
+                    <NavbarLink 
+                        border={true} toggleMenu={ toggleMenu } 
+                        href={'/profil/association'} 
+                        name={<><BiHome size={20} /></>} />
+                
+                </Flex>
                 <NavbarLink toggleMenu={ toggleMenu } href={'/profil/association'} name={<>Mon pace&lsquo;sport (carte)</>} />
                 <NavbarLink toggleMenu={ toggleMenu } href={'/parametres?prev=/profil/association'} name={'Mon compte'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/annuaire?prev=${router.pathname}`} name={'Annuaire'} />
@@ -87,7 +93,18 @@ export default function Navbar(props){
     const NavSponsor = ({props}) => {
         return (
             <React.Fragment {...props}>
-                {loginAsLink}
+                <Flex justify={'space-between'} align={'center'}>
+                    <NavbarLink 
+                        border={true} toggleMenu={ toggleMenu } 
+                        href={'/login/as'} 
+                        name={<>Changer de rôle <VscSync className="tw-my-auto tw-ml-1" /></>} />
+                        
+                    <NavbarLink 
+                        border={true} toggleMenu={ toggleMenu } 
+                        href={'/profil/sponsor'} 
+                        name={<><BiHome size={20} /></>} />
+                
+                </Flex>
                 <NavbarLink toggleMenu={ toggleMenu } href={'/profil/sponsor'} name={'Mes cartes / partenariats actifs'}/>
                 <NavbarLink toggleMenu={ toggleMenu } href={'/communication/add/sponsor'} name={'Communication'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/annuaire?prev=${router.pathname}`} name={'Annuaire'} />
