@@ -113,6 +113,7 @@ export default function Page(props) {
   const [maxSelectedAssociations, setMaxSelectedAssociations] = useState(99)
   const [selectedAssociations, setselectedAssociations] = useState([])
   const [editSelectedAssociations, setEditSelectedAssociations] = useState([])
+  const [originalSelectedAssociations, setOriginalSelectedAssociations] = useState([])
   const [openOffer, setOpenOffer] = useState(null)
 
   const openOfferHandler = (offer) => {
@@ -121,6 +122,7 @@ export default function Page(props) {
       // set association associations
       let associatedAssociations = offer.associations.map((a) => a.id)
       setEditSelectedAssociations(associatedAssociations)
+      setOriginalSelectedAssociations(associatedAssociations)
       // set category
       if (offer.category) {
           offerForm.setFieldValue('category', offer.category.id)
@@ -178,10 +180,14 @@ export default function Page(props) {
 
   
   const submitOffer = (values) => {
+    if (openOffer.type == 'Nationale') {
+      Toast.error('Action impossible pour une offre nationale') 
+      return
+    }
     values = {...values, offer: openOffer.id, selectedAssociations: editSelectedAssociations}
     setLoading(true)
     let body = serialize(values)
-    fetch(`/api/admin/sponsoring-offer/update`, {
+    fetch(`/api/admin/sponsoring-offer/association/add`, {
         method: 'POST',
         headers: new Headers({
           'JWTAuthorization': `Bearer ${getCookie('token')}`
@@ -236,9 +242,17 @@ export default function Page(props) {
   }
 
   // add label to existing array
-  const associationsSelect = props.associations.map((a) => (
-    {...a, label: a.name, value: a.id}
-  ))
+  const associationsSelect = props.associations.map((a) => {
+    // ne pas pouvoir selectionner/deselectionné les associations existantes
+    if (originalSelectedAssociations.includes(a.id)) {
+      return (
+        {...a, label: a.name, value: a.id, disabled: true}
+      )
+    }
+    return (
+      {...a, label: a.name, value: a.id}
+    )
+  })
 
   const SelectItem = forwardRef(
     ({ avatar, description, ...others }, ref) => {
@@ -495,19 +509,17 @@ export default function Page(props) {
               </Flex>
               <Title mt={'xl'} order={5}>Modifier offre</Title>
                 <form onSubmit={offerForm.onSubmit((values) => submitOffer(values))} className="tw-p-4">
-                    <TextInput mt="sm" description={"Titre de l'offre"} radius="md" size="sm" withAsterisk
+                    {/* <TextInput mt="sm" description={"Titre de l'offre"} radius="md" size="sm" withAsterisk
                         mb={'md'}
                         {...offerForm.getInputProps('title')}/>
                         
                     <Textarea mt="sm" description={"Description de l'offre"} radius="md" size="sm" withAsterisk
                         minRows={3}
                         mb={'md'}
-                        {...offerForm.getInputProps('description')}/>
-
-                        
-
+                        {...offerForm.getInputProps('description')}/> */}
                     <MultiSelect
-                      label="Association à soutenir"
+                      disabled={openOffer?.type == 'Nationale'}
+                      label="Ajouter association(s)"
                       placeholder="Choisir"
                       itemComponent={SelectItem}
                       data={associationsSelect}
@@ -524,7 +536,7 @@ export default function Page(props) {
                                 >Annuler</Button>
                             <Button size="sm" ml={'lg'} px={'sm'} className="tw-text-xs tw-bg-blue-600" 
                                 type="submit"
-                                disabled={loading}
+                                disabled={loading || openOffer?.type == 'Nationale'}
                                 >Valider</Button>
                     </Flex>
                 </form>

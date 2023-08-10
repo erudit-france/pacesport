@@ -1,4 +1,4 @@
-import { ActionIcon, Avatar, Badge, Box, Button, Flex, Group, Modal, MultiSelect, ScrollArea, Select, Table, Tabs, Text, TextInput, Textarea, Title } from "@mantine/core";
+import { ActionIcon, Avatar, Badge, Box, Button, Flex, Group, Modal, MultiSelect, ScrollArea, Select, Stack, Table, Tabs, Text, TextInput, Textarea, Title } from "@mantine/core";
 import Head from "next/head";
 import Layout from "./layout";
 import { FiUsers } from "react-icons/fi";
@@ -16,6 +16,8 @@ import { getSponsoringOfferCategories } from "@/domain/repository/CategoryReposi
 import OffresTable from "@/components/admin/OffresTable";
 import { getUser } from "@/domain/repository/UserRepository";
 import { getAssociations } from "@/domain/repository/AssociationRepository";
+import SponsoringOfferTypeBadge from "@/components/SponsoringOfferTypeBadge";
+import moment from "moment/moment";
 
 export default function Page(props){
     const [loading, setLoading] = useState(false)
@@ -25,6 +27,7 @@ export default function Page(props){
     const [offer, setOffer] = useState(null)
     const [offers, setOffers] = useState(props.offers)
     const [selectedAssociations, setselectedAssociations] = useState([])
+    const [originalSelectedAssociations, setOriginalSelectedAssociations] = useState([])
     const [categories, setCategories] = useState(props.categories.map((cat) => (
         {...cat, value: (cat.id).toString()}
     )))
@@ -52,9 +55,17 @@ export default function Page(props){
     }
 
     // add label to existing array
-    const associationsSelect = props.associations.map((a) => (
+    const associationsSelect = props.associations.map((a) => {
+        // ne pas pouvoir selectionner/deselectionné les associations existantes
+        if (originalSelectedAssociations.includes(a.id)) {
+        return (
+            {...a, label: a.name, value: a.id, disabled: true}
+        )
+        }
+        return (
         {...a, label: a.name, value: a.id}
-    ))
+        )
+    })
     
     const editOffer = (offer) => {
         if (offer != null) {
@@ -62,6 +73,7 @@ export default function Page(props){
             // set association associations
             let associatedAssociations = offer.associations.map((a) => a.id)
             setselectedAssociations(associatedAssociations)
+            setOriginalSelectedAssociations(associatedAssociations)
             // set category
             if (offer.category) {
                 offerForm.setFieldValue('category', offer.category.id)
@@ -125,6 +137,51 @@ export default function Page(props){
       );
     SelectItem.displayName = 'SelectItem';
 
+    const OfferDetails = ({offer}) => (
+        <>
+        <Group mb={'sm'}>
+                <Text weight={600} fz={'sm'}>Sponsor</Text>
+                <Flex>
+                  <Avatar className='tw-shadow-md' radius={'lg'} size={'sm'} src={`/uploads/${offer?.enseigne?.avatar?.name}`} />
+                  <Text fz={'sm'}>{offer?.enseigne?.name}</Text>
+                </Flex>
+              </Group>
+              <Group mb={'sm'}>
+                <Text weight={600} fz={'sm'}>Date création</Text>
+                <Text fz={'sm'}>{moment(offer?.createdAt).format('DD/MM/YYYY')}</Text>
+              </Group>
+              <Group mb={'sm'}>
+                <Text weight={600} fz={'sm'}>Titre</Text>
+                <Text fz={'sm'}>{offer?.title}</Text>
+              </Group>
+              <Group mb={'sm'}>
+                <Text weight={600} fz={'sm'}>Description</Text>
+                <Text fz={'sm'}>{offer?.description}</Text>
+              </Group>
+              <Group mb={'sm'}>
+                <Text weight={600} fz={'sm'}>Type</Text>
+                {offer &&
+                  <SponsoringOfferTypeBadge offer={offer} />
+                }
+              </Group>
+              <Flex mb={'sm'}>
+                <Flex className='tw-h-full' direction={'column'} align={'start'} mr={'md'}>
+                  <Text weight={600} fz={'sm'}>Association(s)</Text>
+                </Flex>
+                <Stack>
+                  {offer &&
+                    offer.associations.map((asso) => (
+                      <Flex key={asso.id}>
+                        <Avatar className='tw-shadow-md' radius={'lg'} size={'sm'} src={`/uploads/${asso.avatar?.name}`} />
+                        <Text fz={'sm'}>{asso.name}</Text>
+                      </Flex>
+                    ))
+                  }
+                </Stack>
+              </Flex>
+        </>
+    )
+
     const submitCategory = (values) => {
         setLoading(true)
         let body = serialize(values)
@@ -154,10 +211,14 @@ export default function Page(props){
     }
 
     const submitOffer = (values) => {
+        if (offer.type == 'Nationale') {
+            Toast.error('Action impossible pour une offre nationale') 
+            return
+        }
         values = {...values, offer: offer.id, selectedAssociations: selectedAssociations}
         setLoading(true)
         let body = serialize(values)
-        fetch(`/api/admin/sponsoring-offer/update`, {
+        fetch(`/api/admin/sponsoring-offer/association/add`, {
             method: 'POST',
             headers: new Headers({
               'JWTAuthorization': `Bearer ${getCookie('token')}`
@@ -219,18 +280,21 @@ export default function Page(props){
                 size={'95vw'}
             >
                 <form onSubmit={offerForm.onSubmit((values) => submitOffer(values))} className="tw-p-4">
-                    <TextInput mt="sm" description={"Titre de l'offre"} placeholder={offer?.title} radius="md" size="sm" withAsterisk
+                    {/* <TextInput mt="sm" description={"Titre de l'offre"} placeholder={offer?.title} radius="md" size="sm" withAsterisk
                         mb={'md'}
                         {...offerForm.getInputProps('title')}/>
                         
                     <Textarea mt="sm" description={"Description de l'offre"} placeholder={offer?.description} radius="md" size="sm" withAsterisk
                         minRows={3}
                         mb={'md'}
-                        {...offerForm.getInputProps('description')}/>
-
+                        {...offerForm.getInputProps('description')}/> */}
+                    {offer &&
+                        <OfferDetails offer={offer} />
+                    }
                         
                     <MultiSelect
-                        label="Association à soutenir"
+                        disabled={offer?.type == 'Nationale'}
+                        label="Ajouter association(s)"
                         placeholder="Choisir"
                         itemComponent={SelectItem}
                         data={associationsSelect}
