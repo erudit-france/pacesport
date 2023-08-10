@@ -190,6 +190,15 @@ export async function getServerSideProps(context) {
       }
     }
   }
+  // Pas d'abonnement, redirection
+  if (pacesportSubscription == null) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/"
+      }
+    }
+  }
   let subscriptionActiveOffers = await getActiveOffers(token, pacesportSubscription.association.id)
   subscriptionActiveOffers = JSON.parse(subscriptionActiveOffers.data)
   

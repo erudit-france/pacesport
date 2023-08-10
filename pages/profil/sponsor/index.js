@@ -237,7 +237,7 @@ export default function Page(props) {
 
   // add label to existing array
   const associationsSelect = props.associations.map((a) => (
-    {...a, label: a.description, value: a.id}
+    {...a, label: a.name, value: a.id}
   ))
 
   const SelectItem = forwardRef(

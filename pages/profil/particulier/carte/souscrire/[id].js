@@ -135,10 +135,11 @@ export default function Page(props) {
         </Center>
         <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
           <Flex justify={'space-between'}>
-            <Text weight={550}>{offer.association.description} <SponsoringOfferTypeBadge offer={offer} /></Text>
-            <Text className='tw-flex tw-font-light' fz={'sm'}>
-              <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer.association.ville}</Text>
+            <Text weight={550}>{offer.enseigne.name} <SponsoringOfferTypeBadge offer={offer} /></Text>
+            {/* <Text className='tw-flex tw-font-light' fz={'sm'}> */}
+              {/* <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer.association.ville}</Text> */}
           </Flex>
+          <Text color=''>{offer.titre}</Text>
           <Text color='dimmed'>{offer.description}</Text>
         </Flex>
       </Card>
@@ -253,12 +254,7 @@ export async function getServerSideProps(context) {
   }
   
   let pacesportSubscription = await getActiveSubscription(token)
-  pacesportSubscription = JSON.parse(pacesportSubscription.data)
-  console.log('--------------------------', pacesportSubscription)
-  console.log('--------------------------', pacesportSubscription)
-  console.log('--------------------------', pacesportSubscription)
-  console.log('--------------------------', pacesportSubscription)
-  if (pacesportSubscription) {
+  if (!(pacesportSubscription.data === 'null' || pacesportSubscription.data == null)) {
     return {
       redirect: {
         permanent: false,
