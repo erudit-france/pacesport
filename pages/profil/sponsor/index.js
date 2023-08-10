@@ -386,12 +386,12 @@ export default function Page(props) {
             </main>
             <Space py={'xl'} />
             <Modal
-              size="calc(100vw - 5%)" 
+              size="calc(90vw - 5%)" 
               radius={'lg'}
               centered
               opened={opened}
               onClose={() => setOpened(null)}
-              title="Soutenir une association"
+              title={<Text weight={600} fz={'xs'}>Soutenir une association</Text>}
             >
 
               <form className='tw-p-4' onSubmit={form.onSubmit((values) => submitHandler(values))}>

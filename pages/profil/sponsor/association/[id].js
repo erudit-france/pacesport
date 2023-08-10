@@ -108,11 +108,12 @@ export default function Page(props) {
             </Container>
             
             <Modal
+              size="calc(90vw - 5%)" 
               radius={'lg'}
               centered
               opened={opened}
               onClose={() => setOpened(false)}
-              title="Soutenir une association"
+              title={<Text weight={700} fz={'xs'}>Soutenir une association</Text>}
             >
 
               <form className='tw-p-4'onSubmit={form.onSubmit((values) => submitHandler(values))}>

@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, CloseButton, FileButton, Flex, Group, Image, ScrollArea, Skeleton, Text, TextInput } from "@mantine/core"
+import { Avatar, Box, Button, Center, CloseButton, FileButton, Flex, Group, Image, Modal, ScrollArea, Skeleton, Text, TextInput } from "@mantine/core"
 import Head from "next/head"
 import Link from "next/link"
 import { useRouter } from "next/router"
@@ -20,7 +20,7 @@ import Toast from "@/services/Toast"
 const ChatHeader = () => {
     const router = useRouter()
     const contactId = router.query.id
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState({})
     useEffect(() => {
         if (contactId === undefined) return
         fetch(`/api/chat/users/chatRoom?id=${contactId}`, {
@@ -61,12 +61,16 @@ const ChatHeader = () => {
 
 
 export default function Page(props) {
+    const [previewImage, setPreviewImage] = useState(null)
     const router = useRouter()
     const contactId = router.query.id
     const [attachment, setAttachment] = useState(null);
     const [attachmentPreview, setAttachmentPreview] = useState(null);
     const [messages, setMessages] = useState([])
-    const interval = useInterval(() => fetchChat(), 8000);
+    const interval = useInterval(() => fetchChat(), 8000)
+    const imagePreviewHandler = (image) => {
+        setPreviewImage(image)
+    }
 
     const attachmentHandler = (file) => {
         if (file == null) {
@@ -251,7 +255,7 @@ export default function Page(props) {
                                 }}
                                 offsetScrollbars>
                                 {messages.map((message,i) => (
-                                    <ChatMessage message={message} key={i}/>
+                                    <ChatMessage setPreviewImage={imagePreviewHandler} message={message} key={i}/>
                                 ))}
                     </ScrollArea>
                     <form className="tw-relative"
@@ -271,6 +275,22 @@ export default function Page(props) {
                             {BasicSpeedDial}
                         </Flex>
                     </form>
+                    <Modal
+                        opened={previewImage}
+                        onClose={() => setPreviewImage(false)}
+                        title={<Text color="white" fz={'xs'}>{previewImage ? previewImage.name : ''}</Text>}
+                        fullScreen
+                        styles={{
+                            modal: {backgroundColor: '#0e0e0ee5'},
+                            header: {marginTop: '30px'},
+                        }}
+                    >
+                        {previewImage &&
+                            <Center className="tw-h-full">
+                                <Image  width={'90%'} src={`/uploads/${previewImage.name}`} alt={previewImage.name} />
+                            </Center>
+                        }
+                    </Modal>
             </section>
         </>
     )

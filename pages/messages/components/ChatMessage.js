@@ -4,13 +4,13 @@ import 'moment/locale/fr'
 import Image from "next/image";
 import Link from "next/link";
 
-export default function ChatMessage({message}) {
+export default function ChatMessage({message, setPreviewImage}) {
     const Attachment = () => {
         const filename = message.attachments[0].name
         const isImage = (/\.(gif|jpe?g|tiff?|png|webp|bmp)$/i).test(filename)
         if (isImage) {
             return (
-                <Image width={100} height={60} src={`/uploads/${filename}`} alt="attachment" />
+                <Image onClick={() => setPreviewImage(message.attachments[0])} width={100} height={60} src={`/uploads/${filename}`} alt="attachment" />
             )
         } else {
             return (
