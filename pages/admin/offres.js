@@ -137,8 +137,9 @@ export default function Page(props){
       );
     SelectItem.displayName = 'SelectItem';
 
-    const OfferDetails = ({offer}) => (
-        <>
+    const OfferDetails = ({offer}) => {
+        console.log('offer', offer)
+        return ( <>
         <Group mb={'sm'}>
                 <Text weight={600} fz={'sm'}>Sponsor</Text>
                 <Flex>
@@ -179,8 +180,8 @@ export default function Page(props){
                   }
                 </Stack>
               </Flex>
-        </>
-    )
+        </>)
+    }
 
     const submitCategory = (values) => {
         setLoading(true)
