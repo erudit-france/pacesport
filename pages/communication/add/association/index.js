@@ -128,22 +128,6 @@ export default function Page(props) {
 
 export async function getServerSideProps(context) {
     const token = context.req.cookies['token']
-    let hasActiveSubscriptionRes = await fetch(`${process.env.API_URL}/api/user/hasActiveSubscription`, {
-        headers: new Headers({
-                'JWTAuthorization': `Bearer ${token}`,
-        })}
-    )
-    hasActiveSubscriptionRes = await hasActiveSubscriptionRes.json();
-
-    if (hasActiveSubscriptionRes.data == null) {
-        return {
-            redirect: {
-                permanent: false,
-                destination: "/profil/association/business",
-            },
-            props:{},
-        };
-    }
 
     let url = context.req.headers.referer
     let previousUrl = url === undefined ? '/profil/sponsor/' : url

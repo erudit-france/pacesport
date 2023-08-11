@@ -1,10 +1,11 @@
 import Toast from "@/services/Toast";
-import { Accordion, ActionIcon, Avatar, Box, Button, Flex, Group, Modal, Paper, Text } from "@mantine/core";
+import { Accordion, ActionIcon, Avatar, Box, Button, Flex, Group, Modal, Paper, Stack, Text } from "@mantine/core";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { BsCheckLg } from "react-icons/bs";
 import { ImCross } from "react-icons/im";
+import SponsoringOfferTypeBadge from "./SponsoringOfferTypeBadge";
 
 export default function AssociationPendingOffers({offers}) {
     const router = useRouter()
@@ -63,7 +64,11 @@ export default function AssociationPendingOffers({offers}) {
                 <Accordion.Control>
                     <Flex>
                         <Avatar radius={'xl'} className="tw-shadow-md" src={`/uploads/${offer.enseigne?.avatar?.name}`} alt={offer.description} />
-                        <Text className='tw-my-auto tw-ml-2 tw-font-semibold'>{offer.enseigne.description}</Text>
+                        <Stack spacing={'xs'}>
+                            <Text fz={'sm'} className='tw-my-auto tw-ml-2 tw-font-semibold'>{offer.enseigne.name} <SponsoringOfferTypeBadge offer={offer}/>
+                            </Text>
+                            <Text fz={'sm'} className='tw-text-gray-900 tw-font-semibold tw-p-2' size="sm">{offer.title}</Text>
+                        </Stack>
                     </Flex>
                 </Accordion.Control>
             </Box>

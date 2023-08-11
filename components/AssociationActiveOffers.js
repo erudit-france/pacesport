@@ -1,5 +1,5 @@
 import Toast from "@/services/Toast";
-import { Accordion, Avatar, Badge, Box, Button, Flex, Paper, Text } from "@mantine/core";
+import { Accordion, Avatar, Badge, Box, Button, Flex, Paper, Stack, Text } from "@mantine/core";
 import { getCookie } from "cookies-next";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -58,8 +58,11 @@ export default function AssociationActiveOffers({offers}) {
                 <Accordion.Control>
                     <Flex>
                         <Avatar radius={'xl'} className="tw-shadow-md" src={`/uploads/${offer.enseigne?.avatar?.name}`} alt={offer.description} />
-                        <Text className='tw-my-auto tw-ml-2 tw-font-semibold'>{offer.enseigne.description} <SponsoringOfferTypeBadge offer={offer}/>
-                        </Text>
+                        <Stack spacing={'xs'}>
+                            <Text fz={'sm'} className='tw-my-auto tw-ml-2 tw-font-semibold'>{offer.enseigne.name} <SponsoringOfferTypeBadge offer={offer}/>
+                            </Text>
+                            <Text fz={'sm'} className='tw-text-gray-900 tw-font-semibold tw-p-2' size="sm">{offer.title}</Text>
+                        </Stack>
                     </Flex>
                 </Accordion.Control>
             </Box>
@@ -72,7 +75,7 @@ export default function AssociationActiveOffers({offers}) {
             <Accordion.Item value={(offer.description)} key={offer.id}>
                 <AccordionControl offer={offer} />
                 <Accordion.Panel>
-                    <Text className='tw-text-gray-900 tw-font-semibold tw-p-2' size="sm">{offer.description}</Text>
+                    <Text className='tw-text-gray-900 tw-p-2' size="sm">{offer.description}</Text>
                 </Accordion.Panel>
             </Accordion.Item>
         ))

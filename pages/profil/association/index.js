@@ -374,14 +374,6 @@ export default function Page(props){
 export async function getServerSideProps(context) {
     const token = context.req.cookies['token']
 
-    
-    let hasActiveSubscriptionRes = await fetch(`${process.env.API_URL}/api/user/hasActiveSubscription`, {
-        headers: new Headers({
-                'JWTAuthorization': `Bearer ${token}`,
-        })}
-    )
-    hasActiveSubscriptionRes = await hasActiveSubscriptionRes.json();
-
     let avatar = await fetch(`${process.env.API_URL}/api/association/avatar`, {
       headers: new Headers({
               'JWTAuthorization': `Bearer ${token}`,
@@ -431,7 +423,6 @@ export async function getServerSideProps(context) {
         avatar: avatar.filename,
         cards: JSON.parse(cards.data),
         hasFinishedTutorial: JSON.parse(enseigne.data).hasFinishedTutorial,
-        hasActiveSubscription: hasActiveSubscriptionRes.data == null ? false : true,
         invitations: JSON.parse(invitations.data),
         validationRequest: JSON.parse(validationRequest.data),
         user: JSON.parse(user.data),
