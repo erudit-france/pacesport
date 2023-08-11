@@ -141,7 +141,7 @@ export default function Page(props) {
   }
 
   const tabHandler = (state) => {
-    if (state == 'Nationale') {
+    if (state == 'Locale') {
       setMaxSelectedAssociations(99)
     } else {
       setselectedAssociations([])
@@ -243,6 +243,13 @@ export default function Page(props) {
 
   // add label to existing array
   const associationsSelect = props.associations.map((a) => {
+    return (
+      {...a, label: a.name, value: a.id}
+    )
+  })
+
+  // add label to existing array
+  const associationsSelectEdit = props.associations.map((a) => {
     // ne pas pouvoir selectionner/deselectionné les associations existantes
     if (originalSelectedAssociations.includes(a.id)) {
       return (
@@ -522,7 +529,7 @@ export default function Page(props) {
                       label="Ajouter association(s)"
                       placeholder="Choisir"
                       itemComponent={SelectItem}
-                      data={associationsSelect}
+                      data={associationsSelectEdit}
                       onChange={setEditSelectedAssociations}
                       value={editSelectedAssociations}
                       maxDropdownHeight={400}
