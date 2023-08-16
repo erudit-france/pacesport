@@ -14,7 +14,7 @@ const LinkButton = ({text, href, lock, className, onClick}) => {
     const router = useRouter()
     const logout = () => {
         deleteCookie('token')
-        router.push('/home')
+        router.push('/login')
     }
     return (
         <Link href={href} 
@@ -56,7 +56,7 @@ const Logo = () => (
 
 const logout = () => {
     deleteCookie('token')
-    router.push('/home')
+    router.push('/login')
 }
 
 export default function Page({status, loggedUser}){
@@ -64,7 +64,7 @@ export default function Page({status, loggedUser}){
     const router = useRouter()
     const logout = () => {
         deleteCookie('token')
-        router.push('/home')
+        router.push('/login')
     }
     if (!context.user) {
         context.setUser(loggedUser)

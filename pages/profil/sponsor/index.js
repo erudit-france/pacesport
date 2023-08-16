@@ -455,7 +455,7 @@ export default function Page(props) {
                       minRows={3}
                       autosize
                       withAsterisk
-                      {...form.getInputProps('description')}/>
+                      {...form.getInputProps('titre')}/>
 
                 <Center>
                   <Button className='tw-bg-lime-600 hover:tw-bg-teal-600'

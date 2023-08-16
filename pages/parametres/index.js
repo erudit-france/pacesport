@@ -14,7 +14,7 @@ const LinkButton = ({text, href, lock, className, onClick}) => {
     const logout = () => {
         console.log('hello')
         deleteCookie('token')
-        router.push('/home')
+        router.push('/login')
     }
     const context = useContext(AppContext)
     const link = text == 'Déconnexion' 

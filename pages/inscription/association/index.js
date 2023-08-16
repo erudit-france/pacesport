@@ -27,11 +27,11 @@ export default function Page() {
 
     const form = useForm({
         initialValues: {
-            name: 'Lou',
-            address: 'Lou 12 Lyon',
-            email: 'lou@example.com',
-            phone: '001239123023',
-            description: 'Lou Rugby club',
+            name: '',
+            address: '',
+            email: '',
+            phone: '',
+            description: '',
         },
         validate: {
             name: (v) => v > '' ? null : 'Veuillez saisir un nom',
