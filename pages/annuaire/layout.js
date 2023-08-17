@@ -18,7 +18,7 @@ export default function Layout({children}){
                             <Flex direction={'column'} className="tw-absolute tw-right-3">
                                 <Avatar src={`uploads/${children?.props.user.avatar?.name}`} mx={'auto'} radius={'xl'} />
                                 {children?.props.user.prenom &&
-                                    <Text fz={'sm'} weight={500} color="white" align="center">{children?.props.user.prenom}</Text>}
+                                    <Text fz={'sm'} weight={500} color="white" align="center">{children?.props.user.prenom} 5</Text>}
                             </Flex>
                         </Center>
                     </div>
