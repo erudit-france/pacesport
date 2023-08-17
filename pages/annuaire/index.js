@@ -5,7 +5,7 @@ import { useContext, useState } from "react"
 import { AppContext } from "@/context/AppContext"
 import PreviousPageButton from "@/components/PreviousPageButton"
 import SearchInput from "@/components/SearchInput"
-
+import React from 'react';
 
 
 export default function Page({user, users, query}) {
@@ -22,7 +22,12 @@ export default function Page({user, users, query}) {
         </SimpleGrid>
     )
 
-    const ContactCards = users.map((user) => 
+    const ContactCards = users.map((user) => {
+    const hasEnseigneOrAssociation = user.enseigne || user.association;
+
+    // Si user.enseigne ou user.association est non null, créer la carte de contact
+    if (hasEnseigneOrAssociation) {
+       return ( 
         <Flex key={user.id} p={'sm'} onClick={() => modalHandler(true, user)}
             className="hover:tw-cursor-pointer hover:tw-bg-gray-100/50 hover:tw-shadow-inner tw-rounded-lg">
             <Avatar src={`uploads/${user.avatar?.name}`} radius={'xl'} size={'lg'} className="tw-shadow-lg" />
@@ -30,7 +35,10 @@ export default function Page({user, users, query}) {
                 <Text ml={'md'} fz={'lg'} weight={600} color="black" align="center">{user.prenom}</Text>
             </Center>
         </Flex>
-    )
+       );
+       }
+    return null;
+       });
     
     const ContactList = users.length == 0
         ? <Text align="center" color="dimmed">Aucune carte enregistrée</Text>
@@ -59,8 +67,7 @@ export default function Page({user, users, query}) {
                 radius={'lg'}
             >
                 <Flex className="">
-                    <Avatar src={`uploads/${user.avatar?.name}`} radius={'xl'} size={'lg'} className="tw-shadow-lg" />
-                    <Title className="tw-self-center" ml={'md'} order={3}>{user.name}&nbsp;{user.prenom}</Title>
+                    <Avatar src={`uploads/${currentUser?.avatar}`} radius={'xl'} size={'lg'} className="tw-shadow-lg" />
                 </Flex>
                 <SimpleGrid cols={2} p={'lg'} className="tw-bg-gray-100/70 tw-rounded-lg" mt={'lg'}
                       breakpoints={[

@@ -1,5 +1,6 @@
 import { BackgroundImage, Box, Center, Container, Image, Text, Title } from "@mantine/core";
 import Head from "next/head";
+import PreviousPageButton from '@/components/PreviousPageButton'
 
 export default function ConditionsGeneralesVente() {
     const json = {
@@ -114,6 +115,9 @@ export default function ConditionsGeneralesVente() {
         <main className="tw-h-screen tw-rounded-t-2xl">
             <BackgroundImage className="tw-h-full tw-opacity-10 tw-absolute tw-top-0 -tw-z-10" src='/doodle-pattern.png' />
             <Container p={'lg'}>
+            <Center className='tw-absolute tw-left-2 tw-top-0.5'>
+                <PreviousPageButton href='/' className='' />
+              </Center>
                 <Center>
                     <Image src={'/logo.png'} width={80} alt="Logo Pace'sport" 
                             className='tw-rounded-full shadow-sm tw-bg-white tw-p-2 tw-m-4'/>

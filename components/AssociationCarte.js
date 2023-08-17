@@ -56,7 +56,7 @@ export default function AssociationCarte({organisation, href}) {
     
     return (
         <Link href={href}>
-            <Card className='tw-bg-gradient-to-br tw-from-gray-50 tw-to-white tw-border-0 tw-relative tw-mx-3 tw-py-3 tw-shadow-md' shadow="md" radius="lg" withBorder>
+            <Card className='tw-bg-gradient-to-br tw-from-gray-50 tw-to-white tw-border-0 tw-relative tw-mx-3 tw-py-4 tw-max-h-96 tw-shadow-md tw-h-48' shadow="md" radius="lg" withBorder>
                 <Card.Section className='tw-relative'>
                     <div className='tw-w-full tw-h-full tw-px-4 tw-absolute tw-bg-slate-700/20 tw-z-20'></div>
                     <BackgroundImage />

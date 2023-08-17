@@ -63,10 +63,12 @@ export default function Page(props){
         setSelectedSponsor(association)
     }
     const sponsorSelect = props.sponsors.map((sponsor) => (
-        {label: sponsor.description, value: sponsor.id}
+        {label: sponsor.name, value: sponsor.offersList}
     ))
 
-    
+
+      console.log(JSON.stringify(props, null, 2))
+
     useEffect(() => {
         if(selectedSponsor == null){
           return
@@ -213,7 +215,7 @@ export default function Page(props){
         datasets: [
           {
             label: '',
-            data: labels.map(() => (Math.random() * (15 - 2)).toFixed(0)),
+            data: labels.map(() => (0 * (15 - 2)).toFixed(0)),
             backgroundColor: 'rgba(150, 150, 150, 0.8)',
           },
         ],
@@ -344,7 +346,7 @@ export default function Page(props){
                     <Button color="white" variant="filled" size="sm" leftIcon={<BiMessage />} miw={200}
                         className="tw-bg-white tw-text-black hover:tw-bg-gray-200" radius={'lg'}>
                             Messagerie</Button></Link>
-                <Link href='/gestion-fonds?prev=/profil/association' className="tw-mx-auto tw-mt-3">
+                <Link href={`/profil/association/gestion-fonds?prev=/profil/association`} className="tw-mx-auto tw-mt-3">
                         <Button color="white" variant="filled" size="sm" leftIcon={<GrMoney />} miw={200}
                         className="tw-bg-white tw-text-black hover:tw-bg-gray-200" radius={'lg'}>
                             Gestion des fonds</Button></Link>
@@ -422,13 +424,14 @@ export async function getServerSideProps(context) {
         backgroundImage: backgroundImage.filename,
         avatar: avatar.filename,
         cards: JSON.parse(cards.data),
-        hasFinishedTutorial: JSON.parse(enseigne.data).hasFinishedTutorial,
+        hasFinishedTutorial: true,
         invitations: JSON.parse(invitations.data),
         validationRequest: JSON.parse(validationRequest.data),
         user: JSON.parse(user.data),
         pacesportCard: JSON.parse(pacesport.data),
         sponsors: JSON.parse(sponsors.data)
     }}
+
   }
 
 Page.getLayout = function getLayout(page) {

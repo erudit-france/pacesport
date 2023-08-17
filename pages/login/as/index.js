@@ -102,8 +102,8 @@ export default function Page({status, loggedUser}){
                     <Box className="tw-bg-zinc-900 tw-px-16" py={'md'}>
                         <Flex justify='center' direction='column' my='xs' py={'sm'} gap="xs">
                             <Title order={6} align="center" weight={600} color="white">Compte pro</Title>
-                            <LinkButton className={''} text='Sponsor/Partenaire' href={sponsorLink} lock={true}/>
-                            <LinkButton className={' tw-mb-2'} text='Association' href={associationLink} lock={true} />
+                            <LinkButton className={''} text='Sponsor/Partenaire' href={sponsorLink} lock={!status.enseigne}/>
+                            <LinkButton className={' tw-mb-2'} text='Association' href={associationLink} lock={!status.association} />
                         </Flex>
                     </Box>
                     <Box className="tw-bg-zinc-900 tw-px-16 tw-skew-y-3 tw-h-6 tw-relative -tw-top-4"></Box>

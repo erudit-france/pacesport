@@ -16,7 +16,7 @@ export default function Page() {
     const [loading, setLoading] = useState(null);
     const [logoFile, setLogoFile] = useState(null);
     const [statusFile, setStatusFile] = useState(null);
-    const [logoError, setLogoError] = useState(null);
+    const [logoError, setLogoError] = useState(null);      
     const handleLogo = (file) => {
         const url = URL.createObjectURL(file)
         setLogo(url)
@@ -73,6 +73,8 @@ export default function Page() {
           logoFilename = avatar.data.filename
         }
       }
+      else
+      Toast.error('Logo obligatoire')
 
       //
       // Upload status
@@ -95,11 +97,14 @@ export default function Page() {
           statusFilename = status.data.filename
         }
       }
+      else
+      Toast.error('Status obligatoire')
 
       //
       // Continue signup request
       //
-      if (statusFilename) body.append('status', statusFilename)
+      if (statusFilename) body.append('status', statusFilename) 
+
       if (logoFilename) body.append('avatar', logoFilename)
 
       fetch(`/api/association`, {
@@ -131,6 +136,7 @@ export default function Page() {
               console.log('error', error)
           })
     }
+    
   return (
     <>
       <Head>

@@ -8,6 +8,7 @@ import { AppContext } from "@/context/AppContext";
 import { deleteCookie } from "cookies-next";
 import { useRouter } from "next/router";
 import { FiArrowLeft, FiSettings } from "react-icons/fi";
+import PreviousPageButton from '@/components/PreviousPageButton'
 
 const LinkButton = ({text, href, lock, className, onClick}) => {
     const router = useRouter()
@@ -91,7 +92,7 @@ export default function Page({status}){
                 <Space my={'xl'} pt={'xl'} h={'xl'}/>
             </header>
             <Box className="tw-rounded-3xl tw-relative" pt={'xl'} m={'lg'} bg={'dark'} >
-                <Logo previousUrl={prev} />
+                <PreviousPageButton href='/' className='' />
                 <Title order={6} align="center" transform="uppercase" weight={600} color="white">
                         Paramètres</Title>
                 <Flex justify='center' direction='column' mb='lg' p={'xl'} mx={'md'} gap="xl">

@@ -13,7 +13,6 @@ import OrganisationCard from '@/components/OrganisationCard'
 import OrganisationCardParticulier from '@/components/OrganisationCardParticulier'
 import AssociationCardParticulier from '@/components/AssociationCardParticulier'
 import CommunicationAdsCarousel from '@/components/CommunicationAdsCarousel'
-import PreviousPageButton from '@/components/PreviousPageButton'
 import moment from 'moment'
 import { getActiveOffers } from '@/domain/repository/CardOffersRepository'
 import { FaMapMarkerAlt } from 'react-icons/fa'
@@ -33,7 +32,7 @@ export default function Page(props) {
   const standaloneCard = <>
       <Center>
         <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
-          <Box className="tw-rounded-xl tw-shadow-lg tw-relative">
+          <Box className="tw-rounded-xl tw-border-[1px] tw-relative tw-border-zinc-900 tw-shadow-lg">
               <Image
                   className="tw-absolute tw-z-20 tw-right-1 tw-opacity-80 -tw-translate-y-1/2 tw-top-1/2"
                   width={36}
@@ -52,11 +51,12 @@ export default function Page(props) {
               />
           </Box>
           
-          <Box className="tw-shadow-lg tw-relative tw-h-[160px] tw-w-[280px] tw-rounded-2xl tw-overflow-hidden">
+          <Box className="tw-shadow-lg tw-border-[1px] tw-border-zinc-900 tw-relative tw-h-[160px] tw-w-[280px] tw-rounded-2xl tw-overflow-hidden">
               <Box className='tw-bg-gray-200/60 tw-w-full tw-h-full tw-absolute tw-top-0 tw-left-0'></Box>
               <Box className='tw-relative tw-h-full tw-rounded-lg' py={'lg'} my={'md'}>
                 <Flex  className="tw-h-full" direction={'column'} justify={'space-between'}>
                   <Text px={'lg'} className='tw-bg-gray-600/60 text-white tw-py-1'>{props.user?.nom}{' '}{props.user?.prenom}</Text>
+                  <Text className="tw-text-gray-500" align="left" px={'lg'} mb={"md"} fz={'sm'}>Validé le {new Date().toLocaleString('fr-FR')}</Text>
                   <Text className="tw-text-gray-500" align="left" px={'lg'} mb={"md"} fz={'sm'}>Jusqu&lsquo;au {moment(props.card.endDate).format('DD/MM/YYYY')}</Text>
                 </Flex>
               </Box>
@@ -105,7 +105,6 @@ export default function Page(props) {
         <Container>
             <Box className='tw-relative'>
               <Center className='tw-absolute tw-left-2 tw-top-0.5'>
-                <PreviousPageButton href='/' className='' />
               </Center>
               <Flex justify={'center'}>
                 <Group position="center" className=''>
