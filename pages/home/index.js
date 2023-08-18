@@ -36,11 +36,14 @@ export default function Page() {
           <a className="button google" href="https://play.google.com/store/apps/details?id=com.eruditfrance.pacesport&hl=fr_FR">
            Google play
           </a>
+          <a className="button PC" href="https://pacesport.fr/login">
+           Continuer sur le navigateur
+          </a>
         </div>
       </div>
       <img
         className="logo"
-        src="./_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.b05a8a84.png&w=96&q=75"
+        src="http://pacesport.fr/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.b05a8a84.png&w=96&q=75"
       />
       <img
         className="curve"
