@@ -32,7 +32,7 @@ export default function Layout({isLogoVisible, children}){
                 <BackgroundImage className="tw-h-full tw-opacity-10 " 
                     src={'/doodle-pattern.png'}/>
                 <BackgroundImage className="tw-h-full tw-w-full tw-absolute tw-top-0 tw-opacity-80 -tw-z-20
-                    tw-bg-gradient-to-b tw-from-white tw-from-10% tw-via-red-600 tw-via-40% tw-to-red-800 tw-to-90%" />
+                    tw-bg-gradient-to-b tw-from-white tw-from-10% tw-via-[#d61515] tw-via-40% tw-to-[#d61515] tw-to-90%" />
             </div>
         </main>
     )

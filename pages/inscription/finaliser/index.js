@@ -45,7 +45,7 @@ export default function Page() {
           radius="lg"
           onClick={() => updateAccountStatus('SPONSOR')}
         >
-          Sponsor <BsLock className="tw-text-red-600 tw-my-auto tw-ml-1" />
+          Sponsor <BsLock className="tw-text-[#d61515] tw-my-auto tw-ml-1" />
         </Button>
         <Link href="/profil/association/" className="tw-w-full">
           <Button
@@ -54,7 +54,7 @@ export default function Page() {
             onClick={() => updateAccountStatus('ASSOCIATION')}
           >
             Association
-            <BsLock className="tw-text-red-600 tw-my-auto tw-ml-1" />
+            <BsLock className="tw-text-[#d61515] tw-my-auto tw-ml-1" />
           </Button>
         </Link>
       </Flex>

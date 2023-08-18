@@ -81,7 +81,7 @@ const Status = ({offer}) => {
     alert("Un contrat vous a été envoyé et doit être renvoyé par e-mail une fois rempli, signé et tamponné.");
 };
 
-  if (offer.contrat == null) {
+  if (!(offer.validated == 1 && offer.status == 1 || offer.association == null && offer.validated == 1)) {
     return (
       <Flex direction={'column'}>
                                <button onClick={showInfoAlert} className='tw-bg-gray-200/50 tw-rounded-lg tw-py-2 tw-px-3 tw-text-dark tw-font-medium tw-hover:bg-gray-300'>
@@ -105,8 +105,9 @@ const Status = ({offer}) => {
   }
 
   return (
-    <Badge className='tw-font-semibold tw-shadow-sm' size={'sm'} color={status == 0 ? 'yellow' : 'teal'}>
-      {status == 0 ? 'En attente' : 'Validé'}</Badge>
+    
+    <Badge className='tw-font-semibold tw-shadow-sm' size={'sm'} color={offer.validated == 1 && offer.status == 1 ? 'teal' : 'yellow'}>
+      {offer.validated == 1 && offer.status == 1 ? 'Validé' : 'En attente'}</Badge>
   )
 }
 

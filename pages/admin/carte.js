@@ -128,7 +128,7 @@ export default function Page(props){
         <Button 
             disabled={loading}
             onClick={() => createPacesportCard()}
-            className="tw-bg-red-600" variant="filled"
+            className="tw-bg-[#d61515]" variant="filled"
             color="red" size="sm" radius={'lg'}
             >Créer la carte</Button>
     </Center>

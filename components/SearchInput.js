@@ -45,7 +45,7 @@ export default function SearchInput({className}) {
   
   return (
     <Autocomplete
-    className={`focus:tw-border-red-600 ${className}`}
+    className={`focus:tw-border-[#d61515] ${className}`}
       ref={ref}
       size={"md"}
       dropdownPosition="bottom" 

@@ -21,7 +21,7 @@ export default function Page(props) {
   const DiscountOfferSection = () => {
     if (offer == null) {
       return (
-        <Box  className="tw-border-[1] tw-border-t-red-600 tw-border-b-red-600 tw-p-4">
+        <Box  className="tw-border-[1] tw-border-t-[#d61515] tw-border-b-[#d61515] tw-p-4">
           <Title order={4} align="center">Mon offre</Title>
           <form onSubmit={form.onSubmit((values) => submitHandler(values))}>
             <Textarea autosize label="Description" withAsterisk minRows={4} radius={'md'}
@@ -35,7 +35,7 @@ export default function Page(props) {
       )
     }
     return (
-      <Box  className="tw-border-[1] tw-border-t-red-600 tw-border-b-red-600 tw-p-4">
+      <Box  className="tw-border-[1] tw-border-t-[#d61515] tw-border-b-[#d61515] tw-p-4">
         <Title order={4} align="center">Mon offre</Title>
           <Textarea autosize label="Créée le" radius={'md'} readOnly
             value={moment(offer.createdAt).format('DD/MM/YYYY')} />
@@ -122,7 +122,7 @@ export default function Page(props) {
         <DiscountOfferSection />
 
         <Box mt={'xl'}>
-            <Title align="center" color="white" className="tw-bg-red-600 tw-font-light tw-pb-1" order={6}>Offres validées par l&lsquo;association</Title>
+            <Title align="center" color="white" className="tw-bg-[#d61515] tw-font-light tw-pb-1" order={6}>Offres validées par l&lsquo;association</Title>
             <AssociationAcceptedOffers offers={acceptedOffers} />
             <Space my={'lg'} />
         </Box>  

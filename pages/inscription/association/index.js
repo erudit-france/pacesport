@@ -153,7 +153,7 @@ export default function Page() {
                     accept="image/png,image/jpeg">
                     {(props) => <Avatar {...props} mt={'md'} radius="xl" src={logo ? logo : null} size={'lg'} />}
                 </FileButton>
-                {logoError && <Text align="center" size={'xs'} className="tw-text-red-600">{logoError}</Text>}
+                {logoError && <Text align="center" size={'xs'} className="tw-text-[#d61515]">{logoError}</Text>}
             </Flex>
             <TextInput mt="sm" variant="filled" description="Nom" placeholder="Nom" radius="lg" size="sm" withAsterisk
                 {...form.getInputProps('name')}/>

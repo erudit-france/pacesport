@@ -45,7 +45,7 @@ export default function SearchSponsor() {
   
   return (
     <Autocomplete
-    className='focus:tw-border-red-600'
+    className='focus:tw-border-[#d61515]'
       ref={ref}
       size={"md"}
       dropdownPosition="bottom" 

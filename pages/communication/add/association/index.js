@@ -88,7 +88,13 @@ export default function Page(props) {
         <>
             <div className="tw-container tw-mx-auto tw-px-2">
                 <Box my={'sm'}>
-                    <PreviousPageButton href={props.previousUrl} />
+                    <Flex justify={'space-between'}>
+                        <PreviousPageButton href={props.previousUrl} />
+                        <Group className="tw-rounded-3xl tw-border-[1px] tw-border-gray-300 tw-shadow-sm tw-px-4 tw-mr-2">
+                            <Text>Crédits:</Text>
+                            <Text>{props.credit}</Text>
+                        </Group>
+                    </Flex>
                 </Box>
                 <form onSubmit={form.onSubmit((values) => submitHandler(values))}>
                     <Textarea
@@ -103,7 +109,7 @@ export default function Page(props) {
                             className="tw-bg-gray-200 hover:tw-bg-gray-300/75
                                     tw-rounded-3xl tw-shadow-sm">
                             <span className="tw-text-gray-800">Envoyer &nbsp;</span>
-                            <span className="tw-text-yellow-700"> 1 crédit</span>
+                            <span className="tw-text-[#d61515]"> 1 crédit</span>
                         </Button>
                     </Flex>
 
@@ -113,7 +119,7 @@ export default function Page(props) {
             </div>
 
             {/* gold pricing section */}
-            <section className="tw-bg-yellow-600/60 tw-mt-4">
+            <section className="tw-bg-[#d61515] tw-mt-4">
                 <PriceRow click={() => getCreditUrl(3)} credits={3} price={5.99} />
                 <PriceRow click={() => getCreditUrl(10)} credits={10} price={12.99} oldPrice={19.99} />
                 <PriceRow click={() => getCreditUrl(20)} credits={20} price={15.99} oldPrice={39.99} />

@@ -12,7 +12,7 @@ export default function AssociationCardParticulier({card}) {
 
     return (
         <Link href={`/profil/particulier/campagne/${card.id}`}>
-            <Card className='tw-bg-gradient-to-br tw-from-red-600/60 tw-to-red-700/90 tw-border-0' shadow="md" padding="lg" radius="md" withBorder>
+            <Card className='tw-bg-gradient-to-br tw-from-[#d61515] tw-to-[#d61515] tw-border-0' shadow="md" padding="lg" radius="md" withBorder>
                 <Card.Section className='tw-relative'>
                     <div className='tw-w-full tw-h-full tw-px-4 tw-absolute tw-bg-slate-700/50 tw-z-20'>
                         <Flex justify={'space-between'} className="tw-text-white tw-text-sm tw-w-full tw-pt-5">
@@ -34,7 +34,7 @@ export default function AssociationCardParticulier({card}) {
                             card.acceptedDiscountOffersCount
                         } enseignes
                     </Text>
-                    <Button variant="outline" color="gray" fullWidth mt="md" size='xs' radius="md" className='tw-bg-gradient-to-l tw-from-red-500/60 tw-to-red-500/90 tw-text-gray-50'>
+                    <Button variant="outline" color="gray" fullWidth mt="md" size='xs' radius="md" className='tw-bg-gradient-to-l tw-from-[#d61515] tw-to-[#d61515] tw-text-gray-50'>
                         Détail
                     </Button>
                 </Box>

@@ -73,7 +73,7 @@ export default function Page(props){
                 <AssociationPendingOffers offers={pendingOffers} />
 
                 <Title align="center" color="white" order={6}
-                    className="tw-bg-orange-700 tw-font-light tw-pb-1 tw-mt-4">En attente de validation Pace&lsquo;Sport</Title>
+                    className="tw-bg-[#d61515] tw-font-light tw-pb-1 tw-mt-4">En attente de validation Pace&lsquo;Sport</Title>
                 <AssociationPacesportPendingOffers offers={pacesportPendingOffers} />
 
                 <Title align="center" color="white" order={6}

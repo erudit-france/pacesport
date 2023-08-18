@@ -212,10 +212,7 @@ export default function Page(props){
     }
 
     const submitOffer = (values) => {
-        if (offer.type == 'Nationale') {
-            Toast.error('Action impossible pour une offre nationale') 
-            return
-        }
+
         values = {...values, offer: offer.id, selectedAssociations: selectedAssociations}
         setLoading(true)
         let body = serialize(values)
@@ -292,19 +289,6 @@ export default function Page(props){
                     {offer &&
                         <OfferDetails offer={offer} />
                     }
-                        
-                    <MultiSelect
-                        disabled={offer?.type == 'Nationale'}
-                        label="Ajouter association(s)"
-                        placeholder="Choisir"
-                        itemComponent={SelectItem}
-                        data={associationsSelect}
-                        onChange={setselectedAssociations}
-                        value={selectedAssociations}
-                        maxDropdownHeight={400}
-                        mb={'lg'}
-                        onDropdownClose={() => console.log('closing')}
-                        />
 
                     <Flex justify={'space-between'} my={'lg'}>
                         <Select

@@ -94,7 +94,7 @@ export default function CollectiviteAssociationCard({card, setCardList, setProgr
                                     />
                                     <ActionIcon onClick={handlers.increment} variant="default"><FiPlus size="1rem" /></ActionIcon>
                                 </Center>
-                                <CloseButton size={'sm'} className="tw-bg-red-100 hover:tw-bg-red-300 tw-rounded-xl tw-absolute tw-right-1" 
+                                <CloseButton size={'sm'} className="tw-bg-[#d61515] hover:tw-bg-[#d61515] tw-rounded-xl tw-absolute tw-right-1" 
                                     variant='light' color='red'
                                     onClick={() => removeFromCardList(card.id)}/>
                             </Group>

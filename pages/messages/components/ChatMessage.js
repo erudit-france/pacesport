@@ -25,7 +25,7 @@ export default function ChatMessage({message, setPreviewImage}) {
             <Flex  className="tw-w-full tw-mb-2" justify={message.isContact ? 'start' : 'end'}>
                 <Flex direction={'column'}>
                     <Paper shadow="xs" radius="md" 
-                            className={`${message.isContact ? 'tw-bg-red-500 tw-text-white' : 'tw-bg-gray-50'} tw-p-2.5 tw-py-1.5`}>
+                            className={`${message.isContact ? 'tw-bg-[#d61515] tw-text-white' : 'tw-bg-gray-50'} tw-p-2.5 tw-py-1.5`}>
                         {message.attachments.length > 0 &&
                             <Attachment />
                         }

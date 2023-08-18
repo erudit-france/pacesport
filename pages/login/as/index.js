@@ -27,12 +27,12 @@ const LinkButton = ({text, href, lock, className, onClick}) => {
                 className={`
                             tw-w-full 
                             ${text == 'Déconnexion' 
-                                ? ' tw-bg-red-800 tw-text-white hover:tw-bg-red-900 hover:tw-text-gray-100'
+                                ? ' tw-bg-[#d61515] tw-text-white hover:tw-bg-[#d61515] hover:tw-text-gray-100'
                                 : ' tw-bg-white hover:tw-bg-slate-100 tw-text-gray-800'}
                             `}
                 radius='lg'>
                 {text}
-                {lock && <BsLock className='tw-text-red-600 tw-my-auto tw-ml-1'/>}
+                {lock && <BsLock className='tw-text-[#d61515] tw-my-auto tw-ml-1'/>}
             </Button>
         </Link>
     )
@@ -41,7 +41,7 @@ const LinkButton = ({text, href, lock, className, onClick}) => {
 const Logo = () => (
     <>
         <Box align='center' className="tw-relative -tw-top-16 tw-h-[70px]">
-            <Link href='/home' className="tw-h-[70px]">
+            <Link href='/login' className="tw-h-[70px]">
             <Image src={'/logo.png'} width={86} alt="Logo Pace'sport" 
                     className='tw-rounded-full shadow-sm tw-bg-white tw-p-2 tw-z-20'/>
             </Link>
@@ -111,7 +111,7 @@ export default function Page({status, loggedUser}){
                         <Button 
                             onClick={logout}
                             className={`tw-my-5
-                                        tw-w-full tw-bg-red-800 tw-text-white hover:tw-bg-red-900 hover:tw-text-gray-100'}
+                                        tw-w-full tw-bg-[#d61515] tw-text-white hover:tw-bg-[#d61515] hover:tw-text-gray-100'}
                                         `}
                             radius='lg'>Déconnexion</Button>
                     </Box>

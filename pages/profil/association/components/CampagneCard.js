@@ -39,8 +39,8 @@ export default function CampagneCard({id, title, image, startDate, status}){
                         <Status />
                         <Text fz={'sm'} className="tw-capitalize">{nbCartes}&nbsp; Carte{nbCartes > 1 ? 's' : ''}</Text>
                         <Link href={`/profil/association/carte`} >
-                            <Button size="xs" className="tw-bg-gold-400/90 tw-text-gray-100 tw-text-xs tw-rounded-3xl tw-px-10 tw-h-8 tw-my-2 tw-shadow-md
-                                    hover:tw-bg-gold-400">
+                            <Button size="xs" className="tw-bg-[#d61515] tw-text-gray-100 tw-text-xs tw-rounded-3xl tw-px-10 tw-h-8 tw-my-2 tw-shadow-md
+                                    hover:tw-bg-[#d61515]">
                                     Détail</Button>
                         </Link>
                     </Flex>

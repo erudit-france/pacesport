@@ -68,7 +68,7 @@ export default function Page(props) {
                     {props.proposition.accepted == true
                         ? props.proposition.paid
                             ? <Text className="tw-bg-green-200/80" fz={'sm'} align="center">Validée et payée</Text>
-                            : <><Text align="center" fz={'sm'} className="tw-bg-yellow-200/60">En attente de paiement</Text>
+                            : <><Text align="center" fz={'sm'} className="tw-bg-[#d61515]">En attente de paiement</Text>
                                 <Center><Button component="a" href={props.paymentLink} className="tw-my-2 tw-mx-auto tw-bg-lime-600 hover:tw-bg-teal-600" 
                                     radius={'lg'} size="sm" variant="filled">Payer</Button></Center>
                                 </>
@@ -107,7 +107,7 @@ export default function Page(props) {
 
                         <Divider my={'lg'} />
                         
-                        <Box  className="tw-border-[1] tw-border-t-red-600 tw-border-b-red-600">
+                        <Box  className="tw-border-[1] tw-border-t-[#d61515] tw-border-b-[#d61515]">
                         <Title order={6} align="left">Mon offre</Title>
                             <PropositionSection />
                         </Box>

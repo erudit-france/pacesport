@@ -118,7 +118,7 @@ export default function Page(props) {
                             className="tw-bg-gray-200 hover:tw-bg-gray-300/75
                                     tw-rounded-3xl tw-shadow-sm">
                             <span className="tw-text-gray-800">Envoyer &nbsp;</span>
-                            <span className="tw-text-yellow-700"> 1 crédit</span>
+                            <span className="tw-text-[#d61515]"> 1 crédit</span>
                         </Button>
                     </Flex>
 
@@ -128,7 +128,7 @@ export default function Page(props) {
             </div>
 
             {/* gold pricing section */}
-            <section className="tw-bg-yellow-600/60 tw-mt-4">
+            <section className="tw-bg-[#d61515] tw-mt-4">
                 <PriceRow click={() => getCreditUrl(3)} credits={3} price={5.99} />
                 <PriceRow click={() => getCreditUrl(10)} credits={10} price={12.99} oldPrice={19.99} />
                 <PriceRow click={() => getCreditUrl(20)} credits={20} price={15.99} oldPrice={39.99} />

@@ -45,7 +45,7 @@ export default function SearchUser() {
   
   return (
     <Autocomplete
-    className='focus:tw-border-red-600'
+    className='focus:tw-border-[#d61515]'
       ref={ref}
       size={"sm"}
       dropdownPosition="bottom" 

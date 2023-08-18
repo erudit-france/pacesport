@@ -16,7 +16,7 @@ export default function UserListButton({prev}){
             <Link href={`/annuaire?prev=${prev}`}>
                 {/* <Indicator zIndex={4} inline size={20} offset={4} color={'black'}> */}
                     <Avatar radius={"lg"} size={'2.6rem'}
-                        className="hover:tw-cursor-pointer tw-bg-red-500">
+                        className="hover:tw-cursor-pointer tw-bg-[#d61515]">
                         <RxPerson size={'1.6rem'} color='black'  />
                     </Avatar>
                 {/* </Indicator> */}

@@ -51,7 +51,7 @@ export default function AssociationInvitation(){
                 </Notification>
             }
 
-            <Input.Wrapper className="tw-w-full focus:tw-outline-red-600">
+            <Input.Wrapper className="tw-w-full focus:tw-outline-[#d61515]">
                 <Input
                     size={'md'}
                     rightSection={loading ? <Loader color="red" size={'xs'}/> : <InputButton />}

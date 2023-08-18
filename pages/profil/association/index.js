@@ -252,7 +252,7 @@ export default function Page(props){
                         <Box className="tw-border-[1px] tw-border-gray-300 tw-shadow-sm tw-rounded-3xl" mx={'xs'} px={'md'} py={'md'}>
                                 <Text fz={'sm'} mb={'sm'}>Nb offres: <span>3</span></Text>
                                 <FileInput
-                                    className="placeholder:tw-text-red-500"
+                                    className="placeholder:tw-text-[#d61515]"
                                     rightSection={<AiOutlineFileText className="tw-text-gray-800" size={18} />}
                                     placeholder="Ajouter un fichier"
                                     label="Statut"
@@ -260,7 +260,7 @@ export default function Page(props){
                                     mb={'sm'}
                                     {...form.getInputProps('statut')}/>
                                 <List className="tw-list-disc" type="unordered" size={'sm'} mt={'md'}>
-                                    <List.Item className={hasEnoughOffers ? 'tw-text-emerald-600/80' : 'tw-text-red-500'}>
+                                    <List.Item className={hasEnoughOffers ? 'tw-text-emerald-600/80' : 'tw-text-[#d61515]'}>
                                         Vous avez au moins 3 offres</List.Item>
                                     <List.Item className={hasUploadedStatus ? 'tw-text-emerald-600/80' : ''}>
                                         Vous avez joint vos statuts</List.Item>
@@ -290,8 +290,8 @@ export default function Page(props){
                 <Center>
                     <Button size="xs" 
                         onClick={() => open(true)}
-                        className="tw-bg-orange-700/90 tw-text-gray-100 tw-text-xs tw-rounded-3xl tw-px-10 tw-h-6 tw-my-2 tw-shadow-md
-                        hover:tw-bg-orange-700">
+                        className="tw-bg-[#d61515] tw-text-gray-100 tw-text-xs tw-rounded-3xl tw-px-10 tw-h-6 tw-my-2 tw-shadow-md
+                        hover:tw-bg-[#d61515]">
                         Inviter des partenaires par email</Button>
                 </Center>
 
@@ -341,7 +341,7 @@ export default function Page(props){
             </section> */}
 
             
-            <section className="tw-flex tw-flex-col tw-py-4 tw-bg-red-700/30">
+            <section className="tw-flex tw-flex-col tw-py-4 tw-bg-[#d61515]">
                 <Link href='/messages' className="tw-mx-auto tw-mt-3">
                     <Button color="white" variant="filled" size="sm" leftIcon={<BiMessage />} miw={200}
                         className="tw-bg-white tw-text-black hover:tw-bg-gray-200" radius={'lg'}>
@@ -362,8 +362,8 @@ export default function Page(props){
                         <Center>
                             <Button type="submit" size="xs" 
                                     disabled={loading}
-                                    className="tw-bg-gold-400/90 tw-text-gray-100 tw-text-xs tw-rounded-3xl tw-px-10 tw-h-8 tw-mt-8 tw-shadow-md
-                                    hover:tw-bg-gold-400">
+                                    className="tw-bg-[#d61515] tw-text-gray-100 tw-text-xs tw-rounded-3xl tw-px-10 tw-h-8 tw-mt-8 tw-shadow-md
+                                    hover:tw-bg-[#d61515]">
                                     { loading ? <Loader color="orange" size="xs" /> : ' Envoyer'}</Button>
                         </Center>
                     </form>

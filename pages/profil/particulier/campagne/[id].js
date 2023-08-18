@@ -14,7 +14,7 @@ export default function Page(props) {
       )
     } else {
       return (
-        <Link className="tw-border-[1px] tw-px-8 tw-py-0.5 tw-border-red-500 tw-rounded-xl tw-shadow-md hover:tw-bg-gray-100" 
+        <Link className="tw-border-[1px] tw-px-8 tw-py-0.5 tw-border-[#d61515] tw-rounded-xl tw-shadow-md hover:tw-bg-gray-100" 
         href={props.cardPurchaseLink}>Souscrire</Link>
       )
     }

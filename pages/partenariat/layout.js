@@ -10,7 +10,7 @@ export default function Layout({children}){
             <Navbar />
             <GreyHeader text="Partenariats" />
             <main className="tw-pt-7 tw-shadow-sm 
-                tw-bg-gradient-to-b tw-from-red-500 tw-to-red-700 tw-rounded-t-[2rem] -tw-mt-8 tw-relative"
+                tw-bg-gradient-to-b tw-from-[#d61515] tw-to-[#d61515] tw-rounded-t-[2rem] -tw-mt-8 tw-relative"
                 style={{ minHeight: 'calc(100vh - 96px)' }}>{children}</main>
         </>
     )

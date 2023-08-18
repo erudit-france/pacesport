@@ -8,76 +8,52 @@ import Link from "next/link";
 import { useScrollIntoView } from "@mantine/hooks";
 import mockup from "@/public/blank-phone-mockup.png"
 
-
 export default function Page() {
-    const scrollToTwo = () => {
-        const element = document.getElementById("section-2");
-        element.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
-    }
-    const scrollToThree = () => {
-        const element = document.getElementById("section-3");
-        element.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
-    }
-
     return (
         <>
-            <Head><title>Pace&lsquo;Sport - Accueil</title></Head>
-            <Box className="tw-w-[100vw] tw-h-[100vh] tw-overflow-y-scroll tw-bg-scroll tw-overflow-x-hidden tw-snap-y tw-snap-mandatory
-                tw-mw-[100vw] tw-mh-[100vh] tw-bg-white tw-invert tw-relative" style={{backgroundImage: `url(${background.src})`}}>
-                <section className="tw-w-[100vw] tw-h-[100vh] tw-snap-center">
-                    <Flex className="relative tw-justify-end tw-mx-6">
-                        <Paper className="tw-bg-white tw-invert tw-h-[85px] tw-w-[85px] tw-rounded-full tw-absolute tw-top-2 tw-mx-auto tw-left-0 tw-right-0">
-                            <Image src={logo.src} height={70} width={70} alt="Logo Pace'sport" 
-                                className='tw-p-2 tw-mx-auto'/>
-                        </Paper>
-                    
-                        <ActionIcon size={'xl'} radius={'xl'} component="a" href="/login"
-                            className="tw-bg-white tw-invert tw-text-black tw-relative tw-top-6 tw-text-[1.3rem] tw-z-10">
-                            <IoMdLogIn />
-                        </ActionIcon>
-                    </Flex>
-                    <Center className="tw-w-full tw-h-full tw-relative tw-flex tw-flex-col">
-                        <Image className="tw-object-contain tw-relative -tw-top-2 tw-invert" 
-                            alt="iphone"
-                            src={'/mockup-design-1.png'} width={260} />
-                        <Title order={3} className="tw-font-semibold tw-relative -tw-top-2 tw-w-8/12 tw-text-center tw-invert tw-text-white"
-                            sx={{textShadow: '#FC0 1px 0 10px'}}>Des réductions dans des centaines d&lsquo;enseignes proches de vous</Title>
-                    </Center>
-                    <Button className="tw-bg-white tw-px-14 tw-py-3 tw-absolute tw-bottom-3 tw-left-0 tw-right-0 tw-mx-auto
-                        tw-invert hover:tw-bg-gray-100 tw-rounded-xl tw-text-black tw-text-[1.5rem]"
-                        onClick={() => scrollToTwo()}>
-                        <BsChevronCompactDown /></Button>
-                </section>
-                <section id='section-2'className="tw-w-[100vw] tw-h-[100vh] tw-snap-center tw-relative">
-                    <Center className="tw-w-full tw-h-full tw-relative">
-                        <Image className="tw-object-contain tw-relative tw-invert -tw-top-12" 
-                            alt="iphone"
-                            src={'/mockup-design-2.png'} width={300} />
-                    </Center>
-                    <Button className="tw-bg-white tw-px-14 tw-py-3 tw-absolute tw-bottom-3 tw-left-0 tw-right-0 tw-mx-auto
-                            tw-invert hover:tw-bg-gray-100 tw-rounded-xl tw-text-black tw-text-[1.5rem]"
-                            onClick={() => scrollToThree()}>
-                            <BsChevronCompactDown /></Button>
-                </section>
-                <section id='section-3' className="tw-w-[100vw] tw-h-[100vh] tw-snap-center tw-relative">
-                    <Center className="tw-w-full tw-h-full tw-relative">
-                        <Image className="tw-object-contain tw-relative  -tw-top-12" 
-                            alt="iphone"
-                            src={mockup.src} width={300} />
-                    </Center>
-                    <Link href='/login'>
-                    <Button className="tw-bg-white tw-px-14 tw-py-2 tw-absolute tw-bottom-28 tw-left-0 tw-right-0 tw-mx-auto
-                            tw-invert hover:tw-bg-gray-100 tw-rounded-xl tw-text-black tw-text-md">
-                            S&lsquo;inscrire</Button></Link>
-                    <Box pos={'absolute'} className="tw-bottom-0 tw-bg-black tw-py-6 tw-w-full tw-rounded-t-xl tw-px-8">
-                        <Flex justify={'space-between'}>
-                            <Link href={'/conditions-generales-vente'} className="tw-text-white tw-text-sm">CGU</Link>
-                            <Link href={'/conditions-generales-utilisation'} className="tw-text-white tw-text-sm">{`Conditions générales d'utilisation`}</Link>
-                            <Link href={'/politique-de-confidentialite'} className="tw-text-white tw-text-sm">Polique de confidentialité</Link>
-                        </Flex>
-                    </Box>
-                </section>
-            </Box>
-        </>
-    )
-}
+  <style
+    dangerouslySetInnerHTML={{
+      __html:
+        '\nbody {\n  width: 100%;\n  height: 100%;\n  min-height: 100vh;\n  margin: 0;\n  font-family: \'Work Sans\', sans-serif;\n  font-weight: 400;\n}\n.background {\n  width: 100%;\n  height: 100%;\n  min-height: 100vh;\n  position: fixed;\n  top: 0;\n  left: 0;\n  z-index: -1;\n  background: #d4111b;\n  background: -moz-linear-gradient(top, #d4111b 0%, #7a090e 100%);\n  background: -webkit-linear-gradient(top, #d4111b 0%, #7a090e 100%);\n  background: linear-gradient(to bottom, #d4111b4 0%, #7a090e 100%);\n}\n.wrapper {\n  width: 80%;\n  height: 100%;\n  min-height: 800px;\n  background: #fff;\n  position: absolute;\n  left: 50%;\n  top: 0;\n  margin: 60px 0;\n  transform: translate(-50%, 0);\n  -webkit-transform: translate(-50%, 0);\n  -moz-transform: translate(-50%, 0);\n  -webkit-box-shadow: 0px 0px 30px 5px rgba(0,0,0,0.15);\n  -moz-box-shadow: 0px 0px 30px 5px rgba(0,0,0,0.15);\n  box-shadow: 0px 0px 30px 5px rgba(0,0,0,0.15);\n}\n.wrapper .header {\n  width: 100%;\n  height: 100%;\n  position: absolute;\n  top: 0;\n  left: 0;\n  background: #81a2ff;\n  background: -moz-linear-gradient(top, #81a2ff 0%, #c1e1ff 100%);\n  background: -webkit-linear-gradient(top, #81a2ff 0%, #c1e1ff 100%);\n  background: linear-gradient(to bottom, #ffffff 0%, #a70000  100%);\n  overflow: hidden;\n}\n.wrapper .header .logo {\n  width: 100px;\n  height: auto;\n  position: absolute;\n  top: 50px;\n  left: 100px;\n}\n.wrapper .header .menu {\n  list-style: none;\n  margin: 0;\n  padding: 0;\n  line-height: 33px;\n  position: absolute;\n  top: 50px;\n  right: 100px;\n  text-align: right;\n  width: auto;\n}\n.wrapper .header .menu li {\n  display: inline-block;\n  margin: 0 10px;\n  color: #000;\n}\n.wrapper .header .content {\n  position: absolute;\n  width: 100%;\n  height: auto;\n  max-width: 800px;\n  top: 50%;\n  left: 50%;\n  transform: translate(-50%, -85%);\n}\n.wrapper .header .content h2 {\n  color: #fff;\n  margin: 0;\n  font-size: 2.3em;\n  line-height: 1.2em;\n  width: 100%;\n  text-align: center;\n}\n.wrapper .header .content .buttons {\n  width: 100%;\n  text-align: center;\n  margin: 0;\n  padding: 0;\n}\n.wrapper .header .content .button {\n  display: inline-block;\n  width: 150px;\n  height: 50px;\n  padding-left: 20px;\n  background: #000;\n  color: #fff;\n  font-size: 1.2em;\n  text-decoration: none;\n  text-align: center;\n  line-height: 50px;\n  margin: 40px 5px 0;\n  -moz-border-radius: 5px;\n  -webkit-border-radius: 5px;\n  border-radius: 5px;\n  -webkit-box-shadow: 0px 12px 20px -10px rgba(0,0,0,0.65);\n  -moz-box-shadow: 0px 12px 20px -10px rgba(0,0,0,0.65);\n  box-shadow: 0px 12px 20px -10px rgba(0,0,0,0.65);\n  transition: box-shadow 0.5s;\n}\n.wrapper .header .content .button:hover {\n  -webkit-box-shadow: 0px 0px 20px -10px rgba(0,0,0,0.65);\n  -moz-box-shadow: 0px 0px 20px -10px rgba(0,0,0,0.65);\n  box-shadow: 0px 0px 20px -10px rgba(0,0,0,0.65);\n  transition: box-shadow 0.5s;\n}\n.wrapper .header .content .button.apple {\n  background-image: url("http://vignette2.wikia.nocookie.net/respawnables/images/2/2f/Apple-logo-white-md.png/revision/latest?cb=20160224124036");\n  background-size: 20px auto;\n  background-repeat: no-repeat;\n  background-position: 20px center;\n}\n.wrapper .header .content .button.google {\n  background-image: url("http://vignette3.wikia.nocookie.net/starwars/images/e/ee/Google_Play_logo.png/revision/latest?cb=20141119230612");\n  background-size: 20px auto;\n  background-repeat: no-repeat;\n  background-position: 20px center;\n}\n.wrapper .header .waves {\n  width: calc(100% + 10px);\n  height: auto;\n  position: absolute;\n  bottom: -3px;\n  left: 50%;\n  transform: translate(-50%, 0);\n  -webkit-transform: translate(-50%, 0);\n  -moz-transform: translate(-50%, 0);\n  z-index: 0;\n}\n.wrapper .header .curve {\n  display: none;\n  width: calc(100% + 10px);\n  height: auto;\n  position: absolute;\n  bottom: -1px;\n  left: 50%;\n  transform: translate(-50%, 0);\n  -webkit-transform: translate(-50%, 0);\n  -moz-transform: translate(-50%, 0);\n  z-index: 1;\n}\n\n   .waves {fill: red};'
+    }}
+  />
+  <div className="wrapper">
+    <div className="header">
+      <ul className="menu">
+        <li>News</li>
+        <li>Features</li>
+        <li>How it works</li>
+        <li>Blog</li>
+      </ul>
+      <div className="content">
+        <h2>
+        Découvrez Pace'sport, l'application qui fait gagner de l'argent à l'association sportive de votre ville !
+        </h2>
+        <div className="buttons">
+          <a className="button apple" href="https://apps.apple.com/us/app/pacesport/id6450256567">
+           App Store
+          </a>
+          <a className="button google" href="https://play.google.com/store/apps/details?id=com.eruditfrance.pacesport&hl=fr_FR">
+           Google play
+          </a>
+        </div>
+      </div>
+      <img
+        className="logo"
+        src="http://localhost:3000/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.b05a8a84.png&w=96&q=75"
+      />
+      <img
+        className="curve"
+        src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/626071/bottom-curve_copy.svg"
+      />
+      {/* <img
+        className="waves"
+        src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/626071/waves_copy.svg"
+      /> */}
+    </div>
+  </div>
+  <div className="background" />
+</>
+
+    );
+  }

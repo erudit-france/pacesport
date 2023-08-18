@@ -19,7 +19,7 @@ export default function CampagneHeaderEditable({image, setImage, setImageFile}){
             <div className='tw-flex tw-flex-col tw-justify-center -tw-top-3'>
                 <div className="tw-relative">
                     <FileButton onChange={uploadHandler} accept="image/png,image/jpeg">
-                    {(props) => <ActionIcon {...props} className="tw-absolute tw-z-10 tw-bottom-2 tw-right-2 tw-bg-yellow-500/70 hover:tw-bg-yellow-500 tw-text-yellow-700 tw-rounded-full">
+                    {(props) => <ActionIcon {...props} className="tw-absolute tw-z-10 tw-bottom-2 tw-right-2 tw-bg-[#d61515] hover:tw-bg-[#d61515] tw-text-[#d61515] tw-rounded-full">
                             <RiImageAddFill className="tw-relative tw-right-[1px]"/>
                         </ActionIcon>
                     }

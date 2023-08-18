@@ -146,7 +146,7 @@ export default function SignupForm({loading}) {
           />
           {error != '' && 
             <Alert icon={<AiOutlineInfoCircle size="1rem" />} p={'md'} mt='md' color="pink" radius="md" withCloseButton closeButtonLabel='fermer' onClose={() => setError('')}>
-              <span className='tw-text-red-900'>{error}</span></Alert>
+              <span className='tw-text-[#d61515]'>{error}</span></Alert>
           }
           {success != '' && 
             <Alert icon={<AiOutlineInfoCircle size="1rem" />} p={'md'} mt='md' color="teal" radius="md" withCloseButton closeButtonLabel='fermer' onClose={() => setSuccess('')}>

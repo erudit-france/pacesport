@@ -165,7 +165,7 @@ const HeroSection = ({avatar, background}) => {
         return (
             <Box className="tw-absolute tw-z-20 tw-bottom-0 tw-right-0">
                 <FileButton onChange={uploadHandler} accept="image/png,image/jpeg">
-                {(props) => <ActionIcon size={25} {...props} className="tw-bg-yellow-500/80 hover:tw-bg-yellow-500 tw-text-yellow-700 tw-rounded-full">
+                {(props) => <ActionIcon size={25} {...props} className="tw-bg-[#d61515] hover:tw-bg-[#d61515] tw-text-[#d61515] tw-rounded-full">
                         <RiImageAddFill size={15} className="tw-relative tw-right-[1px]"/>
                     </ActionIcon>}
                 </FileButton>

@@ -29,7 +29,7 @@ export default function Page(props){
                 <Box className="tw-bg-white tw-shadow-lg tw-rounded-2xl tw-pt-12 tw-mt-4 tw-relative -tw-top-8 tw-z-0" p={'xl'}>
                     <Title order={3} align="center">Votre achat à bien été enregistré</Title>
                     <Center mt={'md'}>
-                    <Link className="tw-border-[1px] tw-px-8 tw-py-0.5 tw-border-red-500 tw-rounded-xl tw-shadow-md hover:tw-bg-gray-100" 
+                    <Link className="tw-border-[1px] tw-px-8 tw-py-0.5 tw-border-[#d61515] tw-rounded-xl tw-shadow-md hover:tw-bg-gray-100" 
                         href={props.prev}>Retour</Link>
                     </Center>
 

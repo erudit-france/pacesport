@@ -8,7 +8,7 @@ export default function AssociationCard({card}) {
     var dateComponent = date.utc().format('DD/MM/YYYY');
     return (
         <Link href={`sponsor/campagne/${card.id}`}>
-            <Card className='tw-bg-gradient-to-br tw-from-red-600 tw-to-red-700/90 tw-border-0' shadow="md" padding="lg" radius="md" withBorder>
+            <Card className='tw-bg-gradient-to-br tw-from-[#d61515] tw-to-[#d61515] tw-border-0' shadow="md" padding="lg" radius="md" withBorder>
                 <Card.Section className='tw-relative'>
                     <div className='tw-w-full tw-h-full tw-px-4 tw-absolute tw-bg-slate-700/50 tw-z-20'>
                         <Flex justify={'space-between'} className="tw-text-white tw-text-sm tw-w-full tw-pt-5">

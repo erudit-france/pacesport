@@ -145,59 +145,11 @@ export default function Page(props) {
         }
     }
     const { classes } = useStyles();
-    const dummyList = [
-        {
-            date: '2023-03-10',
-            data: [
-                {name: 'Charles B', ammount: 5.99} 
-            ]
-        },
-        {
-            date: '2023-03-10',
-            data: [
-                {name: 'ChTom J', ammount: 10.99} 
-            ]
-        },
-        {
-            date: '2023-03-10',
-            data: [
-                {name: 'Harry B', ammount: 5.99} 
-            ]
-        },
-        {
-            date: '2023-03-08',
-            data: [
-                {name: 'Charles B', ammount: 5.99} 
-            ]
-        },
-        {
-            date: '2023-03-08',
-            data: [
-                {name: 'Tom B', ammount: 5.99} 
-            ]
-        },
-        {
-            date: '2023-03-08',
-            data: [
-                {name: 'Tom J', ammount: 17.00} 
-            ]
-        },
-        {
-            date: '2023-03-02',
-            data: [
-                {name: 'Ludovic J', ammount: 21.99} 
-            ]
-        },
-        {
-            date: '2023-03-02',
-            data: [
-                {name: 'Pierre B', ammount: 15.99} 
-            ]
-        }
-    ]
+    const dummyList = null;
+    const calculatedList = null;
+    // const [calculatedList, setCalculatedList] = useState([...dummyList]);
 
-    const [calculatedList, setCalculatedList] = useState([...dummyList]);
-
+    if(dummyList != null){
     let sortByDate  = (dir) => {
      let list = dummyList.reduce((acc, current) => {
         const date = current.date;
@@ -217,9 +169,9 @@ export default function Page(props) {
             list =  list.reverse()
         }
         return list;
-    };
+    };}
 
-    const totalValue = 350
+    const totalValue = 0
     const [loading, setLoading] = useState(false);
     const [searchInput, setSearchInput] = useState('')
     const [search, setSearch] = useState(false)
@@ -238,6 +190,7 @@ export default function Page(props) {
         console.log('search input ', searchInput);
     }
 
+    if(calculatedList != null){
     const rows = calculatedList.map((paimentsPerDay, i) => (
         <React.Fragment key={i}>
             <tr className="tw-text-center tw-font-semibold tw-bg-gray-50"><td  colSpan={3}>{paimentsPerDay.date}</td></tr>
@@ -258,7 +211,7 @@ export default function Page(props) {
                 )
             )}
         </React.Fragment>
-    ))
+    ))}
 
     return (
         <>
@@ -266,7 +219,7 @@ export default function Page(props) {
             <Space h='md' />
             
             <TextInput
-                className='focus:tw-border-red-600 tw-mx-4 tw-mt-3'
+                className='focus:tw-border-[#d61515] tw-mx-4 tw-mt-3'
                 size={"sm"}
                 radius={"xl"}
                 value={searchInput}
@@ -279,7 +232,7 @@ export default function Page(props) {
                 onChange={(e) => setSearchInput(e.target.value)}
             />
 
-            <Text className="tw-bg-red-700/90 tw-my-4 
+            <Text className="tw-bg-[#d61515] tw-my-4 
                     tw-text-white tw-font-bold tw-text-center tw-py-3">
                         <span>{totalValue}</span> €</Text>
 
@@ -288,7 +241,7 @@ export default function Page(props) {
             <section>
                 <Table verticalSpacing="xs" fontSize="sm">
                     <tbody>
-                            {calculatedList.length > 0 
+                            {calculatedList != null && calculatedList.length > 0 
                                 ? rows
                                 : <Text py="lg" align="center">Aucun paiement</Text>
                             }

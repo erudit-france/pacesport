@@ -130,7 +130,7 @@ export default function Navbar(props){
                             initial={menuBgInitial}
                             animate={ open ? menuBgAnimate : menuBgInitial }
                             ></motion.div>
-                        <motion.div className='tw-bg-gold-400 tw-w-[107vw] tw-h-[38rem] tw-absolute -tw-left-10 tw-shadow-lg tw-z-100'
+                        <motion.div className='tw-bg-[#d61515] tw-w-[107vw] tw-h-[38rem] tw-absolute -tw-left-10 tw-shadow-lg tw-z-100'
                             style={{ borderRadius: "0 0 63%"}}
                             initial={menuBgInitial}
                             animate={ open ? menuBgAnimate : menuBgInitial }

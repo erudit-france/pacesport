@@ -95,7 +95,7 @@ export default function Page(props) {
                 {/* search input */}
                 <section className='tw-px-8 tw-mb-4'>
                   <TextInput
-                    className={`focus:tw-border-red-600`}
+                    className={`focus:tw-border-[#d61515]`}
                     size={"md"}
                     radius={"xl"}
                     placeholder="Nom de l'association..."
