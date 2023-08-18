@@ -6,7 +6,7 @@ import { MdDelete } from 'react-icons/md'
 
 function AccordionControl({offer}) {
     const logoUrl = offer.enseigne 
-                      ? 'http://localhost:8080/uploads/' + offer.enseigne.logo
+                      ? 'http://pacesport.fr/uploads/' + offer.enseigne.logo
                       : null
     console.log('logoUrl', logoUrl)
     return (
