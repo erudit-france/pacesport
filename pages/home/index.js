@@ -40,7 +40,7 @@ export default function Page() {
       </div>
       <img
         className="logo"
-        src="http://localhost:3000/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.b05a8a84.png&w=96&q=75"
+        src="./_next/image?url=%2F_next%2Fstatic%2Fmedia%2Flogo.b05a8a84.png&w=96&q=75"
       />
       <img
         className="curve"
