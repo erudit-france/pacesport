@@ -104,7 +104,7 @@ export default function Page(props) {
                 variant="filled" size="sm" 
                 className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
                 hover:tw-bg-gray-100 hover:tw-text-black" 
-                radius={'xl'}>Rapatrier sur mon compte</Button>
+                radius={'xl'}>Soliciter un don</Button>
             )
         }
         return (
@@ -271,6 +271,6 @@ export async function getServerSideProps(context) {
 
 Page.getLayout = function getLayout(page) {
     return (
-      <Layout text={'Gestion des fonds'}>{page}</Layout>
+      <Layout text={'Centre de gestion'}>{page}</Layout>
     )
 }

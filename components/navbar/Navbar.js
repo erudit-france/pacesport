@@ -84,8 +84,8 @@ export default function Navbar(props){
                 <NavbarLink toggleMenu={ toggleMenu } href={'/profil/association'} name={<>Mon pace&lsquo;sport (carte)</>} />
                 <NavbarLink toggleMenu={ toggleMenu } href={'/parametres?prev=/profil/association'} name={'Mon compte'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/annuaire?prev=${router.pathname}`} name={'Annuaire'} />
-                <NavbarLink toggleMenu={ toggleMenu } href={`/profil/association/gestion-fonds?prev=${router.pathname}`} name={'Gestion des fonds'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/messages?prev=${router.pathname}`} name={'Messagerie'} />
+                <NavbarLink toggleMenu={ toggleMenu } href={`/profil/association/gestion-fonds?prev=${router.pathname}`} name={'Centre de gestion'} />
             </>
         )
     }

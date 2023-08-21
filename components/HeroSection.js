@@ -1,6 +1,6 @@
 import Image from "next/image";
 import logo from '../public/logo.png'
-import hero from '../public/hand-in-hand.jpg'
+import hero from '../public/stadium_chairs.jpg'
 
 
 export default function HeroSection() {

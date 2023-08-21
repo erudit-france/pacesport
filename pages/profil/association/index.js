@@ -236,10 +236,10 @@ export default function Page(props){
 
             <section className="tw-px-4 tw-pt-8 tw-relative">
                 <Box className="tw-relative">
-                    <Title my={'md'} order={4} align="center">Carte</Title>
-                    <ActionIcon component='a' href='/communication/add/association?prev=/profil/association' className="tw-bg-white tw-absolute tw-right-1.5 tw-bottom-0 tw-p-1.5" radius={'xl'}>
+                    <Title my={'md'} order={4} align="center">props.association.name</Title>
+                    {/* <ActionIcon component='a' href='/communication/add/association?prev=/profil/association' className="tw-bg-white tw-absolute tw-right-1.5 tw-bottom-0 tw-p-1.5" radius={'xl'}>
                         <BsMegaphoneFill className="tw-text-black" size={18} />
-                    </ActionIcon>
+                    </ActionIcon> */}
                 </Box>
                 {/* <SponsorInvitation /> */}
             </section>
@@ -349,7 +349,7 @@ export default function Page(props){
                 <Link href={`/profil/association/gestion-fonds?prev=/profil/association`} className="tw-mx-auto tw-mt-3">
                         <Button color="white" variant="filled" size="sm" leftIcon={<GrMoney />} miw={200}
                         className="tw-bg-white tw-text-black hover:tw-bg-gray-200" radius={'lg'}>
-                            Gestion des fonds</Button></Link>
+                            Centre de gestion</Button></Link>
             </section>  
                 
             <Modal radius={'lg'} className="" opened={openInvitationModal} onClose={close} centered

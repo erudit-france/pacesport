@@ -1,5 +1,5 @@
 import {Image as NextImage} from "next/image";
-import hero from '@/public/hand-in-hand.jpg'
+import hero from '@/public/stadium_chairs.jpg'
 import userImage from '@/public/association.png'
 import { Text, Image, Space, ActionIcon, FileButton } from "@mantine/core";
 import { RiImageAddFill } from 'react-icons/ri'

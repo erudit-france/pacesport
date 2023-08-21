@@ -17,8 +17,8 @@ const HeroSection = ({avatar, background}) => {
     const [image, setImage] = useState(originalImage)
     const [editing, edit] = useDisclosure(false)
     const [imageFile, setImageFile] = useState(null)
-    const originalBackgroundImage = background ? '/uploads/'+background : '/hand-in-hand.jpg'
-    const [backgroundImage, setBackground] = useState(background ? '/uploads/'+background : '/hand-in-hand.jpg')
+    const originalBackgroundImage = background ? '/uploads/'+background : '/stadium_chairs.jpg'
+    const [backgroundImage, setBackground] = useState(background ? '/uploads/'+background : '/stadium_chairs.jpg')
     const [backgroundImageFile, setBackgroundImageFile] = useState(null)
     const [editingBackground, editBackground] = useDisclosure(false)
     

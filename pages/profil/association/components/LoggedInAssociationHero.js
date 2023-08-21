@@ -1,5 +1,5 @@
 import Image from "next/image";
-import hero from '@/public/hand-in-hand.jpg'
+import hero from '@/public/stadium_chairs.jpg'
 import userImage from '@/public/association.png'
 import { Text } from "@mantine/core";
 import Link from "next/link";

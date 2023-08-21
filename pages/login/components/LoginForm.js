@@ -160,7 +160,7 @@ const emailSubmitHandler = (values) => {
       </form>
 
       <Modal radius={'lg'} className="" opened={openInvitationModal} onClose={close} centered
-                title={<Title className="tw-mx-auto" transform="uppercase" align="center" order={6}>Entre l'email pour la récupération du mot de passe</Title>}>
+                title={<Title className="tw-mx-auto" transform="uppercase" align="center" order={6}>Entrez votre email pour la récupération du mot de passe</Title>}>
                 <Box align='' mt={'md'} p={'xs'}>
                     <form onSubmit={emailForm.onSubmit((values) => emailSubmitHandler(values))} className="tw-my-4">
                         <TextInput mt="sm" variant="filled" className="" description="E-mail" placeholder="E-mail" radius="md" size="sm" withAsterisk

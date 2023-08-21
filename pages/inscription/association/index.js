@@ -34,11 +34,11 @@ export default function Page() {
             description: '',
         },
         validate: {
-            name: (v) => v > '' ? null : 'Veuillez saisir un nom',
-            address: (v) => v > '' ? null : 'Veuillez saisir une adresse',
-            email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Veuillez saisir un E-mail valide'),
-            phone: (v) => v > '' ? null : 'Veuillez saisir un numéro',
-            description: (v) => v > '' ? null : 'Veuillez saisir une description'
+            name: (v) => v > '' ? null : 'Veuillez saisir un nom d\'association',
+            address: (v) => v > '' ? null : 'Veuillez saisir une adresse d\'association',
+            email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Veuillez saisir un E-mail d\'association valide'),
+            phone: (v) => v > '' ? null : 'Veuillez saisir un numéro d\'association',
+            description: (v) => v > '' ? null : 'Veuillez saisir une description d\'association'
         },
     });
 
