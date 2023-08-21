@@ -278,12 +278,12 @@ export default function Page(props){
                                     Envoyer pour  validation</Button>
                         </Center>
                         </form>}
-                    {validationRequest?.validated == false && <Text color="green" align="center">Association validée</Text>}
-                {validationRequest?.validated == false && 
+                    {validationRequest?.validated == true && <Text color="green" align="center">Association validée</Text>}
+                {validationRequest?.validated == true && 
                     <Flex justify={'space-between'} my={'lg'} className="tw-relative">
                         <Text className="tw-flex-1" color="red" fz={'sm'} fw={'bold'} align={'center'} py={2}>Ajoutez encore {nbSponsorsNeeded} partenaires pour valider votre pace&lsquo;sport</Text>
                     </Flex>}
-                <CampagneCard status={1} id={1} title={'Carte pacesport'} image={props.pacesportCard?.image?.name} startDate={Date.now()} />
+                <CampagneCard status={validationRequest?.validated ? 1 : 0} id={1} title={'Carte pacesport'} image={props.pacesportCard?.image?.name} startDate={Date.now()} />
                 <Divider  my={'sm'} className="tw-w-2/3 tw-mx-auto"/>
                 
                 <Center>

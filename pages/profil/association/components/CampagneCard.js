@@ -28,23 +28,24 @@ export default function CampagneCard({id, title, image, startDate, status}){
                                 alt="logo sim"
                             />
                             <Image
-                                width={180}
-                                height={90}
+                                width={250}
+                                height={130}
                                 src={src}
                                 alt="Photo de campagne"
                             />
                         </Box>
                     </Center>
-                    <Flex direction={'column'} ml={'lg'} justify={'space-around'}>
+            </Flex>
+            <Flex direction={'column'} ml={'lg'} justify={'space-around'}>
+                <Center>
                         <Status />
-                        <Text fz={'sm'} className="tw-capitalize">{nbCartes}&nbsp; Carte{nbCartes > 1 ? 's' : ''}</Text>
                         <Link href={`/profil/association/carte`} >
                             <Button size="xs" className="tw-bg-[#d61515] tw-text-gray-100 tw-text-xs tw-rounded-3xl tw-px-10 tw-h-8 tw-my-2 tw-shadow-md
                                     hover:tw-bg-[#d61515]">
                                     Détail</Button>
                         </Link>
+                </Center>
                     </Flex>
-            </Flex>
         </>
     )
 }

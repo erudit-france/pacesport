@@ -57,13 +57,16 @@ export default function Page(props){
 
             <section className="tw-px-4 tw-pt-14 tw-relative">
                 <Box className="tw-relative">
-                    <Title my={'md'} order={4} align="center">Carte</Title>
+                    <Title my={'md'} order={4} align="center">{props.association?.name}</Title>
                 </Box>
             </section>
 
             <main className="tw-bg-white tw-rounded-t-3xl tw-w-full tw-min-h-[calc(100vh-242px)]">
                 <Card radius={'lg'} className="tw-overflow-hidden">
                     <PacesportCard card={props.pacesportCard} />
+                    <Text color='dimmed' align='center'>Conditions d'activation :</Text>
+                    <Text color='orange' align='center'>Status en cours de validation</Text>
+                    <Text color='orange' align='center'>Minimum 1 offre nationnale validée</Text>
                 </Card>
 
                 <Space h={'sm'} />
