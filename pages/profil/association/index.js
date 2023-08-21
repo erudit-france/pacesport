@@ -6,6 +6,7 @@ import Layout from "./layout";
 import SponsorInvitation from "./components/SponsorInvitation";
 import { GoPlus } from 'react-icons/go'
 import Link from "next/link";
+import { getCardActiveOffers} from "@/domain/repository/CardOffersRepository";
 import { BsLink, BsLock, BsMegaphoneFill } from "react-icons/bs";
 import { GrMoney } from "react-icons/gr";
 import { BiMessage } from "react-icons/bi";
@@ -50,6 +51,7 @@ export default function Page(props){
     const [openInvitationModal, { open, close }] = useDisclosure(false);
     const [additionalEmails, setAdditionalEmails] = useState([]);
     const [contrat, setContrat] = useState(null)
+    const [activeOffers, setActiveOffers] = useState(props.activeOffers)
     const [hasEnoughOffers, setHasEnoughOffers] = useState(props.invitations.length > 0)
     const [hasUploadedStatus, setHasUploadedStatus] = useState(false)
     const isAccountLimited = true
@@ -283,7 +285,8 @@ export default function Page(props){
                     <Flex justify={'space-between'} my={'lg'} className="tw-relative">
                         <Text className="tw-flex-1" color="red" fz={'sm'} fw={'bold'} align={'center'} py={2}>Ajoutez encore {nbSponsorsNeeded} partenaires pour valider votre pace&lsquo;sport</Text>
                     </Flex>}
-                <CampagneCard status={validationRequest?.validated ? 1 : 0} id={1} title={'Carte pacesport'} image={props.pacesportCard?.image?.name} startDate={Date.now()} />
+                <CampagneCard status={props?.pacesportCard?.status == '1' && activeOffers?.some(offer => offer?.type === 'Nationale')} id={1} title={'Carte pacesport'} image={props.pacesportCard?.image?.name} startDate={Date.now()} />
+                  {      console.log(JSON.stringify(props, null, 2))}              
                 <Divider  my={'sm'} className="tw-w-2/3 tw-mx-auto"/>
                 
                 <Center>
@@ -413,7 +416,7 @@ export async function getServerSideProps(context) {
     let user = await getUser(token)
     let pacesport = await getPacesportCard(token)
     let sponsors = await getActive(token)
-
+    let activeOffers = await getCardActiveOffers(token)
 
     // // Pass data to the page via props
     return { props: {
@@ -425,6 +428,7 @@ export async function getServerSideProps(context) {
         validationRequest: JSON.parse(validationRequest.data),
         user: JSON.parse(user.data),
         pacesportCard: JSON.parse(pacesport.data),
+        activeOffers: JSON.parse(activeOffers.data),
         sponsors: JSON.parse(sponsors.data)
     }}
 

@@ -65,8 +65,8 @@ export default function Page(props){
                 <Card radius={'lg'} className="tw-overflow-hidden">
                     <PacesportCard card={props.pacesportCard} />
                     <Text color='dimmed' align='center'>Conditions d'activation :</Text>
-                    <Text color='orange' align='center'>Status en cours de validation</Text>
-                    <Text color='orange' align='center'>Minimum 1 offre nationnale validée</Text>
+                    <Text color={props?.pacesportCard?.status == '1' ? 'green' : 'orange'} align='center'>Status en cours de validation</Text>
+                    <Text color={activeOffers.some(offer => offer?.type === 'Nationale') ? 'green' : 'orange'} align='center'>Minimum 1 offre nationnale validée</Text>
                 </Card>
 
                 <Space h={'sm'} />
@@ -82,7 +82,6 @@ export default function Page(props){
                 <Title align="center" color="white" order={6}
                     className="tw-bg-green-600 tw-font-light tw-pb-1 tw-mt-4">Offres de partenariat validées</Title>
                 <AssociationActiveOffers offers={activeOffers} />
-
             </main>
 
         </>
