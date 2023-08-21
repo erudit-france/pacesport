@@ -233,10 +233,9 @@ export default function Page(props){
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-
             <section className="tw-px-4 tw-pt-8 tw-relative">
                 <Box className="tw-relative">
-                    <Title my={'md'} order={4} align="center">props.association.name</Title>
+                    <Title my={'md'} order={4} align="center">{props.association?.name}</Title>
                     {/* <ActionIcon component='a' href='/communication/add/association?prev=/profil/association' className="tw-bg-white tw-absolute tw-right-1.5 tw-bottom-0 tw-p-1.5" radius={'xl'}>
                         <BsMegaphoneFill className="tw-text-black" size={18} />
                     </ActionIcon> */}
@@ -324,11 +323,8 @@ export default function Page(props){
                 
             </section>
 
-            <Box className="tw-bg-white tw-w-[110%] tw-h-8 -tw-skew-y-3 tw-relative -tw-top-4"></Box>
-
-            <Space className="tw-pt-3"></Space>
+            <Space className="tw-pt-4"></Space>
             <Box className="tw-relative">
-                <Paper color="white" className="tw-absolute -tw-top-4 tw-left-0 -tw-z-1 tw-w-[110%] tw-h-[110%] -tw-skew-y-3" />
                 <ChartSection className="tw-bg-white tw-p-10 tw-z-10 tw-relative" />
             </Box>
             <Space className="tw-mt-8"></Space>
