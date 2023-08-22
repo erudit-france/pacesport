@@ -20,76 +20,77 @@ import { getActiveSubscription } from '@/domain/repository/OrderRepository'
 
 
 export default function Page(props) {
-    const [loading, setLoading] = useState(false)
-    const [offers, setOffers] = useState(props.associationActiveOffers)
-    const { push } = useRouter()
-    const [showOffers, setShowOffers] = useState(true)
-    const [fetching, setFetching] = useState(false)
-    const [selectedAssociation, setSelectedAssociation] = useState(null)
-    const [association, setAssociation] = useState(props.association)
-    const router = useRouter()
-    const refresh = () => { router.reload(window.location.pathname) }
-    const selectedAssociationHandler = (association) => {
-      setSelectedAssociation(association)
+  const [loading, setLoading] = useState(false)
+  const [offers, setOffers] = useState(props.associationActiveOffers)
+  const { push } = useRouter()
+  const [showOffers, setShowOffers] = useState(true)
+  const [fetching, setFetching] = useState(false)
+  const [selectedAssociation, setSelectedAssociation] = useState(null)
+  const [association, setAssociation] = useState(props.association)
+  const router = useRouter()
+  const refresh = () => { router.reload(window.location.pathname) }
+  const selectedAssociationHandler = (association) => {
+    setSelectedAssociation(association)
+  }
+  const associationsSelect = props.associations.map((association) => (
+    { label: association.name, value: association.id }
+  ))
+  const form = useForm({
+    initialValues: {
+      association: props.id,
+    },
+    validate: {
+      // association: (value) => {
+
+      //   // if (selectedAssociation != null ) {
+      //   //   return null
+      //   // } else {
+      //   //   return 'Veuillez saisir choisir une association'
+      //   // }
+      // },
+    },
+  });
+
+  const submitHandler = (values) => {
+    // console.log(server);
+    const baseURL = window.location.origin;
+
+    fetch(`/api/stripe/subscriptionLinks`, {
+      method: 'POST',
+      headers: new Headers({
+        'JWTAuthorization': `Bearer ${getCookie('token')}`
+      }),
+      body: JSON.stringify({
+        cancelUrl: baseURL,//ICI
+        baseUrl: baseURL//ICI
+      })
+    }).then(res => res.json())
+      .then(res => {
+        console.log("Error from server:", res);
+        if (res.monthUrl) {
+          router.push(res.monthUrl)
+        }
+      })
+      .catch((err) => {
+        console.error("Error from server:", err);
+        Toast.error('Erreur, veuillez réessayer plus tard');
+      })
+
+  }
+
+  useEffect(() => {
+    if (selectedAssociation == null) {
+      return
     }
-    const associationsSelect = props.associations.map((association) => (
-        {label: association.name, value: association.id}
-    ))
-
-    const form = useForm({
-        initialValues: {
-            association: props.id,
-        },
-        validate: {
-            // association: (value) => {
-
-            //   // if (selectedAssociation != null ) {
-            //   //   return null
-            //   // } else {
-            //   //   return 'Veuillez saisir choisir une association'
-            //   // }
-            // },
-        },
-    });
-
-    const submitHandler = (values) => {
-        setLoading(true)
-        let body = serialize(values)
-        fetch(`/api/order/card`, {
-            method: 'POST',
-            headers: new Headers({
-              'JWTAuthorization': `Bearer ${getCookie('token')}`
-            }),
-            body: body
-          })
-        .then(res => res.json())
-        .then(res => {
-            if (res.data) {
-                res.data.code == 1 
-                    ? Toast.success(res.data.message)
-                    : Toast.error(res.data.message)
-                router.push('/profil/particulier/carte')
-            }
-          })
-        .catch((error) => { 
-            Toast.error('Erreur pendant l\'enregistrement') 
-            setLoading(false)
-        })
-
+    console.log('selectedAssociation', selectedAssociation)
+    setFetching(true)
+    setOffers([])
+    fetch(`/api/sponsoring-offer-sponsor-active/${selectedAssociation}`, {
+      headers: new Headers({
+        'JWTAuthorization': `Bearer ${getCookie('token')}`,
+      })
     }
-
-    useEffect(() => {
-      if(selectedAssociation == null){
-        return
-      }
-      console.log('selectedAssociation', selectedAssociation)
-      setFetching(true)
-      setOffers([])
-      fetch(`/api/sponsoring-offer-sponsor-active/${selectedAssociation}`, {
-        headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token')}`,
-          })}
-      ).then(res => res.json())
+    ).then(res => res.json())
       .then(res => {
         if (res.code == 401) {
           Toast.error('Session expirée')
@@ -102,89 +103,89 @@ export default function Page(props) {
           setOffers(offers)
         }
       })
-    }, [selectedAssociation]);
+  }, [selectedAssociation]);
 
   const pacesportCardSrc = props.pacesportCard?.image?.name ? `/uploads/${props.pacesportCard?.image?.name}` : '/logo.png'
   const standaloneCard = <>
+    <Center>
+      <Box className="tw-rounded-xl tw-shadow-lg tw-relative">
+        <Image
+          className="tw-absolute tw-z-20 tw-right-1 tw-opacity-80 -tw-translate-y-1/2 tw-top-1/2"
+          width={24}
+          height={24}
+          src={`/sim.png`}
+          alt="logo sim"
+        />
+        <Image
+          className="tw-opacity-95"
+          radius={'lg'}
+          width={200}
+          height={110}
+          src={`${pacesportCardSrc}`}
+          alt="Photo de campagne"
+          withPlaceholder
+        />
+      </Box>
+    </Center>
+  </>
+
+  const OfferRow = ({ offer }) => (
+    <Card className='tw-flex tw-bg-gray-200 tw-mb-2' radius={'lg'}>
       <Center>
-          <Box className="tw-rounded-xl tw-shadow-lg tw-relative">
-              <Image
-                  className="tw-absolute tw-z-20 tw-right-1 tw-opacity-80 -tw-translate-y-1/2 tw-top-1/2"
-                  width={24}
-                  height={24}
-                  src={`/sim.png`}
-                  alt="logo sim"
-              />
-              <Image
-              className="tw-opacity-95"
-              radius={'lg'}
-              width={200}
-              height={110}
-              src={`${pacesportCardSrc}`}
-              alt="Photo de campagne"
-              withPlaceholder
-              />
-          </Box>
+        <Avatar className='tw-shadow-md' radius={'lg'} src={`/uploads/${offer.enseigne?.avatar?.name}`} />
       </Center>
-      </>
-
-    const OfferRow = ({offer}) => (
-      <Card className='tw-flex tw-bg-gray-200 tw-mb-2' radius={'lg'}>
-        <Center>
-          <Avatar className='tw-shadow-md' radius={'lg'} src={`/uploads/${offer.enseigne?.avatar?.name}`} />
-        </Center>
-        <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
-          <Flex justify={'space-between'}>
-            <Text weight={550}>{offer.enseigne.name} <SponsoringOfferTypeBadge offer={offer} /></Text>
-            {/* <Text className='tw-flex tw-font-light' fz={'sm'}> */}
-              {/* <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer.association.ville}</Text> */}
-          </Flex>
-          <Text color=''>{offer.titre}</Text>
-          <Text color='dimmed'>{offer.description}</Text>
+      <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
+        <Flex justify={'space-between'}>
+          <Text weight={550}>{offer.enseigne.name} <SponsoringOfferTypeBadge offer={offer} /></Text>
+          {/* <Text className='tw-flex tw-font-light' fz={'sm'}> */}
+          {/* <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer.association.ville}</Text> */}
         </Flex>
-      </Card>
-    )
+        <Text color=''>{offer.titre}</Text>
+        <Text color='dimmed'>{offer.description}</Text>
+      </Flex>
+    </Card>
+  )
 
-    const offersList = <>
-      <Transition mounted={setShowOffers} transition="slide-down" duration={400} timingFunction="ease">
-        {(styles) => 
-          <section style={styles} className='tw-mt-1'>
-            {offers.map((offer) => (
-              <OfferRow key={offer.title} offer={offer} />
-            ))}
-          </section>}
-      </Transition>
-    </>
+  const offersList = <>
+    <Transition mounted={setShowOffers} transition="slide-down" duration={400} timingFunction="ease">
+      {(styles) =>
+        <section style={styles} className='tw-mt-1'>
+          {offers.map((offer) => (
+            <OfferRow key={offer.title} offer={offer} />
+          ))}
+        </section>}
+    </Transition>
+  </>
 
 
   return (
     <>
-        <Head>
-          <title>PACE&lsquo;SPORT</title>
-          <meta name="description" content="PACE&lsquo;SPORT" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        
-        <Box className='tw-min-h-[calc(100vh-180px)]'>
-            <Box className='tw-relative'>
-              <Center className='tw-absolute tw-left-2 tw-top-0.5'>
-                <PreviousPageButton href='/' className='tw-z-20' />
-              </Center>
-            </Box>
-            
-            <Box className='tw-min-h-full'>
-                <section className="tw-mt-6 tw-mx-2">
-                <Box className="tw-relative tw-z-[1]">
-                    {standaloneCard}
-                </Box>
-                <Box className="tw-h-full tw-bg-gradient-to-br tw-from-slate-100 tw-to-gray-100 tw-shadow-lg tw-rounded-2xl tw-pt-4 tw-relative tw-mt-4 tw-z-0" p={'md'}>
-                    <Title order={3} mb={'sm'} align="center">J&lsquo;adhère à Pace&lsquo;Sport</Title>
+      <Head>
+        <title>PACE&lsquo;SPORT</title>
+        <meta name="description" content="PACE&lsquo;SPORT" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
 
-                    <Container className='tw-border-2 tw-rounded-md tw-shadow-sm tw-border-[#d61515] tw-p-4'>
-                        <form onSubmit={form.onSubmit((values) => submitHandler(values))}>
-                            <Title align='center' order={6}>Pace&lsquo;Sport</Title>
-                            {/* <Select
+      <Box className='tw-min-h-[calc(100vh-180px)]'>
+        <Box className='tw-relative'>
+          <Center className='tw-absolute tw-left-2 tw-top-0.5'>
+            <PreviousPageButton href='/' className='tw-z-20' />
+          </Center>
+        </Box>
+
+        <Box className='tw-min-h-full'>
+          <section className="tw-mt-6 tw-mx-2">
+            <Box className="tw-relative tw-z-[1]">
+              {standaloneCard}
+            </Box>
+            <Box className="tw-h-full tw-bg-gradient-to-br tw-from-slate-100 tw-to-gray-100 tw-shadow-lg tw-rounded-2xl tw-pt-4 tw-relative tw-mt-4 tw-z-0" p={'md'}>
+              <Title order={3} mb={'sm'} align="center">J&lsquo;adhère à Pace&lsquo;Sport</Title>
+
+              <Container className='tw-border-2 tw-rounded-md tw-shadow-sm tw-border-[#d61515] tw-p-4'>
+                <form onSubmit={form.onSubmit((values) => submitHandler(values))}>
+                  <Title align='center' order={6}>Pace&lsquo;Sport</Title>
+                  {/* <Select
                                 label={
                                     <Flex className='tw-mb-2'>
                                         <Center>
@@ -200,37 +201,37 @@ export default function Page(props) {
                                 data={associationsSelect}
                                 value={selectedAssociation ? selectedAssociation.label : null}
                                 onChange={selectedAssociationHandler}/> */}
-                                
-                            <Group>
-                              <Avatar className="tw-shadow-md" size={'lg'} radius={'xl'}  src={`/uploads/${association.avatar?.name}`} />
-                              <Text fz={'md'} weight={600}>{association.name}</Text>
-                            </Group>
-                            <Center>
-                                <Button type='submit' color='red' variant='filled' mt={"md"} radius={'lg'} px={'xl'} size='sm'
-                                     className='tw-bg-[#d61515] tw-shadow-sm'
-                                     disabled={loading}>
-                                    Souscrire</Button>
-                            </Center>
-                        </form>
-                    </Container>
 
-                    <Title order={6} my={'lg'} align='center'>Les offres</Title>
-                    {fetching && 
-                     <Center>
-                      <Loader />
-                     </Center>
-                    }
-                    {offers.length == 0 
-                      ? fetching 
-                        ? <></>
-                        : <Text color='dimmed' align='center'>Aucune offre</Text>
-                      : offersList
-                    }
-                    <Space my={'md'} />
-                </Box>
-                </section>
+                  <Group>
+                    <Avatar className="tw-shadow-md" size={'lg'} radius={'xl'} src={`/uploads/${association.avatar?.name}`} />
+                    <Text fz={'md'} weight={600}>{association.name}</Text>
+                  </Group>
+                  <Center>
+                    <Button type='submit' color='red' variant='filled' mt={"md"} radius={'lg'} px={'xl'} size='sm'
+                      className='tw-bg-[#d61515] tw-shadow-sm'
+                      disabled={loading}>
+                      Souscrire</Button>
+                  </Center>
+                </form>
+              </Container>
+
+              <Title order={6} my={'lg'} align='center'>Les offres</Title>
+              {fetching &&
+                <Center>
+                  <Loader />
+                </Center>
+              }
+              {offers.length == 0
+                ? fetching
+                  ? <></>
+                  : <Text color='dimmed' align='center'>Aucune offre</Text>
+                : offersList
+              }
+              <Space my={'md'} />
             </Box>
+          </section>
         </Box>
+      </Box>
 
     </>
   )
@@ -241,10 +242,11 @@ export async function getServerSideProps(context) {
   const token = context.req.cookies['token']
   let avatar = await fetch(`${process.env.API_URL}/api/user/avatar`, {
     headers: new Headers({
-            'JWTAuthorization': `Bearer ${token}`,
-    })}
+      'JWTAuthorization': `Bearer ${token}`,
+    })
+  }
   )
-  if (avatar.code == 401){
+  if (avatar.code == 401) {
     return {
       redirect: {
         permanent: false,
@@ -252,7 +254,7 @@ export async function getServerSideProps(context) {
       }
     }
   }
-  
+
   let pacesportSubscription = await getActiveSubscription(token)
   if (!(pacesportSubscription.data === 'null' || pacesportSubscription.data == null)) {
     return {
@@ -266,8 +268,9 @@ export async function getServerSideProps(context) {
   // fetch Associations
   let associations = await fetch(`${process.env.API_URL}/api/association/list`, {
     headers: new Headers({
-            'JWTAuthorization': `Bearer ${token}`,
-    })}
+      'JWTAuthorization': `Bearer ${token}`,
+    })
+  }
   )
   associations = await associations.json();
 
@@ -278,23 +281,25 @@ export async function getServerSideProps(context) {
 
 
   // // Pass data to the page via props
-  return { props: {
-    avatar: avatar.filename,
-    associations: JSON.parse(associations.data),
-    card: {
+  return {
+    props: {
+      avatar: avatar.filename,
+      associations: JSON.parse(associations.data),
+      card: {
         image: {
-            name: null
+          name: null
         },
         startDate: Date.now(),
         endDate: Date.now(),
         price: 11.99
-    },
-    offers: JSON.parse(offers.data),
-    pacesportCard: JSON.parse(pacesport.data),
-    associationActiveOffers: JSON.parse(associationActiveOffers.data),
-    association: JSON.parse(association.data),
-    id: id
-  } }
+      },
+      offers: JSON.parse(offers.data),
+      pacesportCard: JSON.parse(pacesport.data),
+      associationActiveOffers: JSON.parse(associationActiveOffers.data),
+      association: JSON.parse(association.data),
+      id: id
+    }
+  }
 }
 
 Page.getLayout = function getLayout(page) {
