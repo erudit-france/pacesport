@@ -73,7 +73,7 @@ export default function Page({ status, loggedUser }) {
     const user = context.user
     const isAdmin = user?.roles.includes('ROLE_ADMIN') ? true : false
 
-    const usernameParticulier = loggedUser?.prenom ? loggedUser?.prenom : 'Particulier'
+    const usernameParticulier = loggedUser?.prenom ? loggedUser?.prenom + " " + loggedUser?.nom : 'Particulier'
     const associationLink = status.association == true
         ? '/profil/association'
         : '/inscription/association';

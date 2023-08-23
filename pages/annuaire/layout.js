@@ -2,6 +2,7 @@ import Navbar from "@/components/navbar/Navbar";
 import { AppContext } from "@/context/AppContext";
 import { Avatar, BackgroundImage, Box, Center, Flex, Text, Title } from "@mantine/core";
 import { useContext } from "react";
+import Link from 'next/link';
 
 export default function Layout({children}){
 
@@ -15,11 +16,11 @@ export default function Layout({children}){
                     <div className="tw-h-[9rem] tw-w-full tw-bg-[#d61515] tw-absolute -tw-z-7">
                         <Center className="tw-h-full">
                             <Title order={3} color="white" align="center" weight={500}>Annuaire</Title>
-                            <Flex direction={'column'} className="tw-absolute tw-right-3">
+                            <Link href="/informations"><Flex direction={'column'} className="tw-absolute tw-right-3">
                                 <Avatar src={`uploads/${children?.props.user.avatar?.name}`} mx={'auto'} radius={'xl'} />
                                 {children?.props.user.prenom &&
-                                    <Text fz={'sm'} weight={500} color="white" align="center">{children?.props.user.prenom} 5</Text>}
-                            </Flex>
+                                    <Text fz={'sm'} weight={500} color="white" align="center">{children?.props.user.prenom}</Text>}
+                            </Flex></Link>
                         </Center>
                     </div>
                 </Box>

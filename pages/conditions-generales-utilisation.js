@@ -1,6 +1,7 @@
 import { BackgroundImage, Box, Center, Container, Image, Text, Title, Button } from "@mantine/core";
 import { BsArrowLeft } from "react-icons/bs";
 import Head from "next/head";
+import Link from 'next/link';
 
 
 export default function ConditionsGeneralesVente() {
@@ -107,10 +108,11 @@ export default function ConditionsGeneralesVente() {
     return <>
         <main className="tw-h-screen tw-rounded-t-2xl">
         <Center className='tw-absolute tw-left-2 tw-top-0.5'>
-        <Button variant="filled" id="goBackButton" size="sm"
+        <Link href="/parametres">
+        <Button variant="filled" size="sm"
                 className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
                 hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
-                radius={'xl'}><BsArrowLeft /></Button>
+                radius={'xl'}><BsArrowLeft /></Button></Link>
               </Center>
             <BackgroundImage className="tw-h-full tw-opacity-10 tw-absolute tw-top-0 -tw-z-10" src='/doodle-pattern.png' />
             <Container p={'lg'}>
@@ -121,12 +123,5 @@ export default function ConditionsGeneralesVente() {
                 {render}
             </Container>
         </main>
-        <script dangerouslySetInnerHTML={{ __html: `
-            // Attacher un gestionnaire d'événements au bouton
-            document.getElementById('goBackButton').addEventListener('click', function() {
-                // Appeler la fonction pour revenir en arrière dans l'historique
-                window.history.back();
-            });
-        `}} />
     </>
 }

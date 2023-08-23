@@ -56,10 +56,6 @@ const ChatHeader = ({previousUrl}) => {
             <div className="tw-mb-4">
                 <Flex justify={'space-between'}>
                     <Center mr={'md'}>
-                    <Button variant="filled" id="goBackButton" size="sm"
-                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
-                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
-                radius={'xl'}><BsArrowLeft /></Button>
                     </Center>
                     <Link href={'/annuaire?prev=/messages'} 
                         className='tw-text-sm tw-border-[1px] tw-px-3 tw-py-1.5 tw-rounded-2xl

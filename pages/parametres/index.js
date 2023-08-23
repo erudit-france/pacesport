@@ -101,7 +101,7 @@ export default function Page({status}){
                         Paramètres</Title>
                 <Flex justify='center' direction='column' mb='lg' p={'xl'} mx={'md'} gap="xl">
                     <Flex justify='center' direction='column' my='xs' py={'sm'} gap="xs">
-                        <LinkButton className={''} text='Mes informations' href={''}/>
+                        <LinkButton className={''} text='Mes informations' href={'/informations'}/>
                         <Space my={'xs'} />
                         <Space my={'xs'} />
                         <LinkButton className={''} text='Conditions d&lsquo;utilisation' href={'/conditions-generales-utilisation'} />
