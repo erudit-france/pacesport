@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Button, Center, Divider, Flex, Modal, Space, Text, Title,Button} from "@mantine/core"; 
+import { ActionIcon, Box, Button, Center, Divider, Flex, Modal, Space, Text, Title} from "@mantine/core"; 
 import { BsArrowLeft } from "react-icons/bs";;
 import Head from "next/head";
 import SearchSponsor from "../../components/SearchSponsor";

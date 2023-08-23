@@ -1,7 +1,6 @@
-import { Box, Button, Flex, Text, Textarea,Button} from "@mantine/core"; 
+import { Box, Button, Flex, Text, Textarea} from "@mantine/core"; 
 import { BsArrowLeft } from "react-icons/bs";
 import Layout from "../layout"
-import { BsArrowLeft } from "react-icons/bs";
 import { useForm } from "@mantine/form";
 ;
 import { getCookie } from "cookies-next";

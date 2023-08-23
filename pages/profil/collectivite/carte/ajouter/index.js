@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Layout from "./layout";
 import { useEffect, useState } from 'react';
-import { Stepper, Button, Group, TextInput, Text, Box, NumberInput, Flex, Modal, Skeleton, Progress, Title, Dialog, Space, Spoiler, Image, Accordion,Button, BsArrowLeft } from '@mantine/core';
+import { Stepper, Button, Group, TextInput, Text, Box, NumberInput, Flex, Modal, Skeleton, Progress, Title, Dialog, Space, Spoiler, Image, Accordion } from '@mantine/core';
 import 'dayjs/locale/fr';
 import CampagneHeaderEditable from "@/components/CampagneHeaderEditable";
 import fileUploader from "@/utils/fileUploader";

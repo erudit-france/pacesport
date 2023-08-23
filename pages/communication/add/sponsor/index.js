@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Group, Text, Textarea,Button} from "@mantine/core"; 
+import { Box, Button, Flex, Group, Text, Textarea} from "@mantine/core"; 
 import { BsArrowLeft } from "react-icons/bs";
 import Layout from "../layout"
 import { useForm } from "@mantine/form";
