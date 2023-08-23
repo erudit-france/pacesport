@@ -11,132 +11,158 @@ import Toast from "@/services/Toast";
 import { useRouter } from "next/router";
 
 export default function Page() {
-    const { push } = useRouter()
-    const [logo, setLogo] = useState(null);
-    const [loading, setLoading] = useState(null);
-    const [logoFile, setLogoFile] = useState(null);
-    const [statusFile, setStatusFile] = useState(null);
-    const [logoError, setLogoError] = useState(null);      
-    const handleLogo = (file) => {
-        const url = URL.createObjectURL(file)
-        setLogo(url)
-        setLogoFile(file)
-        form.values.logo = file
-        setLogoError(null)
+  const { push } = useRouter()
+  const [logo, setLogo] = useState(null);
+  const [loading, setLoading] = useState(null);
+  const [logoFile, setLogoFile] = useState(null);
+  const [statusFile, setStatusFile] = useState(null);
+  const [logoError, setLogoError] = useState(null);
+  const handleLogo = (file) => {
+    const url = URL.createObjectURL(file)
+    setLogo(url)
+    setLogoFile(file)
+    form.values.logo = file
+    setLogoError(null)
+  }
+
+  const form = useForm({
+    initialValues: {
+      name: '',
+      address: '',
+      ville: '',
+      postal: '',
+      email: '',
+      phone: '',
+      description: '',
+    },
+    validate: {
+      name: (v) => v > '' ? null : 'Veuillez saisir un nom d\'association',
+      address: (v) => v > '' ? null : 'Veuillez saisir une adresse d\'association',
+      ville: (v) => v > '' ? null : 'Veuillez saisir une ville',
+      postal: (v) => v > '' ? null : 'Veuillez saisir un code postal',
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Veuillez saisir un E-mail d\'association valide'),
+      phone: (v) => v > '' ? null : 'Veuillez saisir un numéro d\'association',
+      description: (v) => v > '' ? null : 'Veuillez saisir une description d\'association'
+    },
+  });
+
+  const submitHandler = async (data) => {
+    setLoading(true)
+    const body = serialize(data)
+    let logoFilename = null
+    let statusFilename = null
+
+    //
+    // Upload logo
+    //
+    if (logoFile) {
+      const formData = new FormData()
+      formData.append('file', logoFile)
+      let avatar = await fetch(`/api/file/upload`, {
+        method: 'POST',
+        type: 'cors',
+        headers: new Headers({
+          'JWTAuthorization': `Bearer ${getCookie('token')}`
+        }),
+        body: formData
+      })
+      avatar = await avatar.json()
+      if (avatar.code == 401) {
+        push('/login')
+        return
+      }
+      if (avatar.data.code != 1) {
+        Toast.error('Erreur pendant le téléchargment du logo')
+      } else {
+        logoFilename = avatar.data.filename
+      }
     }
 
-    const form = useForm({
-        initialValues: {
-            name: '',
-            address: '',
-            email: '',
-            phone: '',
-            description: '',
-        },
-        validate: {
-            name: (v) => v > '' ? null : 'Veuillez saisir un nom d\'association',
-            address: (v) => v > '' ? null : 'Veuillez saisir une adresse d\'association',
-            email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Veuillez saisir un E-mail d\'association valide'),
-            phone: (v) => v > '' ? null : 'Veuillez saisir un numéro d\'association',
-            description: (v) => v > '' ? null : 'Veuillez saisir une description d\'association'
-        },
-    });
-
-    const submitHandler = async (data) => {
-      setLoading(true)
-      const body = serialize(data)
-      let logoFilename = null
-      let statusFilename = null
-
-      //
-      // Upload logo
-      //
-      if (logoFile) {
-        const formData = new FormData()
-        formData.append('file', logoFile)
-        let avatar = await fetch(`/api/file/upload`, {
-            method: 'POST',
-            type: 'cors',
-            headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token')}`
-            }),
-            body: formData
-        })
-        avatar = await avatar.json()
-        if (avatar.code == 401) {
-          push('/login')
-          return 
-        }
-        if (avatar.data.code != 1) { 
-          Toast.error('Erreur pendant le téléchargment du logo')
-        } else {
-          logoFilename = avatar.data.filename
-        }
+    //
+    // Upload status
+    //
+    if (statusFile) {
+      let statusForm = new FormData()
+      statusForm.append('file', statusFile)
+      let status = await fetch(`/api/file/upload`, {
+        method: 'POST',
+        type: 'cors',
+        headers: new Headers({
+          'JWTAuthorization': `Bearer ${getCookie('token')}`
+        }),
+        body: statusForm
+      })
+      status = await status.json()
+      if (status.data.code != 1) {
+        Toast.error('Erreur pendant le téléchargment du status')
+      } else {
+        statusFilename = status.data.filename
       }
-      else
-      Toast.error('Logo obligatoire')
-
-      //
-      // Upload status
-      //
-      if (statusFile) {
-        let statusForm = new FormData()
-        statusForm.append('file', statusFile)
-        let status = await fetch(`/api/file/upload`, {
-            method: 'POST',
-            type: 'cors',
-            headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token')}`
-            }),
-            body: statusForm
-        })
-        status = await status.json()
-        if (status.data.code != 1) { 
-          Toast.error('Erreur pendant le téléchargment du status')
-        } else {
-          statusFilename = status.data.filename
-        }
-      }
-      else
+    }
+    else {
       Toast.error('Status obligatoire')
-
-      //
-      // Continue signup request
-      //
-      if (statusFilename) body.append('status', statusFilename) 
-
-      if (logoFilename) body.append('avatar', logoFilename)
-
-      fetch(`/api/association`, {
-          method: 'POST',
-          type: 'cors',
-          headers: new Headers({
-            'JWTAuthorization': `Bearer ${getCookie('token')}`
-          }),
-          body: body
-        })
-        .then(res => res.json())
-          .then(res => {
-              if (res.code == 401) push('/login')
-              console.log('res', res.data)
-              if (res.data.code == 1) {
-                  Toast.success(res.data.message)
-                  setTimeout(() => {
-                      push('/profil/association')
-                  }, 2000)
-              setLoading(false)
-            } else {
-                  Toast.error(res.data.message)
-                  setLoading(false)
-            }
-          })
-          .catch((error) => { 
-              Toast.error(`Erreur pendant la création de l'association`) 
-              setLoading(false)
-              console.log('error', error)
-          })
+      setLoading(false);
+      return
     }
-    
+
+    //
+    // Continue signup request
+    //
+    if (statusFilename) body.append('status', statusFilename)
+
+    if (logoFilename) body.append('avatar', logoFilename)
+    console.log('error', body)
+    fetch(`/api/association`, {
+      method: 'POST',
+      type: 'cors',
+      headers: new Headers({
+        'JWTAuthorization': `Bearer ${getCookie('token')}`
+      }),
+      body: body
+    })
+      .then(res => {
+        if (!res.ok) {
+          return res.text().then(text => {
+            throw new Error(text);
+          });
+        }
+        return res.json();
+      })
+      .then(res => {
+        if (res.data && res.data.code == 401) push('/login')
+        console.log('res', res)
+        if (res.data.code == 1) {
+          Toast.success(res.data.message)
+          setTimeout(() => {
+            push('/profil/association')
+          }, 2000)
+          setLoading(false)
+        } else {
+          Toast.error(res.data.message)
+          setLoading(false)
+        }
+      })
+      .catch((error) => {
+        Toast.error(`Erreur pendant la création de l'association`);
+        setLoading(false);
+
+        // Afficher le message d'erreur général
+        console.log('Error Message:', error.message);
+
+        // Afficher le détail de la réponse si elle est présente
+        if (error.response) {
+          console.log('Data:', error.response.data);
+          console.log('Status:', error.response.status);
+          console.log('Headers:', error.response.headers);
+        } else {
+          // Si error.response n'est pas défini, cela pourrait être un problème réseau
+          console.log('Erreur réseau ou demande non terminée.');
+        }
+      });
+
+
+  }
+
   return (
     <>
       <Head>
@@ -145,32 +171,36 @@ export default function Page() {
       <form className="tw-relative tw-top-5" onSubmit={form.onSubmit((values) => submitHandler(values))}>
         <Text align="center" className="tw-font-semibold tw-text-lg tw-text-white">Formulaire Association</Text>
         <Paper shadow="xl" p="xs" radius="lg" className="tw-bg-gray-800 tw-m-3 tw-pb-10 tw-top-5">
-            <Flex className="tw-border-[1px] tw-border-gray-800 tw-bg-gray-900 tw-rounded-md mx-auto tw-m-1 tw-py-1"
-                align={'center'}
-                direction={"column"}>
-                <Text align="center" className="tw-text-gray-300 tw-text-sm">Logo</Text>
-                <FileButton className="tw-cursor-pointer tw-my-2 tw-shadow-sm tw-shadow-white" onChange={handleLogo}
-                    accept="image/png,image/jpeg">
-                    {(props) => <Avatar {...props} mt={'md'} radius="xl" src={logo ? logo : null} size={'lg'} />}
-                </FileButton>
-                {logoError && <Text align="center" size={'xs'} className="tw-text-[#d61515]">{logoError}</Text>}
-            </Flex>
-            <TextInput mt="sm" variant="filled" description="Nom" placeholder="Nom" radius="lg" size="sm" withAsterisk
-                {...form.getInputProps('name')}/>
-            <TextInput mt="sm" variant="filled" description="Adresse" placeholder="Adresse" radius="lg" size="sm" withAsterisk
-                {...form.getInputProps('address')}/>
-            <TextInput mt="sm" variant="filled" description="E-mail" placeholder="E-mail" radius="lg" size="sm" withAsterisk
-                {...form.getInputProps('email')}/>
-            <TextInput mt="sm" variant="filled" description="Téléphone" placeholder="Téléphone" radius="lg" size="sm" withAsterisk
-                {...form.getInputProps('phone')}/>
-            <TextInput mt="sm" variant="filled" description="Description" placeholder="Description" radius="lg" size="sm" withAsterisk
-                {...form.getInputProps('description')}/>
-            <Flex className="tw-border-[1px] tw-border-gray-800 tw-bg-gray-900 tw-rounded-md tw-my-2 tw-py-2" direction={"column"}>
-                <Text align="center" className="tw-text-gray-300 tw-text-sm">Status</Text>
-                <FileInput className="tw-text-white placeholder:tw-text-white tw-bg-gray-100 tw-rounded-md" 
-                  onChange={setStatusFile}
-                  placeholder="Status" size="sm" m={'xs'} withAsterisk/>
-            </Flex>
+          <Flex className="tw-border-[1px] tw-border-gray-800 tw-bg-gray-900 tw-rounded-md mx-auto tw-m-1 tw-py-1"
+            align={'center'}
+            direction={"column"}>
+            <Text align="center" className="tw-text-gray-300 tw-text-sm">Logo</Text>
+            <FileButton className="tw-cursor-pointer tw-my-2 tw-shadow-sm tw-shadow-white" onChange={handleLogo}
+              accept="image/png,image/jpeg">
+              {(props) => <Avatar {...props} mt={'md'} radius="xl" src={logo ? logo : null} size={'lg'} />}
+            </FileButton>
+            {logoError && <Text align="center" size={'xs'} className="tw-text-[#d61515]">{logoError}</Text>}
+          </Flex>
+          <TextInput mt="sm" variant="filled" description="Nom" placeholder="Nom" radius="lg" size="sm" withAsterisk
+            {...form.getInputProps('name')} />
+          <TextInput mt="sm" variant="filled" description="Adresse" placeholder="Adresse" radius="lg" size="sm" withAsterisk
+            {...form.getInputProps('address')} />
+          <TextInput mt="sm" variant="filled" description="Ville" placeholder="Ville" radius="lg" size="sm" withAsterisk
+            {...form.getInputProps('ville')} />
+          <TextInput mt="sm" variant="filled" description="Code postal" placeholder="Code postal" radius="lg" size="sm" withAsterisk
+            {...form.getInputProps('postal')} />
+          <TextInput mt="sm" variant="filled" description="E-mail" placeholder="E-mail" radius="lg" size="sm" withAsterisk
+            {...form.getInputProps('email')} />
+          <TextInput mt="sm" variant="filled" description="Téléphone" placeholder="Téléphone" radius="lg" size="sm" withAsterisk
+            {...form.getInputProps('phone')} />
+          <TextInput mt="sm" variant="filled" description="Description" placeholder="Description" radius="lg" size="sm" withAsterisk
+            {...form.getInputProps('description')} />
+          <Flex className="tw-border-[1px] tw-border-gray-800 tw-bg-gray-900 tw-rounded-md tw-my-2 tw-py-2" direction={"column"}>
+            <Text align="center" className="tw-text-gray-300 tw-text-sm">Status</Text>
+            <FileInput className="tw-text-white placeholder:tw-text-white tw-bg-gray-100 tw-rounded-md"
+              onChange={setStatusFile}
+              placeholder="Status" size="sm" m={'xs'} withAsterisk />
+          </Flex>
 
         </Paper>
 

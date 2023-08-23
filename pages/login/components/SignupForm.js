@@ -6,8 +6,9 @@ import { useForm } from '@mantine/form';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { BiLinkExternal } from 'react-icons/bi'
 import HCaptcha from '@hcaptcha/react-hcaptcha';
-
-export default function SignupForm({loading}) {
+import { setCookie, getCookie } from 'cookies-next';
+import { useRouter } from 'next/navigation';
+export default function SignupForm({ loading }) {
   const [token, setToken] = useState(null);
   const captchaRef = useRef(null);
   const inputOptions = {
@@ -22,23 +23,23 @@ export default function SignupForm({loading}) {
   const [cguChecked, setCguChecked] = useState('');
   const form = useForm({
     initialValues: {
-        nom: '',
-        prenom: '',
-        email: '',
-        password: '',
-        passwordConfirmation: '',
-        cgu: false,
-        isCollectivitePublique: false,
+      nom: '',
+      prenom: '',
+      email: '',
+      password: '',
+      passwordConfirmation: '',
+      cgu: false,
+      isCollectivitePublique: false,
     },
     validate: {
       nom: (v) => v != '' ? null : 'Veuillez saisir un nom',
       prenom: (v) => v != '' ? null : 'Veuillez saisir un prénom',
       email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Veuillez saisir un E-mail valide'),
       password: (v) => v > '' ? null : 'Veuillez saisir un mot de passe',
-      passwordConfirmation: (v) => v != '' 
-        ? v === form.values.password 
-           ? null
-           : 'Les deux mots de passes ne correspondent pas'
+      passwordConfirmation: (v) => v != ''
+        ? v === form.values.password
+          ? null
+          : 'Les deux mots de passes ne correspondent pas'
         : 'Veuillez saisir un mot de passe',
       cgu: (v) => {
         if (v === true) {
@@ -58,7 +59,7 @@ export default function SignupForm({loading}) {
     // https://docs.hcaptcha.com/configuration#jsapi
     // captchaRef.current.execute();
   };
-  
+
   useEffect(() => {
     if (token) {
     }
@@ -79,23 +80,46 @@ export default function SignupForm({loading}) {
       },
       body: JSON.stringify(data)
     }).then(res => res.json())
-      .then(res => 
-        {
-          console.log('res', res)
-          loading(false)
-          if(res.error) setError(res.error.message) 
-          if(res.data) {
-            setSuccess(res.data.message)
-            form.reset()
-          }
-        })
-  }
+      .then(res => {
+        console.log('res', res)
+        loading(false)
+        if (res.error) setError(res.error.message)
+        if (res.data) {
+          setSuccess(res.data.message)
+          loading(true)
 
+          fetch(`/api/login`, {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json, text/plain, */*',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          }).then(res => res.json())
+            .then(res => {
+              loading(false)
+              if (res.payload) {
+                if (res.payload.token) {
+                  setCookie('token', res.payload.token)
+                  nextPage()
+                }
+              }
+              if (res.code == 401) { setError(res.message) }
+            })
+            .catch((error) => {
+              loading(false)
+              setError(`Erreur de connexion à la base de données \n ${error.message}`)
+            });
+        }
+      })
+  }
+  const router = useRouter();
+  const nextPage = () => { router.push('/login/as') }
   return (
     <>
       <form onSubmit={form.onSubmit((values) => submitHandler(values))}>
         <Paper className='tw-bg-gray-900 tw-rounded-t-none tw-border-[1px] tw-border-white tw-border-t-0' shadow="xl" p="md" radius="lg">
-        {/* <Checkbox
+          {/* <Checkbox
             ml="xs"
             my="lg"
             color="dark"
@@ -112,18 +136,18 @@ export default function SignupForm({loading}) {
             radius="lg"
             size="md"
           /> */}
-          <TextInput {... inputOptions} {...form.getInputProps('email')} placeholder="Adresse mail"
+          <TextInput {...inputOptions} {...form.getInputProps('email')} placeholder="Adresse mail"
             icon={<SiMaildotru className="tw-text-black tw-relative" />}
-            />
+          />
           <PasswordInput {...inputOptions} {...form.getInputProps('password')} placeholder="Mot de passe" />
-          <PasswordInput {...inputOptions} {...form.getInputProps('passwordConfirmation')} placeholder="Confirmation mot de passe"/>
+          <PasswordInput {...inputOptions} {...form.getInputProps('passwordConfirmation')} placeholder="Confirmation mot de passe" />
 
           <Checkbox
             ml="xs"
             my="lg"
             color="dark"
             size="sm"
-            error={ cguChecked === false ? 'Veuillez accepter les CGU' : '' }
+            error={cguChecked === false ? 'Veuillez accepter les CGU' : ''}
             label={
               <Text color='white'>
                 J&lsquo;accepte les{" "}
@@ -144,28 +168,28 @@ export default function SignupForm({loading}) {
             onVerify={setToken}
             ref={captchaRef}
           />
-          {error != '' && 
+          {error != '' &&
             <Alert icon={<AiOutlineInfoCircle size="1rem" />} p={'md'} mt='md' color="pink" radius="md" withCloseButton closeButtonLabel='fermer' onClose={() => setError('')}>
               <span className='tw-text-[#d61515]'>{error}</span></Alert>
           }
-          {success != '' && 
+          {success != '' &&
             <Alert icon={<AiOutlineInfoCircle size="1rem" />} p={'md'} mt='md' color="teal" radius="md" withCloseButton closeButtonLabel='fermer' onClose={() => setSuccess('')}>
               <span className='tw-text-teal-900'>{success}</span></Alert>
           }
         </Paper>
         <Flex className='' justify="center" align="center" direction="row" mt="md">
-            <div className='tw-w-1/2'>
-              <Button
-                className="tw-bg-gray-900 hover:tw-bg-gray-600 tw-shadow-sm tw-border-[1px] tw-border-gray-400"
-                size='md'
-                fullWidth
-                radius="xl"
-                type='submit'
-                onClick={() => submitHandler()}
-              >
-                Inscription
-              </Button>
-            </div>
+          <div className='tw-w-1/2'>
+            <Button
+              className="tw-bg-gray-900 hover:tw-bg-gray-600 tw-shadow-sm tw-border-[1px] tw-border-gray-400"
+              size='md'
+              fullWidth
+              radius="xl"
+              type='submit'
+              onClick={() => submitHandler()}
+            >
+              Inscription
+            </Button>
+          </div>
         </Flex>
 
       </form>
