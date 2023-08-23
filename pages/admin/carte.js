@@ -107,7 +107,7 @@ export default function Page(props){
                         className="tw-absolute tw-z-20 tw-right-1 tw-opacity-80 -tw-translate-y-1/2 tw-top-1/2"
                         width={24}
                         height={24}
-                        src={`/sim.png`}
+                        src={``}
                         alt="logo sim"
                     />
                     <Image

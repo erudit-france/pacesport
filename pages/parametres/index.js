@@ -1,14 +1,14 @@
 import { ActionIcon, Box, Button, Flex, Image, Space, Text, Title } from "@mantine/core";
 import Head from "next/head";
 import Link from "next/link";
-import { BsLock } from 'react-icons/bs'
+import { BsLock, BsArrowLeft } from 'react-icons/bs'
 import Layout from "@/components/layout/GradientDoodle"
 import { useContext } from "react";
 import { AppContext } from "@/context/AppContext";
 import { deleteCookie } from "cookies-next";
 import { useRouter } from "next/router";
 import { FiArrowLeft, FiSettings } from "react-icons/fi";
-import PreviousPageButton from '@/components/PreviousPageButton'
+
 
 const LinkButton = ({text, href, lock, className, onClick}) => {
     const router = useRouter()
@@ -78,7 +78,6 @@ const Logo = ({previousUrl}) => (
 
 export default function Page({status}){
     const router = useRouter()
-    const prev = router.query?.prev
     const context = useContext(AppContext)
     const logout = () => {
         deleteCookie('token')
@@ -92,7 +91,12 @@ export default function Page({status}){
                 <Space my={'xl'} pt={'xl'} h={'xl'}/>
             </header>
             <Box className="tw-rounded-3xl tw-relative" pt={'xl'} m={'lg'} bg={'dark'} >
-                <PreviousPageButton href='/' className='' />
+
+            <Button variant="filled" id="goBackButton" size="sm"
+                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
+                radius={'xl'}><BsArrowLeft /></Button>
+
                 <Title order={6} align="center" transform="uppercase" weight={600} color="white">
                         Paramètres</Title>
                 <Flex justify='center' direction='column' mb='lg' p={'xl'} mx={'md'} gap="xl">
@@ -108,6 +112,15 @@ export default function Page({status}){
                     <LinkButton className={''} text='Déconnexion' href={''} onClick={() => logout()} />
                 </Flex>
             </Box>
+           
+
+            <script dangerouslySetInnerHTML={{ __html: `
+            // Attacher un gestionnaire d'événements au bouton
+            document.getElementById('goBackButton').addEventListener('click', function() {
+                // Appeler la fonction pour revenir en arrière dans l'historique
+                window.history.back();
+            });
+        `}} />
         </>
     )
 }

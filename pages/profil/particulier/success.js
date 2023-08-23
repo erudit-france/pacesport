@@ -1,4 +1,5 @@
-import { AspectRatio, BackgroundImage, Box, Center, Container, Image, Text, Title } from "@mantine/core"
+import { AspectRatio, BackgroundImage, Box, Center, Container, Image, Text, Title,Button} from "@mantine/core"; 
+import { BsArrowLeft } from "react-icons/bs";
 import Layout from "./layout"
 import moment from "moment"
 import Link from "next/link"
@@ -12,21 +13,28 @@ export default function Page(props) {
           <Box className="tw-bg-white tw-shadow-lg tw-rounded-2xl tw-relative -tw-top-8 tw-z-0" p={'xl'}>
             <Title order={3} align="center">Votre achat à bien été enregistré</Title>
             <Center mt={'md'}>
-              <Link className="tw-border-[1px] tw-px-8 tw-py-0.5 tw-border-[#d61515] tw-rounded-xl tw-shadow-md hover:tw-bg-gray-100" 
-                href={props.prev}>Retour</Link>
+            <Button variant="filled" id="goBackButton" size="sm"
+                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
+                radius={'xl'}><BsArrowLeft /></Button>
             </Center>
 
           </Box>
         </Container>
+        <script dangerouslySetInnerHTML={{ __html: `
+            // Attacher un gestionnaire d'événements au bouton
+            document.getElementById('goBackButton').addEventListener('click', function() {
+                // Appeler la fonction pour revenir en arrière dans l'historique
+                window.history.back();
+            });
+        `}} />
       </>
     )
 }
 
 export async function getServerSideProps(context) {
-    console.log('context', context.query.prev)
     // // Pass data to the page via props
     return { props: { 
-        prev: context.query.prev
     } }
   }
   

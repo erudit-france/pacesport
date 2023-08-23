@@ -1,9 +1,9 @@
 import Head from "next/head"
 import Layout from "./layout"
-import { ActionIcon, Box, Button, Center, Container, CopyButton, Flex, Grid, Group, Loader, Modal, Select, Space, Text, TextInput, Textarea, Title, Tooltip } from "@mantine/core"
+import { ActionIcon, Box, Button, Center, Container, CopyButton, Flex, Grid, Group, Loader, Modal, Select, SegmentedControl, Space, Text, TextInput, Textarea, Title, Tooltip, MultiSelect } from "@mantine/core"
 import AssociationCard from "@/components/AssociationCard"
 import { useForm } from "@mantine/form";
-import { useState } from "react";
+import { forwardRef, useState } from 'react'
 import Toast from "@/services/Toast";
 import { serialize } from "object-to-formdata";
 import { getCookie } from "cookies-next";
@@ -12,7 +12,9 @@ import { TbCopy, TbCheck } from "react-icons/tb"
 export default function Page(props) {
     const association = props.association
     const [loading, setLoading] = useState(false);
-    const [opened, setOpened] = useState(false);
+   const [opened, setOpened] = useState(false);
+   const [maxSelectedAssociations, setMaxSelectedAssociations] = useState(99)
+   const [tab, setTab] = useState('Nationale')
     const categoriesOffre = [
         { value: 'Alimentaire', label: 'Alimentaire' },
         { value: 'Vêtements', label: 'Vêtements' },
@@ -23,16 +25,33 @@ export default function Page(props) {
         initialValues: {
             association: association.id,
             description: '',
+            type: 'Nationale',
         },
         validate: {
           description: (value) => (value != '' ? null : 'Veuillez saisir une description'),
         },
     });
 
+    const SelectItem = forwardRef(
+        ({ avatar, description, ...others }, ref) => {
+          return (
+            <div ref={ref} {...others}>
+              <Group noWrap>
+                <Avatar radius={'xl'} src={avatar == null ? null : `/uploads/${avatar.name}`} />
+                <div>
+                  <Text size="sm">{description}</Text>
+                </div>
+              </Group>
+            </div>
+          )
+        }
+      );
+      SelectItem.displayName = 'SelectItem';
+
     const submitHandler = (values) => {
         setLoading(true)
         let body = serialize(values)
-        fetch(`/api/sponsoring-offer`, {
+               fetch(`/api/sponsoring-offer`, {
             method: 'POST',
             headers: new Headers({
               'JWTAuthorization': `Bearer ${getCookie('token')}`
@@ -53,7 +72,17 @@ export default function Page(props) {
                 setOpened(false)
         })
     }
-
+    const tabHandler = (state) => {
+      if (state == 'Locale') {
+        setMaxSelectedAssociations(99)
+      } else {
+        setselectedAssociations([])
+        setMaxSelectedAssociations(1)
+      }
+      setTab(state)
+      form.setValues({type: state})
+    }
+    
     const Information = ({label, value}) => (
         <Flex className="tw-text-sm tw-mt-1">
             <Text>{label}:</Text>
@@ -123,12 +152,21 @@ export default function Page(props) {
                     label="Association"
                     mb={'md'}
                     />
-                {/* <Select
-                      label="Catégorie de l'offre"
-                      placeholder="Choisir"
-                      data={categoriesOffre}
-                      mb={'md'}
-                      {...form.getInputProps('categorie')}/> */}
+
+<SegmentedControl
+                  styles={{
+                    root: { 
+                    }
+                  }}
+                  fullWidth 
+                  value={tab}
+                  onChange={tabHandler}
+                  radius="xl"
+                  size="sm"
+                  data={['Nationale', 'Locale']}
+                  color="gray"
+                  className='tw-border-[1px] tw-border-b-0 tw-border-white tw-mb-4'
+                />
 
                 <Textarea size="xs" mb={'sm'} label="Description de l'offre"
                       minRows={3}
@@ -165,6 +203,7 @@ export async function getServerSideProps(context) {
         })}
         )
     cards = await cards.json()
+
 
     // // Pass data to the page via props
     return { props: { 

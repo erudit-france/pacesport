@@ -1,14 +1,14 @@
 import Head from "next/head";
 import Layout from "./layout";
 import { useEffect, useState } from 'react';
-import { Stepper, Button, Group, TextInput, Text, Box, NumberInput, Flex, Modal, Skeleton, Progress, Title, Dialog, Space, Spoiler, Image, Accordion } from '@mantine/core';
+import { Stepper, Button, Group, TextInput, Text, Box, NumberInput, Flex, Modal, Skeleton, Progress, Title, Dialog, Space, Spoiler, Image, Accordion,Button, BsArrowLeft } from '@mantine/core';
 import 'dayjs/locale/fr';
 import CampagneHeaderEditable from "@/components/CampagneHeaderEditable";
 import fileUploader from "@/utils/fileUploader";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import CollectiviteAssociationCard from "@/components/CollectiviteAssociationCard";
-import PreviousPageButton from "@/components/PreviousPageButton";
+;
 import AssociationCardToAdd from "@/components/collectivite/AssociationCardToAdd";
 
 export default function Page(props){
@@ -88,7 +88,10 @@ export default function Page(props){
             <CampagneHeaderEditable image={image} setImage={setImage} setImageFile={setImageFile}/>
             <main className="tw-bg-gradient-to-b tw-from-gray-100 tw-to-white tw-rounded-t-[2rem] tw-relative -tw-mt-7"
                 style={{ minHeight: 'calc(100vh - 180px)' }}>
-                <PreviousPageButton className={"tw-px-4 tw-pt-4"} href='/page/profil/collectivite' />
+                            <Button variant="filled" id="goBackButton" size="sm"
+                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
+                radius={'xl'}><BsArrowLeft /></Button>
                 <section className="tw-px-2 tw-pt-4 tw-border-[1px] tw-border-green-500/50 tw-rounded-2xl tw-shadow-sm tw-m-2">
                     <Title order={3} mb={'sm'}>Ajouter une carte</Title>
                     <Progress className="tw-contrast-[.8]"mt={'sm'}  size="lg" value={progress} striped radius={'lg'}
@@ -109,6 +112,13 @@ export default function Page(props){
                 <Space h={'xl'} mt={'xl'} />
                 <Space h={'xl'} mt={'xl'} />
             </main>
+            <script dangerouslySetInnerHTML={{ __html: `
+            // Attacher un gestionnaire d'événements au bouton
+            document.getElementById('goBackButton').addEventListener('click', function() {
+                // Appeler la fonction pour revenir en arrière dans l'historique
+                window.history.back();
+            });
+        `}} />
         </>
     )
 }

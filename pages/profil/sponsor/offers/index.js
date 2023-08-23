@@ -1,7 +1,8 @@
 import Head from "next/head";
 import Layout from "../layout";
-import { Box, Button, Card, Container, Flex, Image, Popover, Space, Text, Title } from "@mantine/core";
-import PreviousPageButton from "@/components/PreviousPageButton";
+import { Box, Button, Card, Container, Flex, Image, Popover, Space, Text, Title ,Button} from "@mantine/core"; 
+import { BsArrowLeft } from "react-icons/bs";
+;
 import { getSponsorDiscountOffers } from "@/domain/repository/DiscountOfferRepository";
 import moment from "moment";
 
@@ -54,7 +55,10 @@ export default function Page(props) {
             </Head>
             <Container pt={'md'} p={'xl'}>
                 <Box my={'sm'}>
-                    <PreviousPageButton href={props.previousUrl}/>
+                <Button variant="filled" id="goBackButton" size="sm"
+                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
+                radius={'xl'}><BsArrowLeft /></Button>
                     <Title order={4} align='center' transform='uppercase' my={"md"}>Mes partenariats</Title>
                     <Text color="dimmed" fz={'sm'} align="center">Aucun partenariat en cours</Text>
                     <Space h={'lg'} />
@@ -64,6 +68,13 @@ export default function Page(props) {
                     </Container>
                 </Box>
             </Container>
+            <script dangerouslySetInnerHTML={{ __html: `
+            // Attacher un gestionnaire d'événements au bouton
+            document.getElementById('goBackButton').addEventListener('click', function() {
+                // Appeler la fonction pour revenir en arrière dans l'historique
+                window.history.back();
+            });
+        `}} />
         </>
     )
 }
@@ -93,7 +104,6 @@ export async function getServerSideProps(context) {
     return { props: { 
         backgroundImage: backgroundImage.filename,
         avatar: avatar.filename,
-        previousUrl: previousUrl,
         discountOffers: JSON.parse(offers.data.offers)
     } }
   }

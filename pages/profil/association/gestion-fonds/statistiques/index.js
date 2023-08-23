@@ -162,7 +162,6 @@ export async function getServerSideProps(context) {
   let previousUrl = url === undefined ? '/' : url
   // // Pass data to the page via props
   return { props: { 
-      previousUrl: previousUrl,
   } }
 }
 

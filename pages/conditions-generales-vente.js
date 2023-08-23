@@ -1,7 +1,8 @@
-import { BackgroundImage, Box, Center, Container, Image, Text, Title } from "@mantine/core";
+import { BackgroundImage, Box, Center, Container, Image, Text, Title,Button } from "@mantine/core";
+import { BsArrowLeft } from "react-icons/bs";
 import Head from "next/head";
 import React from "react";
-import PreviousPageButton from '@/components/PreviousPageButton'
+
 
 export default function ConditionsGeneralesVente() {
     const json = 
@@ -95,7 +96,10 @@ export default function ConditionsGeneralesVente() {
     return <>
         <main className="tw-h-screen tw-rounded-t-2xl">
         <Center className='tw-absolute tw-left-2 tw-top-0.5'>
-                <PreviousPageButton href='/' className='' />
+        <Button variant="filled" id="goBackButton" size="sm"
+                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
+                radius={'xl'}><BsArrowLeft /></Button>
               </Center>
             <BackgroundImage className="tw-h-full tw-opacity-10 tw-absolute tw-top-0 -tw-z-10" src='/doodle-pattern.png' />
             <Container p={'lg'}>
@@ -106,5 +110,12 @@ export default function ConditionsGeneralesVente() {
                 {render}
             </Container>
         </main>
+        <script dangerouslySetInnerHTML={{ __html: `
+            // Attacher un gestionnaire d'événements au bouton
+            document.getElementById('goBackButton').addEventListener('click', function() {
+                // Appeler la fonction pour revenir en arrière dans l'historique
+                window.history.back();
+            });
+        `}} />
     </>
 }

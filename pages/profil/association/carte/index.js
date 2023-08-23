@@ -30,7 +30,7 @@ export default function Page(props){
                         className="tw-absolute tw-z-20 tw-right-1 tw-opacity-80 -tw-translate-y-1/2 tw-top-1/2"
                         width={24}
                         height={24}
-                        src={`/sim.png`}
+                        src={props.association?.avatar?.name}
                         alt="logo sim"
                     />
                     <Image
@@ -54,7 +54,8 @@ export default function Page(props){
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
-
+            {/* <Link className="tw-border-[1px] tw-px-8 tw-py-0.5 tw-border-[#d61515] tw-rounded-xl tw-shadow-md hover:tw-bg-gray-100" 
+                        href={props.prev}>Retour</Link> */}
             <section className="tw-px-4 tw-pt-14 tw-relative">
                 <Box className="tw-relative">
                     <Title my={'md'} order={4} align="center">{props.association?.name}</Title>
@@ -125,7 +126,7 @@ export async function getServerSideProps(context) {
     let pacesportPendingOffers = await getAssociationPacesportPendingOffers(token)
     let activeOffers = await getCardActiveOffers(token)
     let pacesport = await getPacesportCard(token)
-
+    let prev = ''
     // // Pass data to the page via props
     return { props: {
         backgroundImage: backgroundImage.filename,

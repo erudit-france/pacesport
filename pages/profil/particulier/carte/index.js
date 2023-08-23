@@ -34,10 +34,10 @@ export default function Page(props) {
         <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
           <Box className="tw-rounded-xl tw-border-[1px] tw-relative tw-border-zinc-900 tw-shadow-lg">
               <Image
-                  className="tw-absolute tw-z-20 tw-right-1 tw-opacity-80 -tw-translate-y-1/2 tw-top-1/2"
+                  className="tw-rounded-xl tw-absolute tw-left-5 tw-z-10 tw-opacity-80 -tw-translate-y-full tw-top-10"
                   width={36}
                   height={36}
-                  src={`/sim.png`}
+                  src={pacesportSubscription.association.avatar?.name}
                   alt="logo sim"
               />
               <Image

@@ -1,7 +1,8 @@
-import { Box, Button, Divider, Flex, Group, Space, Text, TextInput, Textarea, Title } from "@mantine/core"
+import { Box, Button, Divider, Flex, Group, Space, Text, TextInput, Textarea, Title,Button} from "@mantine/core"; 
+import { BsArrowLeft } from "react-icons/bs";
 import Layout from "./layout"
 import moment from "moment"
-import PreviousPageButton from "@/components/PreviousPageButton"
+
 import Head from "next/head"
 import { useForm } from "@mantine/form"
 import Toast from "@/services/Toast"
@@ -88,7 +89,10 @@ export default function Page(props) {
         <Head><title>Pace&lsquo;Sport - Sponsor - Campagne</title></Head>
         <section className="tw-p-3 tw-pt-0">
           <Flex>
-            <PreviousPageButton href='/profil/sponsor' className='tw-mb-4 tw-absolute'/>
+          <Button variant="filled" id="goBackButton" size="sm"
+                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
+                radius={'xl'}><BsArrowLeft /></Button>
             <Title order={3} align="center" transform="capitalize" className="tw-flex-1">{card.name}</Title>
           </Flex>
           <Group my={'md'} className="tw-rounded-xl tw-border-[1px] tw-border-gray-400 tw-p-2">
@@ -126,6 +130,13 @@ export default function Page(props) {
             <AssociationAcceptedOffers offers={acceptedOffers} />
             <Space my={'lg'} />
         </Box>  
+        <script dangerouslySetInnerHTML={{ __html: `
+            // Attacher un gestionnaire d'événements au bouton
+            document.getElementById('goBackButton').addEventListener('click', function() {
+                // Appeler la fonction pour revenir en arrière dans l'historique
+                window.history.back();
+            });
+        `}} />
       </>
   )
 }

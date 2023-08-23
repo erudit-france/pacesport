@@ -1,11 +1,12 @@
 import Head from 'next/head'
-import { Avatar, Badge, Box, Button, Card, Center, Container, Flex, Grid, Group, Image, Loader, Modal, Paper, Select, Space, Text, Title, Transition } from '@mantine/core'
+import { Avatar, Badge, Box, Button, Card, Center, Container, Flex, Grid, Group, Image, Loader, Modal, Paper, Select, Space, Text, Title, Transition} from '@mantine/core'
 import Layout from '../../../../layout'
+import { BsArrowLeft } from "react-icons/bs";
 import { useEffect, useState } from 'react'
 import { getCookie } from 'cookies-next'
 import * as cookie from 'cookie'
 import { useRouter } from 'next/router'
-import PreviousPageButton from '@/components/PreviousPageButton'
+
 import { getActiveOffers } from '@/domain/repository/CardOffersRepository'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 import { AiOutlineSync } from 'react-icons/ai'
@@ -109,10 +110,10 @@ export default function Page(props) {
       <Center>
           <Box className="tw-rounded-xl tw-shadow-lg tw-relative">
               <Image
-                  className="tw-absolute tw-z-20 tw-right-1 tw-opacity-80 -tw-translate-y-1/2 tw-top-1/2"
+                  className="tw-rounded-xl tw-absolute tw-left-5 tw-z-10 tw-opacity-80 -tw-translate-y-full tw-top-10"
                   width={24}
                   height={24}
-                  src={`/sim.png`}
+                  src={association.avatar?.name}
                   alt="logo sim"
               />
               <Image
@@ -169,7 +170,10 @@ export default function Page(props) {
         <Box className='tw-min-h-[calc(100vh-180px)]'>
             <Box className='tw-relative'>
               <Center className='tw-absolute tw-left-2 tw-top-0.5'>
-                <PreviousPageButton href='/' className='tw-z-20' />
+              <Button variant="filled" id="goBackButton" size="sm"
+                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
+                radius={'xl'}><BsArrowLeft /></Button>
               </Center>
             </Box>
             
@@ -231,7 +235,13 @@ export default function Page(props) {
                 </section>
             </Box>
         </Box>
-
+        <script dangerouslySetInnerHTML={{ __html: `
+            // Attacher un gestionnaire d'événements au bouton
+            document.getElementById('goBackButton').addEventListener('click', function() {
+                // Appeler la fonction pour revenir en arrière dans l'historique
+                window.history.back();
+            });
+        `}} />
     </>
   )
 }

@@ -1,7 +1,8 @@
 import Head from "next/head";
 import Layout from "./layout";
-import PreviousPageButton from "@/components/PreviousPageButton";
-import { Box, Button, Center, Container, Divider, Flex, Group, Text, Textarea, Title } from "@mantine/core";
+;
+import { Box, Button, Center, Container, Divider, Flex, Group, Text, Textarea, Title,Button} from "@mantine/core"; 
+import { BsArrowLeft } from "react-icons/bs";;
 import { useForm } from "@mantine/form";
 import { useState } from "react";
 import { serialize } from "object-to-formdata";
@@ -91,7 +92,10 @@ export default function Page(props) {
                 <section className="tw-px-4 tw-pt-4">
                     <Container>
                         <Center pos={'relative'} my={'xl'}>
-                            <PreviousPageButton href={props.previousUrl}  className={'tw-absolute tw-left-5'} /> 
+                        <Button variant="filled" id="goBackButton" size="sm"
+                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
+                radius={'xl'}><BsArrowLeft /></Button>
                             <Title order={4}>Offre de sponsoring</Title>
                         </Center>
                         <Divider mt={'md'} mb={'xl'}/>
@@ -114,6 +118,13 @@ export default function Page(props) {
                     </Container>
                 </section>
             </main>
+            <script dangerouslySetInnerHTML={{ __html: `
+            // Attacher un gestionnaire d'événements au bouton
+            document.getElementById('goBackButton').addEventListener('click', function() {
+                // Appeler la fonction pour revenir en arrière dans l'historique
+                window.history.back();
+            });
+        `}} />
         </>
     )
 }
@@ -155,7 +166,6 @@ export async function getServerSideProps(context) {
     return { props: { 
         sponsoringOffer: JSON.parse(sponsoringOffer.data),
         proposition: proposition.data ? JSON.parse(proposition.data) : null,
-        previousUrl: previousUrl,
         paymentLink: stripe.sponsoringOfferUrl
     } }
 }

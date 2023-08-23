@@ -1,4 +1,5 @@
-import { Avatar, Center, Flex, Indicator, Modal, Paper, ScrollArea, Text } from "@mantine/core";
+import { Avatar, Center, Flex, Indicator, Modal, Paper, ScrollArea, Text,Button} from "@mantine/core"; 
+import { BsArrowLeft } from "react-icons/bs";;
 import { useDisclosure, useDocumentTitle } from "@mantine/hooks";
 import { getCookie } from "cookies-next";
 import Head from "next/head"
@@ -10,7 +11,7 @@ import SearchUser from "./components/SearchUser";
 import Layout from "./layout"
 import { FiArrowRight, FiPlus } from 'react-icons/fi'
 import axios from "axios";
-import PreviousPageButton from "@/components/PreviousPageButton";
+;
 
 const UsersCard = ({users}) => {
     const items = users.length == 0 
@@ -55,7 +56,10 @@ const ChatHeader = ({previousUrl}) => {
             <div className="tw-mb-4">
                 <Flex justify={'space-between'}>
                     <Center mr={'md'}>
-                        <PreviousPageButton href={previousUrl} />
+                    <Button variant="filled" id="goBackButton" size="sm"
+                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
+                radius={'xl'}><BsArrowLeft /></Button>
                     </Center>
                     <Link href={'/annuaire?prev=/messages'} 
                         className='tw-text-sm tw-border-[1px] tw-px-3 tw-py-1.5 tw-rounded-2xl
@@ -71,7 +75,13 @@ const ChatHeader = ({previousUrl}) => {
                     </Link> */}
                 </Flex>
             </div>
-            
+            <script dangerouslySetInnerHTML={{ __html: `
+            // Attacher un gestionnaire d'événements au bouton
+            document.getElementById('goBackButton').addEventListener('click', function() {
+                // Appeler la fonction pour revenir en arrière dans l'historique
+                window.history.back();
+            });
+        `}} />
             <Modal opened={opened} onClose={close} title="Liste des utilisateurs" centered>
                 <UsersCard users={users}/>
             </Modal>
@@ -149,8 +159,7 @@ export async function getServerSideProps(context) {
     // // Pass data to the page via props
     return { props: { 
         chatRooms: JSON.parse(data.data),
-        user: JSON.parse(userData.data),
-        previousUrl: previousUrl
+        user: JSON.parse(userData.data)
     } }
 }
 

@@ -6,7 +6,7 @@ export default function Layout({children}){
         <>
             <Navbar />
             <HeroSection />
-            <main className="tw-bg-gradient-to-b tw-from-[#d61515] tw-to-[#d61515] tw-rounded-t-[2rem]"
+            <main className="tw-bg-gradient-to-b tw-from-[#c32428] tw-to-[#ad0a0c] tw-rounded-t-[2rem]"
                 style={{ minHeight: 'calc(100vh - 144px)' }}>{children}</main>
         </>
     )

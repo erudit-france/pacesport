@@ -70,7 +70,6 @@ export default function Page(props) {
     const paiementId = 2
     const [rapatriement, setRapatriement] = useState(props.rapatriement)
     const router = useRouter()
-    const prev = router.query?.prev || ''
     const rapatriementHandler = () => {
         setLoading(true)
         fetch(`/api/association/rapatriement`, {

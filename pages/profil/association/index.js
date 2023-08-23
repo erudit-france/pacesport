@@ -285,7 +285,7 @@ export default function Page(props){
                     <Flex justify={'space-between'} my={'lg'} className="tw-relative">
                         <Text className="tw-flex-1" color="red" fz={'sm'} fw={'bold'} align={'center'} py={2}>Ajoutez encore {nbSponsorsNeeded} partenaires pour valider votre pace&lsquo;sport</Text>
                     </Flex>}
-                <CampagneCard status={props?.pacesportCard?.status == '1' && activeOffers?.some(offer => offer?.type === 'Nationale')} id={1} title={'Carte pacesport'} image={props.pacesportCard?.image?.name} startDate={Date.now()} />
+                <CampagneCard status={props?.pacesportCard?.status == '1' && activeOffers?.some(offer => offer?.type === 'Nationale')} id={1} title={'Carte pacesport'} image2={props.association?.image?.name} image={props.pacesportCard?.image?.name} startDate={Date.now()} />
                   {      console.log(JSON.stringify(props, null, 2))}              
                 <Divider  my={'sm'} className="tw-w-2/3 tw-mx-auto"/>
                 
@@ -418,6 +418,13 @@ export async function getServerSideProps(context) {
     let sponsors = await getActive(token)
     let activeOffers = await getCardActiveOffers(token)
 
+      // fetch Associations
+  let associations = await fetch(`${process.env.API_URL}/api/association/list`, {
+    headers: new Headers({
+            'JWTAuthorization': `Bearer ${token}`,
+    })}
+  )
+  associations = await associations.json();
     // // Pass data to the page via props
     return { props: {
         backgroundImage: backgroundImage.filename,
@@ -428,10 +435,11 @@ export async function getServerSideProps(context) {
         validationRequest: JSON.parse(validationRequest.data),
         user: JSON.parse(user.data),
         pacesportCard: JSON.parse(pacesport.data),
+        associations : JSON.parse(associations.data),
         activeOffers: JSON.parse(activeOffers.data),
         sponsors: JSON.parse(sponsors.data)
     }}
-
+    console.log(JSON.stringify(props.association, null, 2))
   }
 
 Page.getLayout = function getLayout(page) {

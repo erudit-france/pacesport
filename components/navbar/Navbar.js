@@ -11,7 +11,7 @@ import { deleteCookie, getCookie } from 'cookies-next';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { AppContext } from '@/context/AppContext';
-import { Avatar, Center, Flex, Overlay, Text } from '@mantine/core';
+import { Avatar, Center, Flex, Overlay, Text, Box, Button } from '@mantine/core';
 import { BiHome } from 'react-icons/bi';
 
 
@@ -69,16 +69,17 @@ export default function Navbar(props){
     const NavAssociation = () => {
         return (
             <>
-                <Flex justify={'space-between'} align={'center'}>
+                <Flex justify="between" items="center">
                     <NavbarLink 
                         border={true} toggleMenu={ toggleMenu } 
                         href={'/login/as'} 
                         name={<>Changer de rôle <VscSync className="tw-my-auto tw-ml-1" /></>} />
-                        
+
                     <NavbarLink 
                         border={true} toggleMenu={ toggleMenu } 
                         href={'/profil/association'} 
-                        name={<><BiHome size={20} /></>} />
+                        name={<><BiHome size={20} /></>}
+                        className="ml-4" />
                 
                 </Flex>
                 <NavbarLink toggleMenu={ toggleMenu } href={'/profil/association'} name={<>Mon pace&lsquo;sport (carte)</>} />
@@ -86,6 +87,13 @@ export default function Navbar(props){
                 <NavbarLink toggleMenu={ toggleMenu } href={`/annuaire?prev=${router.pathname}`} name={'Annuaire'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/messages?prev=${router.pathname}`} name={'Messagerie'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/profil/association/gestion-fonds?prev=${router.pathname}`} name={'Centre de gestion'} />
+
+                        <Button 
+                            onClick={logout}
+                            className={`tw-my-5
+                                        tw-w-full tw-bg-[#d61515] tw-text-white hover:tw-bg-[#d61515] hover:tw-text-gray-100'}
+                                        `}
+                            radius='lg'>Déconnexion</Button>
             </>
         )
     }
@@ -111,6 +119,11 @@ export default function Navbar(props){
                 <NavbarLink toggleMenu={ toggleMenu } href={`/messages?prev=${router.pathname}`} name={'Messagerie'} />
             </React.Fragment>
         )
+    }
+
+    const logout = () => {
+        deleteCookie('token')
+        router.push('/login')
     }
 
     if (readyToRender) {

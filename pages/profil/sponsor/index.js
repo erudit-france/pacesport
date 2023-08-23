@@ -249,13 +249,12 @@ export default function Page(props) {
     })
   }
 
-  // add label to existing array
-  const associationsSelect = props.associations.map((a) => {
-    return (
-      {...a, label: a.name, value: a.id}
-    )
-  })
-
+    // add label to existing array
+    const associationsSelect = props.associations.map((a) => {
+      return (
+        {...a, label: a.name, value: a.id}
+      )
+    })
   // add label to existing array
   const associationsSelectEdit = props.associations.map((a) => {
     // ne pas pouvoir selectionner/deselectionné les associations existantes

@@ -27,7 +27,7 @@ export default function Page(props) {
                 className="tw-absolute tw-right-1 tw-opacity-80 -tw-translate-y-1/2 tw-top-1/2"
                 width={36}
                 height={36}
-                src={`/sim.png`}
+                src={offer.enseigne.avatar?.name}
                 alt="logo sim"
             />
             <Image

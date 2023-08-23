@@ -2,8 +2,9 @@ import { AspectRatio, Badge, Box, Button, Center, Flex, Image, Text } from "@man
 import moment from "moment";
 import Link from "next/link";
 
-export default function CampagneCard({id, title, image, startDate, status}){
+export default function CampagneCard({id, title, image, startDate, status, image2}){
     const src = image == null || undefined ? '/logo.png' : `/uploads/${image}`
+    const src2 = image2 == null || undefined ? '/logo.png' : `/uploads/${image2}`
     const nbCartes = 1
     const statusString = (status) => { return status == 1 ? 'Active' : 'En attente' }
     const Status = () => (
@@ -21,13 +22,14 @@ export default function CampagneCard({id, title, image, startDate, status}){
                     <Center>
                         <Box className="tw-rounded-xl tw-shadow-md tw-relative">
                             <Image
-                                className="tw-absolute tw-right-1 tw-z-10 tw-opacity-80 -tw-translate-y-full tw-top-1/2"
+                                className="tw-rounded-xl tw-absolute tw-left-5 tw-z-10 tw-opacity-80 -tw-translate-y-full tw-top-10"
                                 width={26}
                                 height={26}
-                                src={`/sim.png`}
+                                src={src2}
                                 alt="logo sim"
                             />
                             <Image
+                            className="tw-rounded-xl"
                                 width={250}
                                 height={130}
                                 src={src}
