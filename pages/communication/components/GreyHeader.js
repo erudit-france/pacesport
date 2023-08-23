@@ -1,6 +1,6 @@
 import { Text } from "@mantine/core";
 import Image from "next/image";
-import hero from '@/public/stadium_chairs.jpg'
+import hero from '@/public/chair.jpg'
 
 export default function GreyHeader({text}) {
     return (

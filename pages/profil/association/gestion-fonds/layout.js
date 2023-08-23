@@ -1,7 +1,7 @@
 import Navbar from "@/components/navbar/Navbar";
 import { Box, Flex, Image, Text } from "@mantine/core";
 import Head from "next/head";
-import hero from '@/public/stadium_chairs.jpg'
+import hero from '@/public/chair.jpg'
 
 
 export default function Layout({children, text, subtext}){

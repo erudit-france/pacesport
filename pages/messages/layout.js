@@ -12,7 +12,7 @@ export default function Layout({children}){
             <main className="tw-w-screen tw-h-screen">
                 <BackgroundImage className="tw-h-full tw-opacity-10 tw-absolute tw-top-0 -tw-z-10" src='/doodle-pattern.png' />
                 <Box className="tw-h-[9rem] tw-w-full tw-relative tw-top-0 -tw-z-9 tw-rounded-br-[3rem] tw-overflow-hidden">
-                    <BackgroundImage className="tw-h-full tw-absolute -tw-z-8 tw-blur-[1px]" src='/stadium_chairs.jpg' />
+                    <BackgroundImage className="tw-h-full tw-absolute -tw-z-8 tw-blur-[1px]" src='/chair.jpg' />
                     <div className="tw-h-[9rem] tw-w-full tw-bg-[#d61515] tw-absolute -tw-z-7">
                         <Center className="tw-h-full">
                             <Title order={3} color="white" align="center" weight={500}>Messages</Title>

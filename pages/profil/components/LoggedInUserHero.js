@@ -1,5 +1,5 @@
 import Image from "next/image";
-import hero from '../../../public/stadium_chairs.jpg'
+import hero from '../../../public/chair.jpg'
 import userImage from '../../../public/association.png'
 
 
