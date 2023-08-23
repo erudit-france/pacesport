@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Layout from "../layout";
-import { Box, Button, Card, Container, Flex, Image, Popover, Space, Text, Title ,Button} from "@mantine/core"; 
+import { Box, Button, Card, Container, Flex, Image, Popover, Space, Text, Title} from "@mantine/core"; 
 import { BsArrowLeft } from "react-icons/bs";
 ;
 import { getSponsorDiscountOffers } from "@/domain/repository/DiscountOfferRepository";

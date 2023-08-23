@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Flex, Group, Space, Text, TextInput, Textarea, Title,Button} from "@mantine/core"; 
+import { Box, Button, Divider, Flex, Group, Space, Text, TextInput, Textarea, Title} from "@mantine/core"; 
 import { BsArrowLeft } from "react-icons/bs";
 import Layout from "./layout"
 import moment from "moment"

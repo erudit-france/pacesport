@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Layout from "./layout";
 ;
-import { Box, Button, Center, Container, Divider, Flex, Group, Text, Textarea, Title,Button} from "@mantine/core"; 
+import { Box, Button, Center, Container, Divider, Flex, Group, Text, Textarea, Title} from "@mantine/core"; 
 import { BsArrowLeft } from "react-icons/bs";;
 import { useForm } from "@mantine/form";
 import { useState } from "react";
