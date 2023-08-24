@@ -57,7 +57,8 @@ export default function Navbar(props){
                     <NavbarLink 
                         border={true} toggleMenu={ toggleMenu } 
                         href={'/'} 
-                        name={<><BiHome size={20} /></>} />
+                        name={<><BiHome size={20} /></>}
+                        className="ml-4" />
                 
                 </Flex>
                 <NavbarLink toggleMenu={ toggleMenu } href={'/'} name={<>Mon pace&lsquo;sport (carte)</>} />
@@ -76,16 +77,16 @@ export default function Navbar(props){
     const NavAssociation = () => {
         return (
             <>
-                <Flex justify="between" items="center">
+                <Flex justify={'space-between'} align={'center'}>
                     <NavbarLink 
                         border={true} toggleMenu={ toggleMenu } 
-                        href={'/login/as'} 
+                        href={'/login/as'}  style="margin-right:'20px'"
                         name={<>Changer de rôle <VscSync className="tw-my-auto tw-ml-1" /></>} />
-
+                        
                     <NavbarLink 
                         border={true} toggleMenu={ toggleMenu } 
-                        href={'/profil/association'} 
-                        name={<><BiHome size={20} /></>}
+                        href={'/profil/sponsor'} 
+                        name={<><BiHome size={20} /></>} 
                         className="ml-4" />
                 
                 </Flex>
@@ -117,7 +118,8 @@ export default function Navbar(props){
                     <NavbarLink 
                         border={true} toggleMenu={ toggleMenu } 
                         href={'/profil/sponsor'} 
-                        name={<><BiHome size={20} /></>} />
+                        name={<><BiHome size={20} /></>} 
+                        className="ml-4" />
                 
                 </Flex>
                 <NavbarLink toggleMenu={ toggleMenu } href={'/profil/sponsor'} name={'Mes cartes / partenariats actifs'}/>

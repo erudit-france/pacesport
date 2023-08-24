@@ -32,8 +32,7 @@ export default function AssociationCardToAdd({card, addToCardList}){
                                 color={status == 1 ? 'teal' : 'indigo'}>
                                 {statusString(status)}</Badge></Text>
                         <Button size="xs" className="tw-bg-gray-900 tw-text-gray-100 tw-text-xs tw-rounded-xl tw-px-10 tw-h-6
-                                hover:tw-bg-black"
-                                onClick={() => addToCardList(card.id)}>
+                                hover:tw-bg-black" onClick={() => addToCardList(card.id)} style="marginLeft:'10px'" >
                                 Ajouter</Button>
                     </Flex>
             </Flex>
