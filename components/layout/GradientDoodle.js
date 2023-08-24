@@ -23,8 +23,6 @@ const HeroSection = ({isLogoVisible = true}) => {
 
 export default function Layout({isLogoVisible, children}){
     return (
-        <div className="fixed inset-0 bg-gray-900 flex items-center justify-center">
-      <div className="w-full h-full bg-white p-8">
         <main className="tw-h-screen tw-w-screen tw-relative">
             <div className="tw-w-full tw-h-full">
                 <HeroSection isLogoVisible={isLogoVisible} />
@@ -37,6 +35,5 @@ export default function Layout({isLogoVisible, children}){
                     tw-bg-gradient-to-b tw-from-white tw-from-10% tw-via-[#d61515] tw-via-40% tw-to-[#d61515] tw-to-90%" />
             </div>
         </main>
-        </div></div>
     )
 }

@@ -13,7 +13,7 @@ export default function Document() {
           <meta name="apple-mobile-web-app-status-bar-style" content="#b82318"/>
 
         </Head>
-        <body>
+        <body className="fixed top-0 left-0 w-full h-full overflow-y-scroll overflow-x-hidden touch-scroll">
           <Main />
           <NextScript />
         </body>
