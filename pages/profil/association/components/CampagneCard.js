@@ -10,7 +10,7 @@ export default function CampagneCard({id, title, image, startDate, status, image
     const Status = () => (
         <Text fz={'sm'} my={'xs'} transform="uppercase">
         Statut: 
-        <Badge className="tw-font-normal tw-uppercase tw-ml-3" 
+        <Badge className="tw-font-normal tw-uppercase tw-ml-3 tw-mr-5" 
             size="sm" 
             color={status == 1 ? 'teal' : 'indigo'}>
             {statusString(status)}</Badge></Text>
@@ -29,7 +29,7 @@ export default function CampagneCard({id, title, image, startDate, status, image
                                 alt="logo sim"
                             />
                             <Image
-                            className="tw-rounded-xl"
+                            className="tw-rounded-xl tw-rounded-xl"
                                 width={250}
                                 height={130}
                                 src={src}
