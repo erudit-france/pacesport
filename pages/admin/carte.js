@@ -111,7 +111,7 @@ export default function Page(props){
                         alt="logo sim"
                     />
                     <Image
-                    className="tw-opacity-95"
+                    className="tw-opacity-95 tw-rounded-xl"
                     radius={'lg'}
                     width={200}
                     height={110}
