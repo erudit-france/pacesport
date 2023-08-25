@@ -29,6 +29,7 @@ export default function Page(props) {
   const [isFlipped, setIsFlipped] = useState(false)
 
   const pacesportCardSrc = props.pacesportCard?.image?.name ? `/uploads/${props.pacesportCard?.image?.name}` : '/logo.png'
+    console.log(props)
   const standaloneCard = <>
       <Center>
         <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
@@ -136,7 +137,7 @@ export default function Page(props) {
                     </Center>
                     }
 
-                    <Text className="tw-text-gray-800" align="center" mt={'sm'} fz={'sm'}>Abonné jusqu&lsquo;au {moment(props.card.endDate).format('DD/MM/YYYY')}</Text>
+                    <Text className="tw-text-gray-800" align="center" mt={'sm'} fz={'sm'}>Abonné jusqu&lsquo;au {moment(pacesportSubscription.createdAt).add(1, 'years').format('DD/MM/YYYY')}</Text>
                     <Center mt={'md'}>
                       <Button onClick={() => setShowOffers(!showOffers)} color='white' variant='outline' className='tw-border-gray-700' radius={'lg'}>
                         <Text className='tw-text-gray-800' transform='uppercase' fz={'sm'}>Voir {showOffers ? 'moins' : 'les offres' }</Text>
@@ -189,6 +190,7 @@ export async function getServerSideProps(context) {
       }
     }
   }
+
   // Pas d'abonnement, redirection
   if (pacesportSubscription == null) {
     return {

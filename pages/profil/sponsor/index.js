@@ -117,7 +117,7 @@ export default function Page(props) {
   const [loading, setLoading] = useState(false)
   const [sponsorOffers, setSponsorOffers] = useState(props.offers);
   const [opened, setOpened] = useState(false);
-  const [tab, setTab] = useState('Nationale')
+  const [tab, setTab] = useState('Locale')
   const [maxSelectedAssociations, setMaxSelectedAssociations] = useState(99)
   const [selectedAssociations, setselectedAssociations] = useState([])
   const [editSelectedAssociations, setEditSelectedAssociations] = useState([])
@@ -433,7 +433,7 @@ export default function Page(props) {
                   onChange={tabHandler}
                   radius="xl"
                   size="sm"
-                  data={['Nationale', 'Locale']}
+                  data={['Locale', 'Nationale']}
                   color="gray"
                   className='tw-border-[1px] tw-border-b-0 tw-border-white tw-mb-4'
                 />

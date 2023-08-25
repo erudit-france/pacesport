@@ -75,7 +75,7 @@ export default function Page(props) {
 
   const associationsGrid = filteredAssociations.length == 0
     ? <Text fz={'sm'} align="center" color="dimmed">Aucune association enregistrée</Text>
-    : <Grid gutter={18} className="tw-px-4">{associations}</Grid>
+    : <Grid gutter={18} className="tw-px-4 tw-m-[0px]">{associations}</Grid>
 
   return (
     <>
@@ -144,7 +144,7 @@ export async function getServerSideProps(context) {
   return {
     redirect: {
       permanent: false,
-      destination: "/login"
+      destination: "/login/as"
     }
   }
 

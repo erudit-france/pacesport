@@ -5,9 +5,9 @@ const exclude = [
     '/conditions-generales-vente',
     '/conditions-generales-utilisation',
     '/politique-de-confidentialite',
-    '/home',
-    '/login'
-]
+     '/home'
+//     ,'/login'
+ ]
 
 // // This function can be marked `async` if using `await` inside
 export function middleware(req) {

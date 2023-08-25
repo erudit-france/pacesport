@@ -10,7 +10,7 @@ const HeroSection = ({isLogoVisible = true}) => {
             {isLogoVisible != false && 
             <header className='tw-flex tw-justify-center tw-h-36 tw-relative'>
                 <div className='tw-flex tw-flex-col tw-justify-center'>
-                    <Link href='/login'>
+                    <Link href='/login/as'>
                     <Image src={logo} height={70} width={70} alt="Logo Pace'sport" 
                             className='tw-rounded-full shadow-sm tw-bg-white tw-p-2 tw-z-20'/>
                     </Link>
