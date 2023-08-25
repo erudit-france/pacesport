@@ -114,11 +114,11 @@ export default function Page(props) {
                   className="tw-rounded-xl tw-absolute tw-left-5 tw-z-10 tw-opacity-80 -tw-translate-y-full tw-top-10"
                   width={24}
                   height={24}
-                  src={association.avatar?.name}
+                  src={`/uploads/${association.avatar?.name}`}
                   alt="logo sim"
               />
               <Image
-              className="tw-opacity-95"
+              className="tw-opacity-95 tw-rounded-xl"
               radius={'lg'}
               width={200}
               height={110}

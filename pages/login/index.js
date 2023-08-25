@@ -29,7 +29,7 @@ export default function Page() {
                             <div className="tw-absolute tw-z-[201]"
                                 style={ {top: 'calc(50vh - 80px)', left: 'calc(50vw - 50px)'} }>
                                 <Image src={logo} height={100} width={100} alt="Logo Pace'sport" 
-                                    className='tw-rounded-full shadow-sm tw-bg-white/80 tw-p-2 tw-mx-auto'/>
+                                    className='tw-rounded-full shadow-sm tw-bg-red/80 tw-p-2 tw-mx-auto'/>
 
                                 <Text fz={'xs'} transform="uppercase" align="center" color="white" mt={'lg'}>Chargement...</Text>
                             </div>

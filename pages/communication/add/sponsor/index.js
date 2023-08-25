@@ -2,7 +2,7 @@ import { Box, Button, Flex, Group, Text, Textarea} from "@mantine/core";
 import { BsArrowLeft } from "react-icons/bs";
 import Layout from "../layout"
 import { useForm } from "@mantine/form";
-;
+import Link from 'next/link';
 import Toast from "@/services/Toast";
 import { useState } from "react";
 import { useRouter } from "next/router";
@@ -99,10 +99,11 @@ export default function Page(props) {
             <div className="tw-container tw-mx-auto tw-px-2">
                 <Box my={'sm'}>
                     <Flex justify={'space-between'}>
-                    <Button variant="filled" id="goBackButton" size="sm"
+                    <Link href="/profil/sponsor">
+                    <Button variant="filled" size="sm"
                 className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
                 hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
-                radius={'xl'}><BsArrowLeft /></Button>
+                radius={'xl'}><BsArrowLeft /></Button></Link>
                         <Group className="tw-rounded-3xl tw-border-[1px] tw-border-gray-300 tw-shadow-sm tw-px-4 tw-mr-2">
                             <Text>Crédits:</Text>
                             <Text>{props.credit}</Text>
@@ -130,13 +131,6 @@ export default function Page(props) {
                     <Text className="tw-text-gray-700" size={'sm'} align="center">Un crédit = une publication par jour</Text>
                 </form>
             </div>
-            <script dangerouslySetInnerHTML={{ __html: `
-            // Attacher un gestionnaire d'événements au bouton
-            document.getElementById('goBackButton').addEventListener('click', function() {
-                // Appeler la fonction pour revenir en arrière dans l'historique
-                window.history.back();
-            });
-        `}} />
 
             {/* gold pricing section */}
             <section className="tw-bg-[#d61515] tw-mt-4">

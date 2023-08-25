@@ -92,16 +92,17 @@ export default function Page({status}){
             </header>
             <Box className="tw-rounded-3xl tw-relative" pt={'xl'} m={'lg'} bg={'dark'} >
 
-            <Button variant="filled" id="goBackButton" size="sm"
+            <Link href="/login/as">
+            <Button variant="filled" size="sm"
                 className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
                 hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
-                radius={'xl'}><BsArrowLeft /></Button>
+                radius={'xl'}><BsArrowLeft /></Button></Link>
 
                 <Title order={6} align="center" transform="uppercase" weight={600} color="white">
                         Paramètres</Title>
                 <Flex justify='center' direction='column' mb='lg' p={'xl'} mx={'md'} gap="xl">
                     <Flex justify='center' direction='column' my='xs' py={'sm'} gap="xs">
-                        <LinkButton className={''} text='Mes informations' href={''}/>
+                        <LinkButton className={''} text='Mes informations' href={'/informations'}/>
                         <Space my={'xs'} />
                         <Space my={'xs'} />
                         <LinkButton className={''} text='Conditions d&lsquo;utilisation' href={'/conditions-generales-utilisation'} />
@@ -112,15 +113,6 @@ export default function Page({status}){
                     <LinkButton className={''} text='Déconnexion' href={''} onClick={() => logout()} />
                 </Flex>
             </Box>
-           
-
-            <script dangerouslySetInnerHTML={{ __html: `
-            // Attacher un gestionnaire d'événements au bouton
-            document.getElementById('goBackButton').addEventListener('click', function() {
-                // Appeler la fonction pour revenir en arrière dans l'historique
-                window.history.back();
-            });
-        `}} />
         </>
     )
 }

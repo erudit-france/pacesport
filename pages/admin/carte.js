@@ -104,14 +104,14 @@ export default function Page(props){
             <Center>
                 <Box className="tw-rounded-xl tw-shadow-lg tw-relative">
                     <Image
-                        className="tw-absolute tw-z-20 tw-right-1 tw-opacity-80 -tw-translate-y-1/2 tw-top-1/2"
+                        className="tw-absolute tw-rounded-xl tw-z-20 tw-right-1 tw-opacity-80 -tw-translate-y-1/2 tw-top-1/2"
                         width={24}
                         height={24}
                         src={``}
                         alt="logo sim"
                     />
                     <Image
-                    className="tw-opacity-95"
+                    className="tw-opacity-95 tw-rounded-xl"
                     radius={'lg'}
                     width={200}
                     height={110}

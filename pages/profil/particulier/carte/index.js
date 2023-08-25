@@ -32,16 +32,16 @@ export default function Page(props) {
   const standaloneCard = <>
       <Center>
         <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
-          <Box className="tw-rounded-xl tw-border-[1px] tw-relative tw-border-zinc-900 tw-shadow-lg">
+          <Box className="tw-rounded-[17px] tw-border-[1px] tw-relative tw-border-zinc-900 tw-shadow-lg">
               <Image
                   className="tw-rounded-xl tw-absolute tw-left-5 tw-z-10 tw-opacity-80 -tw-translate-y-full tw-top-10"
                   width={36}
                   height={36}
-                  src={pacesportSubscription.association.avatar?.name}
+                  src={`/uploads/${pacesportSubscription.association.avatar?.name}`}
                   alt="logo sim"
               />
               <Image
-              className="tw-opacity-95"
+              className="tw-rounded-xl"
               radius={'lg'}
               width={280}
               height={160}

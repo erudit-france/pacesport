@@ -20,9 +20,9 @@ export default function NavbarLink({name, href, toggleMenu, border}) {
     return (
         <>
             <motion.li 
-                className={`tw-font-semibold tw-my-3.5 tw-text-gray-900 item
+                className={`tw-mr-1 tw-font-semibold tw-my-3.5 tw-text-gray-900 item
                 ${border ? 'tw-border-[1px] tw-rounded-3xl tw-border-gray-500 tw-py-1 tw-px-2.5' : ''}
-                `}
+                `} 
                 variants={menuItemVariants}>
                     <Link 
                         onClick={toggleMenuHandler} 

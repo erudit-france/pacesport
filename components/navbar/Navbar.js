@@ -57,11 +57,19 @@ export default function Navbar(props){
                     <NavbarLink 
                         border={true} toggleMenu={ toggleMenu } 
                         href={'/'} 
-                        name={<><BiHome size={20} /></>} />
+                        name={<><BiHome size={20} /></>}
+                        className="ml-4" />
                 
                 </Flex>
                 <NavbarLink toggleMenu={ toggleMenu } href={'/'} name={<>Mon pace&lsquo;sport (carte)</>} />
                 <NavbarLink toggleMenu={ toggleMenu } href={'/parametres?prev=/'} name={'Paramètres'} />
+
+                <Button 
+                            onClick={logout}
+                            className={`tw-my-5
+                                        tw-w-full tw-bg-[#d61515] tw-text-white hover:tw-bg-[#d61515] hover:tw-text-gray-100'}
+                                        `}
+                            radius='lg'>Déconnexion</Button>
             </>
         )
     }
@@ -69,16 +77,16 @@ export default function Navbar(props){
     const NavAssociation = () => {
         return (
             <>
-                <Flex justify="between" items="center">
+                <Flex justify={'space-between'} align={'center'}>
                     <NavbarLink 
                         border={true} toggleMenu={ toggleMenu } 
-                        href={'/login/as'} 
+                        href={'/login/as'}  style="margin-right:'20px'"
                         name={<>Changer de rôle <VscSync className="tw-my-auto tw-ml-1" /></>} />
-
+                        
                     <NavbarLink 
                         border={true} toggleMenu={ toggleMenu } 
-                        href={'/profil/association'} 
-                        name={<><BiHome size={20} /></>}
+                        href={'/profil/sponsor'} 
+                        name={<><BiHome size={20} /></>} 
                         className="ml-4" />
                 
                 </Flex>
@@ -110,13 +118,21 @@ export default function Navbar(props){
                     <NavbarLink 
                         border={true} toggleMenu={ toggleMenu } 
                         href={'/profil/sponsor'} 
-                        name={<><BiHome size={20} /></>} />
+                        name={<><BiHome size={20} /></>} 
+                        className="ml-4" />
                 
                 </Flex>
                 <NavbarLink toggleMenu={ toggleMenu } href={'/profil/sponsor'} name={'Mes cartes / partenariats actifs'}/>
                 <NavbarLink toggleMenu={ toggleMenu } href={'/communication/add/sponsor'} name={'Communication'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/annuaire?prev=${router.pathname}`} name={'Annuaire'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/messages?prev=${router.pathname}`} name={'Messagerie'} />
+
+                <Button 
+                            onClick={logout}
+                            className={`tw-my-5
+                                        tw-w-full tw-bg-[#d61515] tw-text-white hover:tw-bg-[#d61515] hover:tw-text-gray-100'}
+                                        `}
+                            radius='lg'>Déconnexion</Button>
             </React.Fragment>
         )
     }

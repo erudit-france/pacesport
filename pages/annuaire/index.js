@@ -4,7 +4,7 @@ import { BsArrowLeft } from "react-icons/bs";
 import Head from "next/head"
 import { useContext, useState } from "react"
 import { AppContext } from "@/context/AppContext"
-
+import Link from 'next/link';
 import SearchInput from "@/components/SearchInput"
 import React from 'react';
 
@@ -52,10 +52,6 @@ export default function Page({user, users, query}) {
             <Box>
                 <Flex m={'md'}>
                     <Center mr={'md'}>
-                    <Button variant="filled" id="goBackButton" size="sm"
-                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
-                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
-                radius={'xl'}><BsArrowLeft /></Button>
                     </Center>
                     <SearchInput className='tw-flex-1' />
                 </Flex>
@@ -85,13 +81,6 @@ export default function Page({user, users, query}) {
                     <InfoText title={'Enseigne'} value={currentUser?.enseigne?.name} />
                 </SimpleGrid>
             </Modal>
-            <script dangerouslySetInnerHTML={{ __html: `
-            // Attacher un gestionnaire d'événements au bouton
-            document.getElementById('goBackButton').addEventListener('click', function() {
-                // Appeler la fonction pour revenir en arrière dans l'historique
-                window.history.back();
-            });
-        `}} />
         </>
     )
 }
