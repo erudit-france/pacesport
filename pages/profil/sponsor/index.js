@@ -138,7 +138,7 @@ export default function Page(props) {
       
       offerForm.setValues({
           title: offer.title,
-          description: offer.description,
+          name: offer.name,
       })
       return
     }
@@ -162,7 +162,7 @@ export default function Page(props) {
   const form = useForm({
       initialValues: {
           association: [],
-          description: '',
+          name: '',
           type: 'Nationale',
       },
       validate: {
@@ -172,7 +172,7 @@ export default function Page(props) {
           }
           return null
         },
-        description: (value) => (value != '' ? null : 'Veuillez saisir une description'),
+        name: (value) => (value != '' ? null : 'Veuillez saisir une name'),
       },
   });
 
@@ -180,7 +180,7 @@ export default function Page(props) {
       initialValues: {
           category: '',
           title: openOffer ? openOffer.title : '',
-          description: openOffer ? openOffer.description : ''
+          name: openOffer ? openOffer.name : ''
       },
       validate: {
       },
@@ -269,13 +269,13 @@ export default function Page(props) {
   })
 
   const SelectItem = forwardRef(
-    ({ avatar, description, ...others }, ref) => {
+    ({ avatar, name, ...others }, ref) => {
       return (
         <div ref={ref} {...others}>
           <Group noWrap>
             <Avatar radius={'xl'} src={avatar == null ? null : `/uploads/${avatar.name}`} />
             <div>
-              <Text size="sm">{description}</Text>
+              <Text size="sm">{name}</Text>
             </div>
           </Group>
         </div>
@@ -335,7 +335,7 @@ export default function Page(props) {
           <Flex justify={'space-between'}>
             <TextPopOver text={offer.title} />
           </Flex>
-          <Text color='dimmed'>{offer.description}</Text>
+          <Text color='dimmed'>{offer.name}</Text>
         </Flex>
         <Center>
           <Flex direction={'column'}>
@@ -373,7 +373,7 @@ export default function Page(props) {
     <>
         <Head>
           <title>PACE&lsquo;SPORT</title>
-          <meta name="description" content="PACE&lsquo;SPORT" />
+          <meta name="name" content="PACE&lsquo;SPORT" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
@@ -458,11 +458,11 @@ export default function Page(props) {
                     onDropdownClose={() => console.log('closing')}
                     />
 
-                <Textarea size="xs" mb={'sm'} label="Description de l'offre"
+                <Textarea size="xs" mb={'sm'} label="name de l'offre"
                       minRows={3}
                       autosize
                       withAsterisk
-                      {...form.getInputProps('description')}/>
+                      {...form.getInputProps('name')}/>
 
                 <Center>
                   <Button className='tw-bg-lime-600 hover:tw-bg-teal-600'
@@ -497,8 +497,8 @@ export default function Page(props) {
                 <Text fz={'sm'}>{openOffer?.title}</Text>
               </Group>
               <Group mb={'sm'}>
-                <Text weight={600} fz={'sm'}>Description</Text>
-                <Text fz={'sm'}>{openOffer?.description}</Text>
+                <Text weight={600} fz={'sm'}>name</Text>
+                <Text fz={'sm'}>{openOffer?.name}</Text>
               </Group>
               <Group mb={'sm'}>
                 <Text weight={600} fz={'sm'}>Type</Text>
@@ -523,14 +523,14 @@ export default function Page(props) {
               </Flex>
               <Title mt={'xl'} order={5}>Modifier offre</Title>
                 <form onSubmit={offerForm.onSubmit((values) => submitOffer(values))} className="tw-p-4">
-                    {/* <TextInput mt="sm" description={"Titre de l'offre"} radius="md" size="sm" withAsterisk
+                    {/* <TextInput mt="sm" name={"Titre de l'offre"} radius="md" size="sm" withAsterisk
                         mb={'md'}
                         {...offerForm.getInputProps('title')}/>
                         
-                    <Textarea mt="sm" description={"Description de l'offre"} radius="md" size="sm" withAsterisk
+                    <Textarea mt="sm" name={"name de l'offre"} radius="md" size="sm" withAsterisk
                         minRows={3}
                         mb={'md'}
-                        {...offerForm.getInputProps('description')}/> */}
+                        {...offerForm.getInputProps('name')}/> */}
                     <MultiSelect
                       disabled={openOffer?.type == 'Nationale'}
                       label="Ajouter association(s)"
