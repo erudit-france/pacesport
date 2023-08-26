@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { Avatar, Badge, Box, Button, Card, Center, Container, Flex, Grid, Group, Image, Loader, Modal, Paper, Select, Space, Text, Title, Transition} from '@mantine/core'
+import { Avatar, Badge, Box, Button, Card, Center, Container, Flex, Grid, Group, Image, Loader, Modal, Paper, Select, Space, Text, Title, Transition } from '@mantine/core'
 import Layout from '../../../../layout'
 import { BsArrowLeft } from "react-icons/bs";
 import { useEffect, useState } from 'react'
@@ -62,14 +62,15 @@ export default function Page(props) {
         'JWTAuthorization': `Bearer ${getCookie('token')}`
       }),
       body: JSON.stringify({
-        cancelUrl: baseURL,//ICI
-        baseUrl: baseURL//ICI
+        cancelUrl: baseURL,
+        baseUrl: baseURL,
+        asso: association.id,
       })
     }).then(res => res.json())
       .then(res => {
         console.log("Error from server:", res);
-        if (res.monthUrl) {
-          router.push(res.monthUrl)
+        if (res.yearUrl) {
+          router.push(res.yearUrl)
         }
       })
       .catch((err) => {
@@ -108,44 +109,44 @@ export default function Page(props) {
 
   const pacesportCardSrc = props.pacesportCard?.image?.name ? `/uploads/${props.pacesportCard?.image?.name}` : '/logo.png'
   const standaloneCard = <>
-      <Center>
-          <Box className="tw-rounded-xl tw-shadow-lg tw-relative">
-              <Image
-                  className="tw-rounded-xl tw-absolute tw-left-5 tw-z-10 tw-opacity-80 -tw-translate-y-full tw-top-10"
-                  width={24}
-                  height={24}
-                  src={`/uploads/${association.avatar?.name}`}
-                  alt="logo sim"
-              />
-              <Image
-              className="tw-opacity-95 tw-rounded-xl"
-              radius={'lg'}
-              width={200}
-              height={110}
-              src={`${pacesportCardSrc}`}
-              alt="Photo de campagne"
-              withPlaceholder
-              />
-          </Box>
-      </Center>
-      </>
+    <Center>
+      <Box className="tw-rounded-xl tw-shadow-lg tw-relative">
+        <Image
+          className="tw-rounded-xl tw-absolute tw-left-5 tw-z-10 tw-opacity-80 -tw-translate-y-full tw-top-10"
+          width={24}
+          height={24}
+          src={`/uploads/${association.avatar?.name}`}
+          alt="logo sim"
+        />
+        <Image
+          className="tw-opacity-95 tw-rounded-xl"
+          radius={'lg'}
+          width={200}
+          height={110}
+          src={`${pacesportCardSrc}`}
+          alt="Photo de campagne"
+          withPlaceholder
+        />
+      </Box>
+    </Center>
+  </>
 
-    const OfferRow = ({offer}) => (
-      <Card className='tw-flex tw-bg-gray-200 tw-mb-2' radius={'lg'}>
-        <Center>
-          <Avatar className='tw-shadow-md' radius={'lg'} src={`/uploads/${offer.enseigne?.avatar?.name}`} />
-        </Center>
-        <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
-          <Flex justify={'space-between'}>
-            <Text weight={550}>{offer.enseigne.name} <SponsoringOfferTypeBadge offer={offer} /></Text>
-            {/* <Text className='tw-flex tw-font-light' fz={'sm'}> */}
-              {/* <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer.association.ville}</Text> */}
-          </Flex>
-          <Text color=''>{offer.titre}</Text>
-          <Text color='dimmed'>{offer.description}</Text>
+  const OfferRow = ({ offer }) => (
+    <Card className='tw-flex tw-bg-gray-200 tw-mb-2' radius={'lg'}>
+      <Center>
+        <Avatar className='tw-shadow-md' radius={'lg'} src={`/uploads/${offer.enseigne?.avatar?.name}`} />
+      </Center>
+      <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
+        <Flex justify={'space-between'}>
+          <Text weight={550}>{offer.enseigne.name} <SponsoringOfferTypeBadge offer={offer} /></Text>
+          {/* <Text className='tw-flex tw-font-light' fz={'sm'}> */}
+          {/* <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer.association.ville}</Text> */}
         </Flex>
-      </Card>
-    )
+        <Text color=''>{offer.titre}</Text>
+        <Text color='dimmed'>{offer.description}</Text>
+      </Flex>
+    </Card>
+  )
 
   const offersList = <>
     <Transition mounted={setShowOffers} transition="slide-down" duration={400} timingFunction="ease">
@@ -161,30 +162,30 @@ export default function Page(props) {
 
   return (
     <>
-        <Head>
-          <title>PACE&lsquo;SPORT</title>
-          <meta name="description" content="PACE&lsquo;SPORT" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        
-        <Box className='tw-min-h-[calc(100vh-180px)]'>
-            <Box className='tw-relative'>
-              <Center className='tw-absolute tw-left-2 tw-top-0.5'>
-              <Button variant="filled" id="goBackButton" size="sm"
-                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
-                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
-                radius={'xl'}><BsArrowLeft /></Button>
-              </Center>
+      <Head>
+        <title>PACE&lsquo;SPORT</title>
+        <meta name="description" content="PACE&lsquo;SPORT" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <Box className='tw-min-h-[calc(100vh-180px)]'>
+        <Box className='tw-relative'>
+          <Center className='tw-absolute tw-left-2 tw-top-0.5'>
+            <Button variant="filled" id="goBackButton" size="sm"
+              className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full"
+              radius={'xl'}><BsArrowLeft /></Button>
+          </Center>
+        </Box>
+
+        <Box className='tw-min-h-full'>
+          <section className="tw-mt-6 tw-mx-2">
+            <Box className="tw-relative tw-z-[1]">
+              {standaloneCard}
             </Box>
-            
-            <Box className='tw-min-h-full'>
-                <section className="tw-mt-6 tw-mx-2">
-                <Box className="tw-relative tw-z-[1]">
-                    {standaloneCard}
-                </Box>
-                <Box className="tw-h-full tw-bg-gradient-to-br tw-from-slate-100 tw-to-gray-100 tw-shadow-lg tw-rounded-2xl tw-pt-4 tw-relative tw-mt-4 tw-z-0" p={'md'}>
-                    <Title order={3} mb={'sm'} align="center">J&lsquo;adhère à Pace&lsquo;Sport</Title>
+            <Box className="tw-h-full tw-bg-gradient-to-br tw-from-slate-100 tw-to-gray-100 tw-shadow-lg tw-rounded-2xl tw-pt-4 tw-relative tw-mt-4 tw-z-0" p={'md'}>
+              <Title order={3} mb={'sm'} align="center">J&lsquo;adhère à Pace&lsquo;Sport</Title>
 
               <Container className='tw-border-2 tw-rounded-md tw-shadow-sm tw-border-[#d61515] tw-p-4'>
                 <form onSubmit={form.onSubmit((values) => submitHandler(values))}>
@@ -219,24 +220,25 @@ export default function Page(props) {
                 </form>
               </Container>
 
-                    <Title order={6} my={'lg'} align='center'>Les offres</Title>
-                    {fetching && 
-                     <Center>
-                      <Loader />
-                     </Center>
-                    }
-                    {offers.length == 0 
-                      ? fetching 
-                        ? <></>
-                        : <Text color='dimmed' align='center'>Aucune offre</Text>
-                      : offersList
-                    }
-                    <Space my={'md'} />
-                </Box>
-                </section>
+              <Title order={6} my={'lg'} align='center'>Les offres</Title>
+              {fetching &&
+                <Center>
+                  <Loader />
+                </Center>
+              }
+              {offers.length == 0
+                ? fetching
+                  ? <></>
+                  : <Text color='dimmed' align='center'>Aucune offre</Text>
+                : offersList
+              }
+              <Space my={'md'} />
             </Box>
+          </section>
         </Box>
-        <script dangerouslySetInnerHTML={{ __html: `
+      </Box>
+      <script dangerouslySetInnerHTML={{
+        __html: `
             // Attacher un gestionnaire d'événements au bouton
             document.getElementById('goBackButton').addEventListener('click', function() {
                 // Appeler la fonction pour revenir en arrière dans l'historique

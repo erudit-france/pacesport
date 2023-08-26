@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Group, Text, Textarea} from "@mantine/core"; 
+import { Box, Button, Flex, Group, Text, Textarea } from "@mantine/core";
 import { BsArrowLeft } from "react-icons/bs";
 import Layout from "../layout"
 import { useForm } from "@mantine/form";
@@ -8,6 +8,9 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { getCookie } from "cookies-next";
 import { serialize } from "object-to-formdata";
+import cookie from 'cookie';  // Si vous utilisez le package 'cookie'
+
+import querystring from 'querystring';
 
 const PriceRow = ({ credits, price, oldPrice, click }) => {
     return (
@@ -30,6 +33,7 @@ const PriceRow = ({ credits, price, oldPrice, click }) => {
 export default function Page(props) {
     const [loading, setLoading] = useState(false)
     const router = useRouter()
+
 
     const form = useForm({
         initialValues: {
@@ -62,14 +66,18 @@ export default function Page(props) {
                     router.push('/profil/sponsor')
                 }
             })
-            .catch((error) => { Toast.error('Erreur pendant l\'enregistrement de l\'offre') })
+            .catch((error) => {
+                console.error("Erreur:", error);
+                Toast.error('Erreur pendant l\'enregistrement de l\'offre');
+            })
+
         form.reset();
         setLoading(false)
     }
 
     const getCreditUrl = (credit) => {
-        console.log(props.cancelUrl);
-        console.log("props.cancelUrl");
+        let token = getCookie('token');
+
         fetch(`/api/stripe/credit`, {
             method: 'POST',
             headers: new Headers({
@@ -77,8 +85,8 @@ export default function Page(props) {
             }),
             body: JSON.stringify({
                 credit: credit,
-                cancelUrl: props.cancelUrl,
-                baseUrl: props.baseUrl
+                cancelUrl: props.baseUrl + "/communication/add/sponsor?token=" + token,
+                baseUrl: props.baseUrl + "/communication/add/sponsor"
             })
         }).then(res => res.json())
             .then(res => {
@@ -99,11 +107,11 @@ export default function Page(props) {
             <div className="tw-container tw-mx-auto tw-px-2">
                 <Box my={'sm'}>
                     <Flex justify={'space-between'}>
-                    <Link href="/profil/sponsor">
-                    <Button variant="filled" size="sm"
-                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
-                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
-                radius={'xl'}><BsArrowLeft /></Button></Link>
+                        <Link href="/profil/sponsor">
+                            <Button variant="filled" size="sm"
+                                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full"
+                                radius={'xl'}><BsArrowLeft /></Button></Link>
                         <Group className="tw-rounded-3xl tw-border-[1px] tw-border-gray-300 tw-shadow-sm tw-px-4 tw-mr-2">
                             <Text>Crédits:</Text>
                             <Text>{props.credit}</Text>
@@ -147,7 +155,9 @@ export default function Page(props) {
 
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token']
+    const { req, res } = context;
+    let token = req.cookies['token'];
+
     let url = context.req.headers.referer
     let previousUrl = url === undefined ? '/profil/sponsor/' : url
 
