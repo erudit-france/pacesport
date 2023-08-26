@@ -3,7 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { BsLock } from 'react-icons/bs'
 import Layout from "@/components/layout/GradientDoodle"
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import { AppContext } from "@/context/AppContext";
 import { deleteCookie, setCookie } from "cookies-next";
 import { useRouter } from "next/router";
@@ -17,6 +17,7 @@ const LinkButton = ({ text, href, lock, className, onClick }) => {
         deleteCookie('token')
         router.push('/login')
     }
+
     return (
         <Link href={href}
             className={`tw-w-full ${className}`}
@@ -75,10 +76,21 @@ export default function Page(props) {
     if (!context.user) {
         context.setUser(loggedUser)
     }
+    const [visible, setVisible] = useState(true);  // Commence avec 'true'
+    const overlayHandler = (isVisible) => setVisible(isVisible)
+    // Cache l'overlay après que tout est chargé
+    useEffect(() => {
+        setVisible(true);  // Active l'overlay quand le composant est monté
+        const timer = setTimeout(() => {
+            setVisible(false);
+        }, 2000);
 
+        return () => clearTimeout(timer);
+    }, []);
+    const overlayClass = visible ? 'fade-enter-active' : 'fade-exit-active';
     const user = loggedUser.user
     const isAdmin = loggedUser?.roles.includes('ROLE_ADMIN') ? true : false
-console.log(loggedUser)
+    console.log(loggedUser)
     const usernameParticulier = loggedUser?.prenom ? loggedUser?.prenom + " " + loggedUser?.nom : 'Particulier'
     const associationLink = status.association == true
         ? '/profil/association'
@@ -92,7 +104,7 @@ console.log(loggedUser)
             <header>
                 <Space my={'xl'} pt={'xl'} h={'xl'} />
             </header>
-            <Box className="tw-rounded-3xl" pt={'xl'} m={'lg'} bg={'dark'} >
+            <Box className={"tw-rounded-3xl " + overlayClass} pt={'xl'} m={'lg'} bg={'dark'}>
                 <Logo />
                 <Title order={6} align="center" weight={600} color="white">
                     Se connecter en tant que</Title>
@@ -122,7 +134,7 @@ console.log(loggedUser)
                             radius='lg'>Déconnexion</Button>
                     </Box>
                 </Flex>
-            </Box>
+            </Box >
         </>
     )
 }
@@ -161,7 +173,7 @@ export async function getServerSideProps(context) {
         props: {
             status: data.data,
             loggedUser: JSON.parse(userData.data),
-            pacesportSubscription : pacesportSubscription
+            pacesportSubscription: pacesportSubscription
         }
     }
 }

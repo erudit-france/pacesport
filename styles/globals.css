@@ -129,3 +129,17 @@ a {
 body {
   --removed-scroll-width: 0px !important;
 }
+
+
+.fade-enter, .fade-exit-active {
+  opacity: 1;
+}
+
+.fade-enter-active, .fade-exit {
+  opacity: 0;
+}
+
+.fade-enter-active, .fade-exit-active {
+  transition: opacity 1000ms;  /* ajustez le temps comme vous le souhaitez */
+}
+

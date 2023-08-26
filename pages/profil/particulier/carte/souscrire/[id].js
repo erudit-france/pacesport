@@ -54,7 +54,7 @@ export default function Page(props) {
 
   const submitHandler = (values) => {
     // console.log(server);
-    const baseURL = window.location.origin;
+    const baseURL = window.location.href;
 
     fetch(`/api/stripe/subscriptionLinks`, {
       method: 'POST',
@@ -148,11 +148,11 @@ export default function Page(props) {
     </Card>
   )
 
-    const filteredOffers = offers.filter(
-      offer =>
-        (offer.type === "Nationale" || (offer.type === "Locale" && offer.id === props.id))
-    );
-console.log(filteredOffers)
+  const filteredOffers = offers.filter(
+    offer =>
+      (offer.type === "Nationale" || (offer.type === "Locale" && offer.id === props.id))
+  );
+  console.log(filteredOffers)
 
   const offersList = <>
     <Transition mounted={setShowOffers} transition="slide-down" duration={400} timingFunction="ease">

@@ -77,32 +77,45 @@ export default function LoginForm({ loading }) {
 
 
   const submitHandler = (data) => {
-    loading(true)
-    setError('')
+    loading(true); // Active le chargement
+    setError('');
 
     fetch(`/api/login`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json, text/plain, */*',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data)
-    }).then(res => res.json())
-      .then(res => {
-        loading(false)
-        if (res.payload) {
-          if (res.payload.token) {
-            setCookie('token', res.payload.token)
-            nextPage()
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.payload && res.payload.token) {
+          // Utilisez setItem pour sauvegarder le token dans le localStorage
+          localStorage.setItem('token', res.payload.token);  // <-- Ajouté ici
+
+          setCookie('token', res.payload.token);
+
+          const maybePromise = nextPage();
+          if (maybePromise && typeof maybePromise.then === 'function') {
+            maybePromise.then(() => {
+              // loading(false);
+            });
+          } else {
+            // loading(false);
           }
+        } else if (res.code === 401) {
+          setError(res.message);
+          loading(false);  // Désactive le chargement en cas d'échec
         }
-        if (res.code == 401) { setError(res.message) }
       })
       .catch((error) => {
-        loading(false)
-        setError(`Erreur de connexion à la base de données \n ${error.message}`)
+        setError(`Erreur de connexion à la base de données \n ${error.message}`);
+        loading(false);  // Désactive le chargement en cas d'erreur
       });
-  }
+  };
+
+
 
   const nextPage = () => { router.push('/login/as') }
 

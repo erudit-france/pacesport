@@ -77,16 +77,16 @@ export default function Page(props) {
 
     const getCreditUrl = (credit) => {
         let token = getCookie('token');
-
-        fetch(`/api/stripe/credit`, {
+        const baseURL = window.location.origin;
+        fetch(`/api/stripe/credit?XDEBUG_SESSION_START=tom`, {
             method: 'POST',
             headers: new Headers({
                 'JWTAuthorization': `Bearer ${getCookie('token')}`
             }),
             body: JSON.stringify({
                 credit: credit,
-                cancelUrl: props.baseUrl + "/communication/add/sponsor?token=" + token,
-                baseUrl: props.baseUrl + "/communication/add/sponsor"
+                cancelUrl: baseURL + "/communication/add/sponsor",
+                baseUrl: baseURL + "/communication/add/sponsor"
             })
         }).then(res => res.json())
             .then(res => {
