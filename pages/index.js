@@ -5,6 +5,7 @@ import SearchInput from '@/components/SearchInput'
 import { Box, Button, Center, CloseButton, Grid, Group, Modal, Space, Text, TextInput, Title } from '@mantine/core'
 import AssociationCard from '@/components/AssociationCard'
 import Layout from './layout'
+import { FaMapMarkerAlt } from 'react-icons/fa'
 import { useEffect, useState } from 'react'
 import { getCookie } from 'cookies-next'
 import * as cookie from 'cookie'
@@ -145,6 +146,8 @@ export default function Page(props) {
           <SectionTitle className='tw-text-gray-800 tw-text-base'>Associations proche de vous</SectionTitle>
           {/* search input */}
           <section className='tw-px-8 tw-mb-4'>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div style={{ flex: '0 0 95%' }}>
             <TextInput
               className={`focus:tw-border-[#d61515]`}
               size={"md"}
@@ -154,10 +157,10 @@ export default function Page(props) {
               value={search}
               onChange={handleSearch}
             />
+            </div>
+  <Button onClick={requestLocation}><FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' /></Button>
+</div>
           </section>
-          <div className="flex justify-center tw-mb-4" style={{ textAlign: "center" }}>
-            <Button onClick={requestLocation} size="md" variant="outline">Chercher avec ma géolocalisation</Button>
-          </div>
           {/* <EnseigneGrid /> */}
           {associationsGrid}
         </section>

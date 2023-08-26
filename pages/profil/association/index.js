@@ -27,7 +27,7 @@ import { useForm } from "@mantine/form";
 import { serialize } from "object-to-formdata";
 import { getCookie } from "cookies-next";
 import Toast from "@/services/Toast";
-import { AiOutlineFileText, AiOutlineSync } from "react-icons/ai";
+import { AiOutlineTaobao, AiOutlineSync } from "react-icons/ai";
 import { getAssociationInvitationRequest, getAssociationSponsorInvitations } from "@/domain/repository/AssociationRepository";
 import fileUploader from "@/utils/fileUploader";
 import { getUser } from "@/domain/repository/UserRepository";
@@ -320,20 +320,24 @@ export default function Page(props) {
 
 
         <Title align='center' order={6}>Offres partenaires</Title>
-        <Select
-          searchable
-          label={'Choisir partenaire'}
-          placeholder={props.sponsors.length > 0 ? 'Partenaire' : 'Aucun partenaire trouvé'}
-          rightSection={<AiOutlineSync size={14} />}
-          rightSectionWidth={30}
-          styles={{ rightSection: { pointerEvents: 'none' } }}
-          data={sponsorSelect}
-          value={selectedSponsor ? selectedSponsor.label : null}
-          onChange={selectedSponsorHandler}
-        />
-        <div className="flex justify-center tw-mb-4" style={{ textAlign: "center", marginTop: "10px" }}>
-          <Button onClick={requestLocation} size="md" variant="outline">Chercher avec ma géolocalisation</Button>
-        </div>
+        
+        <div style={{ display: 'flex', alignItems: 'center' }}>
+  <div style={{ flex: '0 0 95%' }}>
+    <Select
+      searchable
+      label={'Choisir partenaire'}
+      placeholder={props.sponsors.length > 0 ? 'Partenaire' : 'Aucun partenaire trouvé'}
+      rightSectionWidth={30}
+      styles={{ rightSection: { pointerEvents: 'none' } }}
+      data={sponsorSelect}
+      value={selectedSponsor ? selectedSponsor.label : null}
+      onChange={selectedSponsorHandler}
+    />
+  </div>
+  <Button onClick={requestLocation}><FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' /></Button>
+</div>
+
+
         <Title order={6} my={'lg'} align='center'>Les offres</Title>
         {fetching &&
           <Center>

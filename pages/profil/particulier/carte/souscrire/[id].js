@@ -4,6 +4,7 @@ import Layout from '../../../../layout'
 import { BsArrowLeft } from "react-icons/bs";
 import { useEffect, useState } from 'react'
 import { getCookie } from 'cookies-next'
+import Link from "next/link";
 import * as cookie from 'cookie'
 import { useRouter } from 'next/router'
 
@@ -177,18 +178,20 @@ console.log(filteredOffers)
 
       <Box className='tw-min-h-[calc(100vh-180px)]'>
         <Box className='tw-relative'>
-          <Center className='tw-absolute tw-left-2 tw-top-0.5'>
-            <Button variant="filled" id="goBackButton" size="sm"
-              className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
-                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full"
-              radius={'xl'}><BsArrowLeft /></Button>
-          </Center>
+
         </Box>
 
         <Box className='tw-min-h-full'>
           <section className="tw-mt-6 tw-mx-2">
             <Box className="tw-relative tw-z-[1]">
               {standaloneCard}
+              <Center className='tw-absolute tw-left-2 tw-top-0.5'>
+          <Link href="/">
+            <Button variant="filled" size="sm"
+              className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full"
+              radius={'xl'}><BsArrowLeft /></Button></Link>
+          </Center>
             </Box>
             <Box className="tw-h-full tw-bg-gradient-to-br tw-from-slate-100 tw-to-gray-100 tw-shadow-lg tw-rounded-2xl tw-pt-4 tw-relative tw-mt-4 tw-z-0" p={'md'}>
               <Title order={3} mb={'sm'} align="center">J&lsquo;adhère à Pace&lsquo;Sport</Title>
