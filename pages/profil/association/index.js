@@ -57,13 +57,13 @@ export default function Page(props) {
   const [hasUploadedStatus, setHasUploadedStatus] = useState(false)
   const isAccountLimited = true
   const nbSponsorsNeeded = 3
-  const [selectedSponsor, setSelectedSponsor] = useState(null)
   const [sponsorOffers, setSponsorOffers] = useState([])
   const [offers, setOffers] = useState([])
   const [showOffers, setShowOffers] = useState(true)
   const [fetching, setFetching] = useState(false)
   const [searchCriteria, setSearchCriteria] = useState("");
   const [search, setSearch] = useState('');
+  const [selectedSponsor, setSelectedSponsor] = useState(null)
 
   const selectedSponsorHandler = (selectedOption) => {
     // Si l'option sélectionnée est un objet avec une valeur et une étiquette
@@ -395,8 +395,6 @@ export default function Page(props) {
     </>
   )
 }
-
-const [selectedSponsor, setSelectedSponsor] = useState(null)
 
 const selectedSponsorHandler = (selectedOption) => {
   // Si l'option sélectionnée est un objet avec une valeur et une étiquette
