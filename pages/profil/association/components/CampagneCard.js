@@ -29,7 +29,8 @@ export default function CampagneCard({id, title, image, startDate, status, image
                                 alt="logo sim"
                             />
                             <Image
-                            className="tw-rounded-xl tw-rounded-xl"
+                            className="tw-rounded-x2"
+                            radius={'lg'}
                                 width={250}
                                 height={130}
                                 src={src}
