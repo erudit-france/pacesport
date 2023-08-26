@@ -117,7 +117,7 @@ export default function Page(props) {
   const [loading, setLoading] = useState(false)
   const [sponsorOffers, setSponsorOffers] = useState(props.offers);
   const [opened, setOpened] = useState(false);
-  const [tab, setTab] = useState('Nationale')
+  const [tab, setTab] = useState('Locale')
   const [maxSelectedAssociations, setMaxSelectedAssociations] = useState(99)
   const [selectedAssociations, setselectedAssociations] = useState([])
   const [editSelectedAssociations, setEditSelectedAssociations] = useState([])
@@ -269,13 +269,13 @@ export default function Page(props) {
   })
 
   const SelectItem = forwardRef(
-    ({ avatar, description, ...others }, ref) => {
+    ({ avatar, name, ...others }, ref) => {
       return (
         <div ref={ref} {...others}>
           <Group noWrap>
             <Avatar radius={'xl'} src={avatar == null ? null : `/uploads/${avatar.name}`} />
             <div>
-              <Text size="sm">{description}</Text>
+              <Text size="sm">{name}</Text>
             </div>
           </Group>
         </div>
@@ -527,7 +527,7 @@ export default function Page(props) {
                         mb={'md'}
                         {...offerForm.getInputProps('title')}/>
                         
-                    <Textarea mt="sm" description={"Description de l'offre"} radius="md" size="sm" withAsterisk
+                    <Textarea mt="sm" name={"name de l'offre"} radius="md" size="sm" withAsterisk
                         minRows={3}
                         mb={'md'}
                         {...offerForm.getInputProps('description')}/> */}

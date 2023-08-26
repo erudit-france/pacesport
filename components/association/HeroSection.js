@@ -151,12 +151,17 @@ const HeroSection = ({avatar, background}) => {
         )
     }
 
+    const [isDarkMode, setIsDarkMode] = useState(false);
+    const containerStyle = {
+        filter: isDarkMode ? 'invert(1)' : 'none'
+      };
+
     return (
         <header className='tw-flex tw-justify-center tw-h-32 tw-relative'>
             <Image className='tw-w-full tw-h-full tw-absolute tw-object-cover -tw-z-10 tw-blur-sm tw-scale-110' src={backgroundImage} placeholder='blur' alt="Hero image"/>
             <div className='tw-flex tw-flex-col tw-justify-center tw-z-30'>
                 <Box className="tw-rounded-full tw-relative tw-top-16 tw-shadow-md">
-                    <Image radius={'lg'} height={140} width={240} src={`${image}`}  alt="Logo Pace'sport" 
+                    <Image radius={'lg'} height={140} width={240} src={`${image}`}  alt="Logo Pace'sport" style={containerStyle}
                         className='hadow-sm tw-bg-transparent tw-z-20'/>
                 </Box>
             </div>

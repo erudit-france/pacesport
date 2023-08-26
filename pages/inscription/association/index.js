@@ -9,6 +9,7 @@ import Layout from "../layout";
 import fileUploader from "@/utils/fileUploader";
 import Toast from "@/services/Toast";
 import { useRouter } from "next/router";
+import { TbRuler2 } from "react-icons/tb";
 
 export default function Page() {
   const { push } = useRouter()
@@ -17,12 +18,22 @@ export default function Page() {
   const [logoFile, setLogoFile] = useState(null);
   const [statusFile, setStatusFile] = useState(null);
   const [logoError, setLogoError] = useState(null);
+  let boooo = false
   const handleLogo = (file) => {
-    const url = URL.createObjectURL(file)
+    const url = file == null ? "/uploads/chairs.png" : URL.createObjectURL(file)
+
+    if(file != null)
+    {
     setLogo(url)
     setLogoFile(file)
     form.values.logo = file
     setLogoError(null)
+  }
+    else
+    {
+      form.values.logo = "/uploads/chairs.png"
+      boooo = true;
+    }
   }
 
   const form = useForm({
@@ -42,7 +53,6 @@ export default function Page() {
       postal: (v) => v > '' ? null : 'Veuillez saisir un code postal',
       email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Veuillez saisir un E-mail d\'association valide'),
       phone: (v) => v > '' ? null : 'Veuillez saisir un numéro d\'association',
-      description: (v) => v > '' ? null : 'Veuillez saisir une description d\'association'
     },
   });
 
@@ -77,7 +87,10 @@ export default function Page() {
         logoFilename = avatar.data.filename
       }
     }
-
+    else if(boooo == TbRuler2)
+{
+  logoFilename = "/uploads/chairs.png"
+}
     //
     // Upload status
     //

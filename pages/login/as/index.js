@@ -3,12 +3,13 @@ import Head from "next/head";
 import Link from "next/link";
 import { BsLock } from 'react-icons/bs'
 import Layout from "@/components/layout/GradientDoodle"
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AppContext } from "@/context/AppContext";
 import { deleteCookie, setCookie } from "cookies-next";
 import { useRouter } from "next/router";
 import { FiSettings } from "react-icons/fi";
 import { RiAdminLine } from "react-icons/ri";
+import { getActiveSubscription } from '@/domain/repository/OrderRepository'
 
 const LinkButton = ({ text, href, lock, className, onClick }) => {
     const router = useRouter()
@@ -59,20 +60,25 @@ const logout = () => {
     router.push('/login')
 }
 
-export default function Page({ status, loggedUser }) {
+export default function Page(props) {
+    const [pacesportSubscription, setPacesportSubscription] = useState(props.pacesportSubscription)
     const context = useContext(AppContext)
     const router = useRouter()
     const logout = () => {
         deleteCookie('token')
         router.push('/login')
     }
+
+    let loggedUser = props.loggedUser
+    let status = props.status
+
     if (!context.user) {
         context.setUser(loggedUser)
     }
 
-    const user = context.user
-    const isAdmin = user?.roles.includes('ROLE_ADMIN') ? true : false
-
+    const user = loggedUser.user
+    const isAdmin = loggedUser?.roles.includes('ROLE_ADMIN') ? true : false
+console.log(loggedUser)
     const usernameParticulier = loggedUser?.prenom ? loggedUser?.prenom + " " + loggedUser?.nom : 'Particulier'
     const associationLink = status.association == true
         ? '/profil/association'
@@ -91,7 +97,7 @@ export default function Page({ status, loggedUser }) {
                 <Title order={6} align="center" weight={600} color="white">
                     Se connecter en tant que</Title>
                 <Flex justify='center' direction='column' mb='md' gap="xl">
-                    <LinkButton className={'tw-px-16 tw-mb-0'} text={usernameParticulier} href='/' />
+                    <LinkButton className={'tw-px-16 tw-mb-0'} text={usernameParticulier} href={pacesportSubscription?.association?.id ? '/profil/particulier/carte' : '/'} />
                 </Flex>
                 {isAdmin &&
                     <Flex justify='center' direction='column' mb='md' gap="xl">
@@ -148,12 +154,14 @@ export async function getServerSideProps(context) {
     )
     const userData = await user.json()
 
-
+    let pacesportSubscription = await getActiveSubscription(token)
+    pacesportSubscription = JSON.parse(pacesportSubscription.data)
     // // Pass data to the page via props
     return {
         props: {
             status: data.data,
-            loggedUser: JSON.parse(userData.data)
+            loggedUser: JSON.parse(userData.data),
+            pacesportSubscription : pacesportSubscription
         }
     }
 }

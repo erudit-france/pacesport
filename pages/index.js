@@ -126,7 +126,7 @@ export default function Page(props) {
 
   const associationsGrid = filteredAssociations.length == 0
     ? <Text fz={'sm'} align="center" color="dimmed">Aucune association enregistrée</Text>
-    : <Grid gutter={18} className="tw-px-4">{associations}</Grid>
+    : <Grid gutter={18} className="tw-px-4 tw-m-[0px]">{associations}</Grid>
 
   return (
     <>
@@ -187,18 +187,17 @@ export async function getServerSideProps(context) {
 
   const res = await fetch(`${process.env.API_URL}/api/discount-card`, {
     headers: new Headers({
-      'JWTAuthorization': `Bearer ${token}`,
-    })
-  }
-  )
+            'JWTAuthorization': `Bearer ${token}`,
+    })}
+    )
   const data = await res.json()
-  if (data.code == 401)
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/login"
-      }
+  if (data.code == 401) 
+  return {
+    redirect: {
+      permanent: false,
+      destination: "/login/as"
     }
+  }
 
   let possessedCardsRes = await fetch(`${process.env.API_URL}/api/discount-card-user`, {
     headers: new Headers({

@@ -5,6 +5,7 @@ import { useForm } from '@mantine/form';
 import { AiOutlineInfoCircle } from 'react-icons/ai'
 import { setCookie, getCookie } from 'cookies-next';
 import { useContext } from 'react';
+import { serialize } from "object-to-formdata";
 import { AppContext } from '@/context/AppContext';
 import Link from 'next/link';
 import { useEffect, useState } from "react";
@@ -26,7 +27,8 @@ export default function LoginForm({loading}) {
   const form = useForm({
     initialValues: {
       email: '',
-      password: ''
+      password: '',
+      rememberMe : true
     },
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Veuillez saisir un E-mail valide'),
@@ -45,26 +47,28 @@ const emailForm = useForm({
 
 const emailSubmitHandler = (values) => {
   setLoading(true)
-  let body = serialize(values)
+console.log(values.email)
+
   fetch(`/api/mail/password`, {
       method: 'POST',
-      headers: new Headers({
-        'JWTAuthorization': `Bearer ${getCookie('token')}`
-      }),
-      body: body
+      body: JSON.stringify(values)
     }).then(res => res.json())
           .then(res => {
               if(res.data) {
                   Toast.success('Mail envoyé')
+                  console.log(res.data)
               }
               setLoading(false)
               close()
           })
       .catch((error) => { 
           Toast.error('Erreur pendant l\'envoi du mail') 
+          console.log('Erreur')
+          console.log(error)
           setLoading(false)
           close()
       })
+      
 }
 
   const submitHandler = (data) => {

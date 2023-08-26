@@ -1,5 +1,6 @@
 import { BackgroundImage } from "@mantine/core";
 import Navbar from '@/components/navbar/Navbar';
+import React, { useState } from 'react';
 import HeroSection from '@/components/particulier/HeroSection';
     
 export default function Layout({children}){

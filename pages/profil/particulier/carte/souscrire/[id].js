@@ -148,11 +148,17 @@ export default function Page(props) {
     </Card>
   )
 
+    const filteredOffers = offers.filter(
+      offer =>
+        (offer.type === "Nationale" || (offer.type === "Locale" && offer.id === props.id))
+    );
+console.log(filteredOffers)
+
   const offersList = <>
     <Transition mounted={setShowOffers} transition="slide-down" duration={400} timingFunction="ease">
       {(styles) =>
         <section style={styles} className='tw-mt-1'>
-          {offers.map((offer) => (
+          {filteredOffers.map((offer) => (
             <OfferRow key={offer.title} offer={offer} />
           ))}
         </section>}

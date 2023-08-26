@@ -102,11 +102,16 @@ const HeroSection = ({avatar, editable = true}) => {
         )
     }
 
+    const [isDarkMode, setIsDarkMode] = useState(false);
+    const containerStyle = {
+        filter: isDarkMode ? 'invert(1)' : 'none'
+      };
+
     return (
         <header className='tw-flex tw-justify-center tw-h-36 tw-relative'>
             <div className='tw-flex tw-flex-col tw-justify-center'>
               <Box className="tw-relative tw-bg-white tw-rounded-full">
-                <Avatar radius={9999} size={70} src={`${image}`}  alt="Logo Pace'sport" 
+                <Avatar radius={9999} size={70} src={`${image}`}  alt="Logo Pace'sport" style={containerStyle}
                     className='hadow-sm tw-bg-transparent tw-z-20'/>
                 {editable &&
                     <LogoButtons />
