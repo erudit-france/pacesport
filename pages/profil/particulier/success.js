@@ -8,7 +8,7 @@ import Head from "next/head"
 export default function Page(props) {
     return (
       <>
-        <Head><title>Pace&lsquo;sport - Confirmation d&lsquo;achat</title></Head>
+        <Head><title>Pace'sport - Confirmation d'achat</title></Head>
         <Container className="">
           <Box className="tw-bg-white tw-shadow-lg tw-rounded-2xl tw-relative -tw-top-8 tw-z-0" p={'xl'}>
             <Title order={3} align="center">Votre achat à bien été enregistré</Title>

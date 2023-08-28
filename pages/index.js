@@ -46,7 +46,6 @@ export default function Page(props) {
   const [debouncedSearch, cancel] = useDebouncedValue(search, 300)
 
   useEffect(() => {
-    console.log(props.associations)
     if (debouncedSearch.match(/^\d+$/)) { // Si debouncedSearch est un code postal
       let results = props.associations.filter(o =>
         o.postal && o.postal.toLowerCase().includes(debouncedSearch.toLowerCase()));
@@ -124,7 +123,7 @@ export default function Page(props) {
       </Grid.Col>
     )
   })
-
+console.log(filteredAssociations)
   const associationsGrid = filteredAssociations.length == 0
     ? <Text fz={'sm'} align="center" color="dimmed">Aucune association enregistrée</Text>
     : <Grid gutter={18} className="tw-px-4 tw-m-[0px]">{associations}</Grid>
@@ -132,14 +131,14 @@ export default function Page(props) {
   return (
     <>
       <Head>
-        <title>PACE&lsquo;SPORT</title>
-        <meta name="description" content="PACE&lsquo;SPORT" />
+        <title>PACE'SPORT</title>
+        <meta name="description" content="PACE'SPORT" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <div className={''} >
-        <SectionTitle className='tw-text-white tw-text-xl tw-mb-6'>Bienvenue sur Pace&lsquo;Sport</SectionTitle>
+        <SectionTitle className='tw-text-white tw-text-xl tw-mb-6'>Bienvenue sur Pace'Sport</SectionTitle>
 
         {/* Enseigne proche */}
         <section className='tw-mt-2'>

@@ -1,4 +1,5 @@
 import { Avatar, Box, Center, Container, Flex, Modal, SimpleGrid, Stack, Text, Title,Button} from "@mantine/core"
+import { getCardActiveOffers } from "@/domain/repository/CardOffersRepository";
 import Layout from "./layout"
 import { BsArrowLeft } from "react-icons/bs";
 import Head from "next/head"
@@ -9,9 +10,10 @@ import SearchInput from "@/components/SearchInput"
 import React from 'react';
 
 
-export default function Page({user, users, query}) {
+export default function Page({user, users, query, activeOffers2}) {
     const [opened, setOpened] = useState(false)
     const [currentUser, setCurrentUser] = useState(null)
+    const [activeOffers, setActiveOffers] = useState(activeOffers2)
     const modalHandler = (state, user) => {
         setOpened(state)
         setCurrentUser(user)
@@ -22,9 +24,30 @@ export default function Page({user, users, query}) {
             <Text fz={'sm'}>{value || '-'}</Text>
         </SimpleGrid>
     )
+console.log(query.prev)
+console.log(activeOffers)
+let ContactCards = '';
 
-    const ContactCards = users.map((user) => {
-    const hasEnseigneOrAssociation = user.enseigne || user.association;
+if(query.prev == "/profil/association")
+{
+    const uniqueOffers = activeOffers.filter((offer, index, self) =>
+    index === self.findIndex((o) => o.enseigne.id === offer.enseigne.id)
+);
+    ContactCards = uniqueOffers.map((offer) => {
+        return (
+            <Flex key={offer.enseigne.id} p={'sm'} onClick={() => modalHandler(true, offer.enseigne)}
+            className="hover:tw-cursor-pointer hover:tw-bg-gray-100/50 hover:tw-shadow-inner tw-rounded-lg">
+            <Avatar src={`uploads/${offer.enseigne.avatar?.name}`} radius={'xl'} size={'lg'} className="tw-shadow-lg" />
+            <Center>
+                <Text ml={'md'} fz={'lg'} weight={600} color="black" align="center">{offer.enseigne.name}</Text>
+            </Center>
+        </Flex>
+        );
+    })
+}
+else{
+    ContactCards = users.map((user) => {
+    const hasEnseigneOrAssociation = user.association;
 
     // Si user.enseigne ou user.association est non null, créer la carte de contact
     if (hasEnseigneOrAssociation) {
@@ -40,15 +63,14 @@ export default function Page({user, users, query}) {
        }
     return null;
        });
-    
+    }
     const ContactList = users.length == 0
         ? <Text align="center" color="dimmed">Aucune carte enregistrée</Text>
         : <Stack justify="flex-start" spacing="sm">{ContactCards}</Stack>
 
-
     return (
         <>
-            <Head><title>Pace&lsquo;Sport - Annuaire</title></Head>
+            <Head><title>Pace'Sport - Annuaire</title></Head>
             <Box>
                 <Flex m={'md'}>
                     <Center mr={'md'}>
@@ -111,11 +133,12 @@ export async function getServerSideProps(context) {
     
     let url = context.req.headers.referer
     let previousUrl = url === undefined ? '/messages/' : url
-  
+    let activeOffers = await getCardActiveOffers(token)
     // // Pass data to the page via props
     return { props: {
         user: JSON.parse(userData.data),
         users: JSON.parse(data.data),
+        activeOffers2: JSON.parse(activeOffers.data),
         query: context.query
     } }
 }

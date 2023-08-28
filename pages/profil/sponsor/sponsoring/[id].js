@@ -75,7 +75,7 @@ export default function Page(props) {
                                 </>
                         : props.proposition.declined == true
                             ? <Text color="red" align="center">Proposition refusée</Text>
-                            : <Text color="dimmed" align="center">En attente d&lsquo;une réponse</Text>
+                            : <Text color="dimmed" align="center">En attente d'une réponse</Text>
                     }
                 </>
                 )
@@ -85,7 +85,7 @@ export default function Page(props) {
     return (
         <>
             <Head>
-                <title>PACE&lsquo;SPORT - Partenariat</title>
+                <title>PACE'SPORT - Partenariat</title>
             </Head>
             <main className="tw-bg-gradient-to-b tw-from-gray-100 tw-to-white tw-rounded-t-[2rem] tw-relative tw-shadow-inner -tw-mt-7"
                 style={{ minHeight: 'calc(100vh - 180px)' }}>

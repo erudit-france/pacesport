@@ -83,7 +83,7 @@ export default function Page(props){
     return (
         <>
             <Head>
-                <title>PACE&lsquo;SPORT - Ajouter campagne</title>
+                <title>PACE'SPORT - Ajouter campagne</title>
             </Head>       
             <CampagneHeaderEditable image={image} setImage={setImage} setImageFile={setImageFile}/>
             <main className="tw-bg-gradient-to-b tw-from-gray-100 tw-to-white tw-rounded-t-[2rem] tw-relative -tw-mt-7"

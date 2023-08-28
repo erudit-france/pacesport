@@ -1,6 +1,8 @@
 import { ActionIcon, Badge, Box, Button, Card, Center, Divider, FileInput, Flex, List, Modal, Overlay, Paper, Space, Text, TextInput, Title, useMantineTheme } from "@mantine/core";
 import Head from "next/head";
 import Layout from "./layout";
+import Link from "next/link"
+import { BsArrowLeft, BsArrowUpShort } from 'react-icons/bs'
 import { BsLink, BsLock, BsMegaphoneFill } from "react-icons/bs";
 import { randomId, useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
@@ -23,6 +25,7 @@ export default function Page(props){
         if (card.image) {
             src = `/uploads/${card.image.name}`
         }
+
         return (
             <Center>
                 <Box className="tw-rounded-xl tw-shadow-lg tw-relative tw-h-[110px] tw-w-[200px] tw-overflow-hidden">
@@ -42,8 +45,8 @@ export default function Page(props){
     return (
         <>
             <Head>
-                <title>PACE&lsquo;SPORT - Mon compte</title>
-                <meta name="description" content="PACE&lsquo;SPORT" />
+                <title>PACE'SPORT - Mon compte</title>
+                <meta name="description" content="PACE'SPORT" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
@@ -62,7 +65,11 @@ export default function Page(props){
                     <Text color={props?.pacesportCard?.status == '1' ? 'green' : 'orange'} align='center'>Status en cours de validation</Text>
                     <Text color={activeOffers.some(offer => offer?.type === 'Nationale') ? 'green' : 'orange'} align='center'>Minimum 1 offre nationnale validée</Text>
                 </Card>
-
+                <Link href={props.id ? props.id : "/profil/association"}>
+        <Button variant="filled" size="sm"
+                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
+                radius={'xl'}><BsArrowLeft /></Button></Link>
                 <Space h={'sm'} />
 
                 <Title align="center" color="white" order={6}
@@ -70,7 +77,7 @@ export default function Page(props){
                 <AssociationPendingOffers offers={pendingOffers} />
 
                 <Title align="center" color="white" order={6}
-                    className="tw-bg-[#d61515] tw-font-light tw-pb-1 tw-mt-4">En attente de validation Pace&lsquo;Sport</Title>
+                    className="tw-bg-[#d61515] tw-font-light tw-pb-1 tw-mt-4">En attente de validation Pace'Sport</Title>
                 <AssociationPacesportPendingOffers offers={pacesportPendingOffers} />
 
                 <Title align="center" color="white" order={6}

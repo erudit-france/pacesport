@@ -170,8 +170,8 @@ export default function Page(props) {
   return (
     <>
       <Head>
-        <title>PACE&lsquo;SPORT</title>
-        <meta name="description" content="PACE&lsquo;SPORT" />
+        <title>PACE'SPORT</title>
+        <meta name="description" content="PACE'SPORT" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -194,11 +194,11 @@ export default function Page(props) {
           </Center>
             </Box>
             <Box className="tw-h-full tw-bg-gradient-to-br tw-from-slate-100 tw-to-gray-100 tw-shadow-lg tw-rounded-2xl tw-pt-4 tw-relative tw-mt-4 tw-z-0" p={'md'}>
-              <Title order={3} mb={'sm'} align="center">J&lsquo;adhère à Pace&lsquo;Sport</Title>
+              <Title order={3} mb={'sm'} align="center">J'adhère à Pace'Sport</Title>
 
               <Container className='tw-border-2 tw-rounded-md tw-shadow-sm tw-border-[#d61515] tw-p-4'>
                 <form onSubmit={form.onSubmit((values) => submitHandler(values))}>
-                  <Title align='center' order={6}>Pace&lsquo;Sport</Title>
+                  <Title align='center' order={6}>Pace'Sport</Title>
                   {/* <Select
                                 label={
                                     <Flex className='tw-mb-2'>

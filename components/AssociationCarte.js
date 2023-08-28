@@ -6,11 +6,11 @@ import { FaMapMarkerAlt } from 'react-icons/fa'
 export default function AssociationCarte({organisation, href}) {
     const avatarSrc = organisation.avatar?.name
         ? `/uploads/${organisation.avatar?.name}`
-        : null
+        : '/uploads/Logo-generique-PS-64ed03acc9d40.png'
 
     const backgroundSrc = organisation.backgroundImage?.name
         ? `/uploads/${organisation.backgroundImage?.name}`
-        : null
+        : '/uploads/chair-64ed03a87ecb9.jpg'
 
     const BackgroundImage = () => {
         if (backgroundSrc == null){
@@ -67,7 +67,7 @@ export default function AssociationCarte({organisation, href}) {
                 <Box className='tw-relative -tw-top-2'>
                     <Text fz={'sm'} className='' weight={400}>{organisation.name}</Text>
                     <Text fz={'sm'} className='tw-flex' weight={300}>
-                        <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1' />{organisation.address}
+                        <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1' />{organisation.ville}
                     </Text>
                 </Box>
             </Card>

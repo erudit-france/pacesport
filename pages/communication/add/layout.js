@@ -6,7 +6,7 @@ import GreyHeader from "../components/GreyHeader";
 export default function Layout({children}){
     return (
         <>
-            <Head><title>Pace&lsquo;sport - Patenariats</title></Head>
+            <Head><title>Pace'sport - Patenariats</title></Head>
             <Navbar />
             <GreyHeader text="Communication" />
             <main className="tw-pt-7 tw-shadow-sm 

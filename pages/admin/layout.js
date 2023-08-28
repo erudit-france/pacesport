@@ -10,8 +10,8 @@ export default function Layout({children}){
     return (
         <>
             <Head>
-                <title>PACE&lsquo;SPORT - Administrateur</title>
-                <meta name="description" content="PACE&lsquo;SPORT" />
+                <title>PACE'SPORT - Administrateur</title>
+                <meta name="description" content="PACE'SPORT" />
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>

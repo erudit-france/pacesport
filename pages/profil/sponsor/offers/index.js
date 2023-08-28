@@ -48,8 +48,8 @@ export default function Page(props) {
     return (
         <>
             <Head>
-              <title>Mes partenariats - PACE&lsquo;SPORT</title>
-              <meta name="description" content="PACE&lsquo;SPORT" />
+              <title>Mes partenariats - PACE'SPORT</title>
+              <meta name="description" content="PACE'SPORT" />
               <meta name="viewport" content="width=device-width, initial-scale=1" />
               <link rel="icon" href="/favicon.ico" />
             </Head>

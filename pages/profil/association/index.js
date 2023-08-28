@@ -249,8 +249,8 @@ export default function Page(props) {
   return (
     <>
       <Head>
-        <title>PACE&lsquo;SPORT - Mon compte</title>
-        <meta name="description" content="PACE&lsquo;SPORT" />
+        <title>PACE'SPORT - Mon compte</title>
+        <meta name="description" content="PACE'SPORT" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -302,7 +302,7 @@ export default function Page(props) {
         {validationRequest?.validated == true && <Text color="green" align="center">Association validée</Text>}
         {validationRequest?.validated == true &&
           <Flex justify={'space-between'} my={'lg'} className="tw-relative">
-            <Text className="tw-flex-1" color="red" fz={'sm'} fw={'bold'} align={'center'} py={2}>Ajoutez encore {nbSponsorsNeeded} partenaires pour valider votre pace&lsquo;sport</Text>
+            <Text className="tw-flex-1" color="red" fz={'sm'} fw={'bold'} align={'center'} py={2}>Ajoutez encore {nbSponsorsNeeded} partenaires pour valider votre pace'sport</Text>
           </Flex>}
         <CampagneCard status={props?.pacesportCard?.status == '1' && activeOffers?.some(offer => offer?.type === 'Nationale')} id={1} title={'Carte pacesport'} image2={props.association?.image?.name} image={props.pacesportCard?.image?.name} startDate={Date.now()} />
         {console.log(JSON.stringify(props, null, 2))}
@@ -362,7 +362,7 @@ export default function Page(props) {
 
       {/* <section className="tw-bg-lightgold-50 tw-flex tw-flex-col tw-py-4">
                 <Text color="white" align="center">Offre de sponsoring</Text>
-                <Text className="tw-flex tw-justify-center" align="center">Uniquement avec Pace&lsquo;sport Business<BsLock className='tw-my-auto tw-ml-1'/></Text>
+                <Text className="tw-flex tw-justify-center" align="center">Uniquement avec Pace'sport Business<BsLock className='tw-my-auto tw-ml-1'/></Text>
                 <Button onClick={open} color="white" variant="filled" size="xs" 
                     className="tw-bg-white tw-text-black hover:tw-bg-gray-200 tw-mx-auto tw-mt-3" radius={'lg'}>En savoir plus</Button>
             </section> */}

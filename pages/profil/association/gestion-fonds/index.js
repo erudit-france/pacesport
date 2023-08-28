@@ -2,10 +2,12 @@ import { Avatar, Button, Flex, Group, Loader, Select, Space, Table, Text, TextIn
 import { useDebouncedState } from "@mantine/hooks"
 import Link from "next/link"
 import { useState } from "react"
+import { getUser } from "@/domain/repository/UserRepository";
 import { GoSearch } from "react-icons/go"
 import { RxCross2 } from "react-icons/rx"
 import Layout from "./layout"
 import React from "react"
+import { getAllOrder } from "@/domain/repository/RapatriementRepository";
 import { BsArrowLeft, BsArrowUpShort } from 'react-icons/bs'
 import { SlChart } from 'react-icons/sl'
 import { FaChevronDown } from "react-icons/fa"
@@ -67,7 +69,6 @@ const FilterHeader = ({ sort, sortHandler }) => (
 )
 
 export default function Page(props) {
-    const paiementId = 2
     const [rapatriement, setRapatriement] = useState(props.rapatriement)
     const router = useRouter()
     const rapatriementHandler = () => {
@@ -119,16 +120,16 @@ export default function Page(props) {
 
     const NavHeader = () => (
         <Flex justify='space-between' p={'md'}>
-                    <Link href="/parametres">
+                    <Link href={props.id ? props.id : "/parametres"}>
         <Button variant="filled" size="sm"
                 className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
                 hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
                 radius={'xl'}><BsArrowLeft /></Button></Link>
             <RapatriementButton />
-            <Link href={'/profil/association/gestion-fonds/statistiques'}><Button variant="filled" size="sm"
+            {/* <Link href={'/profil/association/gestion-fonds/statistiques'}><Button variant="filled" size="sm"
                 className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
                 hover:tw-bg-gray-100 hover:tw-text-black" 
-                radius={'xl'}><SlChart /></Button></Link>
+                radius={'xl'}><SlChart /></Button></Link> */}
         </Flex>
     )
     
@@ -146,8 +147,8 @@ export default function Page(props) {
     }
     const { classes } = useStyles();
     const dummyList = null;
-    const calculatedList = null;
-    // const [calculatedList, setCalculatedList] = useState([...dummyList]);
+    let calculatedList = null;
+    //const [calculatedList, setCalculatedList] = useState([...dummyList]);
 
     if(dummyList != null){
     let sortByDate  = (dir) => {
@@ -189,36 +190,28 @@ export default function Page(props) {
         setSearch(true)
         console.log('search input ', searchInput);
     }
-
-    if(calculatedList != null){
-    const rows = calculatedList.map((paimentsPerDay, i) => (
+    
+    if(props.orders){
+        const filteredData = props.orders.filter(item => 
+            item.association && item.association.id === props.user.association.id
+          );
+          console.log(filteredData)
+    calculatedList = filteredData.map((order, i) => (
         <React.Fragment key={i}>
-            <tr className="tw-text-center tw-font-semibold tw-bg-gray-50"><td  colSpan={3}>{paimentsPerDay.date}</td></tr>
-            {paimentsPerDay.data.map((onePaiement, j) => (
-                <React.Fragment key={j}>
+            <tr className="tw-text-center tw-font-semibold tw-bg-gray-50"><td  colSpan={3}>{order.user.name}</td></tr>
                     <tr className="tw-bg-gray-200">
-                        <td className={classes.td}>{onePaiement.name}</td>
-                        <td className={`${classes.td} tw-text-center`}>{onePaiement.ammount} €</td>
-                        <td className={`${classes.td} tw-flex tw-justify-end`}>
-                        <Link href={`/profil/association/gestion-fonds/paiement/${paiementId}?prev=${router.pathname}`}>
-                            <Button variant="filled" color={"teal"}
-                                size='xs'
-                                className="tw-bg-gray-800
-                                hover:tw-bg-gray-900">
-                                Détails</Button></Link></td>
+                        <td className={classes.td}>{order.user.nom + " " + order.user.prenom}</td>
+                        <td className={`${classes.td}`}>{order.user.email}</td>
+                        <td className={`${classes.td} tw-text-center`}>{new Date(order.createdAt).toLocaleDateString()}</td>
                     </tr>
-                </React.Fragment>
-                )
-            )}
         </React.Fragment>
     ))}
-
     return (
         <>
             <NavHeader />
             <Space h='md' />
             
-            <TextInput
+            {/* <TextInput
                 className='focus:tw-border-[#d61515] tw-mx-4 tw-mt-3'
                 size={"sm"}
                 radius={"xl"}
@@ -230,19 +223,19 @@ export default function Page(props) {
                             ? <RxCross2 onClick={clearSearch} className='tw-mr-5 hover:tw-cursor-pointer'/> 
                             : <GoSearch onClick={handleSearch} className='tw-mr-5 hover:tw-cursor-pointer'/>}
                 onChange={(e) => setSearchInput(e.target.value)}
-            />
+            /> */}
 
             <Text className="tw-bg-[#d61515] tw-my-4 
                     tw-text-white tw-font-bold tw-text-center tw-py-3">
-                        <span>{totalValue}</span> €</Text>
+                        <span>{calculatedList.length}</span> dons collectés</Text>
 
-            <FilterHeader  sort={sort} sortHandler={sortHandler} />
+            {/* <FilterHeader  sort={sort} sortHandler={sortHandler} /> */}
 
             <section>
                 <Table verticalSpacing="xs" fontSize="sm">
                     <tbody>
                             {calculatedList != null && calculatedList.length > 0 
-                                ? rows
+                                ? calculatedList
                                 : <Text py="lg" align="center">Aucun paiement</Text>
                             }
                     </tbody>
@@ -254,6 +247,7 @@ export default function Page(props) {
 
 export async function getServerSideProps(context) {
     const token = context.req.cookies['token']
+    const id = context.query.prev
     let rapatriement = await getCurrentRapatriement(token)
     if (rapatriement.code == 401) {
         return {
@@ -263,9 +257,15 @@ export async function getServerSideProps(context) {
             }
         }
     }
+    let user = await getUser(token)
+    let orders = await getAllOrder(token)
+    orders = JSON.parse(orders.data)
     // // Pass data to the page via props
     return { props: { 
-        rapatriement: JSON.parse(rapatriement.data)
+        rapatriement: JSON.parse(rapatriement.data),
+        orders: orders,
+        user: JSON.parse(user.data),
+        id : id
     } }
   }
 

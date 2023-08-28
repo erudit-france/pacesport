@@ -14,7 +14,7 @@ export default function ContactList({chatRooms}) {
                     <Flex className="tw-relative hover:tw-bg-slate-50  
                             hover:tw-text-gray-800 hover:tw-shadow-inner tw-rounded-lg pb-3" 
                             py={'xs'} mb={"sm"} align={'center'}>
-                        <Avatar className="tw-shadow-md tw-bg-contain" radius={'xl'} size={'lg'} src={chatRoom.logo} />
+                        <Avatar className="tw-shadow-md tw-bg-contain" radius={'xl'} size={'lg'} src={chatRoom.logo } />
                         <Flex direction={"column"} ml={'md'}>
                             <Text className="tw-font-semibold" size={'sm'}>{chatRoom.name}</Text>
                             <Text size={"xs"} weight={"light"}>--</Text>

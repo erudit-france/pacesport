@@ -33,7 +33,7 @@ export default function Page(props) {
     return (
         <>
             <Head>
-                <title>PACE&lsquo;SPORT - Détails</title>
+                <title>PACE'SPORT - Détails</title>
             </Head>
             <NavHeader />
             <main className="tw-bg-gradient-to-b tw-from-gray-100 tw-to-gray-50 tw-rounded-t-[2rem] tw-relative tw-shadow-inner"

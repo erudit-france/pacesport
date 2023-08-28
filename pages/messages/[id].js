@@ -244,7 +244,7 @@ export default function Page(props) {
     return (
         <>
             <Head>
-                <title>Pace&lsquo;Sport - USERNAME</title>
+                <title>Pace'Sport - USERNAME</title>
             </Head>
             <section className="tw-mx-2 tw-pt-2 tw-bg-white tw-rounded-t-3xl tw-top-2 tw-relative"
                     style={{ height: 'calc(100vh - 170px)' }}>

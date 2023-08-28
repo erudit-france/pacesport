@@ -44,11 +44,11 @@ export default function Page(props) {
             value={offer.description} />
           
           {offer.isAccepted &&
-            <Text className="tw-text-green-600 tw-font-semibold" mt={'md'} fz={'sm'} align="center">Offre validée par l&lsquo;association</Text>
+            <Text className="tw-text-green-600 tw-font-semibold" mt={'md'} fz={'sm'} align="center">Offre validée par l'association</Text>
           }
 
           {!offer.isAccepted &&
-            <Text className="tw-text-gold-500 tw-font-semibold" mt={'md'} fz={'sm'} align="center">En attente de validation par l&lsquo;association</Text>
+            <Text className="tw-text-gold-500 tw-font-semibold" mt={'md'} fz={'sm'} align="center">En attente de validation par l'association</Text>
           }
       </Box>
     )
@@ -86,7 +86,7 @@ export default function Page(props) {
   }
   return (
       <>
-        <Head><title>Pace&lsquo;Sport - Sponsor - Campagne</title></Head>
+        <Head><title>Pace'Sport - Sponsor - Campagne</title></Head>
         <section className="tw-p-3 tw-pt-0">
           <Flex>
           <Button variant="filled" id="goBackButton" size="sm"
@@ -126,7 +126,7 @@ export default function Page(props) {
         <DiscountOfferSection />
 
         <Box mt={'xl'}>
-            <Title align="center" color="white" className="tw-bg-[#d61515] tw-font-light tw-pb-1" order={6}>Offres validées par l&lsquo;association</Title>
+            <Title align="center" color="white" className="tw-bg-[#d61515] tw-font-light tw-pb-1" order={6}>Offres validées par l'association</Title>
             <AssociationAcceptedOffers offers={acceptedOffers} />
             <Space my={'lg'} />
         </Box>  

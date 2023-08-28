@@ -30,7 +30,7 @@ export default function Page() {
         <title>Pace&#8217;sport - connexion</title>
       </Head>
       <h3 className="tw-pt-2 tw-text-center py-4 tw-font-semibold tw-text-white">
-        Finaliser l&lsquo;inscription
+        Finaliser l'inscription
       </h3>
       <Flex justify="center" direction="column" mt="xl" gap="md" px="sm">
         <Button

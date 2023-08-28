@@ -56,7 +56,7 @@ export default function Page(props) {
 
     return (
       <>
-        <Head><title>Pace&lsquo;sport - Détails campagne {props.card.name}</title></Head>
+        <Head><title>Pace'sport - Détails campagne {props.card.name}</title></Head>
         <Container className="">
           <Box className="tw-relative tw-z-[1]">
             {standaloneCard}

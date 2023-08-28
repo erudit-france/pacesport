@@ -105,7 +105,7 @@ export default function Page({status}){
                         <LinkButton className={''} text='Mes informations' href={'/informations'}/>
                         <Space my={'xs'} />
                         <Space my={'xs'} />
-                        <LinkButton className={''} text='Conditions d&lsquo;utilisation' href={'/conditions-generales-utilisation'} />
+                        <LinkButton className={''} text='Conditions d'utilisation' href={'/conditions-generales-utilisation'} />
                         <LinkButton className={''} text='Conditions générales de vente' href={'/conditions-generales-vente'} />
                         <LinkButton className={''} text='Politique de confidentialité' href={'/politique-de-confidentialite'} />
                         <Space my={'xs'} />

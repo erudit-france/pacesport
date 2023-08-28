@@ -35,8 +35,8 @@ export default function Page() {
     return (
         <>
             <Head>
-                <title>PACE&lsquo;SPORT | Connexion</title>
-                <meta property="og:title" content="PACE&lsquo;SPORT | Connexion" key="title" />
+                <title>PACE'SPORT | Connexion</title>
+                <meta property="og:title" content="PACE'SPORT | Connexion" key="title" />
             </Head>
             <div>
 

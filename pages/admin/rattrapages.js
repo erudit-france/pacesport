@@ -274,7 +274,6 @@ export async function getServerSideProps(context) {
     let rapatriements = await getAll(token)
     rapatriements = JSON.parse(rapatriements.data)
 
-
     // // Pass data to the page via props
     return { props: {
         backgroundImage: backgroundImage.filename,

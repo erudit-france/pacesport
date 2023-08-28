@@ -22,7 +22,7 @@ export default function AssociationAcceptedOffers({offers}) {
       }
     
     const items = offers == null || offers.length == 0 
-        ? <Text align='center' fz={'xs'} color="dimmed">Aucune offre n&lsquo;a été validée</Text>
+        ? <Text align='center' fz={'xs'} color="dimmed">Aucune offre n'a été validée</Text>
         : offers.map((offer) => (
         <Accordion.Item value={(offer.description)} key={offer.id}>
             <AccordionControl offer={offer} />

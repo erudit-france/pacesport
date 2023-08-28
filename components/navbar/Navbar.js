@@ -61,7 +61,7 @@ export default function Navbar(props){
                         className="ml-4" />
                 
                 </Flex>
-                <NavbarLink toggleMenu={ toggleMenu } href={'/'} name={<>Mon pace&lsquo;sport (carte)</>} />
+                <NavbarLink toggleMenu={ toggleMenu } href={'/'} name={<>Mon pace'sport (carte)</>} />
                 <NavbarLink toggleMenu={ toggleMenu } href={'/parametres?prev=/'} name={'Paramètres'} />
 
                 <Button 
@@ -85,12 +85,12 @@ export default function Navbar(props){
                         
                     <NavbarLink 
                         border={true} toggleMenu={ toggleMenu } 
-                        href={'/profil/sponsor'} 
+                        href={'/profil/association'} 
                         name={<><BiHome size={20} /></>} 
                         className="ml-4" />
                 
                 </Flex>
-                <NavbarLink toggleMenu={ toggleMenu } href={'/profil/association'} name={<>Mon pace&lsquo;sport (carte)</>} />
+                <NavbarLink toggleMenu={ toggleMenu } href={'/profil/association'} name={<>Mon pace'sport (carte)</>} />
                 <NavbarLink toggleMenu={ toggleMenu } href={'/parametres?prev=/profil/association'} name={'Mon compte'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/annuaire?prev=${router.pathname}`} name={'Annuaire'} />
                 <NavbarLink toggleMenu={ toggleMenu } href={`/messages?prev=${router.pathname}`} name={'Messagerie'} />

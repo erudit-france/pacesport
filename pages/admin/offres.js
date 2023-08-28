@@ -273,7 +273,7 @@ export default function Page(props){
             <Modal
                 opened={open}
                 onClose={() => editOffer(null)}
-                title={<Title order={6}>Paramètres de l&lsquo;offre</Title>}
+                title={<Title order={6}>Paramètres de l'offre</Title>}
                 centered
                 size={'95vw'}
             >

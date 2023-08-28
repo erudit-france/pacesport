@@ -150,7 +150,7 @@ export default function SignupForm({ loading }) {
             error={cguChecked === false ? 'Veuillez accepter les CGU' : ''}
             label={
               <Text color='white'>
-                J&lsquo;accepte les{" "}
+                J'accepte les{" "}
                 <Link
                   className="tw-text-blue-400 tw-underline"
                   href="/conditions-generales-vente"

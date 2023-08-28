@@ -7,7 +7,7 @@ import hero from '@/public/chair.jpg'
 export default function Layout({children, text, subtext}){
     return (
         <>
-            <Head><title>Pace&lsquo;Sport - Centre de gestion</title></Head>
+            <Head><title>Pace'Sport - Centre de gestion</title></Head>
             <Navbar />
             <header className='tw-flex tw-justify-center tw-h-36 tw-relative'>
                 <div className='tw-flex tw-flex-col tw-justify-center'>

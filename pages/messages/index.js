@@ -88,7 +88,7 @@ const ChatHeader = ({previousUrl}) => {
 export default function Page(props){
     const [title, setTitle] = useState('Pace\'Sport - Messages');
     useDocumentTitle(title);
-    console.log('props.chatRooms', props.chatRooms)
+    console.log(title)
     
     // const [chatRooms, setChatRooms] = useState([]);
     // useEffect(() => {

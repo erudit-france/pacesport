@@ -58,7 +58,7 @@ export default function Page(props) {
                 <Flex  className="tw-h-full" direction={'column'} justify={'space-between'}>
                   <Text px={'lg'} className='tw-bg-gray-600/60 text-white tw-py-1'>{props.user?.nom}{' '}{props.user?.prenom}</Text>
                   <Text className="tw-text-gray-500" align="left" px={'lg'} mb={"md"} fz={'sm'}>Validé le {new Date().toLocaleString('fr-FR')}</Text>
-                  <Text className="tw-text-gray-500" align="left" px={'lg'} mb={"md"} fz={'sm'}>Jusqu&lsquo;au {moment(props.card.endDate).format('DD/MM/YYYY')}</Text>
+                  <Text className="tw-text-gray-500" align="left" px={'lg'} mb={"md"} fz={'sm'}>Jusqu'au {moment(props.card.endDate).format('DD/MM/YYYY')}</Text>
                 </Flex>
               </Box>
           </Box>
@@ -97,8 +97,8 @@ export default function Page(props) {
   return (
     <>
         <Head>
-          <title>PACE&lsquo;SPORT</title>
-          <meta name="description" content="PACE&lsquo;SPORT" />
+          <title>PACE'SPORT</title>
+          <meta name="description" content="PACE'SPORT" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
@@ -116,7 +116,7 @@ export default function Page(props) {
                                   tw-bg-gradient-to-br tw-from-gray-200 tw-to-white
                                   tw-shadow-md tw-w-full tw-rounded-2xl
                                   tw-border-2 tw-border-white
-                                  hover:tw-bg-gray-200'>J&lsquo;utilise ma carte</Button>
+                                  hover:tw-bg-gray-200'>J'utilise ma carte</Button>
                   </Group>
               </Flex>
             </Box>
@@ -127,7 +127,7 @@ export default function Page(props) {
                     {standaloneCard}
                 </Box>
                 <Box className="tw-bg-gradient-to-br tw-from-slate-100 tw-to-gray-100 tw-shadow-lg tw-rounded-2xl tw-pt-12 tw-relative -tw-top-10 tw-z-0" p={'md'}>
-                    <Title order={3} mb={'sm'} align="center">Pace&lsquo;Sport</Title>
+                    <Title order={3} mb={'sm'} align="center">Pace'Sport</Title>
                     {pacesportSubscription &&
                     <Center>
                       <Group>
@@ -137,7 +137,7 @@ export default function Page(props) {
                     </Center>
                     }
 
-                    <Text className="tw-text-gray-800" align="center" mt={'sm'} fz={'sm'}>Abonné jusqu&lsquo;au {moment(pacesportSubscription.createdAt).add(1, 'years').format('DD/MM/YYYY')}</Text>
+                    <Text className="tw-text-gray-800" align="center" mt={'sm'} fz={'sm'}>Abonné jusqu'au {moment(pacesportSubscription.createdAt).add(1, 'years').format('DD/MM/YYYY')}</Text>
                     <Center mt={'md'}>
                       <Button onClick={() => setShowOffers(!showOffers)} color='white' variant='outline' className='tw-border-gray-700' radius={'lg'}>
                         <Text className='tw-text-gray-800' transform='uppercase' fz={'sm'}>Voir {showOffers ? 'moins' : 'les offres' }</Text>

@@ -11,3 +11,7 @@ const fetchApi = async (token, url, local = false) => {
 export const getAll = async (token, local = false) => {
     return fetchApi(token, '/api/rapatriement/all')
 }
+
+export const getAllOrder = async (token, local = false) => {
+    return fetchApi(token, '/api/order/all')
+}

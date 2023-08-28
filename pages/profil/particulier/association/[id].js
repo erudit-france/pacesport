@@ -35,7 +35,7 @@ export default function Page(props) {
 
     return (
         <>
-            <Head><title>Pace&lsquo;Sport - {association.name}</title></Head>
+            <Head><title>Pace'Sport - {association.name}</title></Head>
             <Container>{associationInformation}</Container>
             <Space h={'xl'} />
             <Title order={3} transform="uppercase" align="center" 

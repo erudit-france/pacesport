@@ -48,8 +48,8 @@ export default function Page(props) {
   return (
     <>
         <Head>
-          <title>PACE&lsquo;SPORT</title>
-          <meta name="description" content="PACE&lsquo;SPORT" />
+          <title>PACE'SPORT</title>
+          <meta name="description" content="PACE'SPORT" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
@@ -79,14 +79,14 @@ export default function Page(props) {
                 <Space h={'md'}/>
                 <Link href='/' className='tw-flex tw-justify-center'>
                   <Button className='tw-text-gray-900 tw-bg-white tw-border-[1] tw-border-gray-800 hover:tw-bg-gray-100 tw-uppercase tw-font-bold' w={'90%'} variant='filled' radius={'xl'}> 
-                  Mon réseau d&lsquo;associations</Button></Link>
+                  Mon réseau d'associations</Button></Link>
               </Flex>
               
 
             <section className="tw-bg-white tw-mt-6 tw-shadow-inner tw-py-5 tw-px-4">
                 <Flex justify='space-around' my={'lg'}>
                   <Group>
-                    <Title order={5}>Mon Pace&lsquo;Sport Collaboratif</Title>
+                    <Title order={5}>Mon Pace'Sport Collaboratif</Title>
                     <ActionIcon variant='transparent' component='a' href='/profil/collectivite/carte/ajouter'>
                       <AiFillPlusCircle className='tw-text-gray-800 hover:tw-text-black' size={22}/>
                     </ActionIcon>
