@@ -225,7 +225,7 @@ export default function Page(props) {
     setLoading(true)
     let body = serialize(values)
     body.append('association', selectedAssociations)
-    fetch(`/api/sponsoring-offer?XDEBUG_SESSION_START=tom`, {
+    fetch(`/api/sponsoring-offer`, {
       method: 'POST',
       headers: new Headers({
         'JWTAuthorization': `Bearer ${getCookie('token')}`
