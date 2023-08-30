@@ -15,11 +15,11 @@ import AssociationActiveOffers from "@/components/AssociationActiveOffers";
 import { getPacesportCard } from "@/domain/repository/PacesportRepository";
 import Image from "next/image";
 
-export default function Page(props){
+export default function Page(props) {
     const [pendingOffers, setPendingOffers] = useState(props.pendingOffers)
     const [pacesportPendingOffers, setPacesportPendingOffers] = useState(props.pacesportPendingOffers)
     const [activeOffers, setActiveOffers] = useState(props.activeOffers)
-    const PacesportCard = ({card}) => {
+    const PacesportCard = ({ card }) => {
         if (!card) return <></>
         let src = '/logo.png'
         if (card.image) {
@@ -30,12 +30,12 @@ export default function Page(props){
             <Center>
                 <Box className="tw-rounded-xl tw-shadow-lg tw-relative tw-h-[110px] tw-w-[200px] tw-overflow-hidden">
                     <Image
-                    className="tw-opacity-95 tw-rounded-xl"
-                    radius={'lg'}
-                    width={200}
-                    height={110}
-                    src={`${src}`}
-                    alt="Photo de campagne"
+                        className="tw-opacity-95 tw-rounded-xl"
+                        radius={'lg'}
+                        width={200}
+                        height={110}
+                        src={`${src}`}
+                        alt="Photo de campagne"
                     />
                 </Box>
             </Center>
@@ -63,13 +63,13 @@ export default function Page(props){
                     <PacesportCard card={props.pacesportCard} />
                     <Text color='dimmed' align='center'>Conditions d'activation :</Text>
                     <Text color={props?.pacesportCard?.status == '1' ? 'green' : 'orange'} align='center'>Status en cours de validation</Text>
-                    <Text color={activeOffers.some(offer => offer?.type === 'Nationale') ? 'green' : 'orange'} align='center'>Minimum 1 offre nationnale validée</Text>
+                    <Text color={activeOffers.some(offer => offer?.type === 'Nationale') ? 'green' : 'orange'} align='center'>Minimum 1 offre nationale validée</Text>
                 </Card>
                 <Link href={props.id ? props.id : "/profil/association"}>
-        <Button variant="filled" size="sm"
-                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
-                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
-                radius={'xl'}><BsArrowLeft /></Button></Link>
+                    <Button variant="filled" size="sm"
+                        className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full"
+                        radius={'xl'}><BsArrowLeft /></Button></Link>
                 <Space h={'sm'} />
 
                 <Title align="center" color="white" order={6}
@@ -93,33 +93,36 @@ export async function getServerSideProps(context) {
     const token = context.req.cookies['token']
 
     let avatar = await fetch(`${process.env.API_URL}/api/association/avatar`, {
-      headers: new Headers({
-              'JWTAuthorization': `Bearer ${token}`,
-      })}
+        headers: new Headers({
+            'JWTAuthorization': `Bearer ${token}`,
+        })
+    }
     )
     avatar = await avatar.json();
     if (avatar.code == 401) {
         return {
             redirect: {
-            permanent: false,
-            destination: "/login"
+                permanent: false,
+                destination: "/login"
             }
         }
     }
 
     let enseigne = await fetch(`${process.env.API_URL}/api/enseigne/auth/`, {
         headers: new Headers({
-                'JWTAuthorization': `Bearer ${token}`,
-        })}
+            'JWTAuthorization': `Bearer ${token}`,
+        })
+    }
     )
     enseigne = await enseigne.json();
 
 
     let backgroundImage = await fetch(`${process.env.API_URL}/api/association/background`, {
         headers: new Headers({
-                'JWTAuthorization': `Bearer ${token}`,
-        })}
-      )
+            'JWTAuthorization': `Bearer ${token}`,
+        })
+    }
+    )
     backgroundImage = await backgroundImage.json();
 
     let pendingOffers = await getAssociationPendingOffers(token)
@@ -128,18 +131,20 @@ export async function getServerSideProps(context) {
     let pacesport = await getPacesportCard(token)
     let prev = ''
     // // Pass data to the page via props
-    return { props: {
-        backgroundImage: backgroundImage.filename,
-        avatar: avatar.filename,
-        pendingOffers: JSON.parse(pendingOffers.data),
-        pacesportPendingOffers: JSON.parse(pacesportPendingOffers.data),
-        activeOffers: JSON.parse(activeOffers.data),
-        pacesportCard: JSON.parse(pacesport.data)
-    }}
-  }
+    return {
+        props: {
+            backgroundImage: backgroundImage.filename,
+            avatar: avatar.filename,
+            pendingOffers: JSON.parse(pendingOffers.data),
+            pacesportPendingOffers: JSON.parse(pacesportPendingOffers.data),
+            activeOffers: JSON.parse(activeOffers.data),
+            pacesportCard: JSON.parse(pacesport.data)
+        }
+    }
+}
 
 Page.getLayout = function getLayout(page) {
     return (
-      <Layout avatar={null}>{page}</Layout>
+        <Layout avatar={null}>{page}</Layout>
     )
-  }
+}
