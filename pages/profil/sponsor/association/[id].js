@@ -51,7 +51,7 @@ export default function Page(props) {
   const submitHandler = (values) => {
     setLoading(true)
     let body = serialize(values)
-    fetch(`/api/sponsoring-offer`, {
+    fetch(`/api/sponsoring-offer?XDEBUG_SESSION_START=tom`, {
       method: 'POST',
       headers: new Headers({
         'JWTAuthorization': `Bearer ${getCookie('token')}`
