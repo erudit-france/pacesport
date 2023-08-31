@@ -151,10 +151,11 @@ export default function Page(props) {
 
   const filteredOffers = offers.filter(
     offer =>
-      (offer.type === "Nationale" || (offer.type === "Locale" && offer.id === props.id))
-  );
-  console.log(filteredOffers)
-
+      offer.type === "Nationale" ||
+      (offer.type === "Locale" && offer.associations.some(ass => ass.id == props.id))
+);
+  console.log(props.id)
+console.log(offers[0].associations.some(ass => ass.id == props.id))
   const offersList = <>
     <Transition mounted={setShowOffers} transition="slide-down" duration={400} timingFunction="ease">
       {(styles) =>

@@ -179,7 +179,7 @@ export default function Page() {
   return (
     <>
       <Head>
-        <title>Pace&#8217;sport - Inscription Association</title>
+        <title>Pace'sport - Inscription Association</title>
       </Head>
       <form className="tw-relative tw-top-5" onSubmit={form.onSubmit((values) => submitHandler(values))}>
         <Text align="center" className="tw-font-semibold tw-text-lg tw-text-white">Formulaire Association</Text>
@@ -194,22 +194,22 @@ export default function Page() {
             </FileButton>
             {logoError && <Text align="center" size={'xs'} className="tw-text-[#d61515]">{logoError}</Text>}
           </Flex>
-          <TextInput mt="sm" variant="filled" description="Nom" placeholder="Nom" radius="lg" size="sm" withAsterisk
+          <TextInput mt="sm" variant="filled" description="Nom de l'association" placeholder="Nom de l'association" radius="lg" size="sm" withAsterisk
             {...form.getInputProps('name')} />
-          <TextInput mt="sm" variant="filled" description="Adresse" placeholder="Adresse" radius="lg" size="sm" withAsterisk
-            {...form.getInputProps('address')} />
-          <TextInput mt="sm" variant="filled" description="Ville" placeholder="Ville" radius="lg" size="sm" withAsterisk
-            {...form.getInputProps('ville')} />
-          <TextInput mt="sm" variant="filled" description="Code postal" placeholder="Code postal" radius="lg" size="sm" withAsterisk
+                      <TextInput mt="sm" variant="filled" description="Code postal de l'association" placeholder="Code postal de l'association" radius="lg" size="sm" withAsterisk
             {...form.getInputProps('postal')} />
-          <TextInput mt="sm" variant="filled" description="E-mail" placeholder="E-mail" radius="lg" size="sm" withAsterisk
+                      <TextInput mt="sm" variant="filled" description="Ville de l'association" placeholder="Ville de l'association" radius="lg" size="sm" withAsterisk
+            {...form.getInputProps('ville')} />
+          <TextInput mt="sm" variant="filled" description="Adresse de l'association" placeholder="Adresse de l'association" radius="lg" size="sm" withAsterisk
+            {...form.getInputProps('address')} />
+          <TextInput mt="sm" variant="filled" description="E-mail de l'association" placeholder="E-mail de l'association" radius="lg" size="sm" withAsterisk
             {...form.getInputProps('email')} />
-          <TextInput mt="sm" variant="filled" description="Téléphone" placeholder="Téléphone" radius="lg" size="sm" withAsterisk
+          <TextInput mt="sm" variant="filled" description="Téléphone de l'association" placeholder="Téléphone de l'association" radius="lg" size="sm" withAsterisk
             {...form.getInputProps('phone')} />
-          <TextInput mt="sm" variant="filled" description="Description" placeholder="Description" radius="lg" size="sm" withAsterisk
+          <TextInput mt="sm" variant="filled" description="Description de l'association" placeholder="Description de l'association" radius="lg" size="sm" withAsterisk
             {...form.getInputProps('description')} />
           <Flex className="tw-border-[1px] tw-border-gray-800 tw-bg-gray-900 tw-rounded-md tw-my-2 tw-py-2" direction={"column"}>
-            <Text align="center" className="tw-text-gray-300 tw-text-sm">Status</Text>
+            <Text align="center" className="tw-text-gray-300 tw-text-sm">Status de l'association</Text>
             <FileInput className="tw-text-white placeholder:tw-text-white tw-bg-gray-100 tw-rounded-md"
               onChange={setStatusFile}
               placeholder="Status" size="sm" m={'xs'} withAsterisk />

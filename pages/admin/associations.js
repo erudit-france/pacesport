@@ -75,7 +75,7 @@ export default function Page(props){
         <tr>
           <th>Association</th>
           <th className="tw-capitalize">état</th>
-          <th>Status</th>
+          <th>Statut</th>
         </tr>
     )
     

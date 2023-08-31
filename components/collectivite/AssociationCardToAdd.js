@@ -26,7 +26,7 @@ export default function AssociationCardToAdd({card, addToCardList}){
                         </Group>
                         <Text color="dimmed" fz={'xs'}>{moment(card.startDate).format('DD/MM/YYYY')}</Text>
                         <Text fz={'xs'} color={"gray"} my={'sm'}>
-                            Status: 
+                            Statut : 
                             <Badge className="tw-font-normal tw-uppercase tw-ml-3" 
                                 size="sm" 
                                 color={status == 1 ? 'teal' : 'indigo'}>

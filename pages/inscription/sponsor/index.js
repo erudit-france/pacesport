@@ -149,7 +149,7 @@ export default function Page(props) {
     return (
         <>
             <Head>
-                <title>Pace&#8217;sport - Inscription Partenaire</title>
+                <title>Pace'sport - Inscription Partenaire</title>
             </Head>
             <form className="tw-relative tw-top-5" onSubmit={form.onSubmit((values) => submitHandler(values))}>
                 <Text align="center" className="tw-font-semibold tw-text-lg tw-text-white">Formulaire Partenaire</Text>
@@ -186,15 +186,15 @@ export default function Page(props) {
                         placeholder={isPublic == '1' ? 'Dénomination collectivité publique' : 'Dénomination sociale'}
                         radius="lg" size="sm" withAsterisk
                         {...form.getInputProps('name')} />
-                    <TextInput mt="sm" variant="filled" description="Adresse" placeholder="Adresse" radius="lg" size="sm" withAsterisk
-                        {...form.getInputProps('address')} />
-                    <TextInput mt="sm" variant="filled" description="Code postal" placeholder="Code postal" radius="lg" size="sm" withAsterisk
+                    <TextInput mt="sm" variant="filled" description="Code postal de l'enseigne" placeholder="Code postal de l'enseigne" radius="lg" size="sm" withAsterisk
                         {...form.getInputProps('postal')} />
-                    <TextInput mt="sm" variant="filled" description="Ville" placeholder="Ville" radius="lg" size="sm" withAsterisk
+                    <TextInput mt="sm" variant="filled" description="Ville de l'enseigne" placeholder="Ville de l'enseigne" radius="lg" size="sm" withAsterisk
                         {...form.getInputProps('ville')} />
-                    <TextInput mt="sm" variant="filled" description="E-mail" placeholder="E-mail" radius="lg" size="sm" withAsterisk
+                    <TextInput mt="sm" variant="filled" description="Adresse de l'enseigne" placeholder="Adresse de l'enseigne" radius="lg" size="sm" withAsterisk
+                        {...form.getInputProps('address')} />
+                    <TextInput mt="sm" variant="filled" description="E-mail de l'enseigne" placeholder="E-mail de l'enseigne" radius="lg" size="sm" withAsterisk
                         {...form.getInputProps('email')} />
-                    <TextInput mt="sm" variant="filled" description="Téléphone" placeholder="Téléphone" radius="lg" size="sm" withAsterisk
+                    <TextInput mt="sm" variant="filled" description="Téléphone de l'enseigne" placeholder="Téléphone de l'enseigne" radius="lg" size="sm" withAsterisk
                         {...form.getInputProps('phone')} />
                     <Textarea mt="sm" variant="filled"
                         description={isPublic ? 'Description de la collectivité' : 'Description du partenaire'}

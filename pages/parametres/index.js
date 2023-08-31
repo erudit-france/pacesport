@@ -85,7 +85,7 @@ export default function Page({ status }) {
     }
     return (
         <>
-            <Head><title>Pace&#8217;sport - connexion</title></Head>
+            <Head><title>Pace'sport - connexion</title></Head>
 
             <header>
                 <Space my={'xl'} pt={'xl'} h={'xl'} />

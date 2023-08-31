@@ -27,7 +27,7 @@ export default function Page() {
   return (
     <>
       <Head>
-        <title>Pace&#8217;sport - connexion</title>
+        <title>Pace'sport - connexion</title>
       </Head>
       <h3 className="tw-pt-2 tw-text-center py-4 tw-font-semibold tw-text-white">
         Finaliser l'inscription

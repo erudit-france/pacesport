@@ -26,8 +26,8 @@ export default function ConditionsGeneralesVente(props) {
                 </Center>
             </Container>
 
-            <TextInput readOnly description="Pseudo" value={props.user?.pseudo}/>
-                <Space h={'md'} />
+            {/* <TextInput readOnly description="Pseudo" value={props.user?.pseudo}/>
+                <Space h={'md'} /> */}
                 <TextInput readOnly description="Nom" value={props.user?.nom}/>
                 <Space h={'md'} />
                 <TextInput readOnly description="Prénom" value={props.user?.prenom}/>
