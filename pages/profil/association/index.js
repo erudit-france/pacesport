@@ -256,7 +256,7 @@ export default function Page(props) {
       </Head>
       <section className="tw-px-4 tw-pt-8 tw-relative">
         <Box className="tw-relative">
-          <Title my={'md'} order={4} align="center">{props.association?.name}</Title>
+          <Title my={'md'} order={4} align="center">{props.user?.association?.name}</Title>
           {/* <ActionIcon component='a' href='/communication/add/association?prev=/profil/association' className="tw-bg-white tw-absolute tw-right-1.5 tw-bottom-0 tw-p-1.5" radius={'xl'}>
                         <BsMegaphoneFill className="tw-text-black" size={18} />
                     </ActionIcon> */}
@@ -304,7 +304,7 @@ export default function Page(props) {
           <Flex justify={'space-between'} my={'lg'} className="tw-relative">
             <Text className="tw-flex-1" color="red" fz={'sm'} fw={'bold'} align={'center'} py={2}>Ajoutez encore {nbSponsorsNeeded} partenaires pour valider votre pace'sport</Text>
           </Flex>}
-        <CampagneCard status={props?.pacesportCard?.status == '1' && activeOffers?.some(offer => offer?.type === 'Nationale')} id={1} title={'Carte pacesport'} image2={props.association?.image?.name} image={props.pacesportCard?.image?.name} startDate={Date.now()} />
+        <CampagneCard status={props?.pacesportCard?.status == '1' && activeOffers?.some(offer => offer?.type === 'Nationale')} id={1} title={'Carte pacesport'} image2={props.user?.association?.avatar.name} image={props.pacesportCard?.image?.name} startDate={Date.now()} />
         {console.log(JSON.stringify(props, null, 2))}
         <Divider my={'sm'} className="tw-w-2/3 tw-mx-auto" />
 

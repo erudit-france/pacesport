@@ -58,7 +58,7 @@ const ChatHeader = ({previousUrl}) => {
                     <Center mr={'md'}>
                     </Center>
                     <Link href={'/annuaire?prev=/messages'} 
-                        className='tw-text-sm tw-border-[1px] tw-px-3 tw-py-1.5 tw-rounded-2xl
+                        className='tw-text-sm tw-border-[1px] tw-bg-white tw-px-3 tw-py-1.5 tw-rounded-2xl
                                 tw-border-gray-300 hover:tw-bg-gray-50'>
                         Annuaire
                     </Link>
@@ -112,7 +112,7 @@ export default function Page(props){
                 <title>{title}</title>
             </Head>
             <section className="tw-mx-3 tw-pt-4">
-                <Paper className="tw-py-4 tw-bg-white tw-p-2 tw-rounded-lg">
+                <Paper className="tw-py-4 tw-bg-transparent tw-p-2 tw-rounded-lg">
                     <ChatHeader previousUrl={props.previousUrl} />
                     <SearchUser />
                 </Paper>
