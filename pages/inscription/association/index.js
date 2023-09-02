@@ -22,15 +22,13 @@ export default function Page() {
   const handleLogo = (file) => {
     const url = file == null ? "/uploads/chairs.png" : URL.createObjectURL(file)
 
-    if(file != null)
-    {
-    setLogo(url)
-    setLogoFile(file)
-    form.values.logo = file
-    setLogoError(null)
-  }
-    else
-    {
+    if (file != null) {
+      setLogo(url)
+      setLogoFile(file)
+      form.values.logo = file
+      setLogoError(null)
+    }
+    else {
       form.values.logo = "/uploads/chairs.png"
       boooo = true;
     }
@@ -87,10 +85,9 @@ export default function Page() {
         logoFilename = avatar.data.filename
       }
     }
-    else if(boooo == TbRuler2)
-{
-  logoFilename = "/uploads/chairs.png"
-}
+    else if (boooo == TbRuler2) {
+      logoFilename = "/uploads/chairs.png"
+    }
     //
     // Upload status
     //
@@ -149,7 +146,6 @@ export default function Page() {
           setTimeout(() => {
             push('/profil/association')
           }, 2000)
-          setLoading(false)
         } else {
           Toast.error(res.data.message)
           setLoading(false)
@@ -196,9 +192,9 @@ export default function Page() {
           </Flex>
           <TextInput mt="sm" variant="filled" description="Nom de l'association" placeholder="Nom de l'association" radius="lg" size="sm" withAsterisk
             {...form.getInputProps('name')} />
-                      <TextInput mt="sm" variant="filled" description="Code postal de l'association" placeholder="Code postal de l'association" radius="lg" size="sm" withAsterisk
+          <TextInput mt="sm" variant="filled" description="Code postal de l'association" placeholder="Code postal de l'association" radius="lg" size="sm" withAsterisk
             {...form.getInputProps('postal')} />
-                      <TextInput mt="sm" variant="filled" description="Ville de l'association" placeholder="Ville de l'association" radius="lg" size="sm" withAsterisk
+          <TextInput mt="sm" variant="filled" description="Ville de l'association" placeholder="Ville de l'association" radius="lg" size="sm" withAsterisk
             {...form.getInputProps('ville')} />
           <TextInput mt="sm" variant="filled" description="Adresse de l'association" placeholder="Adresse de l'association" radius="lg" size="sm" withAsterisk
             {...form.getInputProps('address')} />

@@ -25,6 +25,8 @@ export default function Page() {
                 const EXPIRATION_TIME = 60 * 60 * 24;
                 document.cookie = `token=${token};max-age=${EXPIRATION_TIME}`;
                 router.push('/login/as');
+                setVisible(true);
+                setIsCssLoaded(false);
             } else {
                 setVisible(true);
                 const timer = setTimeout(() => {
