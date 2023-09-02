@@ -330,7 +330,7 @@ setResultOffers(filteredOffers)
                 <AssociationPendingOffers offers={props.pendingOffers} />
 
                 <Divider my={'sm'} className="tw-w-2/3 tw-mx-auto" />
-        <Title align='center' order={6}>Offres partenaires</Title>
+        <Title align='center' order={6}>Les partenaires de pace'sport</Title>
         
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <div style={{ flex: '0 0 95%' }}>
@@ -358,7 +358,7 @@ setResultOffers(filteredOffers)
         {!ResultOffers
           ? fetching
             ? <></>
-            : <Text color='dimmed' align='center'>{'Aucune offre' + ResultOffers}</Text>
+            : <Text color='dimmed' align='center'>{'Aucune offre'}</Text>
           : ResultOffers.map((offer) => (
             <OfferRow key={offer.title} offer={offer} />
           ))
@@ -439,14 +439,29 @@ const requestLocation = async () => {
         alert("Impossible de récupérer le code postal pour votre position actuelle.");
       }
     }, (error) => {
-      alert("Erreur lors de la récupération de la position. Assurez-vous d'avoir donné la permission.");
+      //alert("Erreur lors de la récupération de la position. Assurez-vous d'avoir donné la permission.");
+      setSearchFunction("69001");
     });
   } else {
     alert("La géolocalisation n'est pas prise en charge par ce navigateur.");
   }
 }
-const setSearchFunction = (codePostal) => {
-  selectedSponsorHandler(codePostal);
+const cal = (data) =>{
+  console.log(data)
+  const filteredOffers = props.offers.filter(offer => offer.enseigne?.id === selectedSponsor?.id)
+  
+}
+
+const setSearchFunction = async (codePostal, props) => {
+  try {const response = await axios.get(`https://www.villes-voisines.fr/getcp.php?cp=${codePostal}&rayon=25`);
+  console.log(response.data)
+  const address = response.data.map(x => ({ville : x.code_postal, distance : x.distance.substring(0, 3)}) );
+  console.log(address)
+  cal(address);
+} catch (error) {
+  alert(error);
+}
+  //ResultOffers
   // Vous pouvez également actualiser la liste des partenaires ici en fonction du code postal
 };
 const fetchYourGeocodingAPI = async (lat, lon) => {

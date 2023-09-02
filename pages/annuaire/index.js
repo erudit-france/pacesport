@@ -72,7 +72,7 @@ else{
                 <Flex m={'md'}>
                     <Center mr={'md'}>
                     </Center>
-                    <SearchInput className='tw-flex-1' />
+                    <SearchInput className={query.prev == "/profil/association" ? 'tw-flex-1 spo' : 'tw-flex-1'} />
                 </Flex>
                 <Container m={'lg'} p={'lg'} className="tw-border-[1px] tw-border-gray-200 tw-rounded-xl tw-bg-gray-50/50">
                     {ContactList}
