@@ -453,7 +453,7 @@ const cal = (data) =>{
 }
 
 const setSearchFunction = async (codePostal, props) => {
-  try {const response = await axios.get(`https://www.villes-voisines.fr/getcp.php?cp=${codePostal}&rayon=25`);
+  try {const apiUrl = await axios.get(`https://www.villes-voisines.fr/getcp.php?cp=${codePostal}&rayon=25`);
   console.log(response.data)
   const address = response.data.map(x => ({ville : x.code_postal, distance : x.distance.substring(0, 3)}) );
   console.log(address)

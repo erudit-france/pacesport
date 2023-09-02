@@ -140,8 +140,8 @@ export default function Page(props) {
       <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
         <Flex justify={'space-between'}>
           <Text weight={550}>{offer.enseigne.name} <SponsoringOfferTypeBadge offer={offer} /></Text>
-          {/* <Text className='tw-flex tw-font-light' fz={'sm'}> */}
-          {/* <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer.association.ville}</Text> */}
+          <Text className='tw-flex tw-font-light' fz={'sm'}>
+          <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer.association?.ville}</Text>
         </Flex>
         <Text color=''>{offer.titre}</Text>
         <Text color='dimmed'>{offer.description}</Text>
@@ -151,8 +151,8 @@ export default function Page(props) {
 
   const filteredOffers = offers.filter(
     offer =>
-      offer.type === "Nationale" ||
-      (offer.type === "Locale" && offer.associations.some(ass => ass.id == props.id))
+      (offer.type === "Nationale" ||
+      (offer.type === "Locale" && offer.associations.some(ass => ass.id == props.id)) ) && offer.validated === true
 );
   console.log(props.id)
 console.log(props)
