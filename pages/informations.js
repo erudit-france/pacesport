@@ -5,9 +5,65 @@ import { getActive } from "@/domain/repository/SponsorRepository";
 import Link from 'next/link';
 import { getUser, getUsers } from "@/domain/repository/UserRepository";
 import styles from '../styles/ConditionsGeneralesVente.module.css';
-
+import { useState } from 'react';
+import Toast from "@/services/Toast"
 
 export default function ConditionsGeneralesVente(props) {
+    const [isEditable, setIsEditable] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const [formData, setFormData] = useState({
+        nom: props.user?.nom || '',
+        prenom: props.user?.prenom || '',
+        telephone: props.user?.telephone || '',
+        email: props.user?.email || '',
+        age: props.user?.age || '',
+        sexe: props.user?.sexe || '',
+        adresse: props.user?.adresse || ''
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value
+        });
+    };
+
+    const handleUpdate = () => {
+        setIsLoading(true); // Définir isLoading à vrai
+
+        // Obtenir le token à partir des cookies
+        const token = getCookie('token');
+
+        // Appeler la route Symfony pour mettre à jour l'utilisateur
+        fetch(`/api/updateUser/${props.user?.id}`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json',
+                'JWTAuthorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(formData),
+        })
+            .then((res) => res.json())
+            .then((res) => {
+                if (res.success) {
+                    Toast.success('Mise à jour réussie');
+                } else {
+                    console.log(res);
+                    Toast.error('Échec de la mise à jour');
+                }
+            })
+            .catch((error) => {
+                Toast.error('Une erreur est survenue lors de la communication avec le serveur.');
+            })
+            .finally(() => {
+                setIsLoading(false); // Rétablir isLoading à faux
+            });
+    };
+
+
     return <>
         <main className={`tw-h-screen tw-rounded-t-2xl ${styles.userProfile}`}>
             <Center className='tw-absolute tw-left-2 tw-top-0.5'>
@@ -27,15 +83,30 @@ export default function ConditionsGeneralesVente(props) {
 
             <div className={`tw-p-4 ${styles.infoContainer}`}>
                 {/* User Info */}
+
                 <div className={styles.infoGroup}>
-                    <InfoField description="Nom" value={props.user?.nom} />
-                    <InfoField description="Prénom" value={props.user?.prenom} />
-                    <InfoField description="Téléphone" value={props.user?.telephone} />
-                    <InfoField description="Email" value={props.user?.email} />
-                    <InfoField description="âge" value={props.user?.age} />
-                    <InfoField description="Sexe" value={props.user?.sexe} />
-                    <InfoField description="Adresse" value={props.user?.adresse} />
+                    {Object.keys(formData).map((key) => (
+                        <InfoField
+                            key={key}
+                            description={key}
+                            value={formData[key]}
+                            isEditable={true}
+                            onChange={handleChange}
+                        />
+                    ))}
                 </div>
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <Button
+                        onClick={handleUpdate}
+                        style={{ backgroundColor: 'blue', color: 'white' }}
+                        disabled={isLoading}  // Désactiver le bouton si isLoading est vrai
+                    >
+                        Mettre à jour
+                    </Button>
+                </div>
+
+
+
 
                 {/* Enseigne Info */}
                 {props.user?.enseigne?.name && (
@@ -57,11 +128,16 @@ export default function ConditionsGeneralesVente(props) {
         }} />
     </>
 }
-const InfoField = ({ description, value }) => {
-    if (description === 'avatar' || description === 'backgroundImage' || description === 'status') {
+const InfoField = ({ description, value, isEditable, onChange }) => {
+    if (isEditable) {
         return (
             <>
-                <Image src={value} alt={description} width={50} height={50} />
+                <TextInput
+                    description={description}
+                    name={description.toLowerCase()}
+                    value={value}
+                    onChange={onChange}
+                />
                 <Space h={'md'} />
             </>
         );
@@ -84,10 +160,16 @@ const InfoSection = ({ title, data }) => (
                 if (key === 'id') return null;
 
                 // Si la clé est 'avatar' ou 'bagWorld', affiche une image
-                if (key === 'avatar' || key === 'backgroundImage' || key === 'status') {
+                if (key === 'avatar' || key === 'backgroundImage' || key === 'status' || key === 'logo') {
+                    var namePicture = "";
+                    try {
+                        namePicture = data[key]['name'];
+                    } catch (error) {
+
+                    }
                     return (
                         <div key={index}>
-                            <Image src={data[key]} alt={key} width={50} height={50} />
+                            <Image src={"../public/uploads/" + namePicture} alt={key} width={50} height={50} />
                         </div>
                     );
                 }
@@ -102,6 +184,7 @@ const InfoSection = ({ title, data }) => (
 export async function getServerSideProps(context) {
     const token = context.req.cookies['token']
     let user = await getUser(token)
+    console.log(user);
     let sponsors = await getActive(token)
 
     // const res = await fetch(`${process.env.API_URL}/api/association/get/${id}`, {
@@ -125,4 +208,10 @@ export async function getServerSideProps(context) {
             sponsors: JSON.parse(sponsors.data)
         }
     }
+}
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
 }
