@@ -8,7 +8,7 @@ export default function Page(){
     return (
         <>
             <Head>
-                <title>Pace&#8217;sport - connexion</title>
+                <title>Pace'sport - connexion</title>
             </Head>
             <h3 className="tw-pt-2 tw-text-center py-4 tw-font-semibold tw-text-white">Se connecter en tant que</h3>
             <Flex justify='center' direction='column' mt='xl' gap="md" px='sm'>

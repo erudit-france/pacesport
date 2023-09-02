@@ -5,6 +5,7 @@ import SearchInput from '@/components/SearchInput'
 import { Avatar, Box, Button, Card, Center, Container, Flex, Grid, Group, Image, Modal, Paper, Space, Text, Title, Transition } from '@mantine/core'
 import AssociationCard from '@/components/AssociationCard'
 import Layout from '../../../layout'
+import { getAssociationActiveOffers } from '@/domain/repository/SponsoringOfferRepository'
 import { useEffect, useState } from 'react'
 import { getCookie } from 'cookies-next'
 import * as cookie from 'cookie'
@@ -27,7 +28,7 @@ export default function Page(props) {
   const [pacesportSubscription, setPacesportSubscription] = useState(props.pacesportSubscription)
   const [showOffers, setShowOffers] = useState(false)
   const [isFlipped, setIsFlipped] = useState(false)
-
+  console.log(props.id)
   const pacesportCardSrc = props.pacesportCard?.image?.name ? `/uploads/${props.pacesportCard?.image?.name}` : '/logo.png'
     console.log(props)
   const standaloneCard = <>
@@ -93,7 +94,12 @@ export default function Page(props) {
       </Transition>
     </>
 
-
+const filteredOffers = props.offers.filter(
+  offer =>
+    offer.type === "Nationale" ||
+    (offer.type === "Locale" && offer.associations.some(ass => ass.id == props.id))
+);
+console.log(props.id)
   return (
     <>
         <Head>
@@ -147,7 +153,7 @@ export default function Page(props) {
                 </Box>
                   {showOffers && 
                     <section className='tw-relative -tw-top-6'>
-                      {props.offers.map((offer) => (
+                      {filteredOffers.map((offer) => (
                         <OfferRow key={offer.title} offer={offer} />
                       ))}
                     </section>
@@ -179,9 +185,13 @@ export async function getServerSideProps(context) {
       }
     }
   }
+  //pacesportSubscription.id
   let pacesport = await getPacesportCard(token)
   let pacesportSubscription = await getActiveSubscription(token)
   pacesportSubscription = JSON.parse(pacesportSubscription.data)
+  let id = pacesportSubscription.association.id
+  let associationActiveOffers = await getAssociationActiveOffers(token, id)
+
   if (user.data == null) {
     return {
       redirect: {
@@ -200,8 +210,7 @@ export async function getServerSideProps(context) {
       }
     }
   }
-  let subscriptionActiveOffers = await getActiveOffers(token, pacesportSubscription.association.id)
-  subscriptionActiveOffers = JSON.parse(subscriptionActiveOffers.data)
+  let subscriptionActiveOffers = JSON.parse(associationActiveOffers.data)
   
 
   // // Pass data to the page via props
@@ -218,7 +227,8 @@ export async function getServerSideProps(context) {
     },
     offers: subscriptionActiveOffers,
     pacesportCard: JSON.parse(pacesport.data),
-    pacesportSubscription: pacesportSubscription
+    pacesportSubscription: pacesportSubscription,
+    id: id
   } }
 }
 
