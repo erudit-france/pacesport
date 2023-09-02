@@ -21,6 +21,8 @@ export default function Page(props) {
     const [type, setType] = useState(null);
     const [typeError, setTypeError] = useState(null);
     const { push } = useRouter()
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
 
     const isPublicHandler = (v) => {
         setIsPublic(v)
@@ -71,7 +73,8 @@ export default function Page(props) {
         },
     });
 
-    const submitHandler = (data) => {
+    const submitHandler = async (data) => {
+        setIsSubmitting(true);
         const formData = new FormData()
         formData.append('file', logoFile)
         fetch(`/api/file/upload`, {
@@ -105,16 +108,19 @@ export default function Page(props) {
                             }, 2000)
                         } else {
                             Toast.error(res.data.message)
+                            setIsSubmitting(false);
                         }
                     })
                     .catch((error) => {
                         Toast.error('Erreur pendant la création du sponsor')
                         console.log('error', error)
+                        setIsSubmitting(false);
                     })
             })
             .catch((error) => {
                 console.log('error', error)
                 Toast.error('Erreur pendant le téléchargement de l\'image')
+                setIsSubmitting(false);
             })
     }
 
@@ -211,9 +217,13 @@ export default function Page(props) {
                 </Paper>
 
                 <Flex justify="center" align="center" direction="row" mt="md">
-                    <Button className="tw-bg-gray-300 hover:tw-bg-gray-300/95 tw-text-gray-700 tw-shadow-sm -tw-top-10" radius="xl" size="md"
-                        type='submit'>Terminer
+                    <Button
+                        className="tw-bg-gray-300 hover:tw-bg-gray-300/95 tw-text-gray-700 tw-shadow-sm -tw-top-10"
+                        radius="xl" size="md" type='submit'
+                        disabled={isSubmitting}>
+                        {isSubmitting ? 'Envoi en cours...' : 'Terminer'}
                     </Button>
+
                 </Flex>
             </form>
         </>

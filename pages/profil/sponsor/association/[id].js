@@ -8,6 +8,8 @@ import Toast from "@/services/Toast";
 import { serialize } from "object-to-formdata";
 import { getCookie } from "cookies-next";
 import { TbCopy, TbCheck } from "react-icons/tb"
+import Link from 'next/link';
+import { BsArrowLeft } from 'react-icons/bs';
 
 let association2 = null;
 export default function Page(props) {
@@ -113,6 +115,15 @@ export default function Page(props) {
     <>
       <Head><title>Pace'Sport - {association.name}</title></Head>
       <Container>{associationInformation}</Container>
+      <Flex align="flex-start" justify="flex-start" style={{ position: 'absolute', top: '95px', left: '10%' }}>
+        <Link href="/profil/sponsor">
+          <Button variant="filled" size="sm"
+            className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full"
+            radius={'xl'}><BsArrowLeft /></Button>
+        </Link>
+      </Flex >
+
       <Space h={'xl'} />
       <Container>
         <Center mb={'md'}>

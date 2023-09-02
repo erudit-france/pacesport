@@ -144,3 +144,15 @@ body {
 }
 
 
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+  display: none;
+}
+
+.visible {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+  display: block;
+}
