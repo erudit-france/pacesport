@@ -312,7 +312,7 @@ setResultOffers(filteredOffers)
           <Flex justify={'space-between'} my={'lg'} className="tw-relative">
             <Text className="tw-flex-1" color="red" fz={'sm'} fw={'bold'} align={'center'} py={2}>Ajoutez encore {nbSponsorsNeeded} partenaires pour valider votre pace'sport</Text>
           </Flex>}
-        <CampagneCard status={props?.pacesportCard?.status == '1' && activeOffers?.some(offer => offer?.type === 'Nationale')} id={1} title={'Carte pacesport'} image2={props.user?.association?.avatar.name} image={props.pacesportCard?.image?.name} startDate={Date.now()} />
+        <CampagneCard status={props?.pacesportCard?.status == '1' && activeOffers?.some(offer => offer?.type === 'Nationale')} id={1} title={'Carte pacesport'} image2={props.user?.association?.avatar?.name} image={props.pacesportCard?.image?.name} startDate={Date.now()} />
         <Divider my={'sm'} className="tw-w-2/3 tw-mx-auto" />
 
         <Center>
@@ -457,7 +457,7 @@ const setSearchFunction = async (codePostal, props) => {
   console.log(response.data)
   const address = response.data.map(x => ({ville : x.code_postal, distance : x.distance.substring(0, 3)}) );
   console.log(address)
-  //cal(address);
+  cal(address);
 } catch (error) {
   alert(error);
 }
