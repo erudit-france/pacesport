@@ -24,9 +24,17 @@ export default function Page() {
             if (token) {
                 const EXPIRATION_TIME = 60 * 60 * 24;
                 document.cookie = `token=${token};max-age=${EXPIRATION_TIME}`;
-                router.push('/login/as');
                 setVisible(true);
                 setIsCssLoaded(false);
+                router.push('/login/as').then(() => {
+                    const timer = setTimeout(() => {
+                        setVisible(false);
+                        setIsCssLoaded(true);
+                    }, 2000);
+                }).catch((err) => {
+                    setVisible(false);
+                    setIsCssLoaded(true);
+                });
             } else {
                 setVisible(true);
                 const timer = setTimeout(() => {
