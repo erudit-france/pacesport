@@ -10,6 +10,8 @@ import fileUploader from "@/utils/fileUploader";
 import Toast from "@/services/Toast";
 import { useRouter } from "next/router";
 import { TbRuler2 } from "react-icons/tb";
+import Link from 'next/link';
+import { BsArrowLeft } from "react-icons/bs";
 
 export default function Page() {
   const { push } = useRouter()
@@ -181,6 +183,11 @@ export default function Page() {
       <Head>
         <title>Pace'sport - Inscription Association</title>
       </Head>
+      <Link href="/login/as">
+        <Button variant="filled" size="sm"
+                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
+                radius={'xl'}><BsArrowLeft /></Button></Link>
       <form className="tw-relative tw-top-5" onSubmit={form.onSubmit((values) => submitHandler(values))}>
         <Text align="center" className="tw-font-semibold tw-text-lg tw-text-white">Formulaire Association</Text>
         <Paper shadow="xl" p="xs" radius="lg" className="tw-bg-gray-800 tw-m-3 tw-pb-10 tw-top-5">

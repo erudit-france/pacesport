@@ -7,7 +7,7 @@ import { getCookie } from 'cookies-next'
 import Link from "next/link";
 import * as cookie from 'cookie'
 import { useRouter } from 'next/router'
-
+import moment from 'moment';
 import { getActiveOffers } from '@/domain/repository/CardOffersRepository'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 import { AiOutlineSync } from 'react-icons/ai'
@@ -155,7 +155,7 @@ export default function Page(props) {
       (offer.type === "Locale" && offer.associations.some(ass => ass.id == props.id))
 );
   console.log(props.id)
-console.log(offers[0].associations.some(ass => ass.id == props.id))
+console.log(props)
   const offersList = <>
     <Transition mounted={setShowOffers} transition="slide-down" duration={400} timingFunction="ease">
       {(styles) =>
@@ -167,7 +167,8 @@ console.log(offers[0].associations.some(ass => ass.id == props.id))
     </Transition>
   </>
 
-
+var date = moment(props.card.endDate).add(1, 'years');
+var dateComponent = date.utc().format('DD/MM/YYYY');
   return (
     <>
       <Head>
@@ -220,6 +221,7 @@ console.log(offers[0].associations.some(ass => ass.id == props.id))
                   <Group>
                     <Avatar className="tw-shadow-md" size={'lg'} radius={'xl'} src={`/uploads/${association.avatar?.name}`} />
                     <Text fz={'md'} weight={600}>{association.name}</Text>
+                    <Text fz={'md'} weight={600}>Valide jusqu'au {dateComponent}</Text>
                   </Group>
                   <Center>
                     <Button type='submit' color='red' variant='filled' mt={"md"} radius={'lg'} px={'xl'} size='sm'

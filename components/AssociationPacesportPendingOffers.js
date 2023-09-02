@@ -61,7 +61,7 @@ export default function AssociationPacesportPendingOffers({offers}) {
                     <Flex>
                         <Avatar radius={'xl'} className="tw-shadow-md" src={`/uploads/${offer.enseigne?.avatar?.name}`} alt={offer.description} />
                         <Stack spacing={'xs'}>
-                            <Text fz={'sm'} className='tw-my-auto tw-ml-2 tw-font-semibold'>{offer.enseigne.name} <SponsoringOfferTypeBadge offer={offer}/>
+                            <Text fz={'sm'} className='tw-my-auto tw-ml-2 tw-font-semibold'>{offer.enseigne?.name} <SponsoringOfferTypeBadge offer={offer}/>
                             </Text>
                             <Text fz={'sm'} className='tw-text-gray-900 tw-font-semibold tw-p-2' size="sm">{offer.title}</Text>
                         </Stack>
@@ -82,7 +82,7 @@ export default function AssociationPacesportPendingOffers({offers}) {
                         <Flex direction={'column'} justify={'space-between'}>
                             <ActionIcon variant="light" color="red" mb={'md'}
                                 size={'lg'}
-                                onClick={() => declineOffer(offer.id)} disabled={loading}><ImCross /></ActionIcon>
+                                onClick={() => declineOffer(offer?.id)} disabled={loading}><ImCross /></ActionIcon>
                         </Flex>
                     </Flex>
                 </Accordion.Panel>

@@ -78,7 +78,7 @@ export default function AssociationPendingOffers({offers}) {
     const items = offers == null || offers.length == 0 
         ? <Text align='center' fz={'xs'} color="dimmed">Aucune offre proposée</Text>
         : offers.map((offer) => (
-            <Accordion.Item value={(offer.description)} key={offer.id}>
+            <Accordion.Item value={(offer.description ? offer.description : '4')} key={offer.id}>
                 <AccordionControl offer={offer} />
                 <Accordion.Panel>
                     <Flex justify={'space-between'}>

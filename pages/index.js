@@ -138,8 +138,9 @@ console.log(filteredAssociations)
       </Head>
 
       <div className={''} >
+        <div className="tw-bg-black">
         <SectionTitle className='tw-text-white tw-text-xl tw-mb-6'>Bienvenue sur Pace'Sport</SectionTitle>
-
+</div>
         {/* Enseigne proche */}
         <section className='tw-mt-2'>
           <SectionTitle className='tw-text-gray-800 tw-text-base'>Associations proche de vous</SectionTitle>

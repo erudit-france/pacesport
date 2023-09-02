@@ -23,7 +23,7 @@ const HeroSection = ({isLogoVisible = true}) => {
 
 export default function Layout({isLogoVisible, children}){
     return (
-        <main className="tw-h-screen tw-w-screen tw-relative">
+        <main className="tw-h-screen tw-w-screen">
             <div className="tw-w-full tw-h-full">
                 <HeroSection isLogoVisible={isLogoVisible} />
                 <section className="tw-z-20">{children}</section>

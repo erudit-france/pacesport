@@ -209,7 +209,7 @@ const HeroSection = ({avatar, background}) => {
             </div>
 
             <Group className='tw-flex-col tw-absolute tw-right-3 tw-top-4 tw-z-20' spacing={'md'}>
-                <ActionIcon 
+                <ActionIcon component='a' href='/parametres?prev=/profil/sponsor' 
                     className='tw-text-black tw-rounded-full tw-bg-white tw-shadow-sm'><IoMdSettings /></ActionIcon>
                 <ActionIcon component='a' href='/communication/add/sponsor?prev=/profil/sponsor' 
                     className='tw-text-black tw-rounded-full tw-bg-white tw-shadow-sm'><GoMegaphone /></ActionIcon>

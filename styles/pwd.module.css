@@ -2,8 +2,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-color: #f2f2f2;
+  height: 50%;
+  /* background-color: #f2f2f2; */
 }
 
 .form {
@@ -87,7 +87,7 @@
 
 .button {
   padding: 10px;
-  background-color: blue;
+  background-color: rgb(194, 0, 0);
   color: white;
   cursor: pointer;
 }

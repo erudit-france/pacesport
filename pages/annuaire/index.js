@@ -31,7 +31,7 @@ let ContactCards = '';
 if(query.prev == "/profil/association")
 {
     const uniqueOffers = activeOffers.filter((offer, index, self) =>
-    index === self.findIndex((o) => o.enseigne.id === offer.enseigne.id)
+    index === self.findIndex((o) => o.enseigne?.id === offer.enseigne.id)
 );
     ContactCards = uniqueOffers.map((offer) => {
         return (
@@ -46,23 +46,20 @@ if(query.prev == "/profil/association")
     })
 }
 else{
-    ContactCards = users.map((user) => {
-    const hasEnseigneOrAssociation = user.association;
-
-    // Si user.enseigne ou user.association est non null, créer la carte de contact
-    if (hasEnseigneOrAssociation) {
-       return ( 
-        <Flex key={user.id} p={'sm'} onClick={() => modalHandler(true, user)}
+    const uniqueOffers = activeOffers.filter((offer, index, self) =>
+    index === self.findIndex((o) => o.association?.id === offer.enseigne.id)
+);
+    ContactCards = uniqueOffers.map((offer) => {
+        return (
+            <Flex key={offer.enseigne.id} p={'sm'} onClick={() => modalHandler(true, offer.enseigne)}
             className="hover:tw-cursor-pointer hover:tw-bg-gray-100/50 hover:tw-shadow-inner tw-rounded-lg">
-            <Avatar src={`uploads/${user.avatar?.name}`} radius={'xl'} size={'lg'} className="tw-shadow-lg" />
+            <Avatar src={`uploads/${offer.enseigne.avatar?.name}`} radius={'xl'} size={'lg'} className="tw-shadow-lg" />
             <Center>
-                <Text ml={'md'} fz={'lg'} weight={600} color="black" align="center">{user.prenom}</Text>
+                <Text ml={'md'} fz={'lg'} weight={600} color="black" align="center">{offer.enseigne.name}</Text>
             </Center>
         </Flex>
-       );
-       }
-    return null;
-       });
+        );
+    })
     }
     const ContactList = users.length == 0
         ? <Text align="center" color="dimmed">Aucune carte enregistrée</Text>
@@ -89,18 +86,17 @@ else{
                 radius={'lg'}
             >
                 <Flex className="">
-                    <Avatar src={`uploads/${currentUser?.avatar}`} radius={'xl'} size={'lg'} className="tw-shadow-lg" />
+                    <Avatar src={`uploads/${currentUser?.avatar.name}`} radius={'xl'} size={'lg'} className="tw-shadow-lg" />
                 </Flex>
                 <SimpleGrid cols={2} p={'lg'} className="tw-bg-gray-100/70 tw-rounded-lg" mt={'lg'}
                       breakpoints={[
                         { maxWidth: 'md', cols: 1, spacing: 'md' }
                         ]}>
-                    <InfoText title={'Nom'} value={currentUser?.name} />
-                    <InfoText title={'Prénom'} value={currentUser?.prenom} />
+                    <InfoText title={'Nom de l\'enseigne'} value={currentUser?.name} />
+                    <InfoText title={'Adresse'} value={currentUser?.address} />
                     <InfoText title={'E-mail'} value={currentUser?.email} />
                     <InfoText title={'Téléphone'} value={currentUser?.phone} />
-                    <InfoText title={'Association'} value={currentUser?.association?.name} />
-                    <InfoText title={'Enseigne'} value={currentUser?.enseigne?.name} />
+                    
                 </SimpleGrid>
             </Modal>
         </>
