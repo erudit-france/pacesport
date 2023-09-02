@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Button, Flex, Image, Space, Text, Title } from "@mantine/core";
+import { ActionIcon, Box, Button, Flex, Image, Space, Text, Title, Center } from "@mantine/core";
 import Head from "next/head";
 import Link from "next/link";
 import { BsLock } from 'react-icons/bs'
@@ -59,7 +59,6 @@ const Logo = () => (
 const logout = () => {
     deleteCookie('token')
     router.push('/login')
-    localStorage.removeItem('token');
 }
 
 export default function Page(props) {
@@ -69,7 +68,6 @@ export default function Page(props) {
     const logout = () => {
         deleteCookie('token')
         router.push('/login')
-        localStorage.removeItem('token');
     }
 
     let loggedUser = props.loggedUser
@@ -108,34 +106,30 @@ export default function Page(props) {
             </header>
             <Box className={"tw-rounded-3xl " + overlayClass} pt={'xl'} m={'lg'} bg={'dark'}>
                 <Logo />
-                <Title order={6} align="center" weight={600} color="white">
-                    Se connecter en tant que</Title><br/>
-                <Flex justify='center' direction='column' mb='md' gap="xl">
-                    <LinkButton className={'tw-px-16 tw-mb-0'} text={usernameParticulier} href={pacesportSubscription?.association?.id ? '/profil/particulier/carte' : '/'} />
-                </Flex>
-                {isAdmin &&
-                    <Flex justify='center' direction='column' mb='md' gap="xl">
-                        <LinkButton className={'tw-px-16 tw-mb-0'} text={<><RiAdminLine className="tw-mr-1" />Panel admin</>} href='/admin' />
-                    </Flex>}
-                <Flex className="tw-overflow-hidden" justify='center' direction='column'>
-                    <Box className="tw-bg-zinc-900 tw-px-16 tw-skew-y-3 tw-h-6 tw-relative tw-top-4"></Box>
-                    <Box className="tw-bg-zinc-900 tw-px-16" py={'md'}>
-                        <Flex justify='center' direction='column' my='xs' py={'sm'} gap="xs">
-                            <Title order={6} align="center" weight={600} color="white">Compte pro</Title>
+                <Title order={6} align="center" mb={"lg"} color="white" style={{ fontSize: '24px' }}>
+                    Bienvenu sur Pace'sport</Title>
+
+                <Center>
+                    <Box className="tw-rounded-x3 tw-shadow-lg tw-relative">
+                    <a href={pacesportSubscription?.association?.id ? '/profil/particulier/carte' : '/'} >
+                        <Image
+                            className="tw-rounded-x3 tw-top-[140px] box222 glowing"
+                            width={300}
+                            height={150}
+                            src={`/uploads/Design-carte-dos-64f2772e3ecc0.png`} //src={"/uploads/intro-64f328ce5b51b.png"}
+                            alt="logo sim"
+                        /></a>
+                    <Flex className="tw-overflow-hidden" direction='column'>
+
+                        <Flex direction='column' my='xs' py={'sm'} gap="xs" className="tw-rounded-xl tw-top-[340px]">
+                            
+                            <Title order={6} align="center" style={{ fontSize: '20px' }} color="white">Je m'inscris en tant que</Title>
                             <LinkButton className={''} text='Sponsor/Partenaire' href={sponsorLink} lock={!status.enseigne} />
                             <LinkButton className={' tw-mb-2'} text='Association' href={associationLink} lock={!status.association} />
                         </Flex>
+                    </Flex>
                     </Box>
-                    <Box className="tw-bg-zinc-900 tw-px-16 tw-skew-y-3 tw-h-6 tw-relative -tw-top-4"></Box>
-                    <Box className="tw-px-16">
-                        <Button
-                            onClick={logout}
-                            className={`tw-my-5
-                                        tw-w-full tw-bg-[#d61515] tw-text-white hover:tw-bg-[#d61515] hover:tw-text-gray-100'}
-                                        `}
-                            radius='lg'>Déconnexion</Button>
-                    </Box>
-                </Flex>
+                </Center>
             </Box >
         </>
     )

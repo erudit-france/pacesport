@@ -7,7 +7,7 @@ import { getCookie } from 'cookies-next'
 import Link from "next/link";
 import * as cookie from 'cookie'
 import { useRouter } from 'next/router'
-
+import moment from 'moment';
 import { getActiveOffers } from '@/domain/repository/CardOffersRepository'
 import { FaMapMarkerAlt } from 'react-icons/fa'
 import { AiOutlineSync } from 'react-icons/ai'
@@ -140,8 +140,8 @@ export default function Page(props) {
       <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
         <Flex justify={'space-between'}>
           <Text weight={550}>{offer.enseigne.name} <SponsoringOfferTypeBadge offer={offer} /></Text>
-          {/* <Text className='tw-flex tw-font-light' fz={'sm'}> */}
-          {/* <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer.association.ville}</Text> */}
+          <Text className='tw-flex tw-font-light' fz={'sm'}>
+          <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer.association?.ville}</Text>
         </Flex>
         <Text color=''>{offer.titre}</Text>
         <Text color='dimmed'>{offer.description}</Text>
@@ -151,11 +151,11 @@ export default function Page(props) {
 
   const filteredOffers = offers.filter(
     offer =>
-      offer.type === "Nationale" ||
-      (offer.type === "Locale" && offer.associations.some(ass => ass.id == props.id))
+      (offer.type === "Nationale" ||
+      (offer.type === "Locale" && offer.associations.some(ass => ass.id == props.id)) ) && offer.validated === true
 );
   console.log(props.id)
-console.log(offers[0].associations.some(ass => ass.id == props.id))
+console.log(props)
   const offersList = <>
     <Transition mounted={setShowOffers} transition="slide-down" duration={400} timingFunction="ease">
       {(styles) =>
@@ -167,7 +167,8 @@ console.log(offers[0].associations.some(ass => ass.id == props.id))
     </Transition>
   </>
 
-
+var date = moment(props.card.endDate).add(1, 'years');
+var dateComponent = date.utc().format('DD/MM/YYYY');
   return (
     <>
       <Head>
@@ -220,6 +221,7 @@ console.log(offers[0].associations.some(ass => ass.id == props.id))
                   <Group>
                     <Avatar className="tw-shadow-md" size={'lg'} radius={'xl'} src={`/uploads/${association.avatar?.name}`} />
                     <Text fz={'md'} weight={600}>{association.name}</Text>
+                    <Text fz={'md'} weight={600}>Valide jusqu'au {dateComponent}</Text>
                   </Group>
                   <Center>
                     <Button type='submit' color='red' variant='filled' mt={"md"} radius={'lg'} px={'xl'} size='sm'

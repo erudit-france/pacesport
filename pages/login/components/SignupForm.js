@@ -114,7 +114,7 @@ export default function SignupForm({ loading }) {
       })
   }
   const router = useRouter();
-  const nextPage = () => { router.push('/login/as') }
+  const nextPage = () => { router.push('/login/intro') }
   return (
     <>
       <form onSubmit={form.onSubmit((values) => submitHandler(values))}>

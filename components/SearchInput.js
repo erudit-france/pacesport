@@ -50,7 +50,7 @@ export default function SearchInput({className}) {
       size={"md"}
       dropdownPosition="bottom" 
       radius={"xl"}
-      placeholder="Nom de l'association..."
+      placeholder= {className.includes("spo") ? "Nom du partenaire..." : "Nom de l'association..."}
       itemComponent={AutoCompleteItem}
       rightSection={loading ? <Loader className="tw-mr-5" color='red' size={16} /> : <GoSearch className='tw-mr-5' />}
       value={value}

@@ -5,8 +5,9 @@ import UserListButton from "./components/UserListButton";
 import Layout from "./layout";
 import SponsorInvitation from "./components/SponsorInvitation";
 import { GoPlus } from 'react-icons/go'
+import AssociationPendingOffers from "@/components/AssociationPendingOffers";
 import Link from "next/link";
-import { getCardActiveOffers } from "@/domain/repository/CardOffersRepository";
+import { getCardActiveOffers, getAssociationPendingOffers } from "@/domain/repository/CardOffersRepository";
 import { BsLink, BsLock, BsMegaphoneFill } from "react-icons/bs";
 import { GrMoney } from "react-icons/gr";
 import { BiMessage } from "react-icons/bi";
@@ -32,10 +33,11 @@ import { getAssociationInvitationRequest, getAssociationSponsorInvitations } fro
 import fileUploader from "@/utils/fileUploader";
 import { getUser } from "@/domain/repository/UserRepository";
 import { getPacesportCard } from "@/domain/repository/PacesportRepository";
-import { getActive } from "@/domain/repository/SponsorRepository";
+import { getAllSponsors, getAllOffers } from "@/domain/repository/AdminRepository";
 import SponsoringOfferTypeBadge from "@/components/SponsoringOfferTypeBadge";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import axios from "axios";
+import { useRouter } from "next/router";
 
 ChartJS.register(
   CategoryScale,
@@ -49,6 +51,7 @@ ChartJS.register(
 export default function Page(props) {
   const validationRequest = props.validationRequest
   const [loading, setLoading] = useState(false)
+  const { push } = useRouter()
   const [openInvitationModal, { open, close }] = useDisclosure(false);
   const [additionalEmails, setAdditionalEmails] = useState([]);
   const [contrat, setContrat] = useState(null)
@@ -64,14 +67,21 @@ export default function Page(props) {
   const [searchCriteria, setSearchCriteria] = useState("");
   const [search, setSearch] = useState('');
   const [selectedSponsor, setSelectedSponsor] = useState(null)
+  const [ResultOffers, setResultOffers] = useState(null)
 
   const selectedSponsorHandler = (selectedOption) => {
     // Si l'option sélectionnée est un objet avec une valeur et une étiquette
     if (selectedOption && selectedOption.value) {
       setSelectedSponsor(selectedOption.value);
+      
     } else {
       setSelectedSponsor(selectedOption);
     }
+
+    const filteredOffers = props.offers.filter(offer => offer.enseigne?.id === selectedSponsor?.id);
+ 
+console.log(filteredOffers)
+setResultOffers(filteredOffers)
   };
 
   const filteredSponsors = useMemo(() => {
@@ -86,8 +96,6 @@ export default function Page(props) {
     label: sponsor.name, // ou ce que vous utilisez comme label
     value: sponsor
   }));
-
-  console.log(JSON.stringify(props, null, 2))
 
   useEffect(() => {
     if (selectedSponsor == null) {
@@ -131,9 +139,9 @@ export default function Page(props) {
       </Center>
       <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
         <Flex justify={'space-between'}>
-          <Text weight={550}>{offer.association.description} <SponsoringOfferTypeBadge offer={offer} /></Text>
+          <Text weight={550}>{offer.description} <SponsoringOfferTypeBadge offer={offer} /></Text>
           <Text className='tw-flex tw-font-light' fz={'sm'}>
-            <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer.association.ville}</Text>
+            <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer.association?.ville ? offer.association.ville : "Lyon"}</Text>
         </Flex>
         <Text color='dimmed'>{offer.description}</Text>
       </Flex>
@@ -304,8 +312,7 @@ export default function Page(props) {
           <Flex justify={'space-between'} my={'lg'} className="tw-relative">
             <Text className="tw-flex-1" color="red" fz={'sm'} fw={'bold'} align={'center'} py={2}>Ajoutez encore {nbSponsorsNeeded} partenaires pour valider votre pace'sport</Text>
           </Flex>}
-        <CampagneCard status={props?.pacesportCard?.status == '1' && activeOffers?.some(offer => offer?.type === 'Nationale')} id={1} title={'Carte pacesport'} image2={props.user?.association?.avatar.name} image={props.pacesportCard?.image?.name} startDate={Date.now()} />
-        {console.log(JSON.stringify(props, null, 2))}
+        <CampagneCard status={props?.pacesportCard?.status == '1' && activeOffers?.some(offer => offer?.type === 'Nationale')} id={1} title={'Carte pacesport'} image2={props.user?.association?.avatar?.name} image={props.pacesportCard?.image?.name} startDate={Date.now()} />
         <Divider my={'sm'} className="tw-w-2/3 tw-mx-auto" />
 
         <Center>
@@ -318,9 +325,13 @@ export default function Page(props) {
 
         <Divider my={'sm'} className="tw-w-2/3 tw-mx-auto" />
 
+        <Title align="center" color="white" order={6}
+                    className="tw-bg-gray-400 tw-font-light tw-pb-1 tw-mt-4">Nouvelles offres de partenariat</Title>
+                <AssociationPendingOffers offers={props.pendingOffers} />
 
+                <Divider my={'sm'} className="tw-w-2/3 tw-mx-auto" />
         <Title align='center' order={6}>Les partenaires de pace'sport</Title>
-
+        
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <div style={{ flex: '0 0 95%' }}>
             <Select
@@ -344,21 +355,23 @@ export default function Page(props) {
             <Loader />
           </Center>
         }
-        {offers.length == 0
+        {!ResultOffers
           ? fetching
             ? <></>
-            : <Text color='dimmed' align='center'>Aucune offre</Text>
-          : offersList
+            : <Text color='dimmed' align='center'>{'Aucune offre'}</Text>
+          : ResultOffers.map((offer) => (
+            <OfferRow key={offer.title} offer={offer} />
+          ))
         }
         <Space my={'md'} />
 
       </section>
 
-      <Space className="tw-pt-4"></Space>
+      {/* <Space className="tw-pt-4"></Space>
       <Box className="tw-relative">
         <ChartSection className="tw-bg-white tw-p-10 tw-z-10 tw-relative" />
-      </Box>
-      <Space className="tw-mt-8"></Space>
+      </Box> */}
+      {/* <Space className="tw-mt-8"></Space> */}
 
       {/* <section className="tw-bg-lightgold-50 tw-flex tw-flex-col tw-py-4">
                 <Text color="white" align="center">Offre de sponsoring</Text>
@@ -401,6 +414,7 @@ export default function Page(props) {
 }
 
 const selectedSponsorHandler = (selectedOption) => {
+  console.log(selectedOption)
   // Si l'option sélectionnée est un objet avec une valeur et une étiquette
   if (selectedOption && selectedOption.value) {
     setSelectedSponsor(selectedOption.value);
@@ -425,20 +439,34 @@ const requestLocation = async () => {
         alert("Impossible de récupérer le code postal pour votre position actuelle.");
       }
     }, (error) => {
-      alert("Erreur lors de la récupération de la position. Assurez-vous d'avoir donné la permission.");
+      //alert("Erreur lors de la récupération de la position. Assurez-vous d'avoir donné la permission.");
+      setSearchFunction("69001");
     });
   } else {
     alert("La géolocalisation n'est pas prise en charge par ce navigateur.");
   }
 }
-const setSearchFunction = (codePostal) => {
-  selectedSponsorHandler(codePostal);
+const cal = (data) =>{
+  console.log(data)
+  const filteredOffers = props.offers.filter(offer => offer.enseigne?.id === selectedSponsor?.id)
+  
+}
+
+const setSearchFunction = async (codePostal, props) => {
+  try {const apiUrl = await axios.get(`https://www.villes-voisines.fr/getcp.php?cp=${codePostal}&rayon=25`);
+  console.log(response.data)
+  const address = response.data.map(x => ({ville : x.code_postal, distance : x.distance.substring(0, 3)}) );
+  console.log(address)
+  cal(address);
+} catch (error) {
+  alert(error);
+}
+  //ResultOffers
   // Vous pouvez également actualiser la liste des partenaires ici en fonction du code postal
 };
 const fetchYourGeocodingAPI = async (lat, lon) => {
   try {
     const response = await axios.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
-    console.log(response);
     const address = response.data.address;
 
     return address.postcode;
@@ -494,9 +522,10 @@ export async function getServerSideProps(context) {
   let validationRequest = await getAssociationInvitationRequest(token)
   let user = await getUser(token)
   let pacesport = await getPacesportCard(token)
-  let sponsors = await getActive(token)
+  let sponsors = await getAllSponsors(token)
   let activeOffers = await getCardActiveOffers(token)
-
+  let pendingOffers = await getAssociationPendingOffers(token)
+  let offers = await getAllOffers(token)
   // fetch Associations
   let associations = await fetch(`${process.env.API_URL}/api/association/list`, {
     headers: new Headers({
@@ -518,10 +547,11 @@ export async function getServerSideProps(context) {
       pacesportCard: JSON.parse(pacesport.data),
       associations: JSON.parse(associations.data),
       activeOffers: JSON.parse(activeOffers.data),
-      sponsors: JSON.parse(sponsors.data)
+      pendingOffers: JSON.parse(pendingOffers.data),
+      sponsors: JSON.parse(sponsors.data),
+      offers:JSON.parse(offers.data)
     }
   }
-  console.log(JSON.stringify(props.association, null, 2))
 }
 
 Page.getLayout = function getLayout(page) {

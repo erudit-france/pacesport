@@ -1,5 +1,5 @@
 import { useState, useRef, forwardRef } from 'react';
-import { Autocomplete, Loader } from '@mantine/core';
+import { Autocomplete, Loader, Select } from '@mantine/core';
 import { GoSearch } from "react-icons/go";
 import { Group, Avatar, Text } from '@mantine/core';
 import Link from 'next/link';
@@ -42,20 +42,11 @@ export default function SearchUser() {
   };
 
   const ref = useRef(null);
-  
+  console.log(data)
   return (
-    <Autocomplete
-    className='focus:tw-border-[#d61515]'
-      ref={ref}
-      size={"sm"}
-      dropdownPosition="bottom" 
-      radius={"xl"}
-      placeholder="Auchan Lyon 1..."
-      itemComponent={AutoCompleteItem}
-      rightSection={loading ? <Loader className="tw-mr-5" color='red' size={16} /> : <GoSearch className='tw-mr-5' />}
-      value={value}
-      data={data}
-      onChange={handleChange}
-    />
+    <Select className="tw-m-1.5 tw-my-3" 
+    value={value}
+    data={data}
+    onChange={handleChange} />
   );
 }

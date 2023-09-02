@@ -60,6 +60,10 @@ export const getAllSponsors = async (token, local = false) => {
     return fetchApi(token, '/api/admin/sponsor/all')
 }
 
+export const getAllOffers = async (token, local = false) => {
+    return fetchApi(token, '/api/admin/sponsoring-offer/all')
+}
+
 export const getActiveSponsors = async (token, local = false) => {
     return fetchApi(token, '/api/admin/sponsor/active')
 }

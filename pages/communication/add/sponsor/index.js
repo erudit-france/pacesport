@@ -135,8 +135,8 @@ export default function Page(props) {
                         </Button>
                     </Flex>
 
-                    <Text className="tw-text-gray-700" mt="xl" mb='xs' size={'sm'} align="center">Un crédit Offert par mois</Text>
-                    <Text className="tw-text-gray-700" size={'sm'} align="center">Un crédit = une publication par jour</Text>
+                    <Text className="tw-text-gray-700" mt="xl" mb='xs' size={'sm'} align="center">Un crédit offert par mois</Text>
+                    <Text className="tw-text-gray-700" size={'sm'} align="center">Un crédit = une publication</Text>
                 </form>
             </div>
 

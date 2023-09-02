@@ -1,4 +1,4 @@
-import { Avatar, Center, Flex, Indicator, Modal, Paper, ScrollArea, Text,Button} from "@mantine/core"; 
+import { Avatar, Center, Flex, Indicator, Modal, Paper, ScrollArea, Text,Button, Select} from "@mantine/core"; 
 import { BsArrowLeft } from "react-icons/bs";;
 import { useDisclosure, useDocumentTitle } from "@mantine/hooks";
 import { getCookie } from "cookies-next";
@@ -114,8 +114,12 @@ export default function Page(props){
             <section className="tw-mx-3 tw-pt-4">
                 <Paper className="tw-py-4 tw-bg-transparent tw-p-2 tw-rounded-lg">
                     <ChatHeader previousUrl={props.previousUrl} />
-                    <SearchUser />
                 </Paper>
+                {/* <Select className="tw-m-1.5 tw-my-3" 
+   // value={value}
+    data={props.user}
+    //onChange={handleChange} 
+    /> */}
                 <ScrollArea className="tw-bg-white/10 tw-p-2 tw-py-5 tw-rounded-3xl tw-mt-2" 
                     offsetScrollbars
                     style={{ height: 'calc(100vh - 290px)' }}>

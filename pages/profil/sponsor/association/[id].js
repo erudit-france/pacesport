@@ -11,6 +11,7 @@ import { TbCopy, TbCheck } from "react-icons/tb"
 import Link from 'next/link';
 import { BsArrowLeft } from 'react-icons/bs';
 
+let association2 = null;
 export default function Page(props) {
   const association = props.association
   const [loading, setLoading] = useState(false);
@@ -23,6 +24,7 @@ export default function Page(props) {
     { value: 'Sports', label: 'Sports' },
     { value: 'Electronique', label: 'Electronique' },
   ]
+  association2 = props.association
   const form = useForm({
     initialValues: {
       association: association.id,
@@ -53,7 +55,7 @@ export default function Page(props) {
   const submitHandler = (values) => {
     setLoading(true)
     let body = serialize(values)
-    fetch(`/api/sponsoring-offer?XDEBUG_SESSION_START=tom`, {
+    fetch(`/api/sponsoring-offer`, {
       method: 'POST',
       headers: new Headers({
         'JWTAuthorization': `Bearer ${getCookie('token')}`
@@ -109,7 +111,6 @@ export default function Page(props) {
     <Information label={'Téléphone'} value={association.phone} />
     <Information label={'Email'} value={association.email} />
   </Box>
-
   return (
     <>
       <Head><title>Pace'Sport - {association.name}</title></Head>
@@ -221,6 +222,7 @@ export async function getServerSideProps(context) {
     props: {
       association: JSON.parse(data.data),
       cards: JSON.parse(cards.data),
+      avatar : JSON.parse(data.data).avatar.name,
       id: id
     }
   }
