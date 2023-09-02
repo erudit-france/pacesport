@@ -457,7 +457,7 @@ const setSearchFunction = async (codePostal, props) => {
   console.log(response.data)
   const address = response.data.map(x => ({ville : x.code_postal, distance : x.distance.substring(0, 3)}) );
   console.log(address)
-  cal(address);
+  //cal(address);
 } catch (error) {
   alert(error);
 }
