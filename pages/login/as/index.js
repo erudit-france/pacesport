@@ -59,6 +59,7 @@ const Logo = () => (
 const logout = () => {
     deleteCookie('token')
     router.push('/login')
+    localStorage.removeItem('token');
 }
 
 export default function Page(props) {
@@ -68,6 +69,7 @@ export default function Page(props) {
     const logout = () => {
         deleteCookie('token')
         router.push('/login')
+        localStorage.removeItem('token');
     }
 
     let loggedUser = props.loggedUser

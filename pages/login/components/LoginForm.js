@@ -92,10 +92,10 @@ export default function LoginForm({ loading }) {
       .then((res) => {
         if (res.payload && res.payload.token) {
           // Utilisez setItem pour sauvegarder le token dans le localStorage
-          localStorage.setItem('token', res.payload.token);  // <-- Ajouté ici
-
-          setCookie('token', res.payload.token);
-
+          localStorage.setItem('token', res.payload.token);
+          // Si vous souhaitez utiliser des cookies à la place de localStorage
+          const EXPIRATION_TIME = 60 * 60 * 24;
+          document.cookie = `token=${res.payload.token};max-age=${EXPIRATION_TIME}`;
           const maybePromise = nextPage();
           if (maybePromise && typeof maybePromise.then === 'function') {
             maybePromise.then(() => {

@@ -319,23 +319,23 @@ export default function Page(props) {
         <Divider my={'sm'} className="tw-w-2/3 tw-mx-auto" />
 
 
-        <Title align='center' order={6}>Offres partenaires</Title>
-        
+        <Title align='center' order={6}>Les partenaires de pace'sport</Title>
+
         <div style={{ display: 'flex', alignItems: 'center' }}>
-  <div style={{ flex: '0 0 95%' }}>
-    <Select
-      searchable
-      label={'Choisir partenaire'}
-      placeholder={props.sponsors.length > 0 ? 'Partenaire' : 'Aucun partenaire trouvé'}
-      rightSectionWidth={30}
-      styles={{ rightSection: { pointerEvents: 'none' } }}
-      data={sponsorSelect}
-      value={selectedSponsor ? selectedSponsor.label : null}
-      onChange={selectedSponsorHandler}
-    />
-  </div>
-  <Button onClick={requestLocation}><FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' /></Button>
-</div>
+          <div style={{ flex: '0 0 95%' }}>
+            <Select
+              searchable
+              label={'Choisir partenaire'}
+              placeholder={props.sponsors.length > 0 ? 'Partenaire' : 'Aucun partenaire trouvé'}
+              rightSectionWidth={30}
+              styles={{ rightSection: { pointerEvents: 'none' } }}
+              data={sponsorSelect}
+              value={selectedSponsor ? selectedSponsor.label : null}
+              onChange={selectedSponsorHandler}
+            />
+          </div>
+          <Button onClick={requestLocation}><FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' /></Button>
+        </div>
 
 
         <Title order={6} my={'lg'} align='center'>Les offres</Title>
