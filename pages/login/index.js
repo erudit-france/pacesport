@@ -11,7 +11,8 @@ import Layout from "@/components/layout/GradientDoodle";
 
 export default function Page() {
     const [activeTab, setActiveTab] = useState("Connexion");
-    const [visible, setVisible] = useState(false);  // Commence avec 'false'
+    const [visible, setVisible] = useState(false);
+    const [isCssLoaded, setIsCssLoaded] = useState(false);  // Ajoutez cette ligne
     const router = useRouter();
 
     useEffect(() => {
@@ -32,13 +33,15 @@ export default function Page() {
                 return () => clearTimeout(timer);
             }
         }
-    }, []);
 
+    }, []);
 
     const overlayHandler = (isVisible) => setVisible(isVisible);
     const overlayClass = visible ? 'fade-enter-active' : 'fade-exit-active';
     const mainContentClass = visible ? 'hidden' : 'visible';
-
+    const timer = setTimeout(() => {
+        setIsCssLoaded(true);
+    }, 1000);
     return (
         <>
             <Head>
@@ -55,23 +58,24 @@ export default function Page() {
                         <Text fz={'xs'} transform="uppercase" align="center" color="white" mt={'lg'}>Chargement...</Text>
                     </div>
                 }
-
-                <div className={`${overlayClass} ${mainContentClass}`}>
-                    <button onClick={() => setTab(!tab)}></button>
-                    <main className="container tw-p-2">
-                        <div className="tw-w-full tw-mb-1 tw-relative tw-top-1">
-                            <SegmentedControls tabHandler={setActiveTab} />
-                        </div>
-                        <Tabs value={activeTab}>
-                            <Tabs.Panel value="Inscription">
-                                <SignupForm loading={overlayHandler} />
-                            </Tabs.Panel>
-                            <Tabs.Panel value="Connexion">
-                                <LoginForm loading={overlayHandler} />
-                            </Tabs.Panel>
-                        </Tabs>
-                    </main>
-                </div>
+                {isCssLoaded && (
+                    <div className={`${overlayClass} ${mainContentClass}`}>
+                        <button onClick={() => setTab(!tab)}></button>
+                        <main className="container tw-p-2">
+                            <div className="tw-w-full tw-mb-1 tw-relative tw-top-1">
+                                <SegmentedControls tabHandler={setActiveTab} />
+                            </div>
+                            <Tabs value={activeTab}>
+                                <Tabs.Panel value="Inscription">
+                                    <SignupForm loading={overlayHandler} />
+                                </Tabs.Panel>
+                                <Tabs.Panel value="Connexion">
+                                    <LoginForm loading={overlayHandler} />
+                                </Tabs.Panel>
+                            </Tabs>
+                        </main>
+                    </div>
+                )}
             </div>
         </>
     )
