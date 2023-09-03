@@ -48,7 +48,12 @@ export default function Page(props) {
                 console.error('Error:', error);
             });
     };
-
+    const confirmDelete = (userId) => {
+        const confirmation = window.confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?");
+        if (confirmation) {
+            deleteUser(userId);
+        }
+    };
     const ths = (
         <tr>
             <th>Nom</th>
@@ -79,7 +84,7 @@ export default function Page(props) {
             <td><UserRoleBadge roles={user.roles} /></td>
             <td>
                 <Center>
-                    <ActionIcon onClick={() => deleteUser(user.id)}>
+                    <ActionIcon onClick={() => confirmDelete(user.id)}>
                         <FiTrash2 />
                     </ActionIcon>
                 </Center>
