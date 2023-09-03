@@ -143,10 +143,11 @@ export default function Page(props) {
         <Flex justify={'space-between'}>
           <Text weight={550}>{offer.enseigne.name} <SponsoringOfferTypeBadge offer={offer} /></Text>
           <Text className='tw-flex tw-font-light' fz={'sm'}>
-          <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer.association?.ville}</Text>
+          <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer.enseigne?.ville}</Text>
         </Flex>
         <Text color=''>{offer.titre}</Text>
         <Text color='dimmed'>{offer.description}</Text>
+        <Text className='tw-relative tw-bottom-1 tw-mr-1 tw-font-light' fz={'sm'}>{'du ' + moment(props.createAt).utc().format('DD/MM/YYYY') + ' au ' + moment(props.createAt).add(1, 'years').utc().format('DD/MM/YYYY')}</Text>
       </Flex>
     </Card>
   )
@@ -161,7 +162,6 @@ export default function Page(props) {
         // basé sur les coordonnées. Par exemple, en utilisant une API comme OpenStreetMap, Mapbox, etc.
   
         const codePostal = await fetchYourGeocodingAPI(lat, lon);
-        console.log(codePostal.postcode)
          filteredOffers = filteredOffersOld.filter(
            offer => offer.association?.postal.substring(0, 2) === codePostal?.postcode.substring(0, 2))
            
@@ -169,7 +169,6 @@ export default function Page(props) {
         const codePostal = "69011"
         filteredOffers = filteredOffersOld.filter(
           offer => offer.association?.postal && offer.association?.postal.substring(0, 2) === codePostal.substring(0, 2))
-            console.log(filteredOffers)
       });
     } else {
       alert("La géolocalisation n'est pas prise en charge par ce navigateur.");
@@ -204,9 +203,8 @@ export default function Page(props) {
         </section>}
     </Transition>
   </>
+          console.log(filteredOffers)
 filteredOffersOld = filteredOffers
-var date = moment(props.card.endDate).add(1, 'years');
-var dateComponent = date.utc().format('DD/MM/YYYY');
   return (
     <>
       <Head>
@@ -258,7 +256,7 @@ var dateComponent = date.utc().format('DD/MM/YYYY');
                   <Group>
                     <Avatar className="tw-shadow-md" size={'lg'} radius={'xl'} src={`/uploads/${association.avatar?.name}`} />
                     <Text fz={'md'} weight={600}>{association.name}</Text>
-                    <Text fz={'md'} weight={600}>Valide jusqu'au {dateComponent}</Text>
+                    <Text fz={'md'} weight={600}> Valide pendant 1 an</Text>
                   </Group>
                   <Center>
                     <Button type='submit' color='red' variant='filled' mt={"md"} radius={'lg'} px={'xl'} size='sm'
