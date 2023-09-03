@@ -8,11 +8,14 @@ import UserRoleBadge from "@/components/UserRoleBadge";
 import { TbCopy, TbCheck } from "react-icons/tb"
 import { useState } from "react";
 import { RxInfoCircled } from "react-icons/rx";
+import { FiTrash2 } from "react-icons/fi";
+import { getCookie } from 'cookies-next'
+import Toast from "@/services/Toast";
 
-export default function Page(props){
+export default function Page(props) {
     const [open, setOpen] = useState(false)
     const [openUser, setOpenUser] = useState(null)
-    const users = props.users
+    const [users, setUsers] = useState(props.users);
 
     const modalHandler = (user) => {
         if (user == false) {
@@ -23,15 +26,44 @@ export default function Page(props){
         setOpenUser(user)
         setOpen(true)
     }
+    const deleteUser = (userId) => {
+        fetch(`/api/user/delete/${userId}`, {
+            method: 'DELETE',
+            headers: new Headers({
+                'JWTAuthorization': `Bearer ${getCookie('token')}`
+            })
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.message) {
+                    Toast.success('Utilisateur supprimé et e-mail envoyé avec succès');
+                    setUsers(users.filter(user => user.id !== userId));
+                } else {
+                    Toast.error('Erreur lors de la suppression de l\'utilisateur');
+                }
+                console.log('res', res);
+            })
+            .catch(error => {
+                Toast.error('Une erreur est survenue');
+                console.error('Error:', error);
+            });
+    };
+    const confirmDelete = (userId) => {
+        const confirmation = window.confirm("Êtes-vous sûr de vouloir supprimer cet utilisateur ?");
+        if (confirmation) {
+            deleteUser(userId);
+        }
+    };
     const ths = (
         <tr>
-          <th>Nom</th>
-          <th>Email</th>
-          <th>Role</th>
-          <th></th>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Supprimer</th>
+            <th></th>
         </tr>
     )
-    
+
     const rows = users.map((user) => (
         <tr key={user.id}>
             <td><Text transform="capitalize">{user.nom}&nbsp;{user.prenom}</Text></td>
@@ -41,9 +73,9 @@ export default function Page(props){
                     <CopyButton value={user.email} timeout={1500}>
                         {({ copied, copy }) => (
                             <Tooltip label={copied ? 'Copié' : 'Copier'} withArrow position="right">
-                            <ActionIcon color={copied ? 'teal' : 'gray'} onClick={copy}>
-                                {copied ? <TbCheck size={14} /> : <TbCopy size={14} />}
-                            </ActionIcon>
+                                <ActionIcon color={copied ? 'teal' : 'gray'} onClick={copy}>
+                                    {copied ? <TbCheck size={14} /> : <TbCopy size={14} />}
+                                </ActionIcon>
                             </Tooltip>
                         )}
                     </CopyButton>
@@ -51,24 +83,31 @@ export default function Page(props){
             </td>
             <td><UserRoleBadge roles={user.roles} /></td>
             <td>
+                <Center>
+                    <ActionIcon onClick={() => confirmDelete(user.id)}>
+                        <FiTrash2 />
+                    </ActionIcon>
+                </Center>
+            </td>
+            <td>
                 <Center><ActionIcon onClick={() => modalHandler(user)}>
                     <RxInfoCircled /></ActionIcon></Center>
             </td>
         </tr>
     ))
-    
+
     return (
         <>
             <ScrollArea className="tw-max-w-[100%]">
                 <Tabs.Panel value="utilisateurs" p={"md"}>
                     <Title order={6} align="left">Utilisateurs</Title>
-                    <Table  fontSize={'sm'} striped withColumnBorders>
+                    <Table fontSize={'sm'} striped withColumnBorders>
                         <thead>{ths}</thead>
                         <tbody>{rows}</tbody>
                     </Table>
                 </Tabs.Panel>
             </ScrollArea>
-            
+
             <Modal
                 opened={open}
                 onClose={() => modalHandler(false)}
@@ -76,23 +115,23 @@ export default function Page(props){
                 centered
                 size={'60vw'}
             >
-                <TextInput readOnly description="Nom" value={openUser?.nom}/>
+                <TextInput readOnly description="Nom" value={openUser?.nom} />
                 <Space h={'md'} />
-                <TextInput readOnly description="Prénom" value={openUser?.prenom}/>
+                <TextInput readOnly description="Prénom" value={openUser?.prenom} />
                 <Space h={'md'} />
-                <TextInput readOnly description="Téléphone" value={openUser?.telephone}/>
+                <TextInput readOnly description="Téléphone" value={openUser?.telephone} />
                 <Space h={'md'} />
                 <TextInput readOnly description="Email" value={openUser?.email}
                     rightSection={
                         <CopyButton value={openUser?.email} timeout={1500}>
                             {({ copied, copy }) => (
                                 <Tooltip label={copied ? 'Copié' : 'Copier'} withArrow position="right">
-                                <ActionIcon color={copied ? 'teal' : 'gray'} onClick={copy}>
-                                    {copied ? <TbCheck size={14} /> : <TbCopy size={14} />}
-                                </ActionIcon>
+                                    <ActionIcon color={copied ? 'teal' : 'gray'} onClick={copy}>
+                                        {copied ? <TbCheck size={14} /> : <TbCopy size={14} />}
+                                    </ActionIcon>
                                 </Tooltip>
                             )}
-                        </CopyButton>}/>
+                        </CopyButton>} />
                 <Space h={'md'} />
                 <Stack align="flex-start" spacing="xs">
                     <Text fz={'xs'} color="dimmed">Role</Text>
@@ -110,46 +149,50 @@ export async function getServerSideProps(context) {
     if (!user.roles.includes('ROLE_ADMIN')) {
         return {
             redirect: {
-            permanent: false,
-            destination: "/login/as"
+                permanent: false,
+                destination: "/login/as"
             }
         }
     }
     let avatar = await fetch(`${process.env.API_URL}/api/association/avatar`, {
-      headers: new Headers({
-              'JWTAuthorization': `Bearer ${token}`,
-      })}
+        headers: new Headers({
+            'JWTAuthorization': `Bearer ${token}`,
+        })
+    }
     )
     avatar = await avatar.json();
     if (avatar.code == 401) {
         return {
             redirect: {
-            permanent: false,
-            destination: "/login"
+                permanent: false,
+                destination: "/login"
             }
         }
     }
 
     let backgroundImage = await fetch(`${process.env.API_URL}/api/association/background`, {
         headers: new Headers({
-                'JWTAuthorization': `Bearer ${token}`,
-        })}
-      )
+            'JWTAuthorization': `Bearer ${token}`,
+        })
+    }
+    )
     backgroundImage = await backgroundImage.json();
     let users = await getUsers(token)
     console.log('users', users)
 
 
     // // Pass data to the page via props
-    return { props: {
-        backgroundImage: backgroundImage.filename,
-        avatar: avatar.filename,
-        users: JSON.parse(users.data)
-    }}
-  }
+    return {
+        props: {
+            backgroundImage: backgroundImage.filename,
+            avatar: avatar.filename,
+            users: JSON.parse(users.data)
+        }
+    }
+}
 
 Page.getLayout = function getLayout(page) {
     return (
-      <Layout avatar={null}>{page}</Layout>
+        <Layout avatar={null}>{page}</Layout>
     )
-  }
+}

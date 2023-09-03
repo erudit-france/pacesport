@@ -68,21 +68,56 @@ export default function Page(props) {
   const [search, setSearch] = useState('');
   const [selectedSponsor, setSelectedSponsor] = useState(null)
   const [ResultOffers, setResultOffers] = useState(null)
+  const [sponsorSelect, setSponsorSelect] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
+
+  // Gestionnaire de sélection
   const selectedSponsorHandler = (selectedOption) => {
-    // Si l'option sélectionnée est un objet avec une valeur et une étiquette
     if (selectedOption && selectedOption.value) {
       setSelectedSponsor(selectedOption.value);
-      
     } else {
       setSelectedSponsor(selectedOption);
     }
 
-    const filteredOffers = props.offers.filter(offer => offer.enseigne?.id === selectedSponsor?.id);
- 
-console.log(filteredOffers)
-setResultOffers(filteredOffers)
+    const filteredOffers = props.offers.filter(offer => {
+      return offer.enseigne?.id === selectedSponsor?.id ||
+        offer.codePostal?.startsWith(selectedSponsor?.postal) ||
+        offer.ville?.toLowerCase() === selectedSponsor?.ville?.toLowerCase();
+    });
+
+    console.log(filteredOffers);
+    setResultOffers(filteredOffers);
   };
+
+  const requestLocation = async () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+        const codePostal = await fetchYourGeocodingAPI(lat, lon);
+
+        if (codePostal) {
+          const firstTwoDigits = codePostal.substring(0, 2);
+
+          // Mettez à jour la variable d'état qui suit la valeur de recherche du composant Select
+          setSearchQuery(firstTwoDigits);  // Supposons que "setSearchQuery" est la méthode de réglage pour un état appelé "searchQuery"
+          console.log(firstTwoDigits);
+          // Si vous avez une fonction pour actualiser les résultats de recherche, appelez-la ici.
+          // Par exemple: filterSponsorsByPostalCode(firstTwoDigits);
+        } else {
+          Toast.error('Impossible de récupérer le code postal pour votre position actuelle.')
+        }
+      }, (error) => {
+        Toast.error('Erreur de géolocalisation.')
+      });
+    } else {
+      Toast.error("La géolocalisation n'est pas prise en charge par ce navigateur.");
+    }
+  };
+
+
 
   const filteredSponsors = useMemo(() => {
     if (!searchCriteria) return props.sponsors; // si aucun critère de recherche n'est défini, retournez tous les partenaires
@@ -92,8 +127,9 @@ setResultOffers(filteredOffers)
     );
   }, [props.sponsors, searchCriteria]);
 
-  const sponsorSelect = filteredSponsors.map(sponsor => ({
-    label: sponsor.name, // ou ce que vous utilisez comme label
+  // Mise à jour de la sélection de sponsors
+  const updatedSponsorSelect = filteredSponsors.map(sponsor => ({
+    label: `${sponsor.name} ${sponsor.postal ?? ''} ${sponsor.ville ?? ''}`,
     value: sponsor
   }));
 
@@ -326,12 +362,12 @@ setResultOffers(filteredOffers)
         <Divider my={'sm'} className="tw-w-2/3 tw-mx-auto" />
 
         <Title align="center" color="white" order={6}
-                    className="tw-bg-gray-400 tw-font-light tw-pb-1 tw-mt-4">Nouvelles offres de partenariat</Title>
-                <AssociationPendingOffers offers={props.pendingOffers} />
+          className="tw-bg-gray-400 tw-font-light tw-pb-1 tw-mt-4">Nouvelles offres de partenariat</Title>
+        <AssociationPendingOffers offers={props.pendingOffers} />
 
-                <Divider my={'sm'} className="tw-w-2/3 tw-mx-auto" />
+        <Divider my={'sm'} className="tw-w-2/3 tw-mx-auto" />
         <Title align='center' order={6}>Les partenaires de pace'sport</Title>
-        
+
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <div style={{ flex: '0 0 95%' }}>
             <Select
@@ -340,13 +376,15 @@ setResultOffers(filteredOffers)
               placeholder={props.sponsors.length > 0 ? 'Partenaire' : 'Aucun partenaire trouvé'}
               rightSectionWidth={30}
               styles={{ rightSection: { pointerEvents: 'none' } }}
-              data={sponsorSelect}
-              value={selectedSponsor ? selectedSponsor.label : null}
+              data={updatedSponsorSelect}
+              searchValue={searchQuery}
               onChange={selectedSponsorHandler}
+              onSearchChange={newSearchValue => setSearchQuery(newSearchValue)} // Mettre à jour searchQuery lors de la modification de la chaîne de recherche
             />
           </div>
           <Button onClick={requestLocation}><FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' /></Button>
         </div>
+
 
 
         <Title order={6} my={'lg'} align='center'>Les offres</Title>
@@ -422,48 +460,9 @@ const selectedSponsorHandler = (selectedOption) => {
     setSelectedSponsor(selectedOption);
   }
 };
-const requestLocation = async () => {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(async (position) => {
-      const lat = position.coords.latitude;
-      const lon = position.coords.longitude;
 
-      // Ici, vous devrez faire appel à une API ou un service pour obtenir le code postal
-      // basé sur les coordonnées. Par exemple, en utilisant une API comme OpenStreetMap, Mapbox, etc.
 
-      const codePostal = await fetchYourGeocodingAPI(lat, lon);
 
-      if (codePostal) {
-        setSearchFunction(codePostal);
-      } else {
-        alert("Impossible de récupérer le code postal pour votre position actuelle.");
-      }
-    }, (error) => {
-      //alert("Erreur lors de la récupération de la position. Assurez-vous d'avoir donné la permission.");
-      setSearchFunction("69001");
-    });
-  } else {
-    alert("La géolocalisation n'est pas prise en charge par ce navigateur.");
-  }
-}
-const cal = (data) =>{
-  console.log(data)
-  const filteredOffers = props.offers.filter(offer => offer.enseigne?.id === selectedSponsor?.id)
-  
-}
-
-const setSearchFunction = async (codePostal, props) => {
-  try {const apiUrl = await axios.get(`https://www.villes-voisines.fr/getcp.php?cp=${codePostal}&rayon=25`);
-  console.log(response.data)
-  const address = response.data.map(x => ({ville : x.code_postal, distance : x.distance.substring(0, 3)}) );
-  console.log(address)
-  cal(address);
-} catch (error) {
-  alert(error);
-}
-  //ResultOffers
-  // Vous pouvez également actualiser la liste des partenaires ici en fonction du code postal
-};
 const fetchYourGeocodingAPI = async (lat, lon) => {
   try {
     const response = await axios.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
@@ -549,7 +548,7 @@ export async function getServerSideProps(context) {
       activeOffers: JSON.parse(activeOffers.data),
       pendingOffers: JSON.parse(pendingOffers.data),
       sponsors: JSON.parse(sponsors.data),
-      offers:JSON.parse(offers.data)
+      offers: JSON.parse(offers.data)
     }
   }
 }
