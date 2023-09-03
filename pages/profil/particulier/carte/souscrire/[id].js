@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { getCookie } from 'cookies-next'
 import Link from "next/link";
 import * as cookie from 'cookie'
+import axios from "axios";
 import { useRouter } from 'next/router'
 import moment from 'moment';
 import { getActiveOffers } from '@/domain/repository/CardOffersRepository'
@@ -25,6 +26,7 @@ export default function Page(props) {
   const [loading, setLoading] = useState(false)
   const [offers, setOffers] = useState(props.associationActiveOffers)
   const { push } = useRouter()
+  let filteredOffersOld = null
   const [showOffers, setShowOffers] = useState(true)
   const [fetching, setFetching] = useState(false)
   const [selectedAssociation, setSelectedAssociation] = useState(null)
@@ -54,7 +56,7 @@ export default function Page(props) {
   });
 
   const submitHandler = (values) => {
-    // console.log(server);
+
     const baseURL = window.location.href;
 
     fetch(`/api/stripe/subscriptionLinks`, {
@@ -69,7 +71,7 @@ export default function Page(props) {
       })
     }).then(res => res.json())
       .then(res => {
-        console.log("Error from server:", res);
+
         if (res.yearUrl) {
           router.push(res.yearUrl)
         }
@@ -85,7 +87,7 @@ export default function Page(props) {
     if (selectedAssociation == null) {
       return
     }
-    console.log('selectedAssociation', selectedAssociation)
+
     setFetching(true)
     setOffers([])
     fetch(`/api/sponsoring-offer-sponsor-active/${selectedAssociation}`, {
@@ -149,13 +151,49 @@ export default function Page(props) {
     </Card>
   )
 
-  const filteredOffers = offers.filter(
+  const requestLocation = async () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+  
+        // Ici, vous devrez faire appel à une API ou un service pour obtenir le code postal
+        // basé sur les coordonnées. Par exemple, en utilisant une API comme OpenStreetMap, Mapbox, etc.
+  
+        const codePostal = await fetchYourGeocodingAPI(lat, lon);
+        console.log(codePostal.postcode)
+         filteredOffers = filteredOffersOld.filter(
+           offer => offer.association?.postal.substring(0, 2) === codePostal?.postcode.substring(0, 2))
+           
+      }, (error) => {
+        const codePostal = "69011"
+        filteredOffers = filteredOffersOld.filter(
+          offer => offer.association?.postal && offer.association?.postal.substring(0, 2) === codePostal.substring(0, 2))
+            console.log(filteredOffers)
+      });
+    } else {
+      alert("La géolocalisation n'est pas prise en charge par ce navigateur.");
+    }
+  } 
+  
+  const fetchYourGeocodingAPI = async (lat, lon) => {
+    try {
+      const response = await axios.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
+      const address = response.data.address;
+  
+      return address.postcode;
+    } catch (error) {
+      console.error("Error fetching geocode:", error);
+      return null;
+    }
+  }
+
+  let filteredOffers = offers.filter(
     offer =>
       (offer.type === "Nationale" ||
       (offer.type === "Locale" && offer.associations.some(ass => ass.id == props.id)) ) && offer.validated === true
 );
-  console.log(props.id)
-console.log(props)
+
   const offersList = <>
     <Transition mounted={setShowOffers} transition="slide-down" duration={400} timingFunction="ease">
       {(styles) =>
@@ -166,7 +204,7 @@ console.log(props)
         </section>}
     </Transition>
   </>
-
+filteredOffersOld = filteredOffers
 var date = moment(props.card.endDate).add(1, 'years');
 var dateComponent = date.utc().format('DD/MM/YYYY');
   return (
@@ -197,10 +235,9 @@ var dateComponent = date.utc().format('DD/MM/YYYY');
             </Box>
             <Box className="tw-h-full tw-bg-gradient-to-br tw-from-slate-100 tw-to-gray-100 tw-shadow-lg tw-rounded-2xl tw-pt-4 tw-relative tw-mt-4 tw-z-0" p={'md'}>
               <Title order={3} mb={'sm'} align="center">J'adhère à Pace'Sport</Title>
-
               <Container className='tw-border-2 tw-rounded-md tw-shadow-sm tw-border-[#d61515] tw-p-4'>
                 <form onSubmit={form.onSubmit((values) => submitHandler(values))}>
-                  <Title align='center' order={6}>Pace'Sport</Title>
+                  <Title align='center' order={6}>Pace'Sport</Title> 
                   {/* <Select
                                 label={
                                     <Flex className='tw-mb-2'>
@@ -232,7 +269,7 @@ var dateComponent = date.utc().format('DD/MM/YYYY');
                 </form>
               </Container>
 
-              <Title order={6} my={'lg'} align='center'>Les offres</Title>
+              <Title order={6} my={'lg'} align='center'>Les offres</Title> <Button className='tw-text-black' onClick={requestLocation}>Filtrer avec ma position <FaMapMarkerAlt className='tw-relative tw-top-1 tw-ml-3 tw-mb-2 tw-text-gray-800' /></Button>
               {fetching &&
                 <Center>
                   <Loader />

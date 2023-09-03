@@ -188,21 +188,21 @@ export default function Page(props) {
         }, 300);
         setLoading(true)
         setSearch(true)
-        console.log('search input ', searchInput);
     }
     
     if(props.orders){
         const filteredData = props.orders.filter(item => 
-            item.association && item.association.id === props.user.association.id
+            item.association && item.association.id === props.user.association.id && item.isComplete == true
           );
-          console.log(filteredData)
+          console.log(props.rapatriement)
     calculatedList = filteredData.map((order, i) => (
         <React.Fragment key={i}>
-            <tr className="tw-text-center tw-font-semibold tw-bg-gray-50"><td  colSpan={3}>{order.user.name}</td></tr>
+            <tr className="tw-text-center tw-font-semibold tw-bg-gray-50"><td  colSpan={4}>{order.user.name}</td></tr>
                     <tr className="tw-bg-gray-200">
                         <td className={classes.td}>{order.user.nom + " " + order.user.prenom}</td>
                         <td className={`${classes.td}`}>{order.user.email}</td>
-                        <td className={`${classes.td} tw-text-center`}>{new Date(order.createdAt).toLocaleDateString()}</td>
+                        <td className={`${classes.td}`}>{new Date(order.createdAt).toLocaleDateString()}</td>
+                        <td className={`${classes.td} tw-text-center`}>{(rapatriement.createdAt > order.createdAt ? 'Validé' : 'En attente')}</td>
                     </tr>
         </React.Fragment>
     ))}
