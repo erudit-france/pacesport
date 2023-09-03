@@ -140,7 +140,7 @@ body {
 }
 
 .fade-enter-active, .fade-exit-active {
-  transition: opacity 1000ms;  /* ajustez le temps comme vous le souhaitez */
+  transition: opacity 500ms;  /* ajustez le temps comme vous le souhaitez */
 }
 
 
