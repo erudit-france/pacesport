@@ -1,5 +1,5 @@
 import { Avatar, Box, Center, Container, Flex, Modal, SimpleGrid, Stack, Text, Title,Button} from "@mantine/core"
-import { getCardActiveOffers } from "@/domain/repository/CardOffersRepository";
+import { getCardActiveOffers, getAssociationPendingOffers, getAssociationPacesportPendingOffers } from "@/domain/repository/CardOffersRepository";
 import Layout from "./layout"
 import { BsArrowLeft } from "react-icons/bs";
 import Head from "next/head"
@@ -10,10 +10,12 @@ import SearchInput from "@/components/SearchInput"
 import React from 'react';
 
 
-export default function Page({user, users, query, activeOffers2}) {
+export default function Page({user, users, query, activeOffers2, pacesportPendingOffers2, pendingOffers2}) {
     const [opened, setOpened] = useState(false)
     const [currentUser, setCurrentUser] = useState(null)
     const [activeOffers, setActiveOffers] = useState(activeOffers2)
+    const [pendingOffers, setPendingOffers] = useState(pendingOffers2)
+    const [pacesportPendingOffers, setPacesportPendingOffers] = useState(pacesportPendingOffers2)
     const modalHandler = (state, user) => {
         setOpened(state)
         setCurrentUser(user)
@@ -24,8 +26,8 @@ export default function Page({user, users, query, activeOffers2}) {
             <Text fz={'sm'}>{value || '-'}</Text>
         </SimpleGrid>
     )
-console.log(query.prev)
-console.log(activeOffers)
+console.log(users)
+
 let ContactCards = '';
 
 if(query.prev == "/profil/association")
@@ -46,19 +48,16 @@ if(query.prev == "/profil/association")
     })
 }
 else{
-    const uniqueOffers = activeOffers.filter((offer, index, self) =>
-    index === self.findIndex((o) => o.association?.id === offer.enseigne.id)
-);
-    ContactCards = uniqueOffers.map((offer) => {
+    ContactCards = users.map((offer) => { if(offer.association?.id){
         return (
-            <Flex key={offer.enseigne.id} p={'sm'} onClick={() => modalHandler(true, offer.enseigne)}
+            <Flex key={offer.association.id} p={'sm'} onClick={() => modalHandler(true, offer.association)}
             className="hover:tw-cursor-pointer hover:tw-bg-gray-100/50 hover:tw-shadow-inner tw-rounded-lg">
-            <Avatar src={`uploads/${offer.enseigne.avatar?.name}`} radius={'xl'} size={'lg'} className="tw-shadow-lg" />
+            <Avatar src={`uploads/${offer.association.avatar?.name}`} radius={'xl'} size={'lg'} className="tw-shadow-lg" />
             <Center>
-                <Text ml={'md'} fz={'lg'} weight={600} color="black" align="center">{offer.enseigne.name}</Text>
+                <Text ml={'md'} fz={'lg'} weight={600} color="black" align="center">{offer.association.name}</Text>
             </Center>
         </Flex>
-        );
+        );}
     })
     }
     const ContactList = users.length == 0
@@ -67,7 +66,7 @@ else{
 
     return (
         <>
-            <Head><title>Pace'Sport - Annuaire</title></Head>
+            <Head><title>Pace'Sport - Annuaire</title></Head>filter
             <Box>
                 <Flex m={'md'}>
                     <Center mr={'md'}>
@@ -92,7 +91,7 @@ else{
                       breakpoints={[
                         { maxWidth: 'md', cols: 1, spacing: 'md' }
                         ]}>
-                    <InfoText title={'Nom de l\'enseigne'} value={currentUser?.name} />
+                    <InfoText title={query.prev == "/profil/association" ? 'Nom de l\'enseigne' : 'Nom de l\'association'} value={currentUser?.name} />
                     <InfoText title={'Adresse'} value={currentUser?.address} />
                     <InfoText title={'E-mail'} value={currentUser?.email} />
                     <InfoText title={'Téléphone'} value={currentUser?.phone} />
@@ -130,11 +129,15 @@ export async function getServerSideProps(context) {
     let url = context.req.headers.referer
     let previousUrl = url === undefined ? '/messages/' : url
     let activeOffers = await getCardActiveOffers(token)
+    let pendingOffers = await getAssociationPendingOffers(token)
+    let pacesportPendingOffers = await getAssociationPacesportPendingOffers(token)
     // // Pass data to the page via props
     return { props: {
         user: JSON.parse(userData.data),
         users: JSON.parse(data.data),
         activeOffers2: JSON.parse(activeOffers.data),
+        pendingOffers2: JSON.parse(pendingOffers.data),
+        pacesportPendingOffers2: JSON.parse(pacesportPendingOffers.data),
         query: context.query
     } }
 }
