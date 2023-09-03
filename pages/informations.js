@@ -65,11 +65,11 @@ export default function ConditionsGeneralesVente(props) {
 
 
     return <>
-        <main className={`tw-h-screen tw-rounded-t-2xl ${styles.userProfile}`}>
+        <main className={`tw-h-screen tw-rounded-t-2xl`}>
             <Center className='tw-absolute tw-left-2 tw-top-0.5'>
                 <Link href="/parametres">
                     <Button variant="filled" size="sm"
-                        className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900 hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full"
+                        className="tw-bg-gray-50 tw-text-black tw-ml-5 tw-border-[1px] tw-ml-5 tw-border-gray-900 hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full"
                         radius={'xl'}><BsArrowLeft /></Button>
                 </Link>
             </Center>
@@ -88,7 +88,18 @@ export default function ConditionsGeneralesVente(props) {
                     {Object.keys(formData).map((key) => (
                         <InfoField
                             key={key}
-                            description={key}
+                            description={ key === 'nom' ? 'Nom' :
+                            key === 'prenom' ? 'Prénom' :
+                            key === 'address' ? 'Adresse' :
+                            key === 'telephone' || key === 'phone' ? 'Téléphone' :
+                            key === 'email' ? 'E-mail' :
+                            key === 'age' ? 'Âge' :
+                            key === 'name' ? 'Nom' :
+                            key === 'sexe' ? 'Sexe' :
+                            key === 'adresse' ? 'Adresse' :
+                            key === 'description' ? 'Description' :
+                            key === 'ville' ? 'Ville' :
+                            key === 'postal' ? 'Code postal' : key}
                             value={formData[key]}
                             isEditable={true}
                             onChange={handleChange}
@@ -98,15 +109,12 @@ export default function ConditionsGeneralesVente(props) {
                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <Button
                         onClick={handleUpdate}
-                        style={{ backgroundColor: 'blue', color: 'white' }}
+                        style={{ backgroundColor: 'red', color: 'white' }}
                         disabled={isLoading}  // Désactiver le bouton si isLoading est vrai
                     >
                         Mettre à jour
                     </Button>
                 </div>
-
-
-
 
                 {/* Enseigne Info */}
                 {props.user?.enseigne?.name && (
@@ -160,7 +168,11 @@ const InfoSection = ({ title, data }) => (
                 if (key === 'id') return null;
 
                 // Si la clé est 'avatar' ou 'bagWorld', affiche une image
-                if (key === 'avatar' || key === 'backgroundImage' || key === 'status' || key === 'logo') {
+                if (key === 'avatar' || key === 'backgroundImage' || key === 'status' || key === 'logo' || key === 'validated'
+                || key === 'validated'|| key === 'hasFinishedTutorial'|| key === 'type'|| key === 'communicationCredit'|| key === 'isCollectivitePublique') {
+                    return (
+                        <div key={index}></div>
+                    );
                     var namePicture = "";
                     try {
                         namePicture = data[key]['name'];
@@ -173,7 +185,21 @@ const InfoSection = ({ title, data }) => (
                         </div>
                     );
                 }
-                return <InfoField key={index} description={key} value={data[key]} />;
+                let keyy = key;
+                if(key === 'nom') keyy = 'Nom';
+                if(key === 'prenom') keyy = 'Prénom';
+                if(key === 'address') keyy = 'Adresse';
+                if(key === 'telephone') keyy = 'Téléphone';
+                if(key === 'phone') keyy = 'Téléphone';
+                if(key === 'email') keyy = 'E-mail';
+                if(key === 'age') keyy = 'Âge';
+                if(key === 'name') keyy = 'Nom';
+                if(key === 'sexe') keyy = 'Sexe';
+                if(key === 'adresse') keyy = 'Adresse';
+                if(key === 'description') keyy = 'Description';
+                if(key === 'ville') keyy = 'Ville';
+                if(key === 'postal') keyy = 'Code postal';
+                return <InfoField key={index} description={keyy} value={data[key]} />;
             })}
         </div>
     </>

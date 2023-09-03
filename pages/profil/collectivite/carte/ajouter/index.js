@@ -89,7 +89,7 @@ export default function Page(props){
             <main className="tw-bg-gradient-to-b tw-from-gray-100 tw-to-white tw-rounded-t-[2rem] tw-relative -tw-mt-7"
                 style={{ minHeight: 'calc(100vh - 180px)' }}>
                             <Button variant="filled" id="goBackButton" size="sm"
-                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+                className="tw-bg-gray-50 tw-text-black tw-ml-5 tw-border-[1px] tw-border-gray-900
                 hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
                 radius={'xl'}><BsArrowLeft /></Button>
                 <section className="tw-px-2 tw-pt-4 tw-border-[1px] tw-border-green-500/50 tw-rounded-2xl tw-shadow-sm tw-m-2">

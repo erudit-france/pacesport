@@ -62,12 +62,12 @@ export default function Page(props) {
                 <Card radius={'lg'} className="tw-overflow-hidden">
                     <PacesportCard card={props.pacesportCard} />
                     <Text color='dimmed' align='center'>Conditions d'activation :</Text>
-                    <Text color={props?.pacesportCard?.status == '1' ? 'green' : 'orange'} align='center'>Status en cours de validation</Text>
+                    <Text color={props?.pacesportCard?.status == '1' ? 'green' : 'orange'} align='center'>Statuts en cours de validation</Text>
                     <Text color={activeOffers.some(offer => offer?.type === 'Nationale') ? 'green' : 'orange'} align='center'>Minimum 1 offre nationale validée</Text>
                 </Card>
                 <Link href={props.id ? props.id : "/profil/association"}>
                     <Button variant="filled" size="sm"
-                        className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+                        className="tw-bg-gray-50 tw-ml-5 tw-text-black tw-border-[1px] tw-border-gray-900
                 hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full"
                         radius={'xl'}><BsArrowLeft /></Button></Link>
                 <Space h={'sm'} />

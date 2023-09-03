@@ -107,7 +107,7 @@ export default function Page(props) {
             <Box className={"tw-rounded-3xl " + overlayClass} pt={'xl'} m={'lg'} bg={'dark'}>
                 <Logo />
                 <Title order={6} align="center" mb={"lg"} color="white" style={{ fontSize: '24px' }}>
-                    Bienvenu sur Pace'sport</Title>
+                    Bienvenue sur Pace'sport</Title>
 
                 <Center>
                     <Box className="tw-rounded-x3 tw-shadow-lg tw-relative">
@@ -116,7 +116,7 @@ export default function Page(props) {
                             className="tw-rounded-x3 tw-top-[140px] box222 glowing"
                             width={300}
                             height={150}
-                            src={`/uploads/Design-carte-dos-64f2772e3ecc0.png`} //src={"/uploads/intro-64f328ce5b51b.png"}
+                            src={"/uploads/intro-64f328ce5b51b.png"}
                             alt="logo sim"
                         /></a>
                     <Flex className="tw-overflow-hidden" direction='column'>

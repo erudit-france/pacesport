@@ -38,17 +38,17 @@ export function SegmentedControls({ tabHandler }) {
         root: { 
           borderBottomLeftRadius: '0px !important',
           borderBottomRightRadius: '0px !important',
-          backgroundColor: '#2a2e37'
+          backgroundColor: '#111827'
         }
       }}
       fullWidth 
       value={value}
       onChange={changeHandler}
-      radius="xl"
+      radius="md"
       size="md"
       data={['Connexion', 'Inscription']}
-      color="gray"
-      className='tw-border-[1px] tw-border-b-0 tw-border-white'
+      color="red"
+      className='tw-border-[3px] tw-border-b-0 tw-border-[#000] tw-text-white'
     />
   );
 }

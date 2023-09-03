@@ -97,7 +97,7 @@ export default function Page(props) {
         alert("Erreur lors de la récupération de la position. Assurez-vous d'avoir donné la permission.");
       });
     } else {
-      alert("La géolocalisation n'est pas prise en charge par ce navigateur.");
+      alert("La géolocalisation n'est pas prise en charge sur votre appareil.");
     }
   }
   const fetchYourGeocodingAPI = async (lat, lon) => {
@@ -138,12 +138,12 @@ console.log(filteredAssociations)
       </Head>
 
       <div className={''} >
-        <div className="tw-bg-black">
-        <SectionTitle className='tw-text-white tw-text-xl tw-mb-6'>Bienvenue sur Pace'Sport</SectionTitle>
-</div>
+        <Center><div className="tw-bg-[#EE2323] tw-w-[25%] tw-rounded-full">
+        <SectionTitle className='tw-text-white tw-text-xl tw-mb-6 tw-h-3'>Bienvenue sur Pace'Sport</SectionTitle>
+</div></Center>
         {/* Enseigne proche */}
         <section className='tw-mt-2'>
-          <SectionTitle className='tw-text-gray-800 tw-text-base'>Associations proche de vous</SectionTitle>
+          <SectionTitle className='tw-text-gray-800 tw-text-base'>Associations proches de vous</SectionTitle>
           {/* search input */}
           <section className='tw-px-8 tw-mb-4'>
           <div style={{ display: 'flex', alignItems: 'center' }}>

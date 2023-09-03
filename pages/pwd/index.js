@@ -11,6 +11,7 @@ export default function Page() {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const router = useRouter();
   const { token } = router.query;
@@ -22,6 +23,10 @@ export default function Page() {
       }, 3000); // Rediriger après 3 secondes
     }
   }, [isSuccess]);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,19 +64,26 @@ export default function Page() {
 
   return (
     <div className={styles.container}>
-      
       <form onSubmit={handleSubmit} className={styles.form}>
-      <h1>Changer votre mot de passe</h1>
-      <p>Veuillez entrer votre nouveau mot de passe ci-dessous.</p>
-      <br/>
-        <input
-          type="password"
-          placeholder="Nouveau mot de passe"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className={styles.input}
-        />
+        <h1>Changer votre mot de passe</h1>
+        <p>Veuillez entrer votre nouveau mot de passe ci-dessous.</p>
+        <div className={styles.passwordInputContainer} style={{ display: 'flex' }}>
+          <input
+            type={showPassword ? 'text' : 'password'}
+            placeholder="Nouveau mot de passe"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className={styles.input}
+          />
+          <button
+            type="button"
+            className={styles.showPasswordButton}
+            onClick={togglePasswordVisibility}
+          >
+            {showPassword ? 'Masquer' : 'Afficher'}
+          </button>
+        </div>
         <button type="submit" disabled={isLoading} className={styles.button}>
           {isLoading ? 'Chargement...' : 'Valider'}
         </button>
@@ -83,6 +95,7 @@ export default function Page() {
       )}
     </div>
   );
+  
 }
 Page.getLayout = function getLayout(page) {
   return (

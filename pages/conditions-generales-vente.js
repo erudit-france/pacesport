@@ -99,7 +99,7 @@ export default function ConditionsGeneralesVente() {
         <Center className='tw-absolute tw-left-2 tw-top-0.5'>
         <Link href="/parametres">
         <Button variant="filled" size="sm"
-                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+                className="tw-bg-gray-50 tw-text-black tw-ml-5 tw-border-[1px] tw-border-gray-900
                 hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
                 radius={'xl'}><BsArrowLeft /></Button></Link>
               </Center>

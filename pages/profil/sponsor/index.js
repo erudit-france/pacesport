@@ -157,13 +157,14 @@ export default function Page(props) {
     }
     setTab(state)
     form.setValues({ type: state })
+    console.log(form)
   }
 
   const form = useForm({
     initialValues: {
       association: [],
       description: '',
-      type: 'Nationale',
+      type: 'Locale',
     },
     validate: {
       association: (value) => {
@@ -603,10 +604,10 @@ export async function getServerSideProps(context) {
   return {
     props: {
       backgroundImage: backgroundImage.filename,
-      cards: JSON.parse(data.data),
+      cards: data?.data ? JSON.parse(data.data) : null,
       avatar: avatar.filename,
-      associations: JSON.parse(associations.data),
-      offers: JSON.parse(offers.data)
+      associations: associations?.data ? JSON.parse(associations.data) : null,
+      offers: offers?.data ? JSON.parse(offers.data) : null
     }
   }
 }

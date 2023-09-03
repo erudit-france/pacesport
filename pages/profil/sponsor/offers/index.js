@@ -57,7 +57,7 @@ export default function Page(props) {
                 <Box my={'sm'}>
                 <Button variant="filled" id="goBackButton" size="sm"
                 className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
-                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
+                hover:tw-bg-gray-100 hover:tw-text-black tw-ml-5 tw-rounded-full" 
                 radius={'xl'}><BsArrowLeft /></Button>
                     <Title order={4} align='center' transform='uppercase' my={"md"}>Mes partenariats</Title>
                     <Text color="dimmed" fz={'sm'} align="center">Aucun partenariat en cours</Text>

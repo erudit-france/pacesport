@@ -112,7 +112,7 @@ export default function Page() {
       }
     }
     else {
-      Toast.error('Status obligatoire')
+      Toast.error('Statut obligatoire')
       setLoading(false);
       return
     }
@@ -181,7 +181,7 @@ export default function Page() {
       </Head>
       <Link href="/login/as">
         <Button variant="filled" size="sm"
-                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+                className="tw-bg-gray-50 tw-text-black tw-ml-5 tw-border-[1px] tw-border-gray-900
                 hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
                 radius={'xl'}><BsArrowLeft /></Button></Link>
       <form className="tw-relative tw-top-5" onSubmit={form.onSubmit((values) => submitHandler(values))}>
@@ -212,10 +212,10 @@ export default function Page() {
           <TextInput mt="sm" variant="filled" description="Description de l'association" placeholder="Description de l'association" radius="lg" size="sm" withAsterisk
             {...form.getInputProps('description')} />
           <Flex className="tw-border-[1px] tw-border-gray-800 tw-bg-gray-900 tw-rounded-md tw-my-2 tw-py-2" direction={"column"}>
-            <Text align="center" className="tw-text-gray-300 tw-text-sm">Status de l'association</Text>
+            <Text align="center" className="tw-text-gray-300 tw-text-sm">Statut de l'association</Text>
             <FileInput className="tw-text-white placeholder:tw-text-white tw-bg-gray-100 tw-rounded-md"
               onChange={setStatusFile}
-              placeholder="Status" size="sm" m={'xs'} withAsterisk />
+              placeholder="Statut" size="sm" m={'xs'} withAsterisk />
           </Flex>
 
         </Paper>

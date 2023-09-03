@@ -91,7 +91,7 @@ export default function Page(props) {
                 <Box my={'sm'}>
                     <Flex justify={'space-between'}>
                         <Button variant="filled" id="goBackButton" size="sm"
-                            className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+                            className="tw-bg-gray-50 tw-text-black tw-ml-5 tw-border-[1px] tw-border-gray-900
                 hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full"
                             radius={'xl'}><BsArrowLeft /></Button>
                         <Group className="tw-rounded-3xl tw-border-[1px] tw-border-gray-300 tw-shadow-sm tw-px-4 tw-mr-2">

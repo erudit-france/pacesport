@@ -118,7 +118,7 @@ export default function SignupForm({ loading }) {
   return (
     <>
       <form onSubmit={form.onSubmit((values) => submitHandler(values))}>
-        <Paper className='tw-bg-gray-900 tw-rounded-t-none tw-border-[1px] tw-border-white tw-border-t-0' shadow="xl" p="md" radius="lg">
+        <Paper className='tw-bg-gray-900 tw-rounded-t-none tw-border-[3px] tw-border-[#000] tw-border-t-0' shadow="xl" p="md" radius="lg">
           {/* <Checkbox
             ml="xs"
             my="lg"
