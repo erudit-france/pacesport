@@ -138,8 +138,8 @@ console.log(filteredAssociations)
       </Head>
 
       <div className={''} >
-        <Center><div className="tw-bg-[#EE2323] tw-w-[25%] tw-rounded-full">
-        <SectionTitle className='tw-text-white tw-text-xl tw-mb-6 tw-h-3'>Bienvenue sur Pace'Sport</SectionTitle>
+        <Center><div className="tw-bg-[#EE2323] tw-w-[25%] tw-pl-[20px] tw-pr-[20px] tw-min-w-fit tw-rounded-full">
+        <SectionTitle className='tw-text-white tw-text-xl tw-mb-5 tw-h-3'>Bienvenue sur Pace'Sport</SectionTitle>
 </div></Center>
         {/* Enseigne proche */}
         <section className='tw-mt-2'>
@@ -158,7 +158,7 @@ console.log(filteredAssociations)
               onChange={handleSearch}
             />
             </div>
-  <Button onClick={requestLocation}><FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' /></Button>
+  <Button onClick={requestLocation} className='tw-pb-[12px]'><FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' /></Button>
 </div>
           </section>
           {/* <EnseigneGrid /> */}

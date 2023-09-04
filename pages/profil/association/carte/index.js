@@ -14,6 +14,7 @@ import AssociationPacesportPendingOffers from "@/components/AssociationPacesport
 import AssociationActiveOffers from "@/components/AssociationActiveOffers";
 import { getPacesportCard } from "@/domain/repository/PacesportRepository";
 import Image from "next/image";
+import { getUser } from "@/domain/repository/UserRepository";
 
 export default function Page(props) {
     const [pendingOffers, setPendingOffers] = useState(props.pendingOffers)
@@ -61,8 +62,9 @@ export default function Page(props) {
             <main className="tw-bg-white tw-rounded-t-3xl tw-w-full tw-min-h-[calc(100vh-242px)]">
                 <Card radius={'lg'} className="tw-overflow-hidden">
                     <PacesportCard card={props.pacesportCard} />
+                    {console.log(props)}
                     <Text color='dimmed' align='center'>Conditions d'activation :</Text>
-                    <Text color={props?.pacesportCard?.status == '1' ? 'green' : 'orange'} align='center'>Statuts en cours de validation</Text>
+                    <Text color={props?.pacesportCard && props?.user.association.validated === 1 ? 'green' : 'orange'} align='center'>Statuts en cours de validation</Text>
                     <Text color={activeOffers.some(offer => offer?.type === 'Nationale') ? 'green' : 'orange'} align='center'>Minimum 1 offre nationale validée</Text>
                 </Card>
                 <Link href={props.id ? props.id : "/profil/association"}>
@@ -129,6 +131,7 @@ export async function getServerSideProps(context) {
     let pacesportPendingOffers = await getAssociationPacesportPendingOffers(token)
     let activeOffers = await getCardActiveOffers(token)
     let pacesport = await getPacesportCard(token)
+    let user = await getUser(token)
     let prev = ''
     // // Pass data to the page via props
     return {
@@ -138,6 +141,7 @@ export async function getServerSideProps(context) {
             pendingOffers: JSON.parse(pendingOffers.data),
             pacesportPendingOffers: JSON.parse(pacesportPendingOffers.data),
             activeOffers: JSON.parse(activeOffers.data),
+            user: JSON.parse(user.data),
             pacesportCard: JSON.parse(pacesport.data)
         }
     }

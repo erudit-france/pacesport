@@ -104,7 +104,7 @@ export default function Page(props) {
                 variant="filled" size="sm" 
                 className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
                 hover:tw-bg-gray-100 hover:tw-text-black" 
-                radius={'xl'}>Soliciter un don</Button>
+                radius={'xl'}>{'Collecter un don pour ' + props.user.association.name}</Button>
             )
         }
         return (
@@ -227,7 +227,7 @@ export default function Page(props) {
 
             <Text className="tw-bg-[#d61515] tw-my-4 
                     tw-text-white tw-font-bold tw-text-center tw-py-3">
-                        <span>{calculatedList.length}</span> dons collectés</Text>
+                        <span>{calculatedList.length}</span> {calculatedList.length > 1 ? 'cartés' : 'carté'}</Text>
 
             {/* <FilterHeader  sort={sort} sortHandler={sortHandler} /> */}
 
@@ -236,7 +236,7 @@ export default function Page(props) {
                     <tbody>
                             {calculatedList != null && calculatedList.length > 0 
                                 ? calculatedList
-                                : <Text py="lg" align="center">Aucun paiement</Text>
+                                : <Text py="lg" align="center">Aucun carté</Text>
                             }
                     </tbody>
                 </Table>

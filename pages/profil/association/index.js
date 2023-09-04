@@ -28,7 +28,7 @@ import { useForm } from "@mantine/form";
 import { serialize } from "object-to-formdata";
 import { getCookie } from "cookies-next";
 import Toast from "@/services/Toast";
-import { AiOutlineTaobao, AiOutlineSync } from "react-icons/ai";
+import { AiOutlineTaobao, AiOutlineSync, AiOutlineFileText } from "react-icons/ai";
 import { getAssociationInvitationRequest, getAssociationSponsorInvitations } from "@/domain/repository/AssociationRepository";
 import fileUploader from "@/utils/fileUploader";
 import { getUser } from "@/domain/repository/UserRepository";
@@ -49,7 +49,6 @@ ChartJS.register(
 );
 
 export default function Page(props) {
-  const validationRequest = props.validationRequest
   const [loading, setLoading] = useState(false)
   const { push } = useRouter()
   const [openInvitationModal, { open, close }] = useDisclosure(false);
@@ -86,7 +85,7 @@ export default function Page(props) {
         offer.ville?.toLowerCase() === selectedSponsor?.ville?.toLowerCase();
     });
 
-    console.log(filteredOffers);
+
     setResultOffers(filteredOffers);
   };
 
@@ -103,7 +102,7 @@ export default function Page(props) {
 
           // Mettez à jour la variable d'état qui suit la valeur de recherche du composant Select
           setSearchQuery(firstTwoDigits);  // Supposons que "setSearchQuery" est la méthode de réglage pour un état appelé "searchQuery"
-          console.log(firstTwoDigits);
+
           // Si vous avez une fonction pour actualiser les résultats de recherche, appelez-la ici.
           // Par exemple: filterSponsorsByPostalCode(firstTwoDigits);
         } else {
@@ -292,6 +291,7 @@ export default function Page(props) {
 
   return (
     <>
+                {console.log(props.user.association)}
       <Head>
         <title>PACE'SPORT - Mon compte</title>
         <meta name="description" content="PACE'SPORT" />
@@ -308,47 +308,13 @@ export default function Page(props) {
         {/* <SponsorInvitation /> */}
       </section>
 
-      <section className="tw-bg-white tw-mt-6 tw-shadow-inner tw-py-4 tw-px-4">
-        {validationRequest?.validated == false && <Center className="tw-z-50"><Text color="orange">Votre demande est en attente de validation</Text></Center>}
-        {validationRequest?.validated == false &&
-          <form className="tw-relative" onSubmit={form.onSubmit((values) => submitHandler(values))}>
-            {validationRequest && <Overlay className="tw-rounded-3xl tw-mx-1 tw-mb-1" opacity={0.1} color="#000" blur={1} />}
-            <Box className="tw-border-[1px] tw-border-gray-300 tw-shadow-sm tw-rounded-3xl" mx={'xs'} px={'md'} py={'md'}>
-              <Text fz={'sm'} mb={'sm'}>Nb offres: <span>3</span></Text>
-              <FileInput
-                className="placeholder:tw-text-[#d61515]"
-                rightSection={<AiOutlineFileText className="tw-text-gray-800" size={18} />}
-                placeholder="Ajouter un fichier"
-                label="Statut"
-                withAsterisk
-                mb={'sm'}
-                {...form.getInputProps('statut')} />
-              <List className="tw-list-disc" type="unordered" size={'sm'} mt={'md'}>
-                <List.Item className={hasEnoughOffers ? 'tw-text-emerald-600/80' : 'tw-text-[#d61515]'}>
-                  Vous avez au moins 3 offres</List.Item>
-                <List.Item className={hasUploadedStatus ? 'tw-text-emerald-600/80' : ''}>
-                  Vous avez joint vos statuts</List.Item>
-                <List.Item className="">
-                  <Link className="tw-text-blue-600 hover:tw-text-blue-700 tw-underline" target="_blank"
-                    href="/Contrat_partenaire_PACESPORT.pdf">Contrat à remplir et joindre</Link>
-                </List.Item>
-              </List>
-            </Box>
-            <Center>
-              <Button type="submit" size="xs"
-                className="tw-border-[1px] tw-border-gray-300 tw-bg-white tw-text-gray-600 
-                                    tw-text-xs tw-rounded-3xl tw-px-10 tw-h-8 tw-mt-4 tw-mb-5 tw-shadow-md
-                                    hover:tw-bg-gray-200"
-                disabled={loading || validationRequest != null}>
-                Envoyer pour  validation</Button>
-            </Center>
-          </form>}
-        {validationRequest?.validated == true && <Text color="green" align="center">Association validée</Text>}
-        {validationRequest?.validated == true &&
+      <section className="tw-bg-white tw-mt-6 tw-shadow-inner tw-py-4 tw-px-4">        
+        {props.user.association.validated === 1 ? <Text color="green" align="center">Association validée</Text> : <Text color="orange" align="center">Votre demande est en attente de validation</Text>}
+        {props.user.association.validated === 1 &&
           <Flex justify={'space-between'} my={'lg'} className="tw-relative">
             <Text className="tw-flex-1" color="red" fz={'sm'} fw={'bold'} align={'center'} py={2}>Ajoutez encore {nbSponsorsNeeded} partenaires pour valider votre pace'sport</Text>
           </Flex>}
-        <CampagneCard status={props?.pacesportCard?.status == '1' && activeOffers?.some(offer => offer?.type === 'Nationale')} id={1} title={'Carte pacesport'} image2={props.user?.association?.avatar?.name} image={props.pacesportCard?.image?.name} startDate={Date.now()} />
+        <CampagneCard status={props.user.association.validated === 1 && activeOffers?.some(offer => offer?.type === 'Nationale')} id={1} title={'Carte pacesport'} image2={props.user?.association?.avatar?.name} image={props.pacesportCard?.image?.name} startDate={Date.now()} />
         <Divider my={'sm'} className="tw-w-2/3 tw-mx-auto" />
 
         <Center>
@@ -372,8 +338,7 @@ export default function Page(props) {
           <div style={{ flex: '0 0 95%' }}>
             <Select
               searchable
-              label={'Choisir partenaire'}
-              placeholder={props.sponsors.length > 0 ? 'Partenaire' : 'Aucun partenaire trouvé'}
+              placeholder={props.sponsors.length > 0 ? 'Choisir partenaire' : 'Aucun partenaire trouvé'}
               rightSectionWidth={30}
               styles={{ rightSection: { pointerEvents: 'none' } }}
               data={updatedSponsorSelect}
@@ -382,7 +347,7 @@ export default function Page(props) {
               onSearchChange={newSearchValue => setSearchQuery(newSearchValue)} // Mettre à jour searchQuery lors de la modification de la chaîne de recherche
             />
           </div>
-          <Button onClick={requestLocation}><FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' /></Button>
+          <Button onClick={requestLocation} className=" tw-pb-[6px]"><FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' /></Button>
         </div>
 
 
@@ -452,7 +417,6 @@ export default function Page(props) {
 }
 
 const selectedSponsorHandler = (selectedOption) => {
-  console.log(selectedOption)
   // Si l'option sélectionnée est un objet avec une valeur et une étiquette
   if (selectedOption && selectedOption.value) {
     setSelectedSponsor(selectedOption.value);
@@ -518,7 +482,6 @@ export async function getServerSideProps(context) {
   backgroundImage = await backgroundImage.json();
 
   let invitations = await getAssociationSponsorInvitations(token)
-  let validationRequest = await getAssociationInvitationRequest(token)
   let user = await getUser(token)
   let pacesport = await getPacesportCard(token)
   let sponsors = await getAllSponsors(token)
@@ -541,7 +504,6 @@ export async function getServerSideProps(context) {
       cards: JSON.parse(cards.data),
       hasFinishedTutorial: true,
       invitations: JSON.parse(invitations.data),
-      validationRequest: JSON.parse(validationRequest.data),
       user: JSON.parse(user.data),
       pacesportCard: JSON.parse(pacesport.data),
       associations: JSON.parse(associations.data),

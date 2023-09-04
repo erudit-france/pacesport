@@ -147,7 +147,7 @@ export default function Page(props) {
         </Flex>
         <Text color=''>{offer.titre}</Text>
         <Text color='dimmed'>{offer.description}</Text>
-        <Text className='tw-relative tw-bottom-1 tw-mr-1 tw-font-light' fz={'sm'}>{'du ' + moment(props.createAt).utc().format('DD/MM/YYYY') + ' au ' + moment(props.createAt).add(1, 'years').utc().format('DD/MM/YYYY')}</Text>
+        <Text className='tw-relative tw-bottom-1 tw-mr-1 tw-font-light' fz={'sm'}>{'du ' + moment(offer.createdAt).utc().format('DD/MM/YYYY') + ' au ' + moment(offer.createdAt).add(1, 'years').utc().format('DD/MM/YYYY')}</Text>
       </Flex>
     </Card>
   )

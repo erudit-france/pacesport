@@ -66,7 +66,7 @@ else{
 
     return (
         <>
-            <Head><title>Pace'Sport - Annuaire</title></Head>filter
+            <Head><title>Pace'Sport - Annuaire</title></Head>
             <Box>
                 <Flex m={'md'}>
                     <Center mr={'md'}>
