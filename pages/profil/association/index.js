@@ -13,7 +13,7 @@ import { GrMoney } from "react-icons/gr";
 import { BiMessage } from "react-icons/bi";
 import CampagneCard from "./components/CampagneCard";
 import { useDisclosure } from "@mantine/hooks";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -69,24 +69,22 @@ export default function Page(props) {
   const [ResultOffers, setResultOffers] = useState(null)
   const [sponsorSelect, setSponsorSelect] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-
+  const selectRef = useRef(null);
 
   // Gestionnaire de sélection
   const selectedSponsorHandler = (selectedOption) => {
+    // Si l'option sélectionnée est un objet avec une valeur et une étiquette
     if (selectedOption && selectedOption.value) {
       setSelectedSponsor(selectedOption.value);
+
     } else {
       setSelectedSponsor(selectedOption);
     }
 
-    const filteredOffers = props.offers.filter(offer => {
-      return offer.enseigne?.id === selectedSponsor?.id ||
-        offer.codePostal?.startsWith(selectedSponsor?.postal) ||
-        offer.ville?.toLowerCase() === selectedSponsor?.ville?.toLowerCase();
-    });
+    const filteredOffers = props.offers.filter(offer => offer.enseigne?.id === selectedOption?.id);
 
-
-    setResultOffers(filteredOffers);
+    console.log(filteredOffers)
+    setResultOffers(filteredOffers)
   };
 
   const requestLocation = async () => {
@@ -101,10 +99,28 @@ export default function Page(props) {
           const firstTwoDigits = codePostal.substring(0, 2);
 
           // Mettez à jour la variable d'état qui suit la valeur de recherche du composant Select
-          setSearchQuery(firstTwoDigits);  // Supposons que "setSearchQuery" est la méthode de réglage pour un état appelé "searchQuery"
+          setSearchQuery(firstTwoDigits);
+          // Simulez une frappe sur l'élément de référence
+          if (selectRef.current) {
 
-          // Si vous avez une fonction pour actualiser les résultats de recherche, appelez-la ici.
-          // Par exemple: filterSponsorsByPostalCode(firstTwoDigits);
+            // Créez un nouvel événement "Event"
+            const clickEvent = new MouseEvent('click', {
+              bubbles: true,
+              cancelable: true,
+              view: window
+            });
+
+            // Définissez la valeur de l'input
+            selectRef.current.value = firstTwoDigits;
+
+            // Déclenchez l'événement sur l'input
+            selectRef.current.dispatchEvent(clickEvent);
+            document.getElementsByClassName("mantine-Input-input")[0].focus();
+            console.log(document.getElementsByClassName("mantine-Input-input")[0])
+
+          } else {
+            console.warn("La référence 'selectRef' n'a pas été initialisée.");
+          }
         } else {
           Toast.error('Impossible de récupérer le code postal pour votre position actuelle.')
         }
@@ -291,7 +307,7 @@ export default function Page(props) {
 
   return (
     <>
-                {console.log(props.user.association)}
+      {console.log(props.user.association)}
       <Head>
         <title>PACE'SPORT - Mon compte</title>
         <meta name="description" content="PACE'SPORT" />
@@ -308,7 +324,7 @@ export default function Page(props) {
         {/* <SponsorInvitation /> */}
       </section>
 
-      <section className="tw-bg-white tw-mt-6 tw-shadow-inner tw-py-4 tw-px-4">        
+      <section className="tw-bg-white tw-mt-6 tw-shadow-inner tw-py-4 tw-px-4">
         {props.user.association.validated === 1 ? <Text color="green" align="center">Association validée</Text> : <Text color="orange" align="center">Votre demande est en attente de validation</Text>}
         {props.user.association.validated === 1 &&
           <Flex justify={'space-between'} my={'lg'} className="tw-relative">
@@ -337,6 +353,7 @@ export default function Page(props) {
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <div style={{ flex: '0 0 95%' }}>
             <Select
+              ref={selectRef}
               searchable
               placeholder={props.sponsors.length > 0 ? 'Choisir partenaire' : 'Aucun partenaire trouvé'}
               rightSectionWidth={30}
@@ -344,7 +361,7 @@ export default function Page(props) {
               data={updatedSponsorSelect}
               searchValue={searchQuery}
               onChange={selectedSponsorHandler}
-              onSearchChange={newSearchValue => setSearchQuery(newSearchValue)} // Mettre à jour searchQuery lors de la modification de la chaîne de recherche
+              onSearchChange={searchQuery => setSearchQuery(searchQuery)} // Mettre à jour searchQuery lors de la modification de la chaîne de recherche
             />
           </div>
           <Button onClick={requestLocation} className=" tw-pb-[6px]"><FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' /></Button>

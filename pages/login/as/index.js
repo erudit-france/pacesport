@@ -109,7 +109,7 @@ export default function Page(props) {
             <Box className={"tw-rounded-3xl " + overlayClass} pt={'xl'} m={'lg'} bg={'dark'}>
                 <Logo />
                 <Title order={6} align="center" weight={600} color="white">
-                    Se connecter en tant que</Title><br/>
+                    Se connecter en tant que</Title><br />
                 <Flex justify='center' direction='column' mb='md' gap="xl">
                     <LinkButton className={'tw-px-16 tw-mb-0'} text={usernameParticulier} href={pacesportSubscription?.association?.id ? '/profil/particulier/carte' : '/'} />
                 </Flex>
@@ -118,7 +118,7 @@ export default function Page(props) {
                         <LinkButton className={'tw-px-16 tw-mb-0'} text={<><RiAdminLine className="tw-mr-1" />Panel admin</>} href='/admin' />
                     </Flex>}
                 <Flex className="tw-overflow-hidden" justify='center' direction='column'>
-    
+
                     <Box className="tw-bg-zinc-900 tw-px-16" py={'md'}>
                         <Flex justify='center' direction='column' my='xs' py={'sm'} gap="xs">
                             <Title order={6} align="center" weight={600} color="white">Compte pro</Title>
@@ -126,7 +126,7 @@ export default function Page(props) {
                             <LinkButton className={' tw-mb-2'} text='Association' href={associationLink} lock={!status.association} />
                         </Flex>
                     </Box>
-        
+
                     <Box className="tw-px-16">
                         <Button
                             onClick={logout}
