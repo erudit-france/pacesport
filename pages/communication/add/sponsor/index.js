@@ -70,61 +70,61 @@ export default function Page(props) {
         form.reset();
         setLoading(false)
     }
-    const getCreditUrl = (credit) => {
-        let token = getCookie('token');
-
-        fetch(`/api/bnpparibas/credit`, {
-            method: 'POST',
-            headers: new Headers({
-                'JWTAuthorization': `Bearer ${token}`
-            }),
-            body: JSON.stringify({
-                credit: credit
-            })
-        })
-            .then(res => res.json())
-            .then(data => {
-                // Injecter le formulaire dans le DOM
-                const formDiv = document.createElement('div');
-                formDiv.innerHTML = data.formHtml;
-                document.body.appendChild(formDiv);
-
-                // Le script dans le formulaire soumettra le formulaire automatiquement
-            })
-            .catch(err => {
-                console.error("Error from server:", err);
-                Toast.error('Erreur, veuillez réessayer plus tard');
-            });
-    };
-
-
-
     // const getCreditUrl = (credit) => {
     //     let token = getCookie('token');
-    //     const baseURL = window.location.origin;
-    //     fetch(`/api/stripe/credit`, {
+
+    //     fetch(`/api/bnpparibas/credit`, {
     //         method: 'POST',
     //         headers: new Headers({
-    //             'JWTAuthorization': `Bearer ${getCookie('token')}`
+    //             'JWTAuthorization': `Bearer ${token}`
     //         }),
     //         body: JSON.stringify({
-    //             credit: credit,
-    //             cancelUrl: baseURL + "/communication/add/sponsor",
-    //             baseUrl: baseURL + "/communication/add/sponsor"
+    //             credit: credit
     //         })
-    //     }).then(res => res.json())
-    //         .then(res => {
-    //             console.log("Error from server:", res);
-    //             if (res.data) {
-    //                 router.push(res.data.url)
-    //             }
+    //     })
+    //         .then(res => res.json())
+    //         .then(data => {
+    //             // Injecter le formulaire dans le DOM
+    //             const formDiv = document.createElement('div');
+    //             formDiv.innerHTML = data.formHtml;
+    //             document.body.appendChild(formDiv);
+
+    //             // Le script dans le formulaire soumettra le formulaire automatiquement
     //         })
-    //         .catch((err) => {
+    //         .catch(err => {
     //             console.error("Error from server:", err);
     //             Toast.error('Erreur, veuillez réessayer plus tard');
-    //         })
+    //         });
+    // };
 
-    // }
+
+
+    const getCreditUrl = (credit) => {
+        let token = getCookie('token');
+        const baseURL = window.location.origin;
+        fetch(`/api/stripe/credit`, {
+            method: 'POST',
+            headers: new Headers({
+                'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: JSON.stringify({
+                credit: credit,
+                cancelUrl: baseURL + "/communication/add/sponsor",
+                baseUrl: baseURL + "/communication/add/sponsor"
+            })
+        }).then(res => res.json())
+            .then(res => {
+                console.log("Error from server:", res);
+                if (res.data) {
+                    router.push(res.data.url)
+                }
+            })
+            .catch((err) => {
+                console.error("Error from server:", err);
+                Toast.error('Erreur, veuillez réessayer plus tard');
+            })
+
+    }
 
     return (
         <>

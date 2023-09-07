@@ -58,7 +58,7 @@ export default function OffresTable({ offres, refresh, fetching, editOffer }) {
             return; // Si l'utilisateur annule, ne faites rien.
         }
 
-        fetch(`/api/sponsoring-offer-admin/delete?XDEBUG_SESSION_START=tom`, {
+        fetch(`/api/sponsoring-offer-admin/delete`, {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
@@ -90,7 +90,7 @@ export default function OffresTable({ offres, refresh, fetching, editOffer }) {
             return; // Si l'utilisateur annule, ne faites rien.
         }
 
-        fetch(`/api/sponsoring-offer-admin-decline-one-years?XDEBUG_SESSION_START=tom`, {
+        fetch(`/api/sponsoring-offer-admin-decline-one-years`, {
             method: 'POST',
             type: 'cors',
             headers: new Headers({

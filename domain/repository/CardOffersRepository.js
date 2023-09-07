@@ -1,7 +1,7 @@
 export const getOffers = async (token, local = false) => {
     let base = process.env.API_URL;
     if (local) base = ''
-    let offers = await fetch(`${base}/api/sponsoring-offer-sponsor?XDEBUG_SESSION_START=tom`, {
+    let offers = await fetch(`${base}/api/sponsoring-offer-sponsor`, {
         headers: new Headers({
             'JWTAuthorization': `Bearer ${token}`,
         })

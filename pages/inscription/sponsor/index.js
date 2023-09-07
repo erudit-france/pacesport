@@ -121,7 +121,7 @@ export default function Page(props) {
             .catch((error) => {
                 console.log('error', error)
                 try {
-                    fetch(`/api/enseigne?XDEBUG_SESSION_START=tom`, {
+                    fetch(`/api/enseigne`, {
                         method: 'POST',
                         type: 'cors',
                         headers: new Headers({

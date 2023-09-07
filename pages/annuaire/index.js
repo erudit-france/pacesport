@@ -145,7 +145,7 @@ export default function Page({ user, users, assolie, query, activeOffers2, paces
 
 export async function getServerSideProps(context) {
     const token = context.req.cookies['token']
-    const res = await fetch(`${process.env.API_URL}/api/chat/users?XDEBUG_SESSION_START=tom`, {
+    const res = await fetch(`${process.env.API_URL}/api/chat/users`, {
         headers: new Headers({
             'JWTAuthorization': `Bearer ${token}`,
         })
@@ -161,14 +161,14 @@ export async function getServerSideProps(context) {
             }
         }
 
-    const user = await fetch(`${process.env.API_URL}/api/user?XDEBUG_SESSION_START=tom`, {
+    const user = await fetch(`${process.env.API_URL}/api/user`, {
         headers: new Headers({
             'JWTAuthorization': `Bearer ${token}`,
         })
     }
     )
     const userData = await user.json()
-    const ress = await fetch(`${process.env.API_URL}/api/association/deamnde?XDEBUG_SESSION_START=tom`, {
+    const ress = await fetch(`${process.env.API_URL}/api/association/deamnde`, {
         headers: new Headers({
             'JWTAuthorization': `Bearer ${token}`,
         })

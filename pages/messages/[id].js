@@ -332,7 +332,7 @@ export async function getServerSideProps(context) {
     const token = context.req.cookies['token']
 
 
-    const user = await fetch(`${process.env.API_URL}/api/user?XDEBUG_SESSION_START=tom`, {
+    const user = await fetch(`${process.env.API_URL}/api/user`, {
         headers: new Headers({
             'JWTAuthorization': `Bearer ${token}`,
         })

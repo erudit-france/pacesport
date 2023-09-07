@@ -33,7 +33,7 @@ export default function Page() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/password/update?XDEBUG_SESSION_START=tom', {
+      const response = await fetch('/api/password/update', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
