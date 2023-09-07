@@ -8,11 +8,6 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { getCookie } from "cookies-next";
 import { serialize } from "object-to-formdata";
-import cookie from 'cookie';  // Si vous utilisez le package 'cookie'
-import BlowfishTranslation from './blowfishTranslation.js';
-import MACGeneration from './hmacGeneration.js';
-import querystring from 'querystring';
-
 const PriceRow = ({ credits, price, oldPrice, click }) => {
     return (
         <Flex className="tw-py-2">
