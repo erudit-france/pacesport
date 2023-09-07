@@ -222,7 +222,7 @@ export async function getServerSideProps(context) {
     props: {
       association: JSON.parse(data.data),
       cards: JSON.parse(cards.data),
-      avatar : JSON.parse(data.data).avatar.name,
+      avatar: JSON.parse(data.data).avatar?.name,
       id: id
     }
   }

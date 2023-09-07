@@ -75,6 +75,7 @@ export default function Page(props) {
 
     const submitHandler = async (data) => {
         setIsSubmitting(true);
+        let body = serialize(data)
         const formData = new FormData()
         formData.append('file', logoFile)
         fetch(`/api/file/upload`, {
@@ -87,7 +88,7 @@ export default function Page(props) {
         })
             .then(res => res.json())
             .then(response => {
-                let body = serialize(data)
+
                 body.append('filename', response.data.filename)
                 fetch(`/api/enseigne`, {
                     method: 'POST',
@@ -119,8 +120,39 @@ export default function Page(props) {
             })
             .catch((error) => {
                 console.log('error', error)
-                Toast.error('Erreur pendant le téléchargement de l\'image')
-                setIsSubmitting(false);
+                try {
+                    fetch(`/api/enseigne?XDEBUG_SESSION_START=tom`, {
+                        method: 'POST',
+                        type: 'cors',
+                        headers: new Headers({
+                            'JWTAuthorization': `Bearer ${getCookie('token')}`
+                        }),
+                        body: body
+                    })
+                        .then(res => res.json())
+                        .then(res => {
+                            if (res.code == 401) push('/login')
+                            console.log('res', res.data)
+                            if (res.data.code == 1) {
+                                Toast.success(res.data.message)
+                                setTimeout(() => {
+                                    push('/profil/sponsor')
+                                }, 2000)
+                            } else {
+                                Toast.error(res.data.message)
+                                setIsSubmitting(false);
+                            }
+                        })
+                        .catch((error) => {
+                            Toast.error('Erreur pendant la création du sponsor')
+                            console.log('error', error)
+                            setIsSubmitting(false);
+                        })
+                } catch (error) {
+                    Toast.error('Erreur pendant le téléchargement de l\'image')
+                    setIsSubmitting(false);
+                }
+
             })
     }
 
@@ -160,10 +192,10 @@ export default function Page(props) {
                 <title>Pace'sport - Inscription Partenaire</title>
             </Head>
             <Link href="/login/as">
-        <Button variant="filled" size="sm"
-                className="tw-bg-gray-50 tw-text-black tw-ml-5 tw-border-[1px] tw-border-gray-900
-                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
-                radius={'xl'}><BsArrowLeft /></Button></Link>
+                <Button variant="filled" size="sm"
+                    className="tw-bg-gray-50 tw-text-black tw-ml-5 tw-border-[1px] tw-border-gray-900
+                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full"
+                    radius={'xl'}><BsArrowLeft /></Button></Link>
             <form className="tw-relative tw-top-5" onSubmit={form.onSubmit((values) => submitHandler(values))}>
                 <Text align="center" className="tw-font-semibold tw-text-lg tw-text-white">Formulaire Partenaire</Text>
                 <Paper shadow="xl" p="xs" radius="lg" className="tw-bg-gray-800 tw-m-3 tw-pb-10 tw-top-5">

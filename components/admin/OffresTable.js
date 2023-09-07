@@ -2,7 +2,7 @@ import Toast from "@/services/Toast";
 import { ActionIcon, Avatar, Badge, Group, Loader, Table, Text } from "@mantine/core";
 import { getCookie } from "cookies-next";
 import Link from "next/link";
-import { BsCheckLg, BsFillGearFill } from "react-icons/bs";
+import { BsCheckLg, BsClock, BsFillGearFill, BsTrash } from "react-icons/bs";
 import { FaDownload } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
 import SponsoringOfferTypeBadge from "../SponsoringOfferTypeBadge";
@@ -24,6 +24,7 @@ export default function OffresTable({ offres, refresh, fetching, editOffer }) {
             color = 'red'
             text = 'Refusée'
         }
+
         return <Badge color={color} size="xs">{text}</Badge>
     }
 
@@ -48,7 +49,67 @@ export default function OffresTable({ offres, refresh, fetching, editOffer }) {
                 Toast.error('Erreur')
             })
     }
+    const deleteOffer = (id) => {
 
+        // Demande de confirmation
+        const userConfirmed = window.confirm("Voulez-vous vraiment supprimer cette offre? Cette action est irréversible.");
+
+        if (!userConfirmed) {
+            return; // Si l'utilisateur annule, ne faites rien.
+        }
+
+        fetch(`/api/sponsoring-offer-admin/delete?XDEBUG_SESSION_START=tom`, {
+            method: 'POST',
+            type: 'cors',
+            headers: new Headers({
+                'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: JSON.stringify({ offer: id })
+        })
+            .then(res => res.json())
+            .then(res => {
+                console.log(res)
+                res.data.code == 1
+                    ? Toast.success(res.data.message)
+                    : Toast.error(res.data.message)
+                refresh()
+            })
+            .catch((error) => {
+                console.log(error)
+                console.error("Erreur détaillée:", error);
+                Toast.error('Erreur')
+            })
+    }
+
+
+    const annulOfferAfterOneyears = (id) => {
+        // Demande de confirmation
+        const userConfirmed = window.confirm("Voulez-vous vraiment annuler cette offre? L'offre prendra fin après 1 an à partir de la date de validité initiale de l'offre.");
+
+        if (!userConfirmed) {
+            return; // Si l'utilisateur annule, ne faites rien.
+        }
+
+        fetch(`/api/sponsoring-offer-admin-decline-one-years?XDEBUG_SESSION_START=tom`, {
+            method: 'POST',
+            type: 'cors',
+            headers: new Headers({
+                'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: JSON.stringify({ offer: id })
+        })
+            .then(res => res.json())
+            .then(res => {
+                res.data.code == 1
+                    ? Toast.success(res.data.message)
+                    : Toast.error(res.data.message)
+                refresh()
+            })
+            .catch((error) => {
+                console.error("Erreur détaillée:", error);
+                Toast.error('Erreur')
+            })
+    }
     const declineOffer = (id) => {
         fetch(`/api/sponsoring-offer-admin-decline`, {
             method: 'POST',
@@ -132,8 +193,25 @@ export default function OffresTable({ offres, refresh, fetching, editOffer }) {
                             size={'lg'}
                             color="gray"
                             onClick={() => editOffer(element)}
-                        ><BsFillGearFill /></ActionIcon>
+                        >
+                            <BsFillGearFill />
+                        </ActionIcon>
+                        <ActionIcon variant="light"
+                            size={'lg'}
+                            color="blue"
+                            onClick={() => annulOfferAfterOneyears(element.id)}
+                        >
+                            <BsClock />
+                        </ActionIcon>
+                        <ActionIcon variant="light"
+                            size={'lg'}
+                            color="black"
+                            onClick={() => deleteOffer(element.id)}
+                        >
+                            <BsTrash />
+                        </ActionIcon>
                     </Group>
+
                 </td>
             </tr>
         ))

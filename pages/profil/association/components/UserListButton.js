@@ -3,7 +3,7 @@ import { Avatar, Indicator, Modal } from '@mantine/core'
 import { RxPerson } from 'react-icons/rx'
 import Link from 'next/link';
 
-export default function UserListButton({prev}){
+export default function UserListButton({ prev }) {
     const [opened, { open, close }] = useDisclosure(false);
 
     return (
@@ -13,12 +13,12 @@ export default function UserListButton({prev}){
             </Modal>
 
 
-            <Link href={`/annuaire?prev=${prev}`}>
+            <Link href={`/annuaire?prev=${prev}&pos=sponsor`}>
                 {/* <Indicator zIndex={4} inline size={20} offset={4} color={'black'}> */}
-                    <Avatar radius={"lg"} size={'2.6rem'}
-                        className="hover:tw-cursor-pointer tw-bg-[#d61515]">
-                        <RxPerson size={'1.6rem'} color='black'  />
-                    </Avatar>
+                <Avatar radius={"lg"} size={'2.6rem'}
+                    className="hover:tw-cursor-pointer tw-bg-[#d61515]">
+                    <RxPerson size={'1.6rem'} color='black' />
+                </Avatar>
                 {/* </Indicator> */}
             </Link>
         </>

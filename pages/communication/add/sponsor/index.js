@@ -9,7 +9,8 @@ import { useRouter } from "next/router";
 import { getCookie } from "cookies-next";
 import { serialize } from "object-to-formdata";
 import cookie from 'cookie';  // Si vous utilisez le package 'cookie'
-
+import BlowfishTranslation from './blowfishTranslation.js';
+import MACGeneration from './hmacGeneration.js';
 import querystring from 'querystring';
 
 const PriceRow = ({ credits, price, oldPrice, click }) => {
@@ -74,33 +75,61 @@ export default function Page(props) {
         form.reset();
         setLoading(false)
     }
-
     const getCreditUrl = (credit) => {
         let token = getCookie('token');
-        const baseURL = window.location.origin;
-        fetch(`/api/stripe/credit?XDEBUG_SESSION_START=tom`, {
+
+        fetch(`/api/bnpparibas/credit`, {
             method: 'POST',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token')}`
+                'JWTAuthorization': `Bearer ${token}`
             }),
             body: JSON.stringify({
-                credit: credit,
-                cancelUrl: baseURL + "/communication/add/sponsor",
-                baseUrl: baseURL + "/communication/add/sponsor"
+                credit: credit
             })
-        }).then(res => res.json())
-            .then(res => {
-                console.log("Error from server:", res);
-                if (res.data) {
-                    router.push(res.data.url)
-                }
+        })
+            .then(res => res.json())
+            .then(data => {
+                // Injecter le formulaire dans le DOM
+                const formDiv = document.createElement('div');
+                formDiv.innerHTML = data.formHtml;
+                document.body.appendChild(formDiv);
+
+                // Le script dans le formulaire soumettra le formulaire automatiquement
             })
-            .catch((err) => {
+            .catch(err => {
                 console.error("Error from server:", err);
                 Toast.error('Erreur, veuillez réessayer plus tard');
-            })
+            });
+    };
 
-    }
+
+
+    // const getCreditUrl = (credit) => {
+    //     let token = getCookie('token');
+    //     const baseURL = window.location.origin;
+    //     fetch(`/api/stripe/credit`, {
+    //         method: 'POST',
+    //         headers: new Headers({
+    //             'JWTAuthorization': `Bearer ${getCookie('token')}`
+    //         }),
+    //         body: JSON.stringify({
+    //             credit: credit,
+    //             cancelUrl: baseURL + "/communication/add/sponsor",
+    //             baseUrl: baseURL + "/communication/add/sponsor"
+    //         })
+    //     }).then(res => res.json())
+    //         .then(res => {
+    //             console.log("Error from server:", res);
+    //             if (res.data) {
+    //                 router.push(res.data.url)
+    //             }
+    //         })
+    //         .catch((err) => {
+    //             console.error("Error from server:", err);
+    //             Toast.error('Erreur, veuillez réessayer plus tard');
+    //         })
+
+    // }
 
     return (
         <>

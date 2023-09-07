@@ -33,7 +33,7 @@ export default function Page() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('/api/password/update', {
+      const response = await fetch('/api/password/update?XDEBUG_SESSION_START=tom', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,9 +46,9 @@ export default function Page() {
 
       const data = await response.json();
 
-      if (response.ok) {
+      if (data.code === 1) {
         setIsSuccess(true);
-        setMessage('Mot de passe mis à jour avec succès');
+        setMessage(data.data || 'Mot de passe mis à jour avec succès');
       } else {
         setIsSuccess(false);
         setMessage(data.message || 'Une erreur est survenue');
@@ -61,6 +61,7 @@ export default function Page() {
       setIsLoading(false);
     }
   };
+
 
   return (
     <div className={styles.container}>
@@ -95,21 +96,22 @@ export default function Page() {
       )}
     </div>
   );
-  
+
 }
 Page.getLayout = function getLayout(page) {
   return (
-      <>
-          <main className="tw-relative" style={{ minHeight: 'calc(100vh)' }}>
-              <div className="">
-                  <section className="tw-z-20">{page}</section>
-              </div>
-              <div className="tw-w-full tw-h-full tw-absolute tw-top-0 -tw-z-10">
-                  <BackgroundImage className="tw-h-full tw-opacity-10" 
-                      src={'/doodle-pattern.png'}/>
-                  <BackgroundImage className="tw-h-full tw-w-full tw-absolute tw-top-0 tw-opacity-80 -tw-z-20
+    <>
+      <main className="tw-relative" style={{ minHeight: 'calc(100vh)' }}>
+        <div className="">
+          <section className="tw-z-20">{page}</section>
+        </div>
+        <div className="tw-w-full tw-h-full tw-absolute tw-top-0 -tw-z-10">
+          <BackgroundImage className="tw-h-full tw-opacity-10"
+            src={'/doodle-pattern.png'} />
+          <BackgroundImage className="tw-h-full tw-w-full tw-absolute tw-top-0 tw-opacity-80 -tw-z-20
                       tw-bg-gradient-to-b tw-from-white tw-from-10% tw-via-[#d61515] tw-via-40% tw-to-[#d61515] tw-to-90%" />
-              </div>
-          </main>
-      </>
-  )}
+        </div>
+      </main>
+    </>
+  )
+}

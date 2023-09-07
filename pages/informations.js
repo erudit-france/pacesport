@@ -67,11 +67,15 @@ export default function ConditionsGeneralesVente(props) {
     return <>
         <main className={`tw-h-screen tw-rounded-t-2xl`}>
             <Center className='tw-absolute tw-left-2 tw-top-0.5'>
-                <Link href="/parametres">
-                    <Button variant="filled" size="sm"
-                        className="tw-bg-gray-50 tw-text-black tw-ml-5 tw-border-[1px] tw-ml-5 tw-border-gray-900 hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full"
-                        radius={'xl'}><BsArrowLeft /></Button>
-                </Link>
+                <Button
+                    variant="filled"
+                    size="sm"
+                    onClick={handleBackClick}
+                    className="tw-bg-gray-50 tw-text-black tw-ml-5 tw-border-[1px] tw-ml-5 tw-border-gray-900 hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full"
+                    radius={'xl'}
+                >
+                    <BsArrowLeft />
+                </Button>
             </Center>
             <BackgroundImage className="tw-h-full tw-opacity-10 tw-absolute tw-top-0 -tw-z-10" src='/doodle-pattern.png' />
             <Container p={'lg'}>
@@ -88,18 +92,18 @@ export default function ConditionsGeneralesVente(props) {
                     {Object.keys(formData).map((key) => (
                         <InfoField
                             key={key}
-                            description={ key === 'nom' ? 'Nom' :
-                            key === 'prenom' ? 'Prénom' :
-                            key === 'address' ? 'Adresse' :
-                            key === 'telephone' || key === 'phone' ? 'Téléphone' :
-                            key === 'email' ? 'E-mail' :
-                            key === 'age' ? 'Âge' :
-                            key === 'name' ? 'Nom' :
-                            key === 'sexe' ? 'Sexe' :
-                            key === 'adresse' ? 'Adresse' :
-                            key === 'description' ? 'Description' :
-                            key === 'ville' ? 'Ville' :
-                            key === 'postal' ? 'Code postal' : key}
+                            description={key === 'nom' ? 'Nom' :
+                                key === 'prenom' ? 'Prénom' :
+                                    key === 'address' ? 'Adresse' :
+                                        key === 'telephone' || key === 'phone' ? 'Téléphone' :
+                                            key === 'email' ? 'E-mail' :
+                                                key === 'age' ? 'Âge' :
+                                                    key === 'name' ? 'Nom' :
+                                                        key === 'sexe' ? 'Sexe' :
+                                                            key === 'adresse' ? 'Adresse' :
+                                                                key === 'description' ? 'Description' :
+                                                                    key === 'ville' ? 'Ville' :
+                                                                        key === 'postal' ? 'Code postal' : key}
                             value={formData[key]}
                             isEditable={true}
                             onChange={handleChange}
@@ -169,7 +173,7 @@ const InfoSection = ({ title, data }) => (
 
                 // Si la clé est 'avatar' ou 'bagWorld', affiche une image
                 if (key === 'avatar' || key === 'backgroundImage' || key === 'status' || key === 'logo' || key === 'validated'
-                || key === 'validated'|| key === 'hasFinishedTutorial'|| key === 'type'|| key === 'communicationCredit'|| key === 'isCollectivitePublique') {
+                    || key === 'validated' || key === 'hasFinishedTutorial' || key === 'type' || key === 'communicationCredit' || key === 'isCollectivitePublique') {
                     return (
                         <div key={index}></div>
                     );
@@ -186,19 +190,19 @@ const InfoSection = ({ title, data }) => (
                     );
                 }
                 let keyy = key;
-                if(key === 'nom') keyy = 'Nom';
-                if(key === 'prenom') keyy = 'Prénom';
-                if(key === 'address') keyy = 'Adresse';
-                if(key === 'telephone') keyy = 'Téléphone';
-                if(key === 'phone') keyy = 'Téléphone';
-                if(key === 'email') keyy = 'E-mail';
-                if(key === 'age') keyy = 'Âge';
-                if(key === 'name') keyy = 'Nom';
-                if(key === 'sexe') keyy = 'Sexe';
-                if(key === 'adresse') keyy = 'Adresse';
-                if(key === 'description') keyy = 'Description';
-                if(key === 'ville') keyy = 'Ville';
-                if(key === 'postal') keyy = 'Code postal';
+                if (key === 'nom') keyy = 'Nom';
+                if (key === 'prenom') keyy = 'Prénom';
+                if (key === 'address') keyy = 'Adresse';
+                if (key === 'telephone') keyy = 'Téléphone';
+                if (key === 'phone') keyy = 'Téléphone';
+                if (key === 'email') keyy = 'E-mail';
+                if (key === 'age') keyy = 'Âge';
+                if (key === 'name') keyy = 'Nom';
+                if (key === 'sexe') keyy = 'Sexe';
+                if (key === 'adresse') keyy = 'Adresse';
+                if (key === 'description') keyy = 'Description';
+                if (key === 'ville') keyy = 'Ville';
+                if (key === 'postal') keyy = 'Code postal';
                 return <InfoField key={index} description={keyy} value={data[key]} />;
             })}
         </div>
@@ -240,4 +244,7 @@ function getCookie(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift();
+}
+function handleBackClick() {
+    window.history.back();
 }

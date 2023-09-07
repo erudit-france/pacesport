@@ -111,23 +111,23 @@ export default function Page(props) {
 
                 <Center>
                     <Box className="tw-rounded-x3 tw-shadow-lg tw-relative">
-                    <a href={pacesportSubscription?.association?.id ? '/profil/particulier/carte' : '/'} >
-                        <Image
-                            className="tw-rounded-x3 tw-top-[140px] box222 glowing"
-                            width={300}
-                            height={150}
-                            src={"/uploads/intro-64f328ce5b51b.png"}
-                            alt="logo sim"
-                        /></a>
-                    <Flex className="tw-overflow-hidden" direction='column'>
+                        <a href={pacesportSubscription?.association?.id ? '/profil/particulier/carte' : '/'} >
+                            <Image
+                                className="tw-rounded-x3 tw-top-[140px] box222 glowing tw-w-full animate-pulse"
+                                width={300}
+                                height={192}
+                                src={"/2023-09-06_15h39_52-removebg-preview.png"}
+                                alt="logo sim"
+                            /></a>
+                        <Flex className="tw-overflow-hidden" direction='column'>
 
-                        <Flex direction='column' my='xs' py={'sm'} gap="xs" className="tw-rounded-xl tw-top-[340px]">
-                            
-                            <Title order={6} align="center" style={{ fontSize: '20px' }} color="white">Je m'inscris en tant que</Title>
-                            <LinkButton className={''} text='Sponsor/Partenaire' href={sponsorLink} lock={!status.enseigne} />
-                            <LinkButton className={' tw-mb-2'} text='Association' href={associationLink} lock={!status.association} />
+                            <Flex direction='column' my='xs' py={'sm'} gap="xs" className="tw-rounded-xl tw-top-[340px]">
+
+                                <Title order={6} align="center" style={{ fontSize: '20px' }} color="white">Je m'inscris en tant que</Title>
+                                <LinkButton className={''} text='Sponsor/Partenaire' href={sponsorLink} lock={!status.enseigne} />
+                                <LinkButton className={' tw-mb-2'} text='Association' href={associationLink} lock={!status.association} />
+                            </Flex>
                         </Flex>
-                    </Flex>
                     </Box>
                 </Center>
             </Box >
@@ -154,7 +154,7 @@ export async function getServerSideProps(context) {
         }
     }
 
-    const user = await fetch(`${process.env.API_URL}/api/user`, {
+    const user = await fetch(`${process.env.API_URL}/api/user?XDEBUG_SESSION_START=tom`, {
         headers: new Headers({
             'JWTAuthorization': `Bearer ${token}`,
         })

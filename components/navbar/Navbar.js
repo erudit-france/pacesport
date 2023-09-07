@@ -92,7 +92,7 @@ export default function Navbar(props) {
                 </Flex>
                 <NavbarLink toggleMenu={toggleMenu} href={'/profil/association'} name={<>Mon pace'sport (carte)</>} />
                 <NavbarLink toggleMenu={toggleMenu} href={'/parametres?prev=/profil/association'} name={'Mon compte'} />
-                <NavbarLink toggleMenu={toggleMenu} href={`/annuaire?prev=${router.pathname}`} name={'Annuaire'} />
+                <NavbarLink toggleMenu={toggleMenu} href={`/annuaire?prev=${router.pathname}&pos=association`} name={'Annuaire'} />
                 <NavbarLink toggleMenu={toggleMenu} href={`/messages?prev=${router.pathname}`} name={'Messagerie'} />
                 <NavbarLink toggleMenu={toggleMenu} href={`/profil/association/gestion-fonds?prev=${router.pathname}`} name={'Centre de gestion'} />
 
@@ -124,7 +124,7 @@ export default function Navbar(props) {
                 </Flex>
                 <NavbarLink toggleMenu={toggleMenu} href={'/profil/sponsor'} name={'Mes cartes / partenariats actifs'} />
                 <NavbarLink toggleMenu={toggleMenu} href={'/communication/add/sponsor'} name={'Communication'} />
-                <NavbarLink toggleMenu={toggleMenu} href={`/annuaire?prev=${router.pathname}`} name={'Annuaire'} />
+                <NavbarLink toggleMenu={toggleMenu} href={`/annuaire?prev=${router.pathname}&pos=sponsor`} name={'Annuaire'} />
                 <NavbarLink toggleMenu={toggleMenu} href={`/messages?prev=${router.pathname}`} name={'Messagerie'} />
 
                 <Button
