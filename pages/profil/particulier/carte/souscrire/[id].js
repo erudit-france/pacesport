@@ -143,7 +143,7 @@ export default function Page(props) {
         <Flex justify={'space-between'}>
           <Text weight={550}>{offer.enseigne.name} <SponsoringOfferTypeBadge offer={offer} /></Text>
           <Text className='tw-flex tw-font-light' fz={'sm'}>
-          <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer.enseigne?.ville}</Text>
+            <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer.enseigne?.ville}</Text>
         </Flex>
         <Text color=''>{offer.titre}</Text>
         <Text color='dimmed'>{offer.description}</Text>
@@ -157,14 +157,14 @@ export default function Page(props) {
       navigator.geolocation.getCurrentPosition(async (position) => {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
-  
+
         // Ici, vous devrez faire appel à une API ou un service pour obtenir le code postal
         // basé sur les coordonnées. Par exemple, en utilisant une API comme OpenStreetMap, Mapbox, etc.
-  
+
         const codePostal = await fetchYourGeocodingAPI(lat, lon);
-         filteredOffers = filteredOffersOld.filter(
-           offer => offer.association?.postal.substring(0, 2) === codePostal?.postcode.substring(0, 2))
-           
+        filteredOffers = filteredOffersOld.filter(
+          offer => offer.association?.postal.substring(0, 2) === codePostal?.postcode.substring(0, 2))
+
       }, (error) => {
         const codePostal = "69011"
         filteredOffers = filteredOffersOld.filter(
@@ -173,13 +173,13 @@ export default function Page(props) {
     } else {
       alert("La géolocalisation n'est pas prise en charge par ce navigateur.");
     }
-  } 
-  
+  }
+
   const fetchYourGeocodingAPI = async (lat, lon) => {
     try {
       const response = await axios.get(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`);
       const address = response.data.address;
-  
+
       return address.postcode;
     } catch (error) {
       console.error("Error fetching geocode:", error);
@@ -190,8 +190,8 @@ export default function Page(props) {
   let filteredOffers = offers.filter(
     offer =>
       (offer.type === "Nationale" ||
-      (offer.type === "Locale" && offer.associations.some(ass => ass.id == props.id)) ) && offer.validated === true
-);
+        (offer.type === "Locale" && offer.associations.some(ass => ass.id == props.id))) && offer.validated === true
+  );
 
   const offersList = <>
     <Transition mounted={setShowOffers} transition="slide-down" duration={400} timingFunction="ease">
@@ -203,8 +203,8 @@ export default function Page(props) {
         </section>}
     </Transition>
   </>
-          console.log(filteredOffers)
-filteredOffersOld = filteredOffers
+  console.log(filteredOffers)
+  filteredOffersOld = filteredOffers
   return (
     <>
       <Head>
@@ -224,18 +224,18 @@ filteredOffersOld = filteredOffers
             <Box className="tw-relative tw-z-[1]">
               {standaloneCard}
               <Center className='tw-absolute tw-left-2 tw-top-0.5'>
-          <Link href="/">
-            <Button variant="filled" size="sm"
-              className="tw-bg-gray-50 tw-text-black tw-ml-5 tw-border-[1px] tw-border-gray-900
+                <Link href="/">
+                  <Button variant="filled" size="sm"
+                    className="tw-bg-gray-50 tw-text-black tw-ml-5 tw-border-[1px] tw-border-gray-900
                 hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full"
-              radius={'xl'}><BsArrowLeft /></Button></Link>
-          </Center>
+                    radius={'xl'}><BsArrowLeft /></Button></Link>
+              </Center>
             </Box>
             <Box className="tw-h-full tw-bg-gradient-to-br tw-from-slate-100 tw-to-gray-100 tw-shadow-lg tw-rounded-2xl tw-pt-4 tw-relative tw-mt-4 tw-z-0" p={'md'}>
               <Title order={3} mb={'sm'} align="center">J'adhère à Pace'Sport</Title>
               <Container className='tw-border-2 tw-rounded-md tw-shadow-sm tw-border-[#d61515] tw-p-4'>
                 <form onSubmit={form.onSubmit((values) => submitHandler(values))}>
-                  <Title align='center' order={6}>Pace'Sport</Title> 
+                  <Title align='center' order={6}>Pace'Sport</Title>
                   {/* <Select
                                 label={
                                     <Flex className='tw-mb-2'>
@@ -259,10 +259,11 @@ filteredOffersOld = filteredOffers
                     <Text fz={'md'} weight={600}> Valide pendant 1 an</Text>
                   </Group>
                   <Center>
-                    <Button type='submit' color='red' variant='filled' mt={"md"} radius={'lg'} px={'xl'} size='sm'
+                    {/* <Button type='submit' color='red' variant='filled' mt={"md"} radius={'lg'} px={'xl'} size='sm'
                       className='tw-bg-[#d61515] tw-shadow-sm'
                       disabled={loading}>
-                      Souscrire</Button>
+                      Souscrire</Button> */}
+                    <Text fz={'md'} weight={600}>Pace’sport arrive bientôt !</Text>
                   </Center>
                 </form>
               </Container>

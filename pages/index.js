@@ -48,23 +48,22 @@ export default function Page(props) {
   useEffect(() => {
     if (debouncedSearch.match(/^\d+$/)) { // Si debouncedSearch est un code postal
       let results = props.associations.filter(o =>
-        o.postal && o.postal.toLowerCase().includes(debouncedSearch.toLowerCase()));
+        o.postal && o.validated === true && o.postal.toLowerCase().includes(debouncedSearch.toLowerCase()));
 
       // Si aucun résultat n'est trouvé et le code postal a plus de 2 chiffres, essayez de rechercher avec les 2 premiers chiffres
       if (results.length === 0 && debouncedSearch.length > 2) {
         results = props.associations.filter(o =>
-          o.postal && o.postal.startsWith(debouncedSearch.substring(0, 2)));
+          o.postal && o.validated === true && o.postal.startsWith(debouncedSearch.substring(0, 2)));
       }
 
       setFilteredAssociations(results);
     } else { // Sinon, c'est un nom d'association
       const results = props.associations.filter(o =>
-        o.name.toLowerCase().includes(debouncedSearch.toLowerCase()));
+        o.name.toLowerCase().includes(debouncedSearch.toLowerCase()) && o.validated === true);
       setFilteredAssociations(results);
     }
+  }, [debouncedSearch, props.associations]);
 
-
-  }, [debouncedSearch, props.associations])
 
 
 
@@ -115,7 +114,7 @@ export default function Page(props) {
     setSearch('')
     setFilteredAssociations(props.associations)
   }
-
+  console.log(filteredAssociations)
   const associations = filteredAssociations.map((card) => {
     return (
       <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
@@ -123,10 +122,15 @@ export default function Page(props) {
       </Grid.Col>
     )
   })
-console.log(filteredAssociations)
-  const associationsGrid = filteredAssociations.length == 0
-    ? <Text fz={'sm'} align="center" color="dimmed">Aucune association enregistrée</Text>
-    : <Grid gutter={18} className="tw-px-4 tw-m-[0px]">{associations}</Grid>
+  console.log(filteredAssociations)
+  // const associationsGrid = filteredAssociations.length == 0
+  //   ? <Text fz={'sm'} align="center" color="dimmed">Aucune association enregistrée</Text>
+  //   : <Grid gutter={18} className="tw-px-4 tw-m-[0px]">{associations}</Grid>
+  const associationsGrid = filteredAssociations.length === 0 ? (
+    <div className="animatedMessage">
+      Pace’sport arrive bientôt !
+    </div>
+  ) : <Grid gutter={18} className="tw-px-4 tw-m-[0px]">{associations}</Grid>;
 
   return (
     <>
@@ -139,27 +143,27 @@ console.log(filteredAssociations)
 
       <div className={''} >
         <Center><div className="tw-bg-[#EE2323] tw-w-[25%] tw-pl-[20px] tw-pr-[20px] tw-min-w-fit tw-rounded-full">
-        <SectionTitle className='tw-text-white tw-text-xl tw-mb-5 tw-h-3'>Bienvenue sur Pace'Sport</SectionTitle>
-</div></Center>
+          <SectionTitle className='tw-text-white tw-text-xl tw-mb-5 tw-h-3'>Bienvenue sur Pace'Sport</SectionTitle>
+        </div></Center>
         {/* Enseigne proche */}
         <section className='tw-mt-2'>
           <SectionTitle className='tw-text-gray-800 tw-text-base'>Associations proches de vous</SectionTitle>
           {/* search input */}
           <section className='tw-px-8 tw-mb-4'>
-          <div style={{ display: 'flex', alignItems: 'center' }}>
-          <div style={{ flex: '0 0 95%' }}>
-            <TextInput
-              className={`focus:tw-border-[#d61515]`}
-              size={"md"}
-              radius={"xl"}
-              placeholder="Nom de l'association..."
-              rightSection={search == '' ? '' : <CloseButton mr={'sm'} radius={'lg'} aria-label="Vider" onClick={clear} />}
-              value={search}
-              onChange={handleSearch}
-            />
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <div style={{ flex: '0 0 95%' }}>
+                <TextInput
+                  className={`focus:tw-border-[#d61515]`}
+                  size={"md"}
+                  radius={"xl"}
+                  placeholder="Nom de l'association..."
+                  rightSection={search == '' ? '' : <CloseButton mr={'sm'} radius={'lg'} aria-label="Vider" onClick={clear} />}
+                  value={search}
+                  onChange={handleSearch}
+                />
+              </div>
+              <Button onClick={requestLocation} className='tw-pb-[12px]'><FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' /></Button>
             </div>
-  <Button onClick={requestLocation} className='tw-pb-[12px]'><FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' /></Button>
-</div>
           </section>
           {/* <EnseigneGrid /> */}
           {associationsGrid}
@@ -190,17 +194,18 @@ export async function getServerSideProps(context) {
 
   const res = await fetch(`${process.env.API_URL}/api/discount-card`, {
     headers: new Headers({
-            'JWTAuthorization': `Bearer ${token}`,
-    })}
-    )
-  const data = await res.json()
-  if (data.code == 401) 
-  return {
-    redirect: {
-      permanent: false,
-      destination: "/login/as"
-    }
+      'JWTAuthorization': `Bearer ${token}`,
+    })
   }
+  )
+  const data = await res.json()
+  if (data.code == 401)
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/login/as"
+      }
+    }
 
   let possessedCardsRes = await fetch(`${process.env.API_URL}/api/discount-card-user`, {
     headers: new Headers({
