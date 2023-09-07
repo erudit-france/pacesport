@@ -86,7 +86,7 @@ export default function Page({ user, users, assolie, query, activeOffers2, paces
                         console.log("ChatRoom créé avec succès:", res.data);
 
                         // Rediriger vers la page de messages avec l'ID obtenu
-                        window.location.href = `http://localhost:3000/messages/${res.data}`;
+                        window.location.href = `/messages/${res.data}`;
                     })
                     .catch(err => console.error("Erreur lors de la création de la ChatRoom:", err));
             }
