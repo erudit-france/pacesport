@@ -19,6 +19,7 @@ export default function Page({ user, users, assolie, query, activeOffers2, paces
     const [pacesportPendingOffers, setPacesportPendingOffers] = useState(pacesportPendingOffers2)
     const [searchValue, setSearchValue] = useState('');
     const router = useRouter();
+    const role = getCookie('role') || 'particulier';
     const modalHandler = (state, user) => {
         setOpened(state)
         setCurrentUser(user)
@@ -34,7 +35,9 @@ export default function Page({ user, users, assolie, query, activeOffers2, paces
         offer.name.toLowerCase().includes(searchValue.toLowerCase())
     );
 
-    if (router.query.pos && router.query.pos.includes("association")) {
+    console.log(router.query.pos)
+
+    if (router.query.pos && router.query.pos.includes("association") || role == 'association') {
 
         filteredOffers = activeOffers.filter((offer, index, self) =>
             offer.enseigne.name.toLowerCase().includes(searchValue.toLowerCase()) &&
@@ -53,7 +56,7 @@ export default function Page({ user, users, assolie, query, activeOffers2, paces
             );
         })
     }
-    else {
+    else if (router.query.pos && router.query.pos.includes("sponsor") || role == 'sponsor/partenaire'){
         ContactCards = filteredOffers.map((offer) => {
             if (offer?.id) {
                 return (

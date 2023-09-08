@@ -17,9 +17,9 @@ import Image from "next/image";
 import { getUser } from "@/domain/repository/UserRepository";
 
 export default function Page(props) {
-    const [pendingOffers, setPendingOffers] = useState(props.pendingOffers)
-    const [pacesportPendingOffers, setPacesportPendingOffers] = useState(props.pacesportPendingOffers)
-    const [activeOffers, setActiveOffers] = useState(props.activeOffers)
+    const [pendingOffers, setPendingOffers] = useState(props.pendingOffers.filter(result => result.association?.id === props.user.association.id))
+    const [pacesportPendingOffers, setPacesportPendingOffers] = useState(props.pacesportPendingOffers.filter(result => result.association?.id === props.user.association.id))
+    const [activeOffers, setActiveOffers] = useState(props.activeOffers.filter(result => result.association?.id === props.user.association.id))
     const PacesportCard = ({ card }) => {
         if (!card) return <></>
         let src = '/logo.png'

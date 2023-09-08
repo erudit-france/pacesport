@@ -345,7 +345,8 @@ export default function Page(props) {
 
         <Title align="center" color="white" order={6}
           className="tw-bg-gray-400 tw-font-light tw-pb-1 tw-mt-4">Nouvelles offres de partenariat</Title>
-        <AssociationPendingOffers offers={props.pendingOffers} />
+          {console.log(props.pendingOffers)}
+        <AssociationPendingOffers offers={props.pendingOffers.filter(result => result.association?.id === props.user.association.id)} />
 
         <Divider my={'sm'} className="tw-w-2/3 tw-mx-auto" />
         <Title align='center' order={6}>Les partenaires de pace'sport</Title>
