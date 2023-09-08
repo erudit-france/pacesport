@@ -307,7 +307,7 @@ export default function Page(props) {
 
   return (
     <>
-      {console.log(props.user.association)}
+      {console.log(props.user.association.validated)}
       <Head>
         <title>PACE'SPORT - Mon compte</title>
         <meta name="description" content="PACE'SPORT" />
@@ -325,12 +325,12 @@ export default function Page(props) {
       </section>
 
       <section className="tw-bg-white tw-mt-6 tw-shadow-inner tw-py-4 tw-px-4">
-        {props.user.association.validated === 1 ? <Text color="green" align="center">Association validée</Text> : <Text color="orange" align="center">Votre demande est en attente de validation</Text>}
-        {props.user.association.validated === 1 &&
+        {props.user.association.validated == true ? <Text color="green" align="center">Association validée</Text> : <Text color="orange" align="center">Votre demande est en attente de validation</Text>}
+        {props.user.association.validated == true &&
           <Flex justify={'space-between'} my={'lg'} className="tw-relative">
             <Text className="tw-flex-1" color="red" fz={'sm'} fw={'bold'} align={'center'} py={2}>Ajoutez encore {nbSponsorsNeeded} partenaires pour valider votre pace'sport</Text>
           </Flex>}
-        <CampagneCard status={props.user.association.validated === 1 && activeOffers?.some(offer => offer?.type === 'Nationale')} id={1} title={'Carte pacesport'} image2={props.user?.association?.avatar?.name} image={props.pacesportCard?.image?.name} startDate={Date.now()} />
+        <CampagneCard status={props.user.association.validated == true && activeOffers?.some(offer => offer?.type === 'Nationale')} id={1} title={'Carte pacesport'} image2={props.user?.association?.avatar?.name} image={props.pacesportCard?.image?.name} startDate={Date.now()} />
         <Divider my={'sm'} className="tw-w-2/3 tw-mx-auto" />
 
         <Center>
