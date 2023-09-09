@@ -120,7 +120,7 @@ export default function Page(props) {
 
   const associationsAvecOffresValides = props.associations.filter((association) => {
     // Vérifier si au moins une offre de l'association est valide.
-    return filteredAssociations.some((offer) => offer.id == association.id && offer.validated == true);
+    return filteredAssociations.some((offer) => offer.id == association.id && offer.validated == true && offer.type == "Nationale");
   });
   console.log(filteredAssociations)
   const associations = associationsAvecOffresValides.map((card) => { 
