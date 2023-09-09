@@ -64,8 +64,8 @@ export default function Page(props) {
                     <PacesportCard card={props.pacesportCard} />
                     {console.log(props)}
                     <Text color='dimmed' align='center'>Conditions d'activation :</Text>
-                    <Text color={props?.pacesportCard && props?.user.association.validated == true ? 'green' : 'orange'} align='center'>{props?.pacesportCard && props?.user.association.validated == true ? 'Statuts validé' : 'Statuts en cours de validation'}</Text>
-                    <Text color={activeOffers.some(offer => offer?.type === 'Nationale') ? 'green' : 'orange'} align='center'>Minimum 1 offre nationale validée</Text>
+                    <Text color={props?.pacesportCard && props?.user.association.validated == true ? 'green' : 'orange'} align='center'>{props?.pacesportCard && props?.user.association.validated == true ? 'Statut validé' : 'Statuts en cours de validation'}</Text>
+                    <Text color={activeOffers.some(offer => offer?.type === 'Nationale' && offer?.validated == true) ? 'green' : 'orange'} align='center'>Minimum 1 offre nationale validée</Text>
                 </Card>
                 <Link href={props.id ? props.id : "/profil/association"}>
                     <Button variant="filled" size="sm"

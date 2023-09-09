@@ -54,7 +54,7 @@ export default function Page(props) {
   const [openInvitationModal, { open, close }] = useDisclosure(false);
   const [additionalEmails, setAdditionalEmails] = useState([]);
   const [contrat, setContrat] = useState(null)
-  const [activeOffers, setActiveOffers] = useState(props.activeOffers)
+  const [activeOffers, setActiveOffers] = useState(props.activeOffers.filter(result => result.association?.id === props.user.association.id))
   const [hasEnoughOffers, setHasEnoughOffers] = useState(props.invitations.length > 0)
   const [hasUploadedStatus, setHasUploadedStatus] = useState(false)
   const isAccountLimited = true
@@ -83,7 +83,6 @@ export default function Page(props) {
 
     const filteredOffers = props.offers.filter(offer => offer.enseigne?.id === selectedOption?.id);
 
-    console.log(filteredOffers)
     setResultOffers(filteredOffers)
   };
 
@@ -116,7 +115,6 @@ export default function Page(props) {
             // Déclenchez l'événement sur l'input
             selectRef.current.dispatchEvent(clickEvent);
             document.getElementsByClassName("mantine-Input-input")[0].focus();
-            console.log(document.getElementsByClassName("mantine-Input-input")[0])
 
           } else {
             console.warn("La référence 'selectRef' n'a pas été initialisée.");
@@ -307,7 +305,7 @@ export default function Page(props) {
 
   return (
     <>
-      {console.log(props.user.association.validated)}
+      {console.log(activeOffers)}
       <Head>
         <title>PACE'SPORT - Mon compte</title>
         <meta name="description" content="PACE'SPORT" />
@@ -325,12 +323,18 @@ export default function Page(props) {
       </section>
 
       <section className="tw-bg-white tw-mt-6 tw-shadow-inner tw-py-4 tw-px-4">
-        {props.user.association.validated == true ? <Text color="green" align="center">Association validée</Text> : <Text color="orange" align="center">Votre demande est en attente de validation</Text>}
-        {props.user.association.validated == true &&
+        {props.user.association.validated == true && activeOffers?.some(offer => offer?.type === 'Nationale' && offer?.validated == true) ? "" : 
+        props.user.association.validated == true && !activeOffers?.some(offer => offer?.type === 'Nationale' && offer?.validated == true) ? <Text color="green" align="center">Association validée</Text> : <Text color="orange" align="center">Votre demande est en attente de validation</Text>}
+        
+        {props.user.association.validated == true && activeOffers?.some(offer => offer?.type === 'Nationale' && offer?.validated == true) ? "" :
+        props.user.association.validated == true && !activeOffers?.some(offer => offer?.type === 'Nationale' && offer?.validated == true) ?
           <Flex justify={'space-between'} my={'lg'} className="tw-relative">
-            <Text className="tw-flex-1" color="red" fz={'sm'} fw={'bold'} align={'center'} py={2}>Ajoutez encore {nbSponsorsNeeded} partenaires pour valider votre pace'sport</Text>
-          </Flex>}
-        <CampagneCard status={props.user.association.validated == true && activeOffers?.some(offer => offer?.type === 'Nationale')} id={1} title={'Carte pacesport'} image2={props.user?.association?.avatar?.name} image={props.pacesportCard?.image?.name} startDate={Date.now()} />
+            <Text className="tw-flex-1" color="red" fz={'sm'} fw={'bold'} align={'center'} py={2}>Ajoutez 1 offre nationale pour valider votre pace'sport</Text>
+          </Flex> : 
+          <Flex justify={'space-between'} my={'lg'} className="tw-relative">
+          <Text className="tw-flex-1" color="red" fz={'sm'} fw={'bold'} align={'center'} py={2}>Offre nationale validé</Text>
+        </Flex>}
+        <CampagneCard status={props.user.association.validated == true && activeOffers?.some(offer => offer?.type === 'Nationale' && offer?.validated == true)} id={1} title={'Carte pacesport'} image2={props.user?.association?.avatar?.name} image={props.pacesportCard?.image?.name} startDate={Date.now()} />
         <Divider my={'sm'} className="tw-w-2/3 tw-mx-auto" />
 
         <Center>
@@ -345,7 +349,6 @@ export default function Page(props) {
 
         <Title align="center" color="white" order={6}
           className="tw-bg-gray-400 tw-font-light tw-pb-1 tw-mt-4">Nouvelles offres de partenariat</Title>
-          {console.log(props.pendingOffers)}
         <AssociationPendingOffers offers={props.pendingOffers.filter(result => result.association?.id === props.user.association.id)} />
 
         <Divider my={'sm'} className="tw-w-2/3 tw-mx-auto" />
