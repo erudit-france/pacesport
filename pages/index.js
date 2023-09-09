@@ -17,6 +17,7 @@ import CommunicationAdsCarousel from '@/components/CommunicationAdsCarousel'
 import AssociationCarte from '@/components/AssociationCarte'
 import { useDebouncedValue } from '@mantine/hooks'
 import { getActiveSubscription } from '@/domain/repository/OrderRepository'
+import { getAllOffers } from "@/domain/repository/AdminRepository";
 import axios from "axios";
 
 const SectionTitle = (props) => (
@@ -115,7 +116,14 @@ export default function Page(props) {
     setFilteredAssociations(props.associations)
   }
   console.log(filteredAssociations)
-  const associations = filteredAssociations.map((card) => {
+  console.log(props.offers)
+
+  const associationsAvecOffresValides = props.associations.filter((association) => {
+    // Vérifier si au moins une offre de l'association est valide.
+    return filteredAssociations.some((offer) => offer.id == association.id && offer.validated == true);
+  });
+  console.log(filteredAssociations)
+  const associations = associationsAvecOffresValides.map((card) => { 
     return (
       <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
         <AssociationCarte organisation={card} href={`/profil/particulier/carte/souscrire/${card.id}`} />
@@ -182,6 +190,7 @@ export default function Page(props) {
 
 export async function getServerSideProps(context) {
   const token = context.req.cookies['token']
+  let offers = await getAllOffers(token);
   let pacesportSubscription = await getActiveSubscription(token);
   if (!(pacesportSubscription.data === 'null' || pacesportSubscription.data == null)) {
     return {
@@ -206,7 +215,7 @@ export async function getServerSideProps(context) {
         destination: "/login/as"
       }
     }
-
+    
   let possessedCardsRes = await fetch(`${process.env.API_URL}/api/discount-card-user`, {
     headers: new Headers({
       'JWTAuthorization': `Bearer ${token}`,
@@ -250,7 +259,8 @@ export async function getServerSideProps(context) {
       avatar: avatar.filename,
       associations: JSON.parse(associations.data),
       possessedCards: JSON.parse(possessedCardsRes.data),
-      communications: JSON.parse(communications.data)
+      communications: JSON.parse(communications.data),
+      offers: JSON.parse(offers.data)
     }
   }
 }
