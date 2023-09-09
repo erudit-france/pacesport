@@ -62,10 +62,10 @@ export default function Page(props) {
             <main className="tw-bg-white tw-rounded-t-3xl tw-w-full tw-min-h-[calc(100vh-242px)]">
                 <Card radius={'lg'} className="tw-overflow-hidden">
                     <PacesportCard card={props.pacesportCard} />
-                    {console.log(props)}
+                    {console.log(activeOffers > 0)}
                     <Text color='dimmed' align='center'>Conditions d'activation :</Text>
                     <Text color={props?.pacesportCard && props?.user.association.validated == true ? 'green' : 'orange'} align='center'>{props?.pacesportCard && props?.user.association.validated == true ? 'Statut validé' : 'Statuts en cours de validation'}</Text>
-                    <Text color={activeOffers.some(offer => offer?.type === 'Nationale' && offer?.validated == true) ? 'green' : 'orange'} align='center'>Minimum 1 offre nationale validée</Text>
+                    <Text color={activeOffers > 0 && activeOffers.some(offer => offer?.type === 'Nationale' && offer?.validated == true) ? 'green' : 'orange'} align='center'>Minimum 1 offre nationale validée</Text>
                 </Card>
                 <Link href={props.id ? props.id : "/profil/association"}>
                     <Button variant="filled" size="sm"
