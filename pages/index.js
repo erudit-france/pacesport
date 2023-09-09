@@ -118,19 +118,33 @@ export default function Page(props) {
   console.log(filteredAssociations)
   console.log(props.offers)
 
-  const associationsAvecOffresValides = props.associations.filter((association) => {
-    // Vérifier si au moins une offre de l'association est valide.
-    return filteredAssociations.some((offer) => offer.id == association.id && offer.validated == true && offer.type == "Nationale");
+  const resultAssociations = filteredAssociations.filter((filteredAssoc) => {
+    // Vérifier si l'association a au moins une offre qui correspond aux conditions
+    return props.offers.some((offer) => {
+      return (
+        offer.associations != null &&
+        offer.associations.length > 0 &&
+        offer.associations.some((assoo) => {
+          return (
+            assoo.id === filteredAssoc.id && // Comparaison des ID
+            filteredAssoc.validated === true &&
+            offer.type === "Nationale" && // Vérification du type
+            offer.validated === true
+          );
+        })
+      );
+    });
   });
-  console.log(filteredAssociations)
-  const associations = associationsAvecOffresValides.map((card) => { 
+  
+  
+
+  const associations = resultAssociations.map((card) => { 
     return (
       <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
         <AssociationCarte organisation={card} href={`/profil/particulier/carte/souscrire/${card.id}`} />
       </Grid.Col>
     )
   })
-  console.log(filteredAssociations)
   // const associationsGrid = filteredAssociations.length == 0
   //   ? <Text fz={'sm'} align="center" color="dimmed">Aucune association enregistrée</Text>
   //   : <Grid gutter={18} className="tw-px-4 tw-m-[0px]">{associations}</Grid>
