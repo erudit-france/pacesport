@@ -305,7 +305,7 @@ export default function Page(props) {
 
   return (
     <>
-      {console.log(activeOffers > 0)}
+      {console.log(activeOffers.length > 0)}
       <Head>
         <title>PACE'SPORT - Mon compte</title>
         <meta name="description" content="PACE'SPORT" />
@@ -323,18 +323,18 @@ export default function Page(props) {
       </section>
 
       <section className="tw-bg-white tw-mt-6 tw-shadow-inner tw-py-4 tw-px-4">
-        {props.user.association.validated == true && activeOffers > 0 && activeOffers?.some(offer => offer?.type === 'Nationale' && offer?.validated == true) ? "" : 
-        props.user.association.validated == true && !(activeOffers > 0 && activeOffers?.some(offer => offer?.type === 'Nationale' && offer?.validated == true)) ? <Text color="green" align="center">Association validée</Text> : <Text color="orange" align="center">Votre demande est en attente de validation</Text>}
+        {props.user.association.validated == true && activeOffers.length > 0 && activeOffers?.some(offer => offer?.type === 'Nationale' && offer?.validated == true) ? "" : 
+        props.user.association.validated == true && !(activeOffers.length > 0 && activeOffers?.some(offer => offer?.type === 'Nationale' && offer?.validated == true)) ? <Text color="green" align="center">Association validée</Text> : <Text color="orange" align="center">Votre demande est en attente de validation</Text>}
         
         {props.user.association.validated == true && activeOffers > 0 && activeOffers?.some(offer => offer?.type === 'Nationale' && offer?.validated == true) ? "" :
-        !(activeOffers > 0 && activeOffers?.some(offer => offer?.type === 'Nationale' && offer?.validated == true)) ?
+        !(activeOffers.length > 0 && activeOffers?.some(offer => offer?.type === 'Nationale' && offer?.validated == true)) ?
           <Flex justify={'space-between'} my={'lg'} className="tw-relative">
             <Text className="tw-flex-1" color="orange" fz={'sm'} fw={'bold'} align={'center'} py={2}>Ajoutez 1 offre nationale pour valider votre pace'sport</Text>
           </Flex> : 
           <Flex justify={'space-between'} my={'lg'} className="tw-relative">
           <Text className="tw-flex-1" color="green" fz={'sm'} fw={'bold'} align={'center'} py={2}>Offre nationale validé</Text>
         </Flex>}
-        <CampagneCard status={props.user.association.validated == true && activeOffers > 0 && activeOffers?.some(offer => offer?.type === 'Nationale' && offer?.validated == true)} id={1} title={'Carte pacesport'} image2={props.user?.association?.avatar?.name} image={props.pacesportCard?.image?.name} startDate={Date.now()} />
+        <CampagneCard status={props.user.association.validated == true && activeOffers.length > 0 && activeOffers?.some(offer => offer?.type === 'Nationale' && offer?.validated == true)} id={1} title={'Carte pacesport'} image2={props.user?.association?.avatar?.name} image={props.pacesportCard?.image?.name} startDate={Date.now()} />
         <Divider my={'sm'} className="tw-w-2/3 tw-mx-auto" />
 
         <Center>

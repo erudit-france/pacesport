@@ -53,19 +53,19 @@ export default function Page(props) {
             </Head>
             {/* <Link className="tw-border-[1px] tw-px-8 tw-py-0.5 tw-border-[#d61515] tw-rounded-xl tw-shadow-md hover:tw-bg-gray-100" 
                         href={props.prev}>Retour</Link> */}
-            <section className="tw-px-4 tw-pt-14 tw-relative">
+            <section className="tw-px-4 tw-pt-8 tw-relative">
                 <Box className="tw-relative">
-                    <Title my={'md'} order={4} align="center">{props.association?.name}</Title>
+                    <Title my={'md'} order={4} align="center">{props.user.association?.name}</Title>
                 </Box>
             </section>
 
             <main className="tw-bg-white tw-rounded-t-3xl tw-w-full tw-min-h-[calc(100vh-242px)]">
                 <Card radius={'lg'} className="tw-overflow-hidden">
                     <PacesportCard card={props.pacesportCard} />
-                    {console.log(activeOffers > 0)}
+                    {console.log(activeOffers.length > 0)}
                     <Text color='dimmed' align='center'>Conditions d'activation :</Text>
                     <Text color={props?.pacesportCard && props?.user.association.validated == true ? 'green' : 'orange'} align='center'>{props?.pacesportCard && props?.user.association.validated == true ? 'Statut validé' : 'Statuts en cours de validation'}</Text>
-                    <Text color={activeOffers > 0 && activeOffers.some(offer => offer?.type === 'Nationale' && offer?.validated == true) ? 'green' : 'orange'} align='center'>Minimum 1 offre nationale validée</Text>
+                    <Text color={activeOffers.length > 0 && activeOffers.some(offer => offer?.type === 'Nationale' && offer?.validated == true) ? 'green' : 'orange'} align='center'>Minimum 1 offre nationale validée</Text>
                 </Card>
                 <Link href={props.id ? props.id : "/profil/association"}>
                     <Button variant="filled" size="sm"
