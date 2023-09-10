@@ -28,7 +28,6 @@ export default function Page(props) {
   const [pacesportSubscription, setPacesportSubscription] = useState(props.pacesportSubscription)
   const [showOffers, setShowOffers] = useState(false)
   const [isFlipped, setIsFlipped] = useState(false)
-  console.log(props.id)
   const pacesportCardSrc = props.pacesportCard?.image?.name ? `/uploads/${props.pacesportCard?.image?.name}` : '/logo.png'
   console.log(props)
   const standaloneCard = <>
@@ -100,7 +99,7 @@ export default function Page(props) {
       offer.type === "Nationale" ||
       (offer.type === "Locale" && offer.associations.some(ass => ass.id == props.id))
   );
-  console.log(props.id)
+  console.log(props)
   return (
     <>
       <Head>
@@ -157,8 +156,16 @@ export default function Page(props) {
                 {filteredOffers.map((offer) => (
                   <OfferRow key={offer.title} offer={offer} />
                 ))}
+                <br/><br/><br/>
               </section>
             }
+            {/* <Center className="">
+            <Box className="tw-bg-gradient-to-br tw-fixed tw-from-slate-100 tw-h-30 tw-w-[95%] tw-to-gray-100 tw-bottom-1 tw-shadow-xl tw-rounded-2xl" p={'md'}>
+            <Group><Avatar className="tw-shadow-md" size={'md'} radius={'xl'} src={`/uploads/${props.user.enseigne.avatar?.name}`} />
+              <Text order={3} mb={'sm'} align="center">{props.user.enseigne.name}</Text></Group>
+              <Text className="tw-text-gray-800" align="center" mt={'sm'} fz={'sm'}>Message publicitaire exemple</Text>
+              </Box>
+            </Center> */}
           </Container>
         </Box>
       </Container>

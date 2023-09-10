@@ -125,7 +125,7 @@ export default function Page(props) {
             })
 
     }
-
+console.log(props)
     return (
         <>
             <div className="tw-container tw-mx-auto tw-px-2">
@@ -137,8 +137,7 @@ export default function Page(props) {
                 hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full"
                                 radius={'xl'}><BsArrowLeft /></Button></Link>
                         <Group className="tw-rounded-3xl tw-border-[1px] tw-border-gray-300 tw-shadow-sm tw-px-4 tw-mr-2">
-                            <Text>Crédits:</Text>
-                            <Text>{props.credit}</Text>
+                            <Text>Crédits : {props.credit == null ? '0' : props.credit}</Text>
                         </Group>
                     </Flex>
                 </Box>

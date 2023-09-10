@@ -65,7 +65,7 @@ export default function Page(props) {
                     {console.log(activeOffers.length > 0)}
                     <Text color='dimmed' align='center'>Conditions d'activation :</Text>
                     <Text color={props?.pacesportCard && props?.user.association.validated == true ? 'green' : 'orange'} align='center'>{props?.pacesportCard && props?.user.association.validated == true ? 'Statut validé' : 'Statuts en cours de validation'}</Text>
-                    <Text color={activeOffers.length > 0 && activeOffers.some(offer => offer?.type === 'Nationale' && offer?.validated == true) ? 'green' : 'orange'} align='center'>Minimum 1 offre nationale validée</Text>
+                    <Text color={activeOffers.length > 0 && activeOffers.some(offer => offer?.type === 'Nationale' && offer?.validated == true) ? 'green' : 'orange'} align='center'>Minimum 1 offre globale validée</Text>
                 </Card>
                 <Link href={props.id ? props.id : "/profil/association"}>
                     <Button variant="filled" size="sm"

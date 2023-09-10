@@ -17,7 +17,7 @@ export default function Page(props) {
   const [loading, setLoading] = useState(false);
   const [opened, setOpened] = useState(false);
   const [maxSelectedAssociations, setMaxSelectedAssociations] = useState(99)
-  const [tab, setTab] = useState('Nationale')
+  const [tab, setTab] = useState('Globale')
   const categoriesOffre = [
     { value: 'Alimentaire', label: 'Alimentaire' },
     { value: 'Vêtements', label: 'Vêtements' },
@@ -29,7 +29,7 @@ export default function Page(props) {
     initialValues: {
       association: association.id,
       description: '',
-      type: 'Nationale',
+      type: 'Globale',
     },
     validate: {
       description: (value) => (value != '' ? null : 'Veuillez saisir une description'),
@@ -83,7 +83,7 @@ export default function Page(props) {
       setMaxSelectedAssociations(1)
     }
     setTab(state)
-    form.setValues({ type: state })
+    form.setValues({ type: (state == 'Globale' ? 'Nationale' : state) })
   }
 
   const Information = ({ label, value }) => (
@@ -174,7 +174,7 @@ hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full"
             onChange={tabHandler}
             radius="xl"
             size="sm"
-            data={['Nationale', 'Locale']}
+            data={['Globale', 'Locale']}
             color="gray"
             className='tw-border-[1px] tw-border-b-0 tw-border-white tw-mb-4'
           />
