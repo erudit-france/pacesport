@@ -156,7 +156,7 @@ export default function Page(props) {
       setMaxSelectedAssociations(1)
     }
     setTab(state)
-    form.setValues({ type: (state == 'Globale' ? 'Nationale' : state) })
+    form.setValues({ type: state })
     console.log(form)
   }
 
@@ -190,7 +190,7 @@ console.log(props)
 
   const submitOffer = (values) => {
     if (openOffer.type == 'Nationale') {
-      Toast.error('Action impossible pour une offre globale')
+      Toast.error('Action impossible pour une offre nationale')
       return
     }
     values = { ...values, offer: openOffer.id, selectedAssociations: editSelectedAssociations }
@@ -434,14 +434,14 @@ console.log(props)
               onChange={tabHandler}
               radius="xl"
               size="sm"
-              data={['Globale', 'Locale']}
+              data={['Nationale', 'Locale']}
               color="gray"
               className='tw-border-[1px] tw-border-b-0 tw-border-white tw-mb-4'
             />
 
             <Text className='tw-font-light' fz={'sm'} mb={'xl'}>
               {tab == 'Nationale'
-                ? 'Une offre globale sera accessible pour les abonnés de n\'importe quelle association'
+                ? 'Une offre nationale sera accessible pour les abonnés de n\'importe quelle association'
                 : 'Une offre locale sera accessible pour les abonnés des associations séléctionnées'
               }
             </Text>

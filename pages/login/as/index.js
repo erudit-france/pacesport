@@ -1,4 +1,4 @@
-import { ActionIcon, Box, Button, Flex, Image, Space, Text, Title } from "@mantine/core";
+import { ActionIcon, Box, Button, Flex, Image, Space, Text, Title, Center } from "@mantine/core";
 import Head from "next/head";
 import Link from "next/link";
 import { BsLock } from 'react-icons/bs'
@@ -108,26 +108,32 @@ export default function Page(props) {
             </header>
             <Box className={"tw-rounded-3xl " + overlayClass} pt={'xl'} m={'lg'} bg={'dark'}>
                 <Logo />
-                <Title order={6} align="center" weight={600} color="white">
-                    Se connecter en tant que</Title><br />
-                <Flex justify='center' direction='column' mb='md' gap="xl">
-                    <LinkButton className={'tw-px-16 tw-mb-0'} text={usernameParticulier} href={pacesportSubscription?.association?.id ? '/profil/particulier/carte' : '/'} />
-                </Flex>
-                {isAdmin &&
+                <Title order={6} align="center" mb={"lg"} color="white" style={{ fontSize: '24px' }}>
+                    {'Bonjour ' + loggedUser?.prenom}</Title>
+
+                <Center>
+                    <Box className="tw-rounded-x3 tw-shadow-lg tw-relative">
+                        <a href={pacesportSubscription?.association?.id ? '/profil/particulier/carte' : '/'} >
+                            <Image
+                                className="tw-rounded-x3 tw-top-[140px] box222 glowing tw-w-full animate-pulse"
+                                width={300}
+                                height={192}
+                                src={"/Design_carte_connexion-removebg-preview.png"}
+                                alt="logo sim"
+                            /></a><br/>
+                        <Flex className="tw-overflow-hidden" direction='column'>
+                        {isAdmin &&
                     <Flex justify='center' direction='column' mb='md' gap="xl">
                         <LinkButton className={'tw-px-16 tw-mb-0'} text={<><RiAdminLine className="tw-mr-1" />Panel admin</>} href='/admin' />
                     </Flex>}
-                <Flex className="tw-overflow-hidden" justify='center' direction='column'>
+                            <Flex direction='column' my='xs' py={'sm'} gap="xs" className="tw-rounded-xl tw-top-[340px]">
 
-                    <Box className="tw-bg-zinc-900 tw-px-16" py={'md'}>
-                        <Flex justify='center' direction='column' my='xs' py={'sm'} gap="xs">
-                            <Title order={6} align="center" weight={600} color="white">Compte pro</Title>
-                            <LinkButton className={''} text='Sponsor/Partenaire' href={sponsorLink} lock={!status.enseigne} />
-                            <LinkButton className={' tw-mb-2'} text='Association' href={associationLink} lock={!status.association} />
+                                <Title order={6} align="center" style={{ fontSize: '20px' }} color="white">Compte pro</Title>
+                                <LinkButton className={''} text='Sponsor/Partenaire' href={sponsorLink} lock={!status.enseigne} />
+                                <LinkButton className={' tw-mb-2'} text='Association' href={associationLink} lock={!status.association} />
+                            </Flex>
                         </Flex>
-                    </Box>
 
-                    <Box className="tw-px-16">
                         <Button
                             onClick={logout}
                             className={`tw-my-5
@@ -135,7 +141,7 @@ export default function Page(props) {
                                         `}
                             radius='lg'>Déconnexion</Button>
                     </Box>
-                </Flex>
+                </Center>
             </Box >
         </>
     )

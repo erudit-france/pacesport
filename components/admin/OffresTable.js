@@ -68,14 +68,12 @@ export default function OffresTable({ offres, refresh, fetching, editOffer }) {
         })
             .then(res => res.json())
             .then(res => {
-                console.log(res)
                 res.data.code == 1
                     ? Toast.success(res.data.message)
                     : Toast.error(res.data.message)
                 refresh()
             })
             .catch((error) => {
-                console.log(error)
                 console.error("Erreur détaillée:", error);
                 Toast.error('Erreur')
             })
@@ -164,6 +162,8 @@ export default function OffresTable({ offres, refresh, fetching, editOffer }) {
                                 </Avatar.Group>
                                 : <Avatar className='tw-shadow-md' radius={'xl'} src={null} />
                         }
+                        {console.log(element.associations)}
+                        <Text fz={'sm'}>{element.associations.length == 1 ? element.associations[0].name : 'groupe d\'asso'}</Text>
                         <SponsoringOfferTypeBadge offer={element} />
                         <Text fz={'sm'} weight={600}>{element.title}</Text>
                         <Text fz={'sm'}>{element.description}</Text>
