@@ -190,3 +190,7 @@ body {
     opacity: 1;
   }
 }
+
+.tw-h-screen {
+  height: auto !important;
+}
