@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Group, Text, Textarea } from "@mantine/core";
+import { Box, Button, Center, Flex, Group, Modal, Text, Textarea, Title } from "@mantine/core";
 import { BsArrowLeft } from "react-icons/bs";
 import Layout from "../layout"
 import { useForm } from "@mantine/form";
@@ -28,6 +28,10 @@ const PriceRow = ({ credits, price, oldPrice, click }) => {
 
 export default function Page(props) {
     const [loading, setLoading] = useState(false)
+    const [iframeUrl, setIframeUrl] = useState(null)
+    const [opened, setOpened] = useState(false)
+    const [credit, setCredit] = useState(0)
+    const [price, setPrice] = useState(0)
     const router = useRouter()
 
 
@@ -39,6 +43,13 @@ export default function Page(props) {
             message: (value) => (value != '' ? null : 'Veuillez saisir un message'),
         },
     });
+
+    const closeModalHandler = () => {
+        setOpened(false)
+        setPrice(0)
+        setCredit(0)
+        setIframeUrl(null)
+    }
 
     const submitHandler = (data) => {
         if (props.credit < 1) {
@@ -99,33 +110,14 @@ export default function Page(props) {
 
 
 
-    const getCreditUrl = (credit) => {
-        let token = getCookie('token');
-        const baseURL = window.location.origin;
-        fetch(`/api/stripe/credit`, {
-            method: 'POST',
-            headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token')}`
-            }),
-            body: JSON.stringify({
-                credit: credit,
-                cancelUrl: baseURL + "/communication/add/sponsor",
-                baseUrl: baseURL + "/communication/add/sponsor"
-            })
-        }).then(res => res.json())
-            .then(res => {
-                console.log("Error from server:", res);
-                if (res.data) {
-                    router.push(res.data.url)
-                }
-            })
-            .catch((err) => {
-                console.error("Error from server:", err);
-                Toast.error('Erreur, veuillez réessayer plus tard');
-            })
-
+    const getCreditUrl = (credit, price) => {
+        setCredit(credit)
+        setPrice(price)
+        setOpened(true)
+        setIframeUrl(`http://localhost:3000/api/payment/generate?orderType=credit&credit=${credit}&bearer=${props.token}`)
+        return
     }
-console.log(props)
+
     return (
         <>
             <div className="tw-container tw-mx-auto tw-px-2">
@@ -165,13 +157,29 @@ console.log(props)
 
             {/* gold pricing section */}
             <section className="tw-bg-[#d61515] tw-mt-4">
-                <PriceRow click={() => getCreditUrl(3)} credits={3} price={5.99} />
-                <PriceRow click={() => getCreditUrl(10)} credits={10} price={12.99} oldPrice={19.99} />
-                <PriceRow click={() => getCreditUrl(20)} credits={20} price={15.99} oldPrice={39.99} />
-                <PriceRow click={() => getCreditUrl(40)} credits={40} price={19.99} oldPrice={79.99} />
+                <PriceRow click={() => getCreditUrl(3, 5.99)} credits={3} price={5.99} />
+                <PriceRow click={() => getCreditUrl(10, 12.99)} credits={10} price={12.99} oldPrice={19.99} />
+                <PriceRow click={() => getCreditUrl(20, 15.99)} credits={20} price={15.99} oldPrice={39.99} />
+                <PriceRow click={() => getCreditUrl(40, 19.99)} credits={40} price={19.99} oldPrice={79.99} />
             </section>
 
-
+            <Modal
+                opened={opened}
+                onClose={closeModalHandler}
+                title={<Title order={5}>Acheter des crédits</Title>}
+            >
+                <Group grow>
+                    <Text fw={600} fz={'sm'}>Nombre de crédits</Text>
+                    <Text>{credit}</Text>
+                </Group>
+                <Group grow>
+                    <Text fw={600} fz={'sm'}>Prix</Text>
+                    <Text>{price} €</Text>
+                </Group>
+                <Center mt={'lg'}>
+                    <iframe  className="tw-w-full" height={600} src={iframeUrl}></iframe>
+                </Center>
+            </Modal>
         </>
     )
 }
@@ -198,7 +206,8 @@ export async function getServerSideProps(context) {
         props: {
             credit: JSON.parse(creditData.data.credit),
             cancelUrl: `${process.env.NEXT_URL}${context.resolvedUrl}`,
-            baseUrl: `${process.env.NEXT_URL}`
+            baseUrl: `${process.env.NEXT_URL}`,
+            token: token
         }
     }
 }

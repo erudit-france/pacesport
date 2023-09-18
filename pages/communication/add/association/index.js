@@ -138,7 +138,6 @@ export default function Page(props) {
                 <PriceRow click={() => getCreditUrl(40)} credits={40} price={19.99} oldPrice={79.99} />
             </section>
 
-
         </>
     )
 }
