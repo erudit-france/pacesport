@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text, Textarea } from "@mantine/core";
+import { Box, Button, Center, Flex, Group, Modal, Text, Textarea, Title } from "@mantine/core";
 import { BsArrowLeft } from "react-icons/bs";
 import Layout from "../layout"
 import { useForm } from "@mantine/form";
@@ -8,6 +8,7 @@ import Toast from "@/services/Toast";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { serialize } from "object-to-formdata";
+import { getUser } from "@/domain/repository/UserRepository";
 
 const PriceRow = ({ credits, price, oldPrice, click }) => {
     return (
@@ -28,6 +29,10 @@ const PriceRow = ({ credits, price, oldPrice, click }) => {
 }
 export default function Page(props) {
     const [loading, setLoading] = useState(false);
+    const [iframeUrl, setIframeUrl] = useState(null)
+    const [opened, setOpened] = useState(false)
+    const [credit, setCredit] = useState(0)
+    const [price, setPrice] = useState(0)
     const router = useRouter()
     const form = useForm({
         initialValues: {
@@ -38,26 +43,19 @@ export default function Page(props) {
         },
     });
 
-    const getCreditUrl = (credit) => {
-        console.log(props.cancelUrl);
-        // fetch(`/api/stripe/credit`, {
-        //     method: 'POST',
-        //     headers: new Headers({
-        //       'JWTAuthorization': `Bearer ${getCookie('token')}`
-        //     }),
-        //     body: JSON.stringify({
-        //         credit: credit,
-        //         cancelUrl: props.cancelUrl,
-        //         baseUrl: props.baseUrl
-        //     })
-        //   })
-        // .then(res => res.json())
-        // .then(res => {
-        //     if (res.data) {
-        //         router.push(res.data.url)
-        //     }
-        //   })
-        // .catch((err) => Toast.error('Erreur, veuillez réessayer plus tard'))
+    const closeModalHandler = () => {
+        setOpened(false)
+        setPrice(0)
+        setCredit(0)
+        setIframeUrl(null)
+    }
+
+    const getCreditUrl = (credit, price) => {
+        setCredit(credit)
+        setPrice(price)
+        setOpened(true)
+        setIframeUrl(`http://localhost:3000/api/payment/generate?orderType=credit&credit=${credit}&accountType=association&ref=${props.user.id}`)
+        return
     }
 
     const submitHandler = (data) => {
@@ -132,12 +130,29 @@ export default function Page(props) {
 
             {/* gold pricing section */}
             <section className="tw-bg-[#d61515] tw-mt-4">
-                <PriceRow click={() => getCreditUrl(3)} credits={3} price={5.99} />
-                <PriceRow click={() => getCreditUrl(10)} credits={10} price={12.99} oldPrice={19.99} />
-                <PriceRow click={() => getCreditUrl(20)} credits={20} price={15.99} oldPrice={39.99} />
-                <PriceRow click={() => getCreditUrl(40)} credits={40} price={19.99} oldPrice={79.99} />
+                <PriceRow click={() => getCreditUrl(3, 5.99)} credits={3} price={5.99} />
+                <PriceRow click={() => getCreditUrl(10, 12.99)} credits={10} price={12.99} oldPrice={19.99} />
+                <PriceRow click={() => getCreditUrl(20, 15.99)} credits={20} price={15.99} oldPrice={39.99} />
+                <PriceRow click={() => getCreditUrl(40, 19.99)} credits={40} price={19.99} oldPrice={79.99} />
             </section>
 
+            <Modal
+                opened={opened}
+                onClose={closeModalHandler}
+                title={<Title order={5}>Acheter des crédits</Title>}
+            >
+                <Group grow>
+                    <Text fw={600} fz={'sm'}>Nombre de crédits</Text>
+                    <Text>{credit}</Text>
+                </Group>
+                <Group grow>
+                    <Text fw={600} fz={'sm'}>Prix</Text>
+                    <Text>{price} €</Text>
+                </Group>
+                <Center mt={'lg'}>
+                    <iframe  className="tw-w-full" height={600} src={iframeUrl}></iframe>
+                </Center>
+            </Modal>
         </>
     )
 }
@@ -148,9 +163,33 @@ export async function getServerSideProps(context) {
 
     let url = context.req.headers.referer
     let previousUrl = url === undefined ? '/profil/sponsor/' : url
+
+    let creditRes = await fetch(`${process.env.API_URL}/api/communication/association/credit`, {
+        headers: new Headers({
+            'JWTAuthorization': `Bearer ${token}`,
+        })
+    }
+    )
+    let creditData = await creditRes.json()
+
+    let user = await getUser(token)
+    if (user.code == 401) {
+        return {
+            redirect: {
+            permanent: false,
+            destination: "/login"
+            }
+        }
+    }
+    user = JSON.parse(user.data)
+
     // // Pass data to the page via props
     return {
         props: {
+            credit: JSON.parse(creditData.data.credit),
+            cancelUrl: `${process.env.NEXT_URL}${context.resolvedUrl}`,
+            baseUrl: `${process.env.NEXT_URL}`,
+            user: user
         }
     }
 }
