@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { Avatar, Badge, Box, Button, Card, Center, Container, Flex, Grid, Group, Image, Loader, Modal, Paper, Select, Space, Text, Title, Transition } from '@mantine/core'
+import { Avatar, Badge, Box, Button, Card, Center, Container, Flex, Grid, Group, Image, Loader, Modal, Paper, Select, Space, Stack, Text, Title, Transition } from '@mantine/core'
 import Layout from '../../../../layout'
 import { BsArrowLeft } from "react-icons/bs";
 import { useEffect, useState } from 'react'
@@ -20,6 +20,7 @@ import { getAssociationActiveOffers } from '@/domain/repository/SponsoringOfferR
 import { getById } from '@/domain/repository/AssociationRepository'
 import { serialize } from 'object-to-formdata'
 import { getActiveSubscription } from '@/domain/repository/OrderRepository'
+import { getUser } from '@/domain/repository/UserRepository';
 
 
 export default function Page(props) {
@@ -31,6 +32,11 @@ export default function Page(props) {
   const [fetching, setFetching] = useState(false)
   const [selectedAssociation, setSelectedAssociation] = useState(null)
   const [association, setAssociation] = useState(props.association)
+  const subscriptionPrice = 14.99
+  const [iframeUrl, setIframeUrl] = useState(null)
+  const [opened, setOpened] = useState(false)
+
+
   const router = useRouter()
   const refresh = () => { router.reload(window.location.pathname) }
   const selectedAssociationHandler = (association) => {
@@ -55,31 +61,39 @@ export default function Page(props) {
     },
   });
 
+  const closeModalHandler = () => {
+      setOpened(false)
+      setIframeUrl(null)
+  }
+
   const submitHandler = (values) => {
 
     const baseURL = window.location.href;
+    setOpened(true)
+    setIframeUrl(`http://localhost:3000/api/payment/generate?orderType=subscription&association=${props.id}&ref=${props.user.id}&baseurl=${props.baseUrl}`)
+    return
 
-    fetch(`/api/stripe/subscriptionLinks`, {
-      method: 'POST',
-      headers: new Headers({
-        'JWTAuthorization': `Bearer ${getCookie('token')}`
-      }),
-      body: JSON.stringify({
-        cancelUrl: baseURL,
-        baseUrl: baseURL,
-        asso: association.id,
-      })
-    }).then(res => res.json())
-      .then(res => {
+    // fetch(`/api/stripe/subscriptionLinks`, {
+    //   method: 'POST',
+    //   headers: new Headers({
+    //     'JWTAuthorization': `Bearer ${getCookie('token')}`
+    //   }),
+    //   body: JSON.stringify({
+    //     cancelUrl: baseURL,
+    //     baseUrl: baseURL,
+    //     asso: association.id,
+    //   })
+    // }).then(res => res.json())
+    //   .then(res => {
 
-        if (res.yearUrl) {
-          router.push(res.yearUrl)
-        }
-      })
-      .catch((err) => {
-        console.error("Error from server:", err);
-        Toast.error('Erreur, veuillez réessayer plus tard');
-      })
+    //     if (res.yearUrl) {
+    //       router.push(res.yearUrl)
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.error("Error from server:", err);
+    //     Toast.error('Erreur, veuillez réessayer plus tard');
+    //   })
 
   }
 
@@ -237,33 +251,36 @@ export default function Page(props) {
                 <form onSubmit={form.onSubmit((values) => submitHandler(values))}>
                   <Title align='center' order={6}>Pace'Sport</Title>
                   {/* <Select
-                                label={
-                                    <Flex className='tw-mb-2'>
-                                        <Center>
-                                            <Badge className='tw-bg-[#d61515] tw-px-2 tw-max-h-4 tw-max-w-4 tw-rounded-full'></Badge>
-                                        </Center>
-                                        <Text ml={'md'} fz={'lg'}>14.99€/An</Text>
-                                        </Flex>
-                                }
-                                placeholder="Association"
-                                rightSection={<AiOutlineSync size={14} />}
-                                rightSectionWidth={30}
-                                styles={{ rightSection: { pointerEvents: 'none' } }}
-                                data={associationsSelect}
-                                value={selectedAssociation ? selectedAssociation.label : null}
-                                onChange={selectedAssociationHandler}/> */}
+                      label={
+                          <Flex className='tw-mb-2'>
+                              <Center>
+                                  <Badge className='tw-bg-[#d61515] tw-px-2 tw-max-h-4 tw-max-w-4 tw-rounded-full'></Badge>
+                              </Center>
+                              <Text ml={'md'} fz={'sm'}>Choisir une association à soutenir - {subscriptionPrice}€/An</Text>
+                              </Flex>
+                      }
+                      placeholder="Association"
+                      rightSection={<AiOutlineSync size={14} />}
+                      rightSectionWidth={30}
+                      styles={{ rightSection: { pointerEvents: 'none' } }}
+                      data={associationsSelect}
+                      value={selectedAssociation ? selectedAssociation.label : null}
+                      onChange={selectedAssociationHandler}/> */}
 
+                  {/* logo association - valide 1 an? */}
                   <Group>
                     <Avatar className="tw-shadow-md" size={'lg'} radius={'xl'} src={`/uploads/${association.avatar?.name}`} />
-                    <Text fz={'md'} weight={600}>{association.name}</Text>
-                    <Text fz={'md'} weight={600}> Valide pendant 1 an</Text>
+                    <Flex direction={'column'} justify={'center'}>
+                      <Text fz={'md'} weight={600}>{association.name}</Text>
+                      <Text fz={'sm'} weight={400} className='tw-text-gray-600'> Valide pendant 1 an</Text>
+                    </Flex>
                   </Group>
                   <Center>
-                    {/* <Button type='submit' color='red' variant='filled' mt={"md"} radius={'lg'} px={'xl'} size='sm'
+                    <Button type='submit' color='red' variant='filled' mt={"md"} radius={'lg'} px={'xl'} size='sm'
                       className='tw-bg-[#d61515] tw-shadow-sm'
                       disabled={loading}>
-                      Souscrire</Button> */}
-                    <Text fz={'md'} weight={600}>Pace’sport arrive bientôt !</Text>
+                      Souscrire</Button>
+                    {/* <Text fz={'md'} weight={600}>Pace’sport arrive bientôt !</Text> */}
                   </Center>
                 </form>
               </Container>
@@ -293,6 +310,24 @@ export default function Page(props) {
                 window.history.back();
             });
         `}} />
+
+        <Modal
+              opened={opened}
+              onClose={closeModalHandler}
+              title={<Title order={5}>Adhérer à Pace'sport</Title>}
+          >
+              <Group grow>
+                  <Text fw={600} fz={'sm'}>Abonnement</Text>
+                  <Text>1 An</Text>
+              </Group>
+              <Group grow>
+                  <Text fw={600} fz={'sm'}>Prix</Text>
+                  <Text>{subscriptionPrice} €</Text>
+              </Group>
+              <Center mt={'lg'}>
+                  <iframe  className="tw-w-full" height={600} src={iframeUrl}></iframe>
+              </Center>
+          </Modal>
     </>
   )
 }
@@ -334,6 +369,16 @@ export async function getServerSideProps(context) {
   )
   associations = await associations.json();
 
+  let user = await getUser(token)
+  if (user.code == 401) {
+      return {
+          redirect: {
+          permanent: false,
+          destination: "/login"
+          }
+      }
+  }
+
   let offers = await getActiveOffers(token)
   let pacesport = await getPacesportCard(token)
   let associationActiveOffers = await getAssociationActiveOffers(token, id)
@@ -357,7 +402,8 @@ export async function getServerSideProps(context) {
       pacesportCard: JSON.parse(pacesport.data),
       associationActiveOffers: JSON.parse(associationActiveOffers.data),
       association: JSON.parse(association.data),
-      id: id
+      id: id,
+      user: JSON.parse(user.data)
     }
   }
 }
