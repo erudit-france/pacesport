@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import { getCookie } from "cookies-next";
 import { serialize } from "object-to-formdata";
+import { getUser } from "@/domain/repository/UserRepository";
 const PriceRow = ({ credits, price, oldPrice, click }) => {
     return (
         <Flex className="tw-py-2">
@@ -81,40 +82,13 @@ export default function Page(props) {
         form.reset();
         setLoading(false)
     }
-    // const getCreditUrl = (credit) => {
-    //     let token = getCookie('token');
-
-    //     fetch(`/api/bnpparibas/credit`, {
-    //         method: 'POST',
-    //         headers: new Headers({
-    //             'JWTAuthorization': `Bearer ${token}`
-    //         }),
-    //         body: JSON.stringify({
-    //             credit: credit
-    //         })
-    //     })
-    //         .then(res => res.json())
-    //         .then(data => {
-    //             // Injecter le formulaire dans le DOM
-    //             const formDiv = document.createElement('div');
-    //             formDiv.innerHTML = data.formHtml;
-    //             document.body.appendChild(formDiv);
-
-    //             // Le script dans le formulaire soumettra le formulaire automatiquement
-    //         })
-    //         .catch(err => {
-    //             console.error("Error from server:", err);
-    //             Toast.error('Erreur, veuillez réessayer plus tard');
-    //         });
-    // };
-
 
 
     const getCreditUrl = (credit, price) => {
         setCredit(credit)
         setPrice(price)
         setOpened(true)
-        setIframeUrl(`http://localhost:3000/api/payment/generate?orderType=credit&credit=${credit}&bearer=${props.token}`)
+        setIframeUrl(`http://localhost:3000/api/payment/generate?orderType=credit&credit=${credit}&accountType=sponsor&ref=${props.user.id}`)
         return
     }
 
@@ -200,6 +174,18 @@ export async function getServerSideProps(context) {
     )
     let creditData = await creditRes.json()
 
+    
+    let user = await getUser(token)
+    if (user.code == 401) {
+        return {
+            redirect: {
+            permanent: false,
+            destination: "/login"
+            }
+        }
+    }
+    user = JSON.parse(user.data)
+
     console.log('creditData', creditData)
     // // Pass data to the page via props
     return {
@@ -207,7 +193,7 @@ export async function getServerSideProps(context) {
             credit: JSON.parse(creditData.data.credit),
             cancelUrl: `${process.env.NEXT_URL}${context.resolvedUrl}`,
             baseUrl: `${process.env.NEXT_URL}`,
-            token: token
+            user: user
         }
     }
 }
