@@ -88,7 +88,7 @@ export default function Page(props) {
         setCredit(credit)
         setPrice(price)
         setOpened(true)
-        setIframeUrl(`http://localhost:3000/api/payment/generate?orderType=credit&credit=${credit}&accountType=sponsor&ref=${props.user.id}&baseurl=${props.baseUrl}`)
+        setIframeUrl(`${props.baseUrl}/api/payment/generate?orderType=credit&credit=${credit}&accountType=sponsor&ref=${props.user.id}&baseurl=${props.baseUrl}`)
         return
     }
 
