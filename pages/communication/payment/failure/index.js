@@ -16,14 +16,6 @@ export default function Page(props) {
     return (
         <>
             <div className="tw-container tw-mx-auto tw-px-2">
-                <Box my={'sm'}>
-                    <Flex justify={'space-between'}>
-                        <Button variant="filled" id="goBackButton" size="sm"
-                            className="tw-bg-gray-50 tw-text-black tw-ml-5 tw-border-[1px] tw-border-gray-900
-                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full"
-                            radius={'xl'}><BsArrowLeft /></Button>
-                    </Flex>
-                </Box>
                 <Stack>
                     <Center>
                         <FiXCircle  className="tw-text-red-700" size={56}/>
