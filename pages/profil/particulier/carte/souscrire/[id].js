@@ -70,7 +70,7 @@ export default function Page(props) {
 
     const baseURL = window.location.href;
     setOpened(true)
-    setIframeUrl(`${props.baseUrl}/api/payment/generate?orderType=subscription&association=${props.id}&ref=${props.user.id}&baseurl=${props.baseUrl}`)
+    setIframeUrl(`/api/payment/generate?orderType=subscription&association=${props.id}&ref=${props.user.id}&baseurl=${props.baseUrl}`)
     return
 
     // fetch(`/api/stripe/subscriptionLinks`, {
