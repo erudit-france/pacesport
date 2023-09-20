@@ -192,7 +192,7 @@ export async function getServerSideProps(context) {
         props: {
             credit: JSON.parse(creditData.data.credit),
             cancelUrl: `${process.env.NEXT_URL}${context.resolvedUrl}`,
-            baseUrl: `${process.env.NEXT_URL}`,
+            baseUrl: `${process.env.NEXT_URL}`.replace('http://','https://'),
             user: user
         }
     }

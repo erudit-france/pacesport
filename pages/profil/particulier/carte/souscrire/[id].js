@@ -403,7 +403,8 @@ export async function getServerSideProps(context) {
       associationActiveOffers: JSON.parse(associationActiveOffers.data),
       association: JSON.parse(association.data),
       id: id,
-      user: JSON.parse(user.data)
+      user: JSON.parse(user.data),
+      baseUrl: `${process.env.NEXT_URL}`.replace('http://','https://'),
     }
   }
 }
