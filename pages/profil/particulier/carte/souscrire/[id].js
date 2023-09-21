@@ -276,11 +276,11 @@ export default function Page(props) {
                     </Flex>
                   </Group>
                   <Center>
-                    <Button type='submit' color='red' variant='filled' mt={"md"} radius={'lg'} px={'xl'} size='sm'
+                    {/* <Button type='submit' color='red' variant='filled' mt={"md"} radius={'lg'} px={'xl'} size='sm'
                       className='tw-bg-[#d61515] tw-shadow-sm'
                       disabled={loading}>
-                      Souscrire</Button>
-                    {/* <Text fz={'md'} weight={600}>Pace’sport arrive bientôt !</Text> */}
+                      Souscrire</Button> */}
+                    <Text fz={'md'} weight={600}>Pace’sport arrive bientôt !</Text>
                   </Center>
                 </form>
               </Container>
