@@ -17,6 +17,7 @@ export default function Document() {
           <link rel="preload" href="/styles/Menu.module.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
           <link rel="preload" href="/styles/SearchInput.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
           {/* <noscript><link rel="stylesheet" href="votre-fichier.css" /></noscript> */}
+          <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
         </Head>
         <body className="fixed top-0 left-0 w-full h-full overflow-y-scroll overflow-x-hidden touch-scroll">
           <Main />
