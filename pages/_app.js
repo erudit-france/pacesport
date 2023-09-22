@@ -8,7 +8,7 @@ import '@/styles/SearchInput.css'
 import { MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import Context, { AppContext } from '../context/AppContext';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Router } from 'next/router';
 import { getCookie } from 'cookies-next';
 import axios from 'axios';
@@ -17,19 +17,6 @@ import lightTheme from '../styles/theme/lightTheme';
 
 export default function App({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page)
-
-  useEffect(() => {
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    OneSignalDeferred.push(function(OneSignal) {
-      OneSignal.init({
-        appId: "123a9223-94ef-4754-aced-7567857fa73f",
-        safari_web_id: "web.onesignal.auto.5dcf04a7-d9b5-4793-8717-b5ec1870e3bb",
-        notifyButton: {
-          enable: true,
-        },
-      });
-    });
-  }, []); 
 
   return (
     <>
