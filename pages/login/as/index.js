@@ -92,7 +92,6 @@ export default function Page(props) {
     const overlayClass = visible ? 'fade-enter-active' : 'fade-exit-active';
     const user = loggedUser.user
     const isAdmin = loggedUser?.roles.includes('ROLE_ADMIN') ? true : false
-    console.log(loggedUser)
     const usernameParticulier = loggedUser?.prenom ? loggedUser?.prenom + " " + loggedUser?.nom : 'Particulier'
     const associationLink = status.association == true
         ? '/profil/association'
