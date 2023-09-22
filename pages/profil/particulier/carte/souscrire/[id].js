@@ -21,6 +21,7 @@ import { getById } from '@/domain/repository/AssociationRepository'
 import { serialize } from 'object-to-formdata'
 import { getActiveSubscription } from '@/domain/repository/OrderRepository'
 import { getUser } from '@/domain/repository/UserRepository';
+import OfferDescriptionCard from '@/components/OfferDescriptionCard';
 
 
 export default function Page(props) {
@@ -148,24 +149,6 @@ export default function Page(props) {
     </Center>
   </>
 
-  const OfferRow = ({ offer }) => (
-    <Card className='tw-flex tw-bg-gray-200 tw-mb-2' radius={'lg'}>
-      <Center>
-        <Avatar className='tw-shadow-md' radius={'lg'} src={`/uploads/${offer.enseigne?.avatar?.name}`} />
-      </Center>
-      <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
-        <Flex justify={'space-between'}>
-          <Text weight={550}>{offer.enseigne.name} <SponsoringOfferTypeBadge offer={offer} /></Text>
-          <Text className='tw-flex tw-font-light' fz={'sm'}>
-            <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer.enseigne?.ville}</Text>
-        </Flex>
-        <Text color=''>{offer.titre}</Text>
-        <Text color='dimmed'>{offer.description}</Text>
-        <Text className='tw-relative tw-bottom-1 tw-mr-1 tw-font-light' fz={'sm'}>{'du ' + moment(offer.createdAt).utc().format('DD/MM/YYYY') + ' au ' + moment(offer.createdAt).add(1, 'years').utc().format('DD/MM/YYYY')}</Text>
-      </Flex>
-    </Card>
-  )
-
   const requestLocation = async () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(async (position) => {
@@ -208,16 +191,10 @@ export default function Page(props) {
   );
 
   const offersList = <>
-    <Transition mounted={setShowOffers} transition="slide-down" duration={400} timingFunction="ease">
-      {(styles) =>
-        <section style={styles} className='tw-mt-1'>
-          {filteredOffers.map((offer) => (
-            <OfferRow key={offer.title} offer={offer} />
-          ))}
-        </section>}
-    </Transition>
+      {filteredOffers.map((offer) => (
+        <OfferDescriptionCard key={offer.title} offer={offer} />
+      ))}
   </>
-  console.log(filteredOffers)
   filteredOffersOld = filteredOffers
   return (
     <>
