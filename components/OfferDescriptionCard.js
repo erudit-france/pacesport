@@ -23,7 +23,7 @@ export default function OfferDescriptionCard({offer}) {
                 styles={
                     {'control': { float: 'right', fontSize: '14px'}}
                 }
-                maxHeight={40} showLabel="Plus ▾" hideLabel="Moins ▴">
+                maxHeight={45} showLabel="Plus ▾" hideLabel="Moins ▴">
                 <Text color='dimmed'>{offer.description}</Text>
             </Spoiler>
             <Text className='tw-relative tw-bottom-1 tw-mr-1 tw-font-light tw-text-end' fz={'xs'}>{'du ' + moment(offer.createdAt).utc().format('DD/MM/YYYY') + ' au ' + moment(offer.createdAt).add(1, 'years').utc().format('DD/MM/YYYY')}</Text>
