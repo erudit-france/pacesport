@@ -42,7 +42,7 @@ const LinkButton = ({ text, href, lock, className, onClick }) => {
 
 const Logo = () => (
     <>
-        <Box align='center' className="tw-relative -tw-top-16 tw-h-[70px]">
+        <Box align='center' className="tw-relative -tw-top-16 tw-h-[60px]">
             <Link href='/login' className="tw-h-[70px]">
                 <Image src={'/logo.png'} width={86} alt="Logo Pace'sport"
                     className='tw-rounded-full shadow-sm tw-bg-white tw-p-2 tw-z-20' />
@@ -92,7 +92,6 @@ export default function Page(props) {
     const overlayClass = visible ? 'fade-enter-active' : 'fade-exit-active';
     const user = loggedUser.user
     const isAdmin = loggedUser?.roles.includes('ROLE_ADMIN') ? true : false
-    console.log(loggedUser)
     const usernameParticulier = loggedUser?.prenom ? loggedUser?.prenom + " " + loggedUser?.nom : 'Particulier'
     const associationLink = status.association == true
         ? '/profil/association'
@@ -106,9 +105,9 @@ export default function Page(props) {
             <header>
                 <Space my={'xl'} pt={'xl'} h={'xl'} />
             </header>
-            <Box className={"tw-rounded-3xl " + overlayClass} pt={'xl'} m={'lg'} bg={'dark'}>
+            <Box className={"tw-rounded-3xl " + overlayClass} pt={'lg'} mx={'md'} bg={'dark'}>
                 <Logo />
-                <Title order={6} align="center" mb={"lg"} color="white" style={{ fontSize: '24px' }}>
+                <Title order={6} align="center" mb={"md"} color="white" style={{ fontSize: '22px' }}>
                     {'Bonjour ' + loggedUser?.prenom}</Title>
 
                 <Center>
@@ -116,8 +115,8 @@ export default function Page(props) {
                         <a href={pacesportSubscription?.association?.id ? '/profil/particulier/carte' : '/'} >
                             <Image
                                 className="tw-rounded-x3 tw-top-[140px] box222 glowing tw-w-full animate-pulse"
-                                width={300}
-                                height={192}
+                                width={250}
+                                height={163}
                                 src={"/Design_carte_connexion-removebg-preview.png"}
                                 alt="logo sim"
                             /></a><br/>
@@ -127,8 +126,7 @@ export default function Page(props) {
                         <LinkButton className={'tw-px-16 tw-mb-0'} text={<><RiAdminLine className="tw-mr-1" />Panel admin</>} href='/admin' />
                     </Flex>}
                             <Flex direction='column' my='xs' py={'sm'} gap="xs" className="tw-rounded-xl tw-top-[340px]">
-
-                                <Title order={6} align="center" style={{ fontSize: '20px' }} color="white">Compte pro</Title>
+                                <Title order={6} align="center" style={{ fontSize: '18px' }} color="white">Compte pro</Title>
                                 <LinkButton className={''} text='Sponsor/Partenaire' href={sponsorLink} lock={!status.enseigne} />
                                 <LinkButton className={' tw-mb-2'} text='Association' href={associationLink} lock={!status.association} />
                             </Flex>
@@ -136,7 +134,7 @@ export default function Page(props) {
 
                         <Button
                             onClick={logout}
-                            className={`tw-my-5
+                            className={`tw-mb-5 
                                         tw-w-full tw-bg-[#d61515] tw-text-white hover:tw-bg-[#d61515] hover:tw-text-gray-100'}
                                         `}
                             radius='lg'>Déconnexion</Button>

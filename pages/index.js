@@ -83,7 +83,6 @@ export default function Page(props) {
       navigator.geolocation.getCurrentPosition(async (position) => {
         const lat = position.coords.latitude;
         const lon = position.coords.longitude;
-        console.log("test")
         // Ici, vous devrez faire appel à une API ou un service pour obtenir le code postal 
         // basé sur les coordonnées. Par exemple, en utilisant une API comme OpenStreetMap, Mapbox, etc.
         const codePostal = await fetchYourGeocodingAPI(lat, lon);
@@ -115,8 +114,6 @@ export default function Page(props) {
     setSearch('')
     setFilteredAssociations(props.associations)
   }
-  console.log(filteredAssociations)
-  console.log(props.offers)
 
   const resultAssociations = filteredAssociations.filter((filteredAssoc) => {
     // Vérifier si l'association a au moins une offre qui correspond aux conditions

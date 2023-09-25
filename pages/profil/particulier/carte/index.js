@@ -29,7 +29,6 @@ export default function Page(props) {
   const [showOffers, setShowOffers] = useState(false)
   const [isFlipped, setIsFlipped] = useState(false)
   const pacesportCardSrc = props.pacesportCard?.image?.name ? `/uploads/${props.pacesportCard?.image?.name}` : '/logo.png'
-  console.log(props)
   const standaloneCard = <>
     <Center>
       <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
@@ -57,8 +56,8 @@ export default function Page(props) {
           <Box className='tw-relative tw-h-full tw-rounded-lg' py={'lg'} my={'md'}>
             <Flex className="tw-h-full" direction={'column'} justify={'space-between'}>
               <Text px={'lg'} className='tw-bg-gray-600/60 text-white tw-py-1'>{props.user?.nom}{' '}{props.user?.prenom}</Text>
-              <Text className="tw-text-gray-500" align="left" px={'lg'} mb={"md"} fz={'sm'}>Validé le {new Date().toLocaleString('fr-FR')}</Text>
-              <Text className="tw-text-gray-500" align="left" px={'lg'} mb={"md"} fz={'sm'}>Jusqu'au {moment(props.card.endDate).format('DD/MM/YYYY')}</Text>
+              <Text className="tw-text-gray-500" align="left" px={'lg'} mb={"md"} fz={'sm'}>Validé le {moment(props.pacesportSubscription.createdAt).format('DD/MM/YYYY')}</Text>
+              <Text className="tw-text-gray-500" align="left" px={'lg'} mb={"md"} fz={'sm'}>Jusqu'au {moment(props.pacesportSubscription.createdAt).add(1, "year").format('DD/MM/YYYY')}</Text>
             </Flex>
           </Box>
         </Box>
@@ -99,7 +98,6 @@ export default function Page(props) {
       offer.type === "Nationale" ||
       (offer.type === "Locale" && offer.associations.some(ass => ass.id == props.id))
   );
-  console.log(props)
   return (
     <>
       <Head>

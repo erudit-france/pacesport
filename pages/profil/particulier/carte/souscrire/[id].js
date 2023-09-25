@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import { Avatar, Badge, Box, Button, Card, Center, Container, Flex, Grid, Group, Image, Loader, Modal, Paper, Select, Space, Text, Title, Transition } from '@mantine/core'
+import { Avatar, Badge, Box, Button, Card, Center, Container, Flex, Grid, Group, Image, Loader, Modal, Paper, Select, Space, Stack, Text, Title, Transition } from '@mantine/core'
 import Layout from '../../../../layout'
 import { BsArrowLeft } from "react-icons/bs";
 import { useEffect, useState } from 'react'
@@ -20,6 +20,8 @@ import { getAssociationActiveOffers } from '@/domain/repository/SponsoringOfferR
 import { getById } from '@/domain/repository/AssociationRepository'
 import { serialize } from 'object-to-formdata'
 import { getActiveSubscription } from '@/domain/repository/OrderRepository'
+import { getUser } from '@/domain/repository/UserRepository';
+import OfferDescriptionCard from '@/components/OfferDescriptionCard';
 
 
 export default function Page(props) {
@@ -31,6 +33,11 @@ export default function Page(props) {
   const [fetching, setFetching] = useState(false)
   const [selectedAssociation, setSelectedAssociation] = useState(null)
   const [association, setAssociation] = useState(props.association)
+  const subscriptionPrice = 14.99
+  const [iframeUrl, setIframeUrl] = useState(null)
+  const [opened, setOpened] = useState(false)
+
+
   const router = useRouter()
   const refresh = () => { router.reload(window.location.pathname) }
   const selectedAssociationHandler = (association) => {
@@ -55,31 +62,39 @@ export default function Page(props) {
     },
   });
 
+  const closeModalHandler = () => {
+      setOpened(false)
+      setIframeUrl(null)
+  }
+
   const submitHandler = (values) => {
 
     const baseURL = window.location.href;
+    setOpened(true)
+    setIframeUrl(`/api/payment/generate?orderType=subscription&association=${props.id}&ref=${props.user.id}&baseurl=${props.baseUrl}`)
+    return
 
-    fetch(`/api/stripe/subscriptionLinks`, {
-      method: 'POST',
-      headers: new Headers({
-        'JWTAuthorization': `Bearer ${getCookie('token')}`
-      }),
-      body: JSON.stringify({
-        cancelUrl: baseURL,
-        baseUrl: baseURL,
-        asso: association.id,
-      })
-    }).then(res => res.json())
-      .then(res => {
+    // fetch(`/api/stripe/subscriptionLinks`, {
+    //   method: 'POST',
+    //   headers: new Headers({
+    //     'JWTAuthorization': `Bearer ${getCookie('token')}`
+    //   }),
+    //   body: JSON.stringify({
+    //     cancelUrl: baseURL,
+    //     baseUrl: baseURL,
+    //     asso: association.id,
+    //   })
+    // }).then(res => res.json())
+    //   .then(res => {
 
-        if (res.yearUrl) {
-          router.push(res.yearUrl)
-        }
-      })
-      .catch((err) => {
-        console.error("Error from server:", err);
-        Toast.error('Erreur, veuillez réessayer plus tard');
-      })
+    //     if (res.yearUrl) {
+    //       router.push(res.yearUrl)
+    //     }
+    //   })
+    //   .catch((err) => {
+    //     console.error("Error from server:", err);
+    //     Toast.error('Erreur, veuillez réessayer plus tard');
+    //   })
 
   }
 
@@ -134,24 +149,6 @@ export default function Page(props) {
     </Center>
   </>
 
-  const OfferRow = ({ offer }) => (
-    <Card className='tw-flex tw-bg-gray-200 tw-mb-2' radius={'lg'}>
-      <Center>
-        <Avatar className='tw-shadow-md' radius={'lg'} src={`/uploads/${offer.enseigne?.avatar?.name}`} />
-      </Center>
-      <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
-        <Flex justify={'space-between'}>
-          <Text weight={550}>{offer.enseigne.name} <SponsoringOfferTypeBadge offer={offer} /></Text>
-          <Text className='tw-flex tw-font-light' fz={'sm'}>
-            <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer.enseigne?.ville}</Text>
-        </Flex>
-        <Text color=''>{offer.titre}</Text>
-        <Text color='dimmed'>{offer.description}</Text>
-        <Text className='tw-relative tw-bottom-1 tw-mr-1 tw-font-light' fz={'sm'}>{'du ' + moment(offer.createdAt).utc().format('DD/MM/YYYY') + ' au ' + moment(offer.createdAt).add(1, 'years').utc().format('DD/MM/YYYY')}</Text>
-      </Flex>
-    </Card>
-  )
-
   const requestLocation = async () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(async (position) => {
@@ -194,16 +191,10 @@ export default function Page(props) {
   );
 
   const offersList = <>
-    <Transition mounted={setShowOffers} transition="slide-down" duration={400} timingFunction="ease">
-      {(styles) =>
-        <section style={styles} className='tw-mt-1'>
-          {filteredOffers.map((offer) => (
-            <OfferRow key={offer.title} offer={offer} />
-          ))}
-        </section>}
-    </Transition>
+      {filteredOffers.map((offer) => (
+        <OfferDescriptionCard key={offer.title} offer={offer} />
+      ))}
   </>
-  console.log(filteredOffers)
   filteredOffersOld = filteredOffers
   return (
     <>
@@ -237,26 +228,29 @@ export default function Page(props) {
                 <form onSubmit={form.onSubmit((values) => submitHandler(values))}>
                   <Title align='center' order={6}>Pace'Sport</Title>
                   {/* <Select
-                                label={
-                                    <Flex className='tw-mb-2'>
-                                        <Center>
-                                            <Badge className='tw-bg-[#d61515] tw-px-2 tw-max-h-4 tw-max-w-4 tw-rounded-full'></Badge>
-                                        </Center>
-                                        <Text ml={'md'} fz={'lg'}>14.99€/An</Text>
-                                        </Flex>
-                                }
-                                placeholder="Association"
-                                rightSection={<AiOutlineSync size={14} />}
-                                rightSectionWidth={30}
-                                styles={{ rightSection: { pointerEvents: 'none' } }}
-                                data={associationsSelect}
-                                value={selectedAssociation ? selectedAssociation.label : null}
-                                onChange={selectedAssociationHandler}/> */}
+                      label={
+                          <Flex className='tw-mb-2'>
+                              <Center>
+                                  <Badge className='tw-bg-[#d61515] tw-px-2 tw-max-h-4 tw-max-w-4 tw-rounded-full'></Badge>
+                              </Center>
+                              <Text ml={'md'} fz={'sm'}>Choisir une association à soutenir - {subscriptionPrice}€/An</Text>
+                              </Flex>
+                      }
+                      placeholder="Association"
+                      rightSection={<AiOutlineSync size={14} />}
+                      rightSectionWidth={30}
+                      styles={{ rightSection: { pointerEvents: 'none' } }}
+                      data={associationsSelect}
+                      value={selectedAssociation ? selectedAssociation.label : null}
+                      onChange={selectedAssociationHandler}/> */}
 
+                  {/* logo association - valide 1 an? */}
                   <Group>
                     <Avatar className="tw-shadow-md" size={'lg'} radius={'xl'} src={`/uploads/${association.avatar?.name}`} />
-                    <Text fz={'md'} weight={600}>{association.name}</Text>
-                    <Text fz={'md'} weight={600}> Valide pendant 1 an</Text>
+                    <Flex direction={'column'} justify={'center'}>
+                      <Text fz={'md'} weight={600}>{association.name}</Text>
+                      <Text fz={'sm'} weight={400} className='tw-text-gray-600'> Valide pendant 1 an</Text>
+                    </Flex>
                   </Group>
                   <Center>
                     {/* <Button type='submit' color='red' variant='filled' mt={"md"} radius={'lg'} px={'xl'} size='sm'
@@ -293,6 +287,24 @@ export default function Page(props) {
                 window.history.back();
             });
         `}} />
+
+        <Modal
+              opened={opened}
+              onClose={closeModalHandler}
+              title={<Title order={5}>Adhérer à Pace'sport</Title>}
+          >
+              <Group grow>
+                  <Text fw={600} fz={'sm'}>Abonnement</Text>
+                  <Text>1 An</Text>
+              </Group>
+              <Group grow>
+                  <Text fw={600} fz={'sm'}>Prix</Text>
+                  <Text>{subscriptionPrice} €</Text>
+              </Group>
+              <Center mt={'lg'}>
+                  <iframe  className="tw-w-full" height={600} src={iframeUrl}></iframe>
+              </Center>
+          </Modal>
     </>
   )
 }
@@ -334,6 +346,16 @@ export async function getServerSideProps(context) {
   )
   associations = await associations.json();
 
+  let user = await getUser(token)
+  if (user.code == 401) {
+      return {
+          redirect: {
+          permanent: false,
+          destination: "/login"
+          }
+      }
+  }
+
   let offers = await getActiveOffers(token)
   let pacesport = await getPacesportCard(token)
   let associationActiveOffers = await getAssociationActiveOffers(token, id)
@@ -357,7 +379,9 @@ export async function getServerSideProps(context) {
       pacesportCard: JSON.parse(pacesport.data),
       associationActiveOffers: JSON.parse(associationActiveOffers.data),
       association: JSON.parse(association.data),
-      id: id
+      id: id,
+      user: JSON.parse(user.data),
+      baseUrl: `${process.env.NEXT_URL}`.replace('http://','https://'),
     }
   }
 }
