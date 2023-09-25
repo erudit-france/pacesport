@@ -45,18 +45,27 @@ export default function Page({ user, users, assolie, query, activeOffers2, paces
         );
 
         ContactCards = filteredOffers.map((offer) => {
-            return (
-                <Flex key={offer.enseigne.id} p={'sm'} onClick={() => modalHandler(true, offer.enseigne)}
-                    className="hover:tw-cursor-pointer hover:tw-bg-gray-100/50 hover:tw-shadow-inner tw-rounded-lg">
-                    <Avatar src={`uploads/${offer.enseigne.avatar?.name}`} radius={'xl'} size={'lg'} className="tw-shadow-lg" />
-                    <Center>
-                        <Text ml={'md'} fz={'lg'} weight={600} color="black" align="center">{offer.enseigne.name}</Text>
-                    </Center>
-                </Flex>
-            );
+            let containsApple = false;
+
+            offer.associations.forEach(association => {
+                if (association.id === user.association.id) {
+                    containsApple = true;
+                }
+            });
+            if (offer?.id && containsApple) {
+                return (
+                    <Flex key={offer.enseigne.id} p={'sm'} onClick={() => modalHandler(true, offer.enseigne)}
+                        className="hover:tw-cursor-pointer hover:tw-bg-gray-100/50 hover:tw-shadow-inner tw-rounded-lg">
+                        <Avatar src={`uploads/${offer.enseigne.avatar?.name}`} radius={'xl'} size={'lg'} className="tw-shadow-lg" />
+                        <Center>
+                            <Text ml={'md'} fz={'lg'} weight={600} color="black" align="center">{offer.enseigne.name}</Text>
+                        </Center>
+                    </Flex>
+                );
+            }
         })
     }
-    else if (router.query.pos && router.query.pos.includes("sponsor") || role == 'sponsor/partenaire'){
+    else if (router.query.pos && router.query.pos.includes("sponsor") || role == 'sponsor/partenaire') {
         ContactCards = filteredOffers.map((offer) => {
             if (offer?.id) {
                 return (
