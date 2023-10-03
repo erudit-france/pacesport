@@ -181,9 +181,9 @@ export default function Page() {
       </Head>
       <Link href="/login/as">
         <Button variant="filled" size="sm"
-                className="tw-bg-gray-50 tw-text-black tw-ml-5 tw-border-[1px] tw-border-gray-900
-                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
-                radius={'xl'}><BsArrowLeft /></Button></Link>
+          className="tw-bg-gray-50 tw-text-black tw-ml-5 tw-border-[1px] tw-border-gray-900
+                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full"
+          radius={'xl'}><BsArrowLeft /></Button></Link>
       <form className="tw-relative tw-top-5" onSubmit={form.onSubmit((values) => submitHandler(values))}>
         <Text align="center" className="tw-font-semibold tw-text-lg tw-text-white">Formulaire Association</Text>
         <Paper shadow="xl" p="xs" radius="lg" className="tw-bg-gray-800 tw-m-3 tw-pb-10 tw-top-5">
@@ -209,7 +209,7 @@ export default function Page() {
             {...form.getInputProps('email')} />
           <TextInput mt="sm" variant="filled" description="Téléphone de l'association" placeholder="Téléphone de l'association" radius="lg" size="sm" withAsterisk
             {...form.getInputProps('phone')} />
-          <TextInput mt="sm" variant="filled" description="Description de l'association" placeholder="Description de l'association" radius="lg" size="sm" withAsterisk
+          <TextInput mt="sm" variant="filled" description="Description de l'association" placeholder="Description/bio de l'association" radius="lg" size="sm" withAsterisk
             {...form.getInputProps('description')} />
           <Flex className="tw-border-[1px] tw-border-gray-800 tw-bg-gray-900 tw-rounded-md tw-my-2 tw-py-2" direction={"column"}>
             <Text align="center" className="tw-text-gray-300 tw-text-sm">Statut de l'association</Text>

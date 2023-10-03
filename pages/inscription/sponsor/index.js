@@ -242,8 +242,8 @@ export default function Page(props) {
                     <TextInput mt="sm" variant="filled" description="Téléphone de l'enseigne" placeholder="Téléphone de l'enseigne" radius="lg" size="sm" withAsterisk
                         {...form.getInputProps('phone')} />
                     <Textarea mt="sm" variant="filled"
-                        description={isPublic ? 'Description de la collectivité' : 'Description du partenaire'}
-                        placeholder={isPublic ? 'Description de la collectivité' : 'Description du partenaire'}
+                        description={isPublic ? 'Description de la collectivité' : 'Description/bio de votre activité'}
+                        placeholder={isPublic ? 'Description de la collectivité' : 'Description/bio de votre activité'}
                         radius="lg" size="sm" withAsterisk
                         {...form.getInputProps('description')} />
                 </Paper>
