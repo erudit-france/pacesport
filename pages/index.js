@@ -45,6 +45,7 @@ export default function Page(props) {
   const [search, setSearch] = useState('')
   const [filteredAssociations, setFilteredAssociations] = useState(props.associations)
   const [debouncedSearch, cancel] = useDebouncedValue(search, 300)
+  const [isCssLoaded, setIsCssLoaded] = useState(false);  // Ajoutez cette ligne
 
   useEffect(() => {
     if (debouncedSearch.match(/^\d+$/)) { // Si debouncedSearch est un code postal
@@ -132,10 +133,10 @@ export default function Page(props) {
       );
     });
   });
-  
-  
 
-  const associations = resultAssociations.map((card) => { 
+
+
+  const associations = resultAssociations.map((card) => {
     return (
       <Grid.Col key={String(card.id)} span={6} xs={6} xl={3}>
         <AssociationCarte organisation={card} href={`/profil/particulier/carte/souscrire/${card.id}`} />
@@ -151,6 +152,12 @@ export default function Page(props) {
     </div>
   ) : <Grid gutter={18} className="tw-px-4 tw-m-[0px]">{associations}</Grid>;
 
+  const overlayClass = visible ? 'fade-enter-active' : 'fade-exit-active';
+  const mainContentClass = visible ? 'hidden' : 'visible';
+  const timer = setTimeout(() => {
+    setIsCssLoaded(true);
+  }, 1000);
+
   return (
     <>
       <Head>
@@ -160,7 +167,7 @@ export default function Page(props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div className={''} >
+      <div className={`${overlayClass} ${mainContentClass}`} >
         <Center><div className="tw-bg-[#EE2323] tw-w-[25%] tw-pl-[20px] tw-pr-[20px] tw-min-w-fit tw-rounded-full">
           <SectionTitle className='tw-text-white tw-text-xl tw-mb-5 tw-h-3'>Bienvenue sur Pace'Sport</SectionTitle>
         </div></Center>
@@ -226,7 +233,7 @@ export async function getServerSideProps(context) {
         destination: "/login/as"
       }
     }
-    
+
   let possessedCardsRes = await fetch(`${process.env.API_URL}/api/discount-card-user`, {
     headers: new Headers({
       'JWTAuthorization': `Bearer ${token}`,
