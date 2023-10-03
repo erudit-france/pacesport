@@ -27,6 +27,9 @@ export default function OffresTable({ offres, refresh, fetching, editOffer }) {
 
         return <Badge color={color} size="xs">{text}</Badge>
     }
+    const canAcceptOffer = (offer) => {
+        return (offer.validated == null && offer.status == 1) || (offer.association == null && offer.validated == null);
+    };
 
     const acceptOffer = (id) => {
         fetch(`/api/sponsoring-offer-admin-accept`, {
@@ -185,10 +188,15 @@ export default function OffresTable({ offres, refresh, fetching, editOffer }) {
                         <ActionIcon variant="light" color="red"
                             size={'lg'}
                             onClick={() => declineOffer(element.id)}><ImCross /></ActionIcon>
-                        <ActionIcon variant="light"
+                        <ActionIcon
+                            variant="light"
                             size={'lg'}
                             color="teal"
-                            onClick={() => acceptOffer(element.id)}><BsCheckLg /></ActionIcon>
+                            disabled={!canAcceptOffer(element)}
+                            onClick={() => acceptOffer(element.id)}
+                        >
+                            <BsCheckLg />
+                        </ActionIcon>
                         <ActionIcon variant="light"
                             size={'lg'}
                             color="gray"

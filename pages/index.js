@@ -46,8 +46,10 @@ export default function Page(props) {
   const [filteredAssociations, setFilteredAssociations] = useState(props.associations)
   const [debouncedSearch, cancel] = useDebouncedValue(search, 300)
   const [isCssLoaded, setIsCssLoaded] = useState(false);  // Ajoutez cette ligne
+  const [visible, setVisible] = useState(true);
 
   useEffect(() => {
+    setVisible(true);
     if (debouncedSearch.match(/^\d+$/)) { // Si debouncedSearch est un code postal
       let results = props.associations.filter(o =>
         o.postal && o.validated === true && o.postal.toLowerCase().includes(debouncedSearch.toLowerCase()));
@@ -64,6 +66,10 @@ export default function Page(props) {
         o.name.toLowerCase().includes(debouncedSearch.toLowerCase()) && o.validated === true);
       setFilteredAssociations(results);
     }
+
+    const timer = setTimeout(() => {
+      setVisible(false);
+    }, 2000);
   }, [debouncedSearch, props.associations]);
 
 
