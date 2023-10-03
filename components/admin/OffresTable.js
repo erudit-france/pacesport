@@ -145,7 +145,7 @@ export default function OffresTable({ offres, refresh, fetching, editOffer }) {
                 <td>
                     <Group>
                         <Avatar className="tw-shadow-md" size={'sm'} radius={'xl'} src={`/uploads/${element.enseigne.avatar?.name}`} />
-                        <Text fz={'sm'}>{element.enseigne.description}</Text>
+                        <Text fz={'sm'}>{element.enseigne.name}</Text>
                     </Group>
                 </td>
                 <td>
