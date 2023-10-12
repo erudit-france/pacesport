@@ -12,15 +12,18 @@ import { getPacesportCard } from "@/domain/repository/PacesportRepository";
 import Toast from "@/services/Toast";
 import { useRouter } from "next/router";
 import { getCookie } from "cookies-next";
+import { Switch } from "@mantine/core";
 
-export default function Page(props){
+export default function Page(props) {
     const pacesportCard = props.pacesportCard
     const router = useRouter()
     const [loading, setLoading] = useState(false);
     const refresh = () => { router.reload(window.location.pathname) }
     const [logo, setLogo] = useState(null);
     const [logoFile, setLogoFile] = useState(null);
-    
+    const [isActive, setIsActive] = useState(pacesportCard?.isActif || false);
+
+
     const handleLogo = (file) => {
         const url = URL.createObjectURL(file)
         setLogo(url)
@@ -32,22 +35,47 @@ export default function Page(props){
         fetch(`/api/discount-card-pacesport/initiate`, {
             method: 'POST',
             headers: new Headers({
-              'JWTAuthorization': `Bearer ${getCookie('token')}`
+                'JWTAuthorization': `Bearer ${getCookie('token')}`
             })
-          })
-        .then(res => res.json())
-        .then(res => {
-            if (res.data) {
-                res.data.code == 1 
-                    ? Toast.success(res.data.message)
-                    : Toast.info(res.data.message)
-                refresh()
-            }
-          })
-        .catch((error) => { 
-            Toast.error('Erreur pendant la création') 
-            setLoading(false)
         })
+            .then(res => res.json())
+            .then(res => {
+                if (res.data) {
+                    res.data.code == 1
+                        ? Toast.success(res.data.message)
+                        : Toast.info(res.data.message)
+                    refresh()
+                }
+            })
+            .catch((error) => {
+                Toast.error('Erreur pendant la création')
+                setLoading(false)
+            })
+    }
+
+    const handleSwitchChange = (event) => {
+        const state = event.target.checked;
+        setIsActive(state);
+        console.log("Sending data:", JSON.stringify({ isActive: state }));
+
+        fetch(`/api/toggle-active-state?XDEBUG_SESSION_START=tom`, {
+            method: 'POST',
+            headers: new Headers({
+                'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: JSON.stringify({ isActive: state })
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.data) {
+                    res.data.code == 1
+                        ? Toast.success(res.data.message)
+                        : Toast.info(res.data.message);
+                }
+            })
+            .catch((error) => {
+                Toast.error('Erreur pendant le changement d\'état');
+            });
     }
 
     const imageUploadHandler = async () => {
@@ -75,26 +103,26 @@ export default function Page(props){
         fetch(`/api/discount-card-pacesport/update`, {
             method: 'POST',
             headers: new Headers({
-              'JWTAuthorization': `Bearer ${getCookie('token')}`
+                'JWTAuthorization': `Bearer ${getCookie('token')}`
             }),
             body: body
-          })
-        .then(res => res.json())
-        .then(res => {
-            if (res.data) {
-                res.data.code == 1 
-                    ? Toast.success(res.data.message)
-                    : Toast.info(res.data.message)
-                refresh()
-            }
-          })
-        .catch((error) => { 
-            Toast.error('Erreur pendant la mise à jour') 
-            setLoading(false)
         })
+            .then(res => res.json())
+            .then(res => {
+                if (res.data) {
+                    res.data.code == 1
+                        ? Toast.success(res.data.message)
+                        : Toast.info(res.data.message)
+                    refresh()
+                }
+            })
+            .catch((error) => {
+                Toast.error('Erreur pendant la mise à jour')
+                setLoading(false)
+            })
     }
 
-    const PacesportCard = ({card}) => {
+    const PacesportCard = ({ card }) => {
         if (!card) return <></>
         let src = '/logo.png'
         if (card.image) {
@@ -111,13 +139,13 @@ export default function Page(props){
                         alt="logo sim"
                     />
                     <Image
-                    className="tw-opacity-95 tw-rounded-xl"
-                    radius={'lg'}
-                    width={200}
-                    height={110}
-                    src={`${src}`}
-                    alt="Photo de campagne"
-                    withPlaceholder
+                        className="tw-opacity-95 tw-rounded-xl"
+                        radius={'lg'}
+                        width={200}
+                        height={110}
+                        src={`${src}`}
+                        alt="Photo de campagne"
+                        withPlaceholder
                     />
                 </Box>
             </Center>
@@ -125,14 +153,14 @@ export default function Page(props){
     }
 
     const createPacesportButton = <Center mt={'md'}>
-        <Button 
+        <Button
             disabled={loading}
             onClick={() => createPacesportCard()}
             className="tw-bg-[#d61515]" variant="filled"
             color="red" size="sm" radius={'lg'}
-            >Créer la carte</Button>
+        >Créer la carte</Button>
     </Center>
-    
+
     return (
         <>
             <ScrollArea className="tw-max-w-[100%]">
@@ -151,10 +179,14 @@ export default function Page(props){
                                 onChange={handleLogo}
                                 ccept="image/png,image/jpeg" />
                             <Group position="right">
-                                <Button onClick={() => imageUploadHandler()} 
+                                <Button onClick={() => imageUploadHandler()}
                                     disabled={loading}
                                     size="xs" mt={'sm'} className="tw-bg-blue-600">Valider</Button>
                             </Group>
+                            <Switch checked={isActive} onChange={handleSwitchChange} label="Activer/Désactiver" />
+
+                            {!pacesportCard && createPacesportButton}
+                            <Space my={'lg'} />
                         </>
                     }
                 </Tabs.Panel>
@@ -170,46 +202,50 @@ export async function getServerSideProps(context) {
     if (!user.roles.includes('ROLE_ADMIN')) {
         return {
             redirect: {
-            permanent: false,
-            destination: "/login/as"
+                permanent: false,
+                destination: "/login/as"
             }
         }
     }
     let avatar = await fetch(`${process.env.API_URL}/api/association/avatar`, {
-      headers: new Headers({
-              'JWTAuthorization': `Bearer ${token}`,
-      })}
+        headers: new Headers({
+            'JWTAuthorization': `Bearer ${token}`,
+        })
+    }
     )
     avatar = await avatar.json();
     if (avatar.code == 401) {
         return {
             redirect: {
-            permanent: false,
-            destination: "/login"
+                permanent: false,
+                destination: "/login"
             }
         }
     }
 
     let backgroundImage = await fetch(`${process.env.API_URL}/api/association/background`, {
         headers: new Headers({
-                'JWTAuthorization': `Bearer ${token}`,
-        })}
-      )
+            'JWTAuthorization': `Bearer ${token}`,
+        })
+    }
+    )
     backgroundImage = await backgroundImage.json();
 
     let pacesport = await getPacesportCard(token)
 
 
     // // Pass data to the page via props
-    return { props: {
-        backgroundImage: backgroundImage.filename,
-        avatar: avatar.filename,
-        pacesportCard: JSON.parse(pacesport.data)
-    }}
-  }
+    return {
+        props: {
+            backgroundImage: backgroundImage.filename,
+            avatar: avatar.filename,
+            pacesportCard: JSON.parse(pacesport.data)
+        }
+    }
+}
 
 Page.getLayout = function getLayout(page) {
     return (
-      <Layout avatar={null}>{page}</Layout>
+        <Layout avatar={null}>{page}</Layout>
     )
-  }
+}

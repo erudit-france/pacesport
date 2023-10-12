@@ -36,7 +36,7 @@ export default function Page(props) {
   const subscriptionPrice = 14.99
   const [iframeUrl, setIframeUrl] = useState(null)
   const [opened, setOpened] = useState(false)
-
+  const [isActive, setIsActive] = useState(props.pacesportCard?.isActif || false);
 
   const router = useRouter()
   const refresh = () => { router.reload(window.location.pathname) }
@@ -63,8 +63,8 @@ export default function Page(props) {
   });
 
   const closeModalHandler = () => {
-      setOpened(false)
-      setIframeUrl(null)
+    setOpened(false)
+    setIframeUrl(null)
   }
 
   const submitHandler = (values) => {
@@ -191,9 +191,9 @@ export default function Page(props) {
   );
 
   const offersList = <>
-      {filteredOffers.map((offer) => (
-        <OfferDescriptionCard key={offer.title} offer={offer} />
-      ))}
+    {filteredOffers.map((offer) => (
+      <OfferDescriptionCard key={offer.title} offer={offer} />
+    ))}
   </>
   filteredOffersOld = filteredOffers
   return (
@@ -227,22 +227,24 @@ export default function Page(props) {
               <Container className='tw-border-2 tw-rounded-md tw-shadow-sm tw-border-[#d61515] tw-p-4'>
                 <form onSubmit={form.onSubmit((values) => submitHandler(values))}>
                   <Title align='center' order={6}>Pace'Sport</Title>
-                  {/* <Select
-                      label={
-                          <Flex className='tw-mb-2'>
-                              <Center>
-                                  <Badge className='tw-bg-[#d61515] tw-px-2 tw-max-h-4 tw-max-w-4 tw-rounded-full'></Badge>
-                              </Center>
-                              <Text ml={'md'} fz={'sm'}>Choisir une association à soutenir - {subscriptionPrice}€/An</Text>
-                              </Flex>
-                      }
-                      placeholder="Association"
-                      rightSection={<AiOutlineSync size={14} />}
-                      rightSectionWidth={30}
-                      styles={{ rightSection: { pointerEvents: 'none' } }}
-                      data={associationsSelect}
-                      value={selectedAssociation ? selectedAssociation.label : null}
-                      onChange={selectedAssociationHandler}/> */}
+                  {
+                    /* <Select
+                        label={
+                            <Flex className='tw-mb-2'>
+                                <Center>
+                                    <Badge className='tw-bg-[#d61515] tw-px-2 tw-max-h-4 tw-max-w-4 tw-rounded-full'></Badge>
+                                </Center>
+                                <Text ml={'md'} fz={'sm'}>Choisir une association à soutenir - {subscriptionPrice}€/An</Text>
+                                </Flex>
+                        }
+                        placeholder="Association"
+                        rightSection={<AiOutlineSync size={14} />}
+                        rightSectionWidth={30}
+                        styles={{ rightSection: { pointerEvents: 'none' } }}
+                        data={associationsSelect}
+                        value={selectedAssociation ? selectedAssociation.label : null}
+                        onChange={selectedAssociationHandler}/> */
+                  }
 
                   {/* logo association - valide 1 an? */}
                   <Group>
@@ -253,11 +255,26 @@ export default function Page(props) {
                     </Flex>
                   </Group>
                   <Center>
-                    {/* <Button type='submit' color='red' variant='filled' mt={"md"} radius={'lg'} px={'xl'} size='sm'
-                      className='tw-bg-[#d61515] tw-shadow-sm'
-                      disabled={loading}>
-                      Souscrire</Button> */}
-                    <Text fz={'md'} weight={600}>Pace’sport arrive bientôt !</Text>
+                    {
+                      isActive
+                        ? (
+                          <Button
+                            type='submit'
+                            color='red'
+                            variant='filled'
+                            mt={"md"}
+                            radius={'lg'}
+                            px={'xl'}
+                            size='sm'
+                            className='tw-bg-[#d61515] tw-shadow-sm'
+                            disabled={loading}
+                          >
+                            Souscrire
+                          </Button>
+                        )
+                        : <Text fz={'md'} weight={600}>Pace’sport arrive bientôt !</Text>
+                    }
+
                   </Center>
                 </form>
               </Container>
@@ -288,23 +305,23 @@ export default function Page(props) {
             });
         `}} />
 
-        <Modal
-              opened={opened}
-              onClose={closeModalHandler}
-              title={<Title order={5}>Adhérer à Pace'sport</Title>}
-          >
-              <Group grow>
-                  <Text fw={600} fz={'sm'}>Abonnement</Text>
-                  <Text>1 An</Text>
-              </Group>
-              <Group grow>
-                  <Text fw={600} fz={'sm'}>Prix</Text>
-                  <Text>{subscriptionPrice} €</Text>
-              </Group>
-              <Center mt={'lg'}>
-                  <iframe  className="tw-w-full" height={600} src={iframeUrl}></iframe>
-              </Center>
-          </Modal>
+      <Modal
+        opened={opened}
+        onClose={closeModalHandler}
+        title={<Title order={5}>Adhérer à Pace'sport</Title>}
+      >
+        <Group grow>
+          <Text fw={600} fz={'sm'}>Abonnement</Text>
+          <Text>1 An</Text>
+        </Group>
+        <Group grow>
+          <Text fw={600} fz={'sm'}>Prix</Text>
+          <Text>{subscriptionPrice} €</Text>
+        </Group>
+        <Center mt={'lg'}>
+          <iframe className="tw-w-full" height={600} src={iframeUrl}></iframe>
+        </Center>
+      </Modal>
     </>
   )
 }
@@ -348,12 +365,12 @@ export async function getServerSideProps(context) {
 
   let user = await getUser(token)
   if (user.code == 401) {
-      return {
-          redirect: {
-          permanent: false,
-          destination: "/login"
-          }
+    return {
+      redirect: {
+        permanent: false,
+        destination: "/login"
       }
+    }
   }
 
   let offers = await getActiveOffers(token)
@@ -381,7 +398,7 @@ export async function getServerSideProps(context) {
       association: JSON.parse(association.data),
       id: id,
       user: JSON.parse(user.data),
-      baseUrl: `${process.env.NEXT_URL}`.replace('http://','https://'),
+      baseUrl: `${process.env.NEXT_URL}`.replace('http://', 'https://'),
     }
   }
 }
