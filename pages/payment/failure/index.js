@@ -13,7 +13,7 @@ export default function Page(props) {
                 </Box>
                 <Stack>
                     <Center>
-                        <FiXCircle  className="tw-text-red-700" size={56}/>
+                        <FiXCircle className="tw-text-red-700" size={56} />
                     </Center>
                     <Title mt={'lg'} align="center" order={3} className="tw-text-gray-800">Erreur transaction</Title>
                     <Title mt={'lg'} align="center" order={6} className="tw-text-gray-500">Veuillez réssayer plus tard</Title>
@@ -31,23 +31,12 @@ export async function getServerSideProps(context) {
     let url = context.req.headers.referer
     let previousUrl = url === undefined ? '/profil/sponsor/' : url
 
-    let user = await getUser(token)
-    if (user.code == 401) {
-        return {
-            redirect: {
-            permanent: false,
-            destination: "/login"
-            }
-        }
-    }
-    user = JSON.parse(user.data)
 
     // // Pass data to the page via props
     return {
         props: {
             cancelUrl: `${process.env.NEXT_URL}${context.resolvedUrl}`,
-            baseUrl: `${process.env.NEXT_URL}`,
-            user: user
+            baseUrl: `${process.env.NEXT_URL}`
         }
     }
 }

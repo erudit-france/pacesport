@@ -1,38 +1,26 @@
-import { ActionIcon, Avatar, Badge, Box, Button, Flex, Group, Modal, MultiSelect, ScrollArea, Select, Stack, Table, Tabs, Text, TextInput, Textarea, Title } from "@mantine/core";
+import { ActionIcon, Avatar, Badge, Box, Button, CopyButton, Divider, Flex, Group, Modal, ScrollArea, Select, Table, Tabs, Text, Title, Tooltip } from "@mantine/core";
 import Head from "next/head";
 import Layout from "./layout";
 import { FiUsers } from "react-icons/fi";
 import { MdOutlineLocalOffer, MdOutlineStore } from "react-icons/md";
-import { getActiveOffers, getAssociationPacesportPendingOffers, getAssociationPendingOffers, getOffers } from "@/domain/repository/AdminRepository";
-import { forwardRef, useEffect, useState } from "react";
-import { ImCross } from "react-icons/im";
-import { BsCheckLg, BsFillGearFill, BsPlus } from "react-icons/bs";
-import { useRouter } from "next/router";
+import { getAllSponsors } from "@/domain/repository/AdminRepository";  // Assurez-vous que cette fonction est bien définie pour les enseignes
+import { useState } from "react";
 import { getCookie } from "cookies-next";
 import Toast from "@/services/Toast";
-import { useForm } from "@mantine/form";
-import { serialize } from "object-to-formdata";
-import { getSponsoringOfferCategories } from "@/domain/repository/CategoryRepository";
-import OffresTable from "@/components/admin/OffresTable";
+import { useRouter } from "next/router";
+import { BsFillGearFill, BsTrash } from "react-icons/bs";
+import Link from "next/link";
 import { getUser } from "@/domain/repository/UserRepository";
+import { TbCheck, TbCopy } from "react-icons/tb";
 import { getAssociations } from "@/domain/repository/AssociationRepository";
 import SponsoringOfferTypeBadge from "@/components/SponsoringOfferTypeBadge";
 import moment from "moment/moment";
 
 export default function Page(props) {
-    const [loading, setLoading] = useState(false)
-    const [fetching, setFetching] = useState(false)
-    const [open, setOpen] = useState(false)
-    const [openCategory, setOpenCategory] = useState(false)
-    const [offer, setOffer] = useState(null)
-    const [offers, setOffers] = useState(props.offers)
-    const [selectedAssociations, setselectedAssociations] = useState([])
-    const [originalSelectedAssociations, setOriginalSelectedAssociations] = useState([])
-    const [categories, setCategories] = useState(props.categories.map((cat) => (
-        { ...cat, value: (cat.id).toString() }
-    )))
-
-    const router = useRouter()
+    const [loading, setLoading] = useState(false);
+    const [openEnseigne, setOpenEnseigne] = useState(null);
+    const [enseignes, setEnseignes] = useState(props.enseignes);
+    const router = useRouter();
     const { push } = useRouter()
     const refresh = () => { router.reload(window.location.pathname) }
     const reloadFilter = async (val) => {
@@ -391,11 +379,7 @@ export async function getServerSideProps(context) {
     )
     backgroundImage = await backgroundImage.json();
 
-    let offersPendingPacesport = await getAssociationPacesportPendingOffers(token)
-    let offersPendingAssociation = await getAssociationPendingOffers(token)
-    let offers = await getOffers(token)
-    let activeOffers = await getActiveOffers(token)
-    let associations = await getAssociations(token)
+    let Enseignes = await getAllEnseignes(token)
 
 
     let categories = await getSponsoringOfferCategories(token)
@@ -403,15 +387,7 @@ export async function getServerSideProps(context) {
     // // Pass data to the page via props
     return {
         props: {
-            backgroundImage: backgroundImage.filename,
-            avatar: avatar.filename,
-            categories: JSON.parse(categories.data),
-            offers: JSON.parse(offers.data),
-            offersPendingPacesport: JSON.parse(offersPendingPacesport.data),
-            offersPendingAssociation: JSON.parse(offersPendingAssociation.data),
-            activeOffers: JSON.parse(activeOffers.data),
-            associations: JSON.parse(associations.data)
-
+            Enseignes: JSON.parse(Enseignes.data),
         }
     }
 }

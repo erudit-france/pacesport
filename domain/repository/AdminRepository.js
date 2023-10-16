@@ -3,8 +3,9 @@ const fetchApi = async (token, url, local = false) => {
     if (local) base = ''
     let res = await fetch(`${base}${url}`, {
         headers: new Headers({
-                'JWTAuthorization': `Bearer ${token}`,
-    })})
+            'JWTAuthorization': `Bearer ${token}`,
+        })
+    })
     return await res.json()
 }
 
@@ -13,8 +14,9 @@ export const getOffers = async (token, local = false) => {
     if (local) base = ''
     let offers = await fetch(`${base}/api/admin/sponsoring-offer/all`, {
         headers: new Headers({
-                'JWTAuthorization': `Bearer ${token}`,
-        })}
+            'JWTAuthorization': `Bearer ${token}`,
+        })
+    }
     )
     offers = await offers.json();
     return offers;
@@ -25,8 +27,9 @@ export const getActiveOffers = async (token, local = false) => {
     if (local) base = ''
     let offers = await fetch(`${base}/api/admin/sponsoring-offer/active/`, {
         headers: new Headers({
-                'JWTAuthorization': `Bearer ${token}`,
-        })}
+            'JWTAuthorization': `Bearer ${token}`,
+        })
+    }
     )
     offers = await offers.json();
     return offers;
@@ -37,8 +40,9 @@ export const getAssociationPendingOffers = async (token, local = false) => {
     if (local) base = ''
     let offers = await fetch(`${base}/api/admin/sponsoring-offer/pending-association`, {
         headers: new Headers({
-                'JWTAuthorization': `Bearer ${token}`,
-        })}
+            'JWTAuthorization': `Bearer ${token}`,
+        })
+    }
     )
     offers = await offers.json();
     return offers;
@@ -49,8 +53,9 @@ export const getAssociationPacesportPendingOffers = async (token, local = false)
     if (local) base = ''
     let offers = await fetch(`${base}/api/admin/sponsoring-offer/pending-pacesport`, {
         headers: new Headers({
-                'JWTAuthorization': `Bearer ${token}`,
-        })}
+            'JWTAuthorization': `Bearer ${token}`,
+        })
+    }
     )
     offers = await offers.json();
     return offers;
@@ -76,6 +81,9 @@ export const getAllAssociations = async (token, local = false) => {
     return fetchApi(token, '/api/admin/association/all')
 }
 
+export const getAllEnseignes = async (token, local = false) => {
+    return fetchApi(token, '/api/admin/enseigne/all')
+}
 export const getPendingAssociations = async (token, local = false) => {
     return fetchApi(token, '/api/admin/association/pending')
 }

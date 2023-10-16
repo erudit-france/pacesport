@@ -71,7 +71,7 @@ export default function Page(props) {
 
     const baseURL = window.location.href;
     setOpened(true)
-    setIframeUrl(`/api/payment/generate?orderType=subscription&association=${props.id}&ref=${props.user.id}&baseurl=${props.baseUrl}`)
+    setIframeUrl(`/api/payment/generate?orderType=subscription&association=${props.id}&ref=${props.user.id}&baseurl=${props.baseUrl}&XDEBUG_SESSION_START=tom`)
     return
 
     // fetch(`/api/stripe/subscriptionLinks`, {
@@ -398,7 +398,7 @@ export async function getServerSideProps(context) {
       association: JSON.parse(association.data),
       id: id,
       user: JSON.parse(user.data),
-      baseUrl: `${process.env.NEXT_URL}`.replace('http://', 'https://'),
+      baseUrl: `${process.env.NEXT_URL}`,
     }
   }
 }
