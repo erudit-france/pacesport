@@ -244,7 +244,7 @@ export default function Page(props) {
         <>
             <Tabs.Panel value="offres" p={"md"}>
                 <Flex justify={'space-between'} py={"sm"}>
-                    <Title order={6} align="left">Offres</Title>
+                    <Title order={6} align="left">Offres ({offers.length})</Title>
                     <Select
                         styles={{
                             root: { display: 'flex', flexDirection: 'row' },
