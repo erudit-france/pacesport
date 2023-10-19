@@ -70,31 +70,31 @@ export default function Page(props) {
   const submitHandler = (values) => {
 
     const baseURL = window.location.href;
-    setOpened(true)
-    setIframeUrl(`/api/payment/generate?orderType=subscription&association=${props.id}&ref=${props.user.id}&baseurl=${props.baseUrl}&XDEBUG_SESSION_START=tom`)
-    return
+    // setOpened(true)
+    // setIframeUrl(`/api/payment/generate?orderType=subscription&association=${props.id}&ref=${props.user.id}&baseurl=${props.baseUrl}&XDEBUG_SESSION_START=tom`)
+    // return
 
-    // fetch(`/api/stripe/subscriptionLinks`, {
-    //   method: 'POST',
-    //   headers: new Headers({
-    //     'JWTAuthorization': `Bearer ${getCookie('token')}`
-    //   }),
-    //   body: JSON.stringify({
-    //     cancelUrl: baseURL,
-    //     baseUrl: baseURL,
-    //     asso: association.id,
-    //   })
-    // }).then(res => res.json())
-    //   .then(res => {
+    fetch(`/api/stripe/subscriptionLinks`, {
+      method: 'POST',
+      headers: new Headers({
+        'JWTAuthorization': `Bearer ${getCookie('token')}`
+      }),
+      body: JSON.stringify({
+        cancelUrl: baseURL,
+        baseUrl: baseURL,
+        asso: association.id,
+      })
+    }).then(res => res.json())
+      .then(res => {
 
-    //     if (res.yearUrl) {
-    //       router.push(res.yearUrl)
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     console.error("Error from server:", err);
-    //     Toast.error('Erreur, veuillez réessayer plus tard');
-    //   })
+        if (res.yearUrl) {
+          router.push(res.yearUrl)
+        }
+      })
+      .catch((err) => {
+        console.error("Error from server:", err);
+        Toast.error('Erreur, veuillez réessayer plus tard');
+      })
 
   }
 

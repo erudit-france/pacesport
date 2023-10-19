@@ -85,12 +85,31 @@ export default function Page(props) {
 
 
     const getCreditUrl = (credit, price) => {
-        setCredit(credit)
-        setPrice(price)
-        setOpened(true)
-        setIframeUrl(`/api/payment/generate?orderType=credit&credit=${credit}&accountType=sponsor&ref=${props.user.id}&baseurl=${props.baseUrl}`)
-        return
+        let token = getCookie('token');
+        const baseURL = window.location.origin;
+        fetch(`/api/stripe/credit`, {
+            method: 'POST',
+            headers: new Headers({
+                'JWTAuthorization': `Bearer ${getCookie('token')}`
+            }),
+            body: JSON.stringify({
+                credit: credit,
+                cancelUrl: baseURL + "/communication/add/sponsor",
+                baseUrl: baseURL + "/communication/add/sponsor"
+            })
+        }).then(res => res.json())
+            .then(res => {
+                console.log("Error from server:", res);
+                if (res.data) {
+                    router.push(res.data.url)
+                }
+            })
+            .catch((err) => {
+                console.error("Error from server:", err);
+                Toast.error('Erreur, veuillez réessayer plus tard');
+            })
     }
+    console.log(props)
 
     return (
         <>
@@ -151,7 +170,7 @@ export default function Page(props) {
                     <Text>{price} €</Text>
                 </Group>
                 <Center mt={'lg'}>
-                    <iframe  className="tw-w-full" height={600} src={iframeUrl}></iframe>
+                    <iframe className="tw-w-full" height={600} src={iframeUrl}></iframe>
                 </Center>
             </Modal>
         </>
@@ -174,13 +193,13 @@ export async function getServerSideProps(context) {
     )
     let creditData = await creditRes.json()
 
-    
+
     let user = await getUser(token)
     if (user.code == 401) {
         return {
             redirect: {
-            permanent: false,
-            destination: "/login"
+                permanent: false,
+                destination: "/login"
             }
         }
     }
@@ -192,7 +211,7 @@ export async function getServerSideProps(context) {
         props: {
             credit: JSON.parse(creditData.data.credit),
             cancelUrl: `${process.env.NEXT_URL}${context.resolvedUrl}`,
-            baseUrl: `${process.env.NEXT_URL}`.replace('http://','https://'),
+            baseUrl: `${process.env.NEXT_URL}`.replace('http://', 'https://'),
             user: user
         }
     }
