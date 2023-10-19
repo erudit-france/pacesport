@@ -68,31 +68,32 @@ export default function Page(props) {
   }
 
   const submitHandler = (values) => {
-    setLoading(true)
 
+    const baseURL = window.location.href;
     // setOpened(true)
     // setIframeUrl(`/api/payment/generate?orderType=subscription&association=${props.id}&ref=${props.user.id}&baseurl=${props.baseUrl}&XDEBUG_SESSION_START=tom`)
     // return
-    let body = serialize(values)
-    fetch(`/api/order/card`, {
+
+    fetch(`/api/stripe/subscriptionLinks`, {
       method: 'POST',
       headers: new Headers({
         'JWTAuthorization': `Bearer ${getCookie('token')}`
       }),
-      body: body
-    })
-      .then(res => res.json())
+      body: JSON.stringify({
+        cancelUrl: baseURL,
+        baseUrl: baseURL,
+        asso: association.id,
+      })
+    }).then(res => res.json())
       .then(res => {
-        if (res.data) {
-          res.data.code == 1
-            ? Toast.success(res.data.message)
-            : Toast.error(res.data.message)
-          router.push('/profil/particulier/carte')
+
+        if (res.yearUrl) {
+          router.push(res.yearUrl)
         }
       })
-      .catch((error) => {
-        Toast.error('Erreur pendant l\'enregistrement')
-        setLoading(false)
+      .catch((err) => {
+        console.error("Error from server:", err);
+        Toast.error('Erreur, veuillez réessayer plus tard');
       })
 
   }
@@ -342,8 +343,12 @@ export async function getServerSideProps(context) {
       }
     }
   }
-
-  let pacesportSubscription = await getActiveSubscription(token)
+  let pacesportSubscription = await fetch(`${process.env.API_URL}/api/user/activeSubscription`, {
+    headers: new Headers({
+      'JWTAuthorization': `Bearer ${token}`,
+    })
+  }
+  )
   if (!(pacesportSubscription.data === 'null' || pacesportSubscription.data == null)) {
     return {
       redirect: {
@@ -363,6 +368,7 @@ export async function getServerSideProps(context) {
   associations = await associations.json();
 
   let user = await getUser(token)
+
   if (user.code == 401) {
     return {
       redirect: {
