@@ -28,6 +28,13 @@ export default function Page(props) {
   const [pacesportSubscription, setPacesportSubscription] = useState(props.pacesportSubscription)
   const [showOffers, setShowOffers] = useState(false)
   const [isFlipped, setIsFlipped] = useState(false)
+  const [stap3, setStap3] = useState(null)
+  const [stap2, setStap2] = useState(null)
+  const [showBoxList, setShowBoxList] = useState(false);
+  const [filteredOffersNearby, setFilteredOffersNearby] = useState([]);
+  const [selectedBox, setSelectedBox] = useState(null);
+  const [confettiActive, setConfettiActive] = useState(false);
+  const [error, setError] = useState(null);
   const pacesportCardSrc = props.pacesportCard?.image?.name ? `/uploads/${props.pacesportCard?.image?.name}` : '/logo.png'
   const standaloneCard = <>
     <Center>
@@ -69,15 +76,16 @@ export default function Page(props) {
   const OfferRow = ({ offer }) => (
     <Card className='tw-flex tw-bg-gray-50 tw-mb-2' radius={'lg'}>
       <Center>
-        <Avatar className='tw-shadow-md' radius={'lg'} src={`/uploads/${offer.enseigne?.avatar?.name}`} />
+        <Avatar className='tw-shadow-md' radius={'lg'} src={`/uploads/${offer?.enseigne?.avatar?.name}`} />
       </Center>
       <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
         <Flex justify={'space-between'}>
-          <Text weight={550}>{offer.enseigne.description} <SponsoringOfferTypeBadge offer={offer} /></Text>
+          <Text weight={550}>{offer?.enseigne?.name} <SponsoringOfferTypeBadge offer={offer} /></Text>
           <Text className='tw-flex tw-font-light' fz={'sm'}>
-            <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer.enseigne?.city}</Text>
+            <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer?.enseigne?.city}</Text>
         </Flex>
-        <Text color='dimmed'>{offer.description}</Text>
+        <Text color='dimmed'>{offer?.description}</Text>
+        <Text color='dimmed'>{offer?.title}</Text>
       </Flex>
     </Card>
   )
@@ -93,11 +101,242 @@ export default function Page(props) {
     </Transition>
   </>
 
+  useEffect(() => {
+    // Obtenir la position actuelle
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+        const filteredOffersNearby2 = await Promise.all(
+          filteredOffers.map(async (offer) => {
+            const address = offer.enseigne.address;
+            const osmGeocodingUrl = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURI(address)}`;
+            try {
+              const response = await fetch(osmGeocodingUrl);
+              const data = await response.json();
+              if (data.length > 0) {
+                const { lat: offerLat, lon: offerLon } = data[0];
+                const distance = calculateDistance(lat, lon, offerLat, offerLon);
+                offer.title = `Distance : ${distance} meters`;
+                console.log("okD" + distance);
+                return distance <= 40000;
+              } else {
+                return false; // Coordonnées non trouvées
+              }
+            } catch (error) {
+              console.error(`Error while fetching coordinates for address: ${address}`, error);
+              return false;
+            }
+          })
+        );
+
+        // Filtrer les offres pour ne conserver que celles pour lesquelles la valeur retournée était true
+        const filteredTrueOffers = filteredOffers.filter((_, index) => filteredOffersNearby2[index]);
+
+        // Vous avez maintenant une liste d'offres pour lesquelles la valeur retournée était true
+        setFilteredOffersNearby(filteredTrueOffers);
+      },
+      (error) => {
+        setError(`Error while getting location: ${error.message}`);
+      }
+    );
+  }, []);
+
+  const toggleBoxList = () => {
+    setIsFlipped(true);
+    setShowBoxList(!showBoxList);
+  };
+
+  const toggleBoxList2 = () => {
+    setIsFlipped(false);
+    setStap2(null);
+    setStap3(false);
+  };
+
+  const toggleBoxList3 = () => {
+    setIsFlipped(true);
+    setStap2(null);
+  };
+
+  const toggleConfetti = () => {
+    setConfettiActive(true);
+    setTimeout(() => {
+      setConfettiActive(false);
+    }, 5000); // Désactivez les confettis après 5 secondes
+  };
+
+  const selectBox = (name) => {
+    setShowBoxList(false);
+    console.log("ttt")
+    setStap2(name);
+    console.log(name);
+    console.log(stap2);
+  };
+
   const filteredOffers = props.offers.filter(
     offer =>
       offer.type === "Nationale" ||
       (offer.type === "Locale" && offer.associations.some(ass => ass.id == props.id))
   );
+
+  const Bit2 = <>
+    <Box className='tw-relative' >
+      <Center className='tw-absolute tw-left-2 tw-top-0.5'>
+      </Center>
+
+      <Flex justify="center">
+        <Group position="center" className="">
+          <Button
+            size="md"
+            onClick={toggleBoxList}
+            className="tw-text-black tw-px-8 tw-py-3 tw-bg-gradient-to-br tw-from-gray-200 tw-to-white tw-shadow-md tw-w-full tw-rounded-2xl tw-border-2 tw-border-white hover:tw-bg-gray-200"
+          >
+            J'utilise ma carte
+          </Button>
+        </Group>
+      </Flex></Box>
+  </>
+
+  const Bit = <>
+    <Box className='tw-absolute truc-fonce' >
+      <Center className='tw-absolute tw-left-2 tw-top-0.5'>
+      </Center>
+
+      <div className="overlay">
+        <Group position="center" className="">
+          <Button
+            size="md"
+            onClick={toggleBoxList2}
+            className="tw-text-black tw-px-8 tw-py-3 tw-bg-gradient-to-br tw-from-gray-200 tw-to-white tw-shadow-md tw-w-full tw-rounded-2xl tw-border-2 tw-border-white hover:tw-bg-gray-200"
+          >
+            retour
+          </Button>
+        </Group>
+        <br />
+        {filteredOffersNearby.length === 0 ? (
+          <Center><h2 className="tw-text-white">Aucune offre n'a été trouvée à proximité.</h2></Center>
+        ) : (
+          filteredOffersNearby.map((offer) => (
+            <div key={offer.title} onClick={() => selectBox(offer)}>
+              <OfferRow key={offer?.title} offer={offer} />
+            </div>
+          ))
+        )}
+
+      </div>
+      {selectedBox && (
+        <div>
+          {/* Affichez le texte sélectionné ici */}
+          Texte sélectionné : {selectedBox}
+        </div>
+      )}
+    </Box>
+  </>
+
+const ConfettiAnimation = () => {
+  const [showConfetti, setShowConfetti] = useState(false);
+
+  const startConfettiAnimation = () => {
+    setShowConfetti(true);
+    setIsFlipped(false);
+    setStap3(true);
+    setTimeout(() => {
+      setShowConfetti(false);
+    }, 4000); // Activer l'animation pendant 2 secondes (2000 millisecondes)
+  };
+
+  useEffect(() => {
+    if (showConfetti) {
+      const container = document.getElementById('confetti-container');
+      const confettiColors = ['#f54291', '#2d95bf', '#f4cf42', '#42f474', '#f44242'];
+
+      const createConfetti = () => {
+        const confetti = document.createElement('div');
+        confetti.style.width = '10px';
+        confetti.style.height = '10px';
+        confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+        confetti.style.position = 'absolute';
+        confetti.style.left = `${Math.random() * 100}%`;
+        confetti.style.animation = `fall 3s linear, spin 3s linear infinite`; // Ajout de l'animation de descente
+        confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+        container.appendChild(confetti);
+      };
+
+      const intervalId = setInterval(createConfetti, 200);
+
+      return () => {
+        // Nettoyer les confettis et l'intervalle lorsque le composant est démonté
+        container.innerHTML = '';
+        clearInterval(intervalId);
+      };
+    }
+  }, [showConfetti]);
+
+  return (
+    <div>
+      <div id="confetti-container" style={{ width: '100%', position: 'relative' }}>
+      </div>
+      <Box className="tw-relative tw-z-[1]">
+              {standaloneCard}
+            </Box>
+            <br/>
+            <Button
+            size="md"
+            onClick={startConfettiAnimation}
+            className="tw-text-black tw-px-8 tw-py-3 tw-bg-gradient-to-br tw-from-gray-200 tw-to-green tw-shadow-md tw-w-full tw-rounded-2xl tw-border-2 tw-border-white hover:tw-bg-gray-200"
+          >
+            Valider mon pace'sport
+          </Button>
+    </div>
+  );
+};
+
+const RatingButton = () => {
+  const [rating, setRating] = useState(0);
+
+  const handleRatingClick = (value) => {
+    setRating(value);
+  };
+
+  return (
+    <Card className='tw-flex tw-justify-center tw-bg-gray-50 tw-mb-2' radius={'lg'}>
+    <Box>
+    <Center> <Text color='black'>Notez votre transaction</Text></Center>
+      <Group position="center" className="">
+        <Center>
+          <div className='tw-text-30'>
+            <h2 className='tw-text-center'>{rating} étoiles</h2>
+            <div>
+              {[1, 2, 3, 4, 5].map((starValue) => (
+                <button
+                  key={starValue}
+                  onClick={() => handleRatingClick(starValue)}
+                >
+                  {starValue <= rating ? '★' : '☆'}
+                </button>
+              ))}
+            </div>
+          </div>
+        </Center>
+      </Group>
+    </Box>
+  </Card>  
+  );
+};
+
+  function calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371e3; // Earth's radius in meters
+    const lat1Rad = (lat1 * Math.PI) / 180;
+    const lat2Rad = (lat2 * Math.PI) / 180;
+    const deltaLat = ((lat2 - lat1) * Math.PI) / 180;
+    const deltaLon = ((lon2 - lon1) * Math.PI) / 180;
+    const a =
+      Math.sin(deltaLat / 2) * Math.sin(deltaLat / 2) +
+      Math.cos(lat1Rad) * Math.cos(lat2Rad) * Math.sin(deltaLon / 2) * Math.sin(deltaLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  }
   return (
     <>
       <Head>
@@ -108,22 +347,57 @@ export default function Page(props) {
       </Head>
 
       <Container>
-        <Box className='tw-relative'>
-          <Center className='tw-absolute tw-left-2 tw-top-0.5'>
-          </Center>
-          <Flex justify={'center'}>
-            <Group position="center" className=''>
-              <Button size='md'
-                onClick={() => setIsFlipped(!isFlipped)}
-                className='tw-text-black
-                                  tw-px-8 tw-py-3 
-                                  tw-bg-gradient-to-br tw-from-gray-200 tw-to-white
-                                  tw-shadow-md tw-w-full tw-rounded-2xl
-                                  tw-border-2 tw-border-white
-                                  hover:tw-bg-gray-200'>J'utilise ma carte</Button>
-            </Group>
+
+      {stap3 ? (<Box className='tw-absolute truc-fonce' >
+        <Card className='tw-flex tw-bg-gray-50 tw-mb-2' radius={'lg'}>
+          <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
+         <Center> <h1 color='black' className='tw-text-center'>Félicitation, PACE'SPORT validé !</h1></Center>
+         <br/>
+         <Center> <Text color='black'>Vous avez collecté 100 points !</Text></Center>
+         <br/>
+            {/* <Text color='dimmed'>{stap2}</Text> */}
           </Flex>
-        </Box>
+        </Card>
+        
+         <br/>
+<RatingButton/>
+<br/> 
+        <Group position="center" className="">
+          <Button
+            size="md"
+            onClick={toggleBoxList2}
+            className="tw-text-black tw-px-8 tw-py-3 tw-bg-gradient-to-br tw-from-gray-200 tw-to-white tw-shadow-md tw-w-full tw-rounded-2xl tw-border-2 tw-border-white hover:tw-bg-gray-200"
+          >
+            retour
+          </Button>
+        </Group></Box>) : (
+        stap2 ? (<Box className='tw-absolute truc-fonce' >
+        <Group position="center" className="">
+          <Button
+            size="md"
+            onClick={toggleBoxList3}
+            className="tw-text-black tw-px-8 tw-py-3 tw-bg-gradient-to-br tw-from-gray-200 tw-to-white tw-shadow-md tw-w-full tw-rounded-2xl tw-border-2 tw-border-white hover:tw-bg-gray-200"
+          >
+            retour
+          </Button>
+        </Group>
+        <br />
+        <Card className='tw-flex tw-bg-gray-50 tw-mb-2' radius={'lg'}>
+          <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
+         <Center> <Text color='black'>{stap2.enseigne.name}</Text></Center>
+         <Center> <Text color='black'>{stap2.description}</Text></Center>
+         <Center><Text color='black'>{stap2.title}</Text></Center>
+         <br/>
+            {/* <Text color='dimmed'>{stap2}</Text> */}
+            <ConfettiAnimation />
+          </Flex>
+        </Card></Box>) : (
+          isFlipped ? (
+            Bit
+          ) : (
+            Bit2
+          )
+        ))}
 
         <Box>
           <Container className="tw-mt-6">
@@ -154,7 +428,7 @@ export default function Page(props) {
                 {filteredOffers.map((offer) => (
                   <OfferRow key={offer.title} offer={offer} />
                 ))}
-                <br/><br/><br/>
+                <br /><br /><br />
               </section>
             }
             {/* <Center className="">

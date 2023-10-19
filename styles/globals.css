@@ -143,6 +143,31 @@ body {
   transition: opacity 500ms;  /* ajustez le temps comme vous le souhaitez */
 }
 
+.truc-fonce{
+  z-index: 2; background-color: rgba(0, 0, 0, 0.8); height: 100vh; width: 100vw; top: 0; left: 0; padding-top: 14vh; padding-left: 10vw; padding-right: 10vw;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(-100vh);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.bg-auto {
+  background-size: auto;
+}
 
 .hidden {
   visibility: hidden;
