@@ -68,32 +68,31 @@ export default function Page(props) {
   }
 
   const submitHandler = (values) => {
+    setLoading(true)
 
-    const baseURL = window.location.href;
     // setOpened(true)
     // setIframeUrl(`/api/payment/generate?orderType=subscription&association=${props.id}&ref=${props.user.id}&baseurl=${props.baseUrl}&XDEBUG_SESSION_START=tom`)
     // return
-
-    fetch(`/api/stripe/subscriptionLinks`, {
+    let body = serialize(values)
+    fetch(`/api/order/card`, {
       method: 'POST',
       headers: new Headers({
         'JWTAuthorization': `Bearer ${getCookie('token')}`
       }),
-      body: JSON.stringify({
-        cancelUrl: baseURL,
-        baseUrl: baseURL,
-        asso: association.id,
-      })
-    }).then(res => res.json())
+      body: body
+    })
+      .then(res => res.json())
       .then(res => {
-
-        if (res.yearUrl) {
-          router.push(res.yearUrl)
+        if (res.data) {
+          res.data.code == 1
+            ? Toast.success(res.data.message)
+            : Toast.error(res.data.message)
+          router.push('/profil/particulier/carte')
         }
       })
-      .catch((err) => {
-        console.error("Error from server:", err);
-        Toast.error('Erreur, veuillez réessayer plus tard');
+      .catch((error) => {
+        Toast.error('Erreur pendant l\'enregistrement')
+        setLoading(false)
       })
 
   }
