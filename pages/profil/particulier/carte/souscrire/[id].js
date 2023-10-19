@@ -69,7 +69,8 @@ export default function Page(props) {
 
   const submitHandler = (values) => {
 
-    const baseURL = window.location.href;
+    const cancelUrl = window.location.href;
+    const baseURL = window.location.protocol + '//' + window.location.host;
     // setOpened(true)
     // setIframeUrl(`/api/payment/generate?orderType=subscription&association=${props.id}&ref=${props.user.id}&baseurl=${props.baseUrl}&XDEBUG_SESSION_START=tom`)
     // return
@@ -80,8 +81,8 @@ export default function Page(props) {
         'JWTAuthorization': `Bearer ${getCookie('token')}`
       }),
       body: JSON.stringify({
-        cancelUrl: process.env.API_URL,
-        baseUrl: process.env.API_URL,
+        cancelUrl: cancelUrl,
+        baseUrl: baseURL,
         asso: association.id,
       })
     }).then(res => res.json())
