@@ -91,17 +91,14 @@ export default function LoginForm({ loading }) {
       .then((res) => res.json())
       .then((res) => {
         if (res.payload && res.payload.token) {
-          document.cookie.split(";").forEach(function (cookie) {
-            let name = cookie.split("=")[0].trim();
-            if (name.includes('token')) {
-              deleteCookie(name);
-            }
-          });
+
+          deleteCookie('token');
           // Utilisez setItem pour sauvegarder le token dans le localStorage
-          localStorage.setItem('token', res.payload.token);
-          // Si vous souhaitez utiliser des cookies à la place de localStorage
-          const EXPIRATION_TIME = 60 * 60 * 24;
-          document.cookie = `token=${res.payload.token};max-age=${EXPIRATION_TIME}`;
+          // localStorage.setItem('token', res.payload.token);
+          // // Si vous souhaitez utiliser des cookies à la place de localStorage
+          // const EXPIRATION_TIME = 60 * 60 * 24;
+          // document.cookie = `token=${res.payload.token};max-age=${EXPIRATION_TIME}`;
+          setCookie('token', res.payload.token);
           const maybePromise = nextPage();
           if (maybePromise && typeof maybePromise.then === 'function') {
             maybePromise.then(() => {

@@ -6,7 +6,7 @@ import LoginForm from "./components/LoginForm";
 import { useState, useEffect } from "react";
 import logo from '../../public/logo.png'
 import Image from "next/image";
-import { deleteCookie } from 'cookies-next';
+import { setCookie, getCookie, deleteCookie } from 'cookies-next';
 import { useRouter } from 'next/router';  // Correction ici
 import Layout from "@/components/layout/GradientDoodle";
 
@@ -23,14 +23,10 @@ export default function Page() {
         if (storageAvailable) {
             const token = localStorage.getItem('token');
             if (token) {
-                document.cookie.split(";").forEach(function (cookie) {
-                    let name = cookie.split("=")[0].trim();
-                    if (name.includes('token')) {
-                        deleteCookie(name);
-                    }
-                });
-                const EXPIRATION_TIME = 60 * 60 * 24;
-                document.cookie = `token=${token};max-age=${EXPIRATION_TIME}`;
+                deleteCookie('token');
+                // const EXPIRATION_TIME = 60 * 60 * 24;
+                // document.cookie = `token=${token};max-age=${EXPIRATION_TIME}`;
+                setCookie('token', token);
                 setVisible(true);
                 setIsCssLoaded(false);
                 router.push('/login/as').then(() => {

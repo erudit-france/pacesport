@@ -101,12 +101,7 @@ export default function SignupForm({ loading }) {
               if (res.payload) {
                 if (res.payload.token) {
                   // Supprimer tous les cookies contenant le mot "token"
-                  document.cookie.split(";").forEach(function (cookie) {
-                    let name = cookie.split("=")[0].trim();
-                    if (name.includes('token')) {
-                      deleteCookie(name);
-                    }
-                  });
+                  deleteCookie('token');
 
                   // Définir le nouveau cookie
                   setCookie('token', res.payload.token);
