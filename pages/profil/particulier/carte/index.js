@@ -28,6 +28,27 @@ export default function Page(props) {
   const [pacesportSubscription, setPacesportSubscription] = useState(props.pacesportSubscription)
   const [showOffers, setShowOffers] = useState(false)
   const [isFlipped, setIsFlipped] = useState(false)
+
+
+
+  if (!(pacesportSubscription.data === 'null' || pacesportSubscription.data == null)) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: `/`
+      }
+    }
+  }
+
+
+  if (!(pacesportSubscription.data.isActive == false)) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: `/`
+      }
+    }
+  }
   const pacesportCardSrc = props.pacesportCard?.image?.name ? `/uploads/${props.pacesportCard?.image?.name}` : '/logo.png'
   const standaloneCard = <>
     <Center>
@@ -154,7 +175,7 @@ export default function Page(props) {
                 {filteredOffers.map((offer) => (
                   <OfferRow key={offer.title} offer={offer} />
                 ))}
-                <br/><br/><br/>
+                <br /><br /><br />
               </section>
             }
             {/* <Center className="">

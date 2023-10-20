@@ -344,12 +344,8 @@ export async function getServerSideProps(context) {
       }
     }
   }
-  let pacesportSubscription = await fetch(`${process.env.API_URL}/api/user/activeSubscription`, {
-    headers: new Headers({
-      'JWTAuthorization': `Bearer ${token}`,
-    })
-  }
-  )
+
+  let pacesportSubscription = await getActiveSubscription(token)
   if (!(pacesportSubscription.data === 'null' || pacesportSubscription.data == null)) {
     return {
       redirect: {
