@@ -14,30 +14,30 @@ import Link from "next/link";
 import { getUser } from "@/domain/repository/UserRepository";
 import { TbCheck, TbCopy } from "react-icons/tb";
 
-const Information = ({label, value}) => (
+const Information = ({ label, value }) => (
     <Group className="tw-text-sm tw-mt-1">
         <Text weight={600} fz={'sm'}>{label}:</Text>
-        <Text ml={'lg'} weight={400}  fz={'sm'}>{value}</Text>
+        <Text ml={'lg'} weight={400} fz={'sm'}>{value}</Text>
         {label == 'Email' &&
             <CopyButton value={value} timeout={1500}>
                 {({ copied, copy }) => (
                     <Tooltip label={copied ? 'Copié' : 'Copier'} withArrow position="right">
-                    <ActionIcon color={copied ? 'teal' : 'gray'} onClick={copy}>
-                        {copied ? <TbCheck size={14} /> : <TbCopy size={14} />}
-                    </ActionIcon>
+                        <ActionIcon color={copied ? 'teal' : 'gray'} onClick={copy}>
+                            {copied ? <TbCheck size={14} /> : <TbCopy size={14} />}
+                        </ActionIcon>
                     </Tooltip>
                 )}
             </CopyButton>
         }
     </Group>
 )
-export default function Page(props){
+export default function Page(props) {
     const [loading, setLoading] = useState(false)
     const [openAssociation, setOpenAssociation] = useState(null)
     const [associations, setAssociations] = useState(props.associations)
     const router = useRouter()
-    const refresh = () => { 
-        router.reload(window.location.pathname) 
+    const refresh = () => {
+        router.reload(window.location.pathname)
     }
 
     const reloadFilter = async (val) => {
@@ -54,7 +54,7 @@ export default function Page(props){
         }
     }
 
-    const StatusBadge = ({association}) => {
+    const StatusBadge = ({ association }) => {
         let color = ''
         let text = ''
         if (association.validated == null) {
@@ -70,20 +70,20 @@ export default function Page(props){
         return <Badge color={color} size="xs">{text}</Badge>
     }
 
-    
+
     const ths = (
         <tr>
-          <th>Association</th>
-          <th className="tw-capitalize">état</th>
-          <th>Statut</th>
+            <th>Association</th>
+            <th className="tw-capitalize">état</th>
+            <th>Statut</th>
         </tr>
     )
-    
+
     const rows = associations.map((element) => (
         <tr key={element.id}>
             <td>
                 <Group>
-                    <Avatar className="tw-shadow-md" size={'sm'} radius={'xl'}  src={`/uploads/${element.avatar?.name}`} />
+                    <Avatar className="tw-shadow-md" size={'sm'} radius={'xl'} src={`/uploads/${element.avatar?.name}`} />
                     <Text fz={'sm'}>{element.name}</Text>
                 </Group>
             </td>
@@ -92,41 +92,41 @@ export default function Page(props){
             </td>
             <td>
                 {element.status != null &&
-                    <Link className="tw-text-blue-400 tw-text-sm tw-font-light tw-underline" 
+                    <Link className="tw-text-blue-400 tw-text-sm tw-font-light tw-underline"
                         href={`/uploads/${element.status.name}`} target='_blank'>{element.status.name}</Link>
                 }
             </td>
             <td>
                 <Group>
                     <ActionIcon variant="light"
-                            size={'lg'}
-                            color="gray"
-                            onClick={() => setOpenAssociation(element) }
-                            ><BsFillGearFill /></ActionIcon>
+                        size={'lg'}
+                        color="gray"
+                        onClick={() => setOpenAssociation(element)}
+                    ><BsFillGearFill /></ActionIcon>
                 </Group>
             </td>
         </tr>
     ))
-    
+
     const acceptAssociation = (id) => {
         setLoading(true)
         fetch(`/api/admin/association/accept`, {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-              'JWTAuthorization': `Bearer ${getCookie('token')}`
+                'JWTAuthorization': `Bearer ${getCookie('token')}`
             }),
-            body: JSON.stringify({association: id})
-          })
+            body: JSON.stringify({ association: id })
+        })
             .then(res => res.json())
             .then(res => {
-                res.data.code == 1 
+                res.data.code == 1
                     ? Toast.success(res.data.message)
                     : Toast.error(res.data.message)
                 refresh()
             })
-            .catch((error) => { 
-                Toast.error('Erreur') 
+            .catch((error) => {
+                Toast.error('Erreur')
                 setLoading(false)
             })
         setOpenAssociation(null)
@@ -138,19 +138,19 @@ export default function Page(props){
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-              'JWTAuthorization': `Bearer ${getCookie('token')}`
+                'JWTAuthorization': `Bearer ${getCookie('token')}`
             }),
-            body: JSON.stringify({association: id})
-          })
+            body: JSON.stringify({ association: id })
+        })
             .then(res => res.json())
             .then(res => {
-                res.data.code == 1 
+                res.data.code == 1
                     ? Toast.success(res.data.message)
                     : Toast.error(res.data.message)
                 refresh()
             })
-            .catch((error) => { 
-                Toast.error('Erreur') 
+            .catch((error) => {
+                Toast.error('Erreur')
                 setLoading(false)
             })
         setOpenAssociation(null)
@@ -162,19 +162,19 @@ export default function Page(props){
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-              'JWTAuthorization': `Bearer ${getCookie('token')}`
+                'JWTAuthorization': `Bearer ${getCookie('token')}`
             }),
-            body: JSON.stringify({association: id})
-          })
+            body: JSON.stringify({ association: id })
+        })
             .then(res => res.json())
             .then(res => {
-                res.data.code == 1 
+                res.data.code == 1
                     ? Toast.success(res.data.message)
                     : Toast.error(res.data.message)
                 refresh()
             })
-            .catch((error) => { 
-                Toast.error('Erreur') 
+            .catch((error) => {
+                Toast.error('Erreur')
                 setLoading(false)
             })
     }
@@ -182,34 +182,34 @@ export default function Page(props){
     return (
         <>
             <Tabs.Panel value="associations" p={"md"}>
-            <Flex justify={'space-between'} py={"sm"}>
-                <Title order={6} align="left">Comptes associations</Title>
-                <Select
-                    styles={ {
-                        root: { display: 'flex', flexDirection: 'row' },
-                        label: { display: 'flex', alignSelf: 'center', marginRight: '5px', fontSize: '13px' }
-                    }}
-                    data={[
-                        { value: 'all', label: 'Tout' },
-                        { value: 'pending', label: 'En attente' },
-                        { value: 'active', label: 'Actifs' }
-                    ]}
-                    onChange={reloadFilter}
-                    defaultValue="all"
-                    label="Filtre"
-                    placeholder="Sélectionner"
-                    size="xs"
+                <Flex justify={'space-between'} py={"sm"}>
+                    <Title order={6} align="left">Comptes associations ({associations.length})</Title>
+                    <Select
+                        styles={{
+                            root: { display: 'flex', flexDirection: 'row' },
+                            label: { display: 'flex', alignSelf: 'center', marginRight: '5px', fontSize: '13px' }
+                        }}
+                        data={[
+                            { value: 'all', label: 'Tout' },
+                            { value: 'pending', label: 'En attente' },
+                            { value: 'active', label: 'Actifs' }
+                        ]}
+                        onChange={reloadFilter}
+                        defaultValue="all"
+                        label="Filtre"
+                        placeholder="Sélectionner"
+                        size="xs"
                     />
-            </Flex>
-            <ScrollArea className="tw-max-w-[100%]">
-                <Table striped withColumnBorders>
-                    <thead>{ths}</thead>
-                    <tbody>{rows}</tbody>
-                </Table>
-            </ScrollArea>
+                </Flex>
+                <ScrollArea className="tw-max-w-[100%]">
+                    <Table striped withColumnBorders>
+                        <thead>{ths}</thead>
+                        <tbody>{rows}</tbody>
+                    </Table>
+                </ScrollArea>
             </Tabs.Panel>
 
-            
+
             <Modal
                 opened={openAssociation}
                 onClose={() => setOpenAssociation(null)}
@@ -223,25 +223,25 @@ export default function Page(props){
                         <Button variant="outline" color="pink" disabled={loading}
                             size={'xs'}
                             leftIcon={<ImCross size={12} />}
-                            onClick={() => declineAssociation(openAssociation?.id) }>Refuser</Button>
+                            onClick={() => declineAssociation(openAssociation?.id)}>Refuser</Button>
                         <Button variant="outline" disabled={loading}
                             size={'xs'}
                             color="teal"
                             leftIcon={<BsCheckLg size={12} />}
-                            onClick={() => acceptAssociation(openAssociation?.id) }>Accepter</Button>
+                            onClick={() => acceptAssociation(openAssociation?.id)}>Accepter</Button>
                         <Divider size="md" orientation="vertical" />
                         <Button variant="outline" color="red" disabled={loading}
                             size={'xs'}
                             leftIcon={<BsTrash size={12} />}
-                            onClick={() => deleteAssociation(openAssociation?.id) }>Supprimer</Button>
+                            onClick={() => deleteAssociation(openAssociation?.id)}>Supprimer</Button>
                     </Group>
                     <Text weight={600} mt={'md'}>Informations</Text>
                     <Box className="tw-rounded-2xl tw-shadow-lg tw-bg-white tw-py-7 tw-px-6" >
                         <Title order={2} weight={600} align="left">{openAssociation?.name}</Title>
-                        <Information label={'Bio'} value={openAssociation?.description}/>
-                        <Information label={'Adresse'} value={openAssociation?.address}/>
-                        <Information label={'Téléphone'} value={openAssociation?.phone}/>
-                        <Information label={'Email'} value={openAssociation?.email}/>
+                        <Information label={'Bio'} value={openAssociation?.description} />
+                        <Information label={'Adresse'} value={openAssociation?.address} />
+                        <Information label={'Téléphone'} value={openAssociation?.phone} />
+                        <Information label={'Email'} value={openAssociation?.email} />
                     </Box>
                 </form>
             </Modal>
@@ -253,25 +253,27 @@ export async function getServerSideProps(context) {
     const token = context.req.cookies['token']
 
     let avatar = await fetch(`${process.env.API_URL}/api/association/avatar`, {
-      headers: new Headers({
-              'JWTAuthorization': `Bearer ${token}`,
-      })}
+        headers: new Headers({
+            'JWTAuthorization': `Bearer ${token}`,
+        })
+    }
     )
     avatar = await avatar.json();
     if (avatar.code == 401) {
         return {
             redirect: {
-            permanent: false,
-            destination: "/login"
+                permanent: false,
+                destination: "/login"
             }
         }
     }
 
     let backgroundImage = await fetch(`${process.env.API_URL}/api/association/background`, {
         headers: new Headers({
-                'JWTAuthorization': `Bearer ${token}`,
-        })}
-      )
+            'JWTAuthorization': `Bearer ${token}`,
+        })
+    }
+    )
     backgroundImage = await backgroundImage.json();
     let associations = await getAllAssociations(token)
     let pendingAssociations = await getPendingAssociations(token)
@@ -281,24 +283,26 @@ export async function getServerSideProps(context) {
     if (!user.roles.includes('ROLE_ADMIN')) {
         return {
             redirect: {
-            permanent: false,
-            destination: "/login/as"
+                permanent: false,
+                destination: "/login/as"
             }
         }
     }
 
     // // Pass data to the page via props
-    return { props: {
-        backgroundImage: backgroundImage.filename,
-        avatar: avatar.filename,
-        associations: JSON.parse(associations.data),
-        pendingAssociations: JSON.parse(pendingAssociations.data),
-        activeAssociations: JSON.parse(activeAssociations.data)
-    }}
-  }
+    return {
+        props: {
+            backgroundImage: backgroundImage.filename,
+            avatar: avatar.filename,
+            associations: JSON.parse(associations.data),
+            pendingAssociations: JSON.parse(pendingAssociations.data),
+            activeAssociations: JSON.parse(activeAssociations.data)
+        }
+    }
+}
 
 Page.getLayout = function getLayout(page) {
     return (
-      <Layout avatar={null}>{page}</Layout>
+        <Layout avatar={null}>{page}</Layout>
     )
-  }
+}
