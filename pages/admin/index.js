@@ -43,7 +43,7 @@ export default function Page(props) {
 }
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token']
+    const token = context.req.cookies['token_v2']
 
     let user = await getUser(token)
     console.log('user', user)

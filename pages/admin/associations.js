@@ -114,7 +114,7 @@ export default function Page(props) {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
             }),
             body: JSON.stringify({ association: id })
         })
@@ -138,7 +138,7 @@ export default function Page(props) {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
             }),
             body: JSON.stringify({ association: id })
         })
@@ -162,7 +162,7 @@ export default function Page(props) {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
             }),
             body: JSON.stringify({ association: id })
         })
@@ -250,7 +250,7 @@ export default function Page(props) {
 }
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token']
+    const token = context.req.cookies['token_v2']
 
     let avatar = await fetch(`${process.env.API_URL}/api/association/avatar`, {
         headers: new Headers({

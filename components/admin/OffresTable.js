@@ -36,7 +36,7 @@ export default function OffresTable({ offres, refresh, fetching, editOffer }) {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
             }),
             body: JSON.stringify({ offer: id })
         })
@@ -65,7 +65,7 @@ export default function OffresTable({ offres, refresh, fetching, editOffer }) {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
             }),
             body: JSON.stringify({ offer: id })
         })
@@ -95,7 +95,7 @@ export default function OffresTable({ offres, refresh, fetching, editOffer }) {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
             }),
             body: JSON.stringify({ offer: id })
         })
@@ -116,7 +116,7 @@ export default function OffresTable({ offres, refresh, fetching, editOffer }) {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
             }),
             body: JSON.stringify({ offer: id })
         })

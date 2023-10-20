@@ -15,17 +15,17 @@ import { BsArrowLeft } from "react-icons/bs";
 export default function Page(props) {
     const router = useRouter()
     const prev = router.query?.prev || ''
-    
+
     const paiement = {
         date: '2023-03-02',
-        data: {name: 'Pierre B', ammount: 15.99, card: '43XX XXXX XXXX XXX3'}
+        data: { name: 'Pierre B', ammount: 15.99, card: '43XX XXXX XXXX XXX3' }
     }
 
     const NavHeader = () => (
         <Flex justify='space-between' p={'md'}>
             <Link href={prev}><Button variant="filled" size="sm"
                 className="tw-bg-gray-50 tw-text-black tw-ml-5 tw-border-[1px] tw-border-gray-900
-                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
+                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full"
                 radius={'xl'}><BsArrowLeft /></Button></Link>
         </Flex>
     )
@@ -62,15 +62,17 @@ export default function Page(props) {
 }
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token']
+    const token = context.req.cookies['token_v2']
 
-      // // Pass data to the page via props
-    return { props: { 
-    } }
+    // // Pass data to the page via props
+    return {
+        props: {
+        }
+    }
 }
 
 Page.getLayout = function getLayout(page) {
     return (
-      <Layout>{page}</Layout>
+        <Layout>{page}</Layout>
     )
-  }
+}

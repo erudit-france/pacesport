@@ -89,7 +89,7 @@ export default function Page({ user, users, assolie, query, activeOffers2, paces
                 fetch(`/api/chat/create/chatRoom?id=${element.id}&info=${router.query.pos}&XDEBUG_SESSION_START=tom`, {
                     method: 'GET',
                     headers: new Headers({
-                        'JWTAuthorization': `Bearer ${getCookie('token')}`,
+                        'JWTAuthorization': `Bearer ${getCookie('token_v2')}`,
                         'Content-Type': 'application/json'
                     })
                 })
@@ -156,7 +156,7 @@ export default function Page({ user, users, assolie, query, activeOffers2, paces
 }
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token']
+    const token = context.req.cookies['token_v2']
     const res = await fetch(`${process.env.API_URL}/api/chat/users`, {
         headers: new Headers({
             'JWTAuthorization': `Bearer ${token}`,

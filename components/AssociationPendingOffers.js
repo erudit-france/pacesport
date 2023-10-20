@@ -7,7 +7,7 @@ import { BsCheckLg } from "react-icons/bs";
 import { ImCross } from "react-icons/im";
 import SponsoringOfferTypeBadge from "./SponsoringOfferTypeBadge";
 
-export default function AssociationPendingOffers({offers}) {
+export default function AssociationPendingOffers({ offers }) {
     const router = useRouter()
     const [offerIdConfirmation, setOfferIdConfirmation] = useState(null)
     const [loading, setLoading] = useState(false)
@@ -21,13 +21,13 @@ export default function AssociationPendingOffers({offers}) {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-              'JWTAuthorization': `Bearer ${getCookie('token')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
             }),
-            body: JSON.stringify({offer: id})
-          })
+            body: JSON.stringify({ offer: id })
+        })
             .then(res => res.json())
             .then(res => {
-                res.data.code == 1 
+                res.data.code == 1
                     ? Toast.success(res.data.message)
                     : Toast.error(res.data.message)
                 refresh()
@@ -43,13 +43,13 @@ export default function AssociationPendingOffers({offers}) {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-              'JWTAuthorization': `Bearer ${getCookie('token')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
             }),
-            body: JSON.stringify({offer: id})
-          })
+            body: JSON.stringify({ offer: id })
+        })
             .then(res => res.json())
             .then(res => {
-                res.data.code == 1 
+                res.data.code == 1
                     ? Toast.success(res.data.message)
                     : Toast.error(res.data.message)
                 refresh()
@@ -58,14 +58,14 @@ export default function AssociationPendingOffers({offers}) {
         setLoading(false)
     }
 
-    const AccordionControl = ({offer}) => {
+    const AccordionControl = ({ offer }) => {
         return (
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <Accordion.Control>
                     <Flex>
                         <Avatar radius={'xl'} className="tw-shadow-md" src={`/uploads/${offer.enseigne?.avatar?.name}`} alt={offer.description} />
                         <Stack spacing={'xs'}>
-                            <Text fz={'sm'} className='tw-my-auto tw-ml-2 tw-font-semibold'>{offer.enseigne.name} <SponsoringOfferTypeBadge offer={offer}/>
+                            <Text fz={'sm'} className='tw-my-auto tw-ml-2 tw-font-semibold'>{offer.enseigne.name} <SponsoringOfferTypeBadge offer={offer} />
                             </Text>
                             <Text fz={'sm'} className='tw-text-gray-900 tw-font-semibold tw-p-2' size="sm">{offer.title}</Text>
                         </Stack>
@@ -73,9 +73,9 @@ export default function AssociationPendingOffers({offers}) {
                 </Accordion.Control>
             </Box>
         );
-      }
-    
-    const items = offers == null || offers.length == 0 
+    }
+
+    const items = offers == null || offers.length == 0
         ? <Text align='center' fz={'xs'} color="dimmed">Aucune offre proposée</Text>
         : offers.map((offer) => (
             <Accordion.Item value={(offer.description ? offer.description : '4')} key={offer.id}>
@@ -97,13 +97,13 @@ export default function AssociationPendingOffers({offers}) {
             </Accordion.Item>
         ))
 
-        
+
     return (
         <>
             <Paper p={'xs'}>
-                {offers.length == 0 
-                ?   <Text color="dimmed" fz={'sm'} align="center">Aucune offre</Text>
-                :   <Accordion variant="contained">
+                {offers.length == 0
+                    ? <Text color="dimmed" fz={'sm'} align="center">Aucune offre</Text>
+                    : <Accordion variant="contained">
                         {items}
                     </Accordion>}
             </Paper>
@@ -113,15 +113,15 @@ export default function AssociationPendingOffers({offers}) {
                 opened={openDecline}
                 onClose={() => { setOpenDecline(false); setOfferIdConfirmation(null) }}
                 title="Refuser l'offre?"
-                >
+            >
                 <Group mt="xl" position="right">
-                    <Button variant="outline" 
+                    <Button variant="outline"
                         color="red"
                         onClick={() => { setOpenDecline(false); setOfferIdConfirmation(null) }}
-                        >
+                    >
                         Annuler
                     </Button>
-                    <Button variant="outline" 
+                    <Button variant="outline"
                         color="teal"
                         onClick={() => declineOffer(offerIdConfirmation)}>
                         Confirmer
@@ -134,15 +134,15 @@ export default function AssociationPendingOffers({offers}) {
                 opened={openAccept}
                 onClose={() => { setOpenAccept(false); setOfferIdConfirmation(null) }}
                 title="Valider l'offre?"
-                >
+            >
                 <Group mt="xl" position="right">
-                    <Button variant="outline" 
+                    <Button variant="outline"
                         color="red"
                         onClick={() => { setOpenAccept(false); setOfferIdConfirmation(null) }}
-                        >
+                    >
                         Annuler
                     </Button>
-                    <Button variant="outline" 
+                    <Button variant="outline"
                         color="teal"
                         onClick={() => { acceptOffer(offerIdConfirmation) }}>
                         Confirmer
@@ -150,5 +150,5 @@ export default function AssociationPendingOffers({offers}) {
                 </Group>
             </Modal>
         </>
-      )
+    )
 }

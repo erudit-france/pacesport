@@ -14,7 +14,7 @@ import { getActiveSubscription } from '@/domain/repository/OrderRepository'
 const LinkButton = ({ text, href, lock, className, onClick }) => {
     const router = useRouter()
     const logout = () => {
-        deleteCookie('token')
+        deleteCookie('token_v2')
         router.push('/login')
     }
 
@@ -57,9 +57,9 @@ const Logo = () => (
 )
 
 const logout = () => {
-    deleteCookie('token')
+    deleteCookie('token_v2')
     router.push('/login')
-    localStorage.removeItem('token');
+    localStorage.removeItem('token_v2');
 }
 
 export default function Page(props) {
@@ -67,9 +67,9 @@ export default function Page(props) {
     const context = useContext(AppContext)
     const router = useRouter()
     const logout = () => {
-        deleteCookie('token')
+        deleteCookie('token_v2')
         router.push('/login')
-        localStorage.removeItem('token');
+        localStorage.removeItem('token_v2');
     }
 
     let loggedUser = props.loggedUser
@@ -119,12 +119,12 @@ export default function Page(props) {
                                 height={163}
                                 src={"/Design_carte_connexion-removebg-preview.png"}
                                 alt="logo sim"
-                            /></a><br/>
+                            /></a><br />
                         <Flex className="tw-overflow-hidden" direction='column'>
-                        {isAdmin &&
-                    <Flex justify='center' direction='column' mb='md' gap="xl">
-                        <LinkButton className={'tw-px-16 tw-mb-0'} text={<><RiAdminLine className="tw-mr-1" />Panel admin</>} href='/admin' />
-                    </Flex>}
+                            {isAdmin &&
+                                <Flex justify='center' direction='column' mb='md' gap="xl">
+                                    <LinkButton className={'tw-px-16 tw-mb-0'} text={<><RiAdminLine className="tw-mr-1" />Panel admin</>} href='/admin' />
+                                </Flex>}
                             <Flex direction='column' my='xs' py={'sm'} gap="xs" className="tw-rounded-xl tw-top-[340px]">
                                 <Title order={6} align="center" style={{ fontSize: '18px' }} color="white">Compte pro</Title>
                                 <LinkButton className={''} text='Sponsor/Partenaire' href={sponsorLink} lock={!status.enseigne} />
@@ -146,7 +146,7 @@ export default function Page(props) {
 }
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token']
+    const token = context.req.cookies['token_v2']
     const res = await fetch(`${process.env.API_URL}/api/account/is-signup-complete`, {
         headers: new Headers({
             'JWTAuthorization': `Bearer ${token}`,

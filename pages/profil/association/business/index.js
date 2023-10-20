@@ -16,31 +16,31 @@ import { SlChart } from "react-icons/sl";
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartTitle);
 
-export default function Page(props){
+export default function Page(props) {
     const isAccountLimited = false
-    const Cards = props.cards.map((card) => 
+    const Cards = props.cards.map((card) =>
         <CampagneCard status={card.status} id={card.id} key={card.name + card.id} title={card.name} image={card.image?.name} startDate={card.startDate} />
     )
     const CardList = props.cards.length == 0
         ? <Text align="center" color="dimmed">Aucune carte enregistrée</Text>
         : Cards
-        
+
     const pieData = {
         labels: ['Mécenats', 'Sponsoring'],
         datasets: [
-        {
-            label: '% Ventes',
-            data: [25, 75],
-            backgroundColor: [
-            'rgba(199, 199, 199, 1)',
-            'rgba(255, 255, 255, 1)',
-            ],
-            borderColor: [
-            'rgba(170, 170, 170, 1)',
-            'rgba(170, 170, 170, .8)',
-            ],
-            borderWidth: 1,
-        },
+            {
+                label: '% Ventes',
+                data: [25, 75],
+                backgroundColor: [
+                    'rgba(199, 199, 199, 1)',
+                    'rgba(255, 255, 255, 1)',
+                ],
+                borderColor: [
+                    'rgba(170, 170, 170, 1)',
+                    'rgba(170, 170, 170, .8)',
+                ],
+                borderWidth: 1,
+            },
         ],
     };
 
@@ -63,47 +63,52 @@ export default function Page(props){
 }
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token']
+    const token = context.req.cookies['token_v2']
     let avatar = await fetch(`${process.env.API_URL}/api/association/avatar`, {
-      headers: new Headers({
-              'JWTAuthorization': `Bearer ${token}`,
-      })}
+        headers: new Headers({
+            'JWTAuthorization': `Bearer ${token}`,
+        })
+    }
     )
     avatar = await avatar.json();
-    
+
     let backgroundImage = await fetch(`${process.env.API_URL}/api/association/background`, {
         headers: new Headers({
-                'JWTAuthorization': `Bearer ${token}`,
-        })}
-      )
+            'JWTAuthorization': `Bearer ${token}`,
+        })
+    }
+    )
     backgroundImage = await backgroundImage.json();
 
     if (avatar.code == 401) {
         return {
             redirect: {
-            permanent: false,
-            destination: "/login"
+                permanent: false,
+                destination: "/login"
             }
         }
     }
 
     let cards = await fetch(`${process.env.API_URL}/api/discount-card/association/`, {
         headers: new Headers({
-                'JWTAuthorization': `Bearer ${token}`,
-        })}
+            'JWTAuthorization': `Bearer ${token}`,
+        })
+    }
     )
     cards = await cards.json();
-    
+
     // // Pass data to the page via props
-    return { props: {
-        avatar: avatar.filename,
-        backgroundImage: backgroundImage.filename,
-        cards: JSON.parse(cards.data)
-    }}
-  }
+    return {
+        props: {
+            avatar: avatar.filename,
+            backgroundImage: backgroundImage.filename,
+            cards: JSON.parse(cards.data)
+        }
+    }
+}
 
 Page.getLayout = function getLayout(page) {
     return (
-      <Layout>{page}</Layout>
+        <Layout>{page}</Layout>
     )
-  }
+}

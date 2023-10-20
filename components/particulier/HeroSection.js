@@ -8,12 +8,12 @@ const { useState } = require("react");
 const { RiImageAddFill } = require("react-icons/ri");
 const { RxCross2, RxCheck } = require("react-icons/rx");
 
-const HeroSection = ({avatar, editable = true}) => {
+const HeroSection = ({ avatar, editable = true }) => {
     const originalImage = '/uploads/'.concat(avatar);
     const [image, setImage] = useState(originalImage)
     const [editing, edit] = useDisclosure(false)
     const [imageFile, setImageFile] = useState(null)
-    
+
     const uploadHandler = (file) => {
         const url = URL.createObjectURL(file)
         setImage(url)
@@ -38,10 +38,10 @@ const HeroSection = ({avatar, editable = true}) => {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
             }),
             body: formData
-            })
+        })
             .then(res => res.json())
             .then(res => {
                 if (res.data.code == 1) {
@@ -51,28 +51,28 @@ const HeroSection = ({avatar, editable = true}) => {
                         method: 'POST',
                         type: 'cors',
                         headers: new Headers({
-                        'JWTAuthorization': `Bearer ${getCookie('token')}`
+                            'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
                         }),
                         body: body
                     })
-                    .then(res => res.json())
+                        .then(res => res.json())
                         .then(res => {
-                            res.data.code == 1 
+                            res.data.code == 1
                                 ? Toast.success(res.data.message)
                                 : Toast.error(res.data.message)
                         })
-                        .catch((error) => { 
-                            Toast.error('Erreur pendant le téléchargement de l\'image') 
+                        .catch((error) => {
+                            Toast.error('Erreur pendant le téléchargement de l\'image')
                         })
                 } else {
                     Toast.error(res.data.message)
                 }
             })
-            .catch((error) => { 
+            .catch((error) => {
                 console.log('error', error)
-                Toast.error('Erreur pendant le téléchargement de l\'image') 
+                Toast.error('Erreur pendant le téléchargement de l\'image')
             })
-            edit.close()
+        edit.close()
     }
 
     const cancelEdit = () => {
@@ -94,8 +94,8 @@ const HeroSection = ({avatar, editable = true}) => {
         return (
             <Box className="tw-absolute tw-z-20 tw-bottom-0 tw-right-0">
                 <FileButton onChange={uploadHandler} accept="image/png,image/jpeg">
-                {(props) => <ActionIcon size={25} {...props} className="tw-bg-[#d61515] hover:tw-bg-[#d61515] tw-text-[#FFF] tw-rounded-full">
-                        <RiImageAddFill size={15} className="tw-relative tw-right-[1px]"/>
+                    {(props) => <ActionIcon size={25} {...props} className="tw-bg-[#d61515] hover:tw-bg-[#d61515] tw-text-[#FFF] tw-rounded-full">
+                        <RiImageAddFill size={15} className="tw-relative tw-right-[1px]" />
                     </ActionIcon>}
                 </FileButton>
             </Box>
@@ -105,18 +105,18 @@ const HeroSection = ({avatar, editable = true}) => {
     const [isDarkMode, setIsDarkMode] = useState(false);
     const containerStyle = {
         filter: isDarkMode ? 'invert(1)' : 'none'
-      };
+    };
 
     return (
         <header className='tw-flex tw-justify-center tw-h-36 tw-relative'>
             <div className='tw-flex tw-flex-col tw-justify-center'>
-              <Box className="tw-relative tw-bg-white tw-rounded-full">
-                <Avatar radius={9999} size={70} src={`${image}`}  alt="Logo Pace'sport" style={containerStyle}
-                    className='hadow-sm tw-bg-transparent tw-z-20'/>
-                {editable &&
-                    <LogoButtons />
-                }
-              </Box>
+                <Box className="tw-relative tw-bg-white tw-rounded-full">
+                    <Avatar radius={9999} size={70} src={`${image}`} alt="Logo Pace'sport" style={containerStyle}
+                        className='hadow-sm tw-bg-transparent tw-z-20' />
+                    {editable &&
+                        <LogoButtons />
+                    }
+                </Box>
             </div>
         </header>
     )

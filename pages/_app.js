@@ -23,9 +23,9 @@ export default function App({ Component, pageProps }) {
       <Context>
         <MantineProvider withGlobalStyles withNormalizeCSS>
           <ThemeProvider theme={lightTheme}>
-              <NotificationsProvider>
-                {getLayout(<Component {...pageProps} />)}
-              </NotificationsProvider>
+            <NotificationsProvider>
+              {getLayout(<Component {...pageProps} />)}
+            </NotificationsProvider>
           </ThemeProvider>
         </MantineProvider>
       </Context>
@@ -41,7 +41,7 @@ const exclude = [
   '/login'
 ]
 
-App.getInitialProps = async ({Component, ctx}) => {
+App.getInitialProps = async ({ Component, ctx }) => {
   let pageProps = {}
   if (Component.getInitialProps) {
     pageProps = await Component.getInitialProps(ctx)
@@ -49,7 +49,7 @@ App.getInitialProps = async ({Component, ctx}) => {
   // si page autre que connexion ou accueil, vérifier l'authentication
   // if (!exclude.includes(ctx.pathname)) {
   //   if (ctx.req) {
-  //     const token = ctx.req.cookies['token']
+  //     const token = ctx.req.cookies['token_v2']
   //     let response = await fetch(`${process.env.API_URL}/api/verify/jwt`, {
   //       headers: new Headers({
   //               'JWTAuthorization': `Bearer ${token}`,
@@ -64,5 +64,5 @@ App.getInitialProps = async ({Component, ctx}) => {
   //   }
   // }
 
-  return {pageProps}
+  return { pageProps }
 }

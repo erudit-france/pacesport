@@ -7,20 +7,20 @@ import { BsLock } from "react-icons/bs";
 import Layout from "./layout";
 
 export default function Page() {
-    const router = useRouter()
-    const updateAccountStatus = (role) => {
-        const data = new FormData()
-        data.append('role', role)
-        fetch(`/api/account/status/update`, {
-        method: "POST",
-        headers: {
-            'JWTAuthorization': `Bearer ${getCookie('token')}`,
-        },
-        body: data,
-        })
+  const router = useRouter()
+  const updateAccountStatus = (role) => {
+    const data = new FormData()
+    data.append('role', role)
+    fetch(`/api/account/status/update`, {
+      method: "POST",
+      headers: {
+        'JWTAuthorization': `Bearer ${getCookie('token_v2')}`,
+      },
+      body: data,
+    })
       .then((res) => res.json())
       .then((res) => {
-        if (res.code == 401) {router.push('/login'); return;}
+        if (res.code == 401) { router.push('/login'); return; }
         router.push('/inscription')
       });
   };

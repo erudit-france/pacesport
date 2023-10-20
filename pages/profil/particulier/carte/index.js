@@ -234,96 +234,96 @@ export default function Page(props) {
     </Box>
   </>
 
-const ConfettiAnimation = () => {
-  const [showConfetti, setShowConfetti] = useState(false);
+  const ConfettiAnimation = () => {
+    const [showConfetti, setShowConfetti] = useState(false);
 
-  const startConfettiAnimation = () => {
-    setShowConfetti(true);
-    setIsFlipped(false);
-    setStap3(true);
-    setTimeout(() => {
-      setShowConfetti(false);
-    }, 4000); // Activer l'animation pendant 2 secondes (2000 millisecondes)
-  };
+    const startConfettiAnimation = () => {
+      setShowConfetti(true);
+      setIsFlipped(false);
+      setStap3(true);
+      setTimeout(() => {
+        setShowConfetti(false);
+      }, 4000); // Activer l'animation pendant 2 secondes (2000 millisecondes)
+    };
 
-  useEffect(() => {
-    if (showConfetti) {
-      const container = document.getElementById('confetti-container');
-      const confettiColors = ['#f54291', '#2d95bf', '#f4cf42', '#42f474', '#f44242'];
+    useEffect(() => {
+      if (showConfetti) {
+        const container = document.getElementById('confetti-container');
+        const confettiColors = ['#f54291', '#2d95bf', '#f4cf42', '#42f474', '#f44242'];
 
-      const createConfetti = () => {
-        const confetti = document.createElement('div');
-        confetti.style.width = '10px';
-        confetti.style.height = '10px';
-        confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
-        confetti.style.position = 'absolute';
-        confetti.style.left = `${Math.random() * 100}%`;
-        confetti.style.animation = `fall 3s linear, spin 3s linear infinite`; // Ajout de l'animation de descente
-        confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
-        container.appendChild(confetti);
-      };
+        const createConfetti = () => {
+          const confetti = document.createElement('div');
+          confetti.style.width = '10px';
+          confetti.style.height = '10px';
+          confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+          confetti.style.position = 'absolute';
+          confetti.style.left = `${Math.random() * 100}%`;
+          confetti.style.animation = `fall 3s linear, spin 3s linear infinite`; // Ajout de l'animation de descente
+          confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+          container.appendChild(confetti);
+        };
 
-      const intervalId = setInterval(createConfetti, 200);
+        const intervalId = setInterval(createConfetti, 200);
 
-      return () => {
-        // Nettoyer les confettis et l'intervalle lorsque le composant est démonté
-        container.innerHTML = '';
-        clearInterval(intervalId);
-      };
-    }
-  }, [showConfetti]);
+        return () => {
+          // Nettoyer les confettis et l'intervalle lorsque le composant est démonté
+          container.innerHTML = '';
+          clearInterval(intervalId);
+        };
+      }
+    }, [showConfetti]);
 
-  return (
-    <div>
-      <div id="confetti-container" style={{ width: '100%', position: 'relative' }}>
+    return (
+      <div>
+        <div id="confetti-container" style={{ width: '100%', position: 'relative' }}>
+        </div>
+        <Box className="tw-relative tw-z-[1]">
+          {standaloneCard}
+        </Box>
+        <br />
+        <Button
+          size="md"
+          onClick={startConfettiAnimation}
+          className="tw-text-black tw-px-8 tw-py-3 tw-bg-gradient-to-br tw-from-gray-200 tw-to-green tw-shadow-md tw-w-full tw-rounded-2xl tw-border-2 tw-border-white hover:tw-bg-gray-200"
+        >
+          Valider mon pace'sport
+        </Button>
       </div>
-      <Box className="tw-relative tw-z-[1]">
-              {standaloneCard}
-            </Box>
-            <br/>
-            <Button
-            size="md"
-            onClick={startConfettiAnimation}
-            className="tw-text-black tw-px-8 tw-py-3 tw-bg-gradient-to-br tw-from-gray-200 tw-to-green tw-shadow-md tw-w-full tw-rounded-2xl tw-border-2 tw-border-white hover:tw-bg-gray-200"
-          >
-            Valider mon pace'sport
-          </Button>
-    </div>
-  );
-};
-
-const RatingButton = () => {
-  const [rating, setRating] = useState(0);
-
-  const handleRatingClick = (value) => {
-    setRating(value);
+    );
   };
 
-  return (
-    <Card className='tw-flex tw-justify-center tw-bg-gray-50 tw-mb-2' radius={'lg'}>
-    <Box>
-    <Center> <Text color='black'>Notez votre transaction</Text></Center>
-      <Group position="center" className="">
-        <Center>
-          <div className='tw-text-30'>
-            <h2 className='tw-text-center'>{rating} étoiles</h2>
-            <div>
-              {[1, 2, 3, 4, 5].map((starValue) => (
-                <button
-                  key={starValue}
-                  onClick={() => handleRatingClick(starValue)}
-                >
-                  {starValue <= rating ? '★' : '☆'}
-                </button>
-              ))}
-            </div>
-          </div>
-        </Center>
-      </Group>
-    </Box>
-  </Card>  
-  );
-};
+  const RatingButton = () => {
+    const [rating, setRating] = useState(0);
+
+    const handleRatingClick = (value) => {
+      setRating(value);
+    };
+
+    return (
+      <Card className='tw-flex tw-justify-center tw-bg-gray-50 tw-mb-2' radius={'lg'}>
+        <Box>
+          <Center> <Text color='black'>Notez votre transaction</Text></Center>
+          <Group position="center" className="">
+            <Center>
+              <div className='tw-text-30'>
+                <h2 className='tw-text-center'>{rating} étoiles</h2>
+                <div>
+                  {[1, 2, 3, 4, 5].map((starValue) => (
+                    <button
+                      key={starValue}
+                      onClick={() => handleRatingClick(starValue)}
+                    >
+                      {starValue <= rating ? '★' : '☆'}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </Center>
+          </Group>
+        </Box>
+      </Card>
+    );
+  };
 
   function calculateDistance(lat1, lon1, lat2, lon2) {
     const R = 6371e3; // Earth's radius in meters
@@ -348,56 +348,56 @@ const RatingButton = () => {
 
       <Container>
 
-      {stap3 ? (<Box className='tw-absolute truc-fonce' >
-        <Card className='tw-flex tw-bg-gray-50 tw-mb-2' radius={'lg'}>
-          <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
-         <Center> <h1 color='black' className='tw-text-center'>Félicitation, PACE'SPORT validé !</h1></Center>
-         <br/>
-         <Center> <Text color='black'>Vous avez collecté 100 points !</Text></Center>
-         <br/>
-            {/* <Text color='dimmed'>{stap2}</Text> */}
-          </Flex>
-        </Card>
-        
-         <br/>
-<RatingButton/>
-<br/> 
-        <Group position="center" className="">
-          <Button
-            size="md"
-            onClick={toggleBoxList2}
-            className="tw-text-black tw-px-8 tw-py-3 tw-bg-gradient-to-br tw-from-gray-200 tw-to-white tw-shadow-md tw-w-full tw-rounded-2xl tw-border-2 tw-border-white hover:tw-bg-gray-200"
-          >
-            retour
-          </Button>
-        </Group></Box>) : (
-        stap2 ? (<Box className='tw-absolute truc-fonce' >
-        <Group position="center" className="">
-          <Button
-            size="md"
-            onClick={toggleBoxList3}
-            className="tw-text-black tw-px-8 tw-py-3 tw-bg-gradient-to-br tw-from-gray-200 tw-to-white tw-shadow-md tw-w-full tw-rounded-2xl tw-border-2 tw-border-white hover:tw-bg-gray-200"
-          >
-            retour
-          </Button>
-        </Group>
-        <br />
-        <Card className='tw-flex tw-bg-gray-50 tw-mb-2' radius={'lg'}>
-          <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
-         <Center> <Text color='black'>{stap2.enseigne.name}</Text></Center>
-         <Center> <Text color='black'>{stap2.description}</Text></Center>
-         <Center><Text color='black'>{stap2.title}</Text></Center>
-         <br/>
-            {/* <Text color='dimmed'>{stap2}</Text> */}
-            <ConfettiAnimation />
-          </Flex>
-        </Card></Box>) : (
-          isFlipped ? (
-            Bit
-          ) : (
-            Bit2
-          )
-        ))}
+        {stap3 ? (<Box className='tw-absolute truc-fonce' >
+          <Card className='tw-flex tw-bg-gray-50 tw-mb-2' radius={'lg'}>
+            <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
+              <Center> <h1 color='black' className='tw-text-center'>Félicitation, PACE'SPORT validé !</h1></Center>
+              <br />
+              <Center> <Text color='black'>Vous avez collecté 100 points !</Text></Center>
+              <br />
+              {/* <Text color='dimmed'>{stap2}</Text> */}
+            </Flex>
+          </Card>
+
+          <br />
+          <RatingButton />
+          <br />
+          <Group position="center" className="">
+            <Button
+              size="md"
+              onClick={toggleBoxList2}
+              className="tw-text-black tw-px-8 tw-py-3 tw-bg-gradient-to-br tw-from-gray-200 tw-to-white tw-shadow-md tw-w-full tw-rounded-2xl tw-border-2 tw-border-white hover:tw-bg-gray-200"
+            >
+              retour
+            </Button>
+          </Group></Box>) : (
+          stap2 ? (<Box className='tw-absolute truc-fonce' >
+            <Group position="center" className="">
+              <Button
+                size="md"
+                onClick={toggleBoxList3}
+                className="tw-text-black tw-px-8 tw-py-3 tw-bg-gradient-to-br tw-from-gray-200 tw-to-white tw-shadow-md tw-w-full tw-rounded-2xl tw-border-2 tw-border-white hover:tw-bg-gray-200"
+              >
+                retour
+              </Button>
+            </Group>
+            <br />
+            <Card className='tw-flex tw-bg-gray-50 tw-mb-2' radius={'lg'}>
+              <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
+                <Center> <Text color='black'>{stap2.enseigne.name}</Text></Center>
+                <Center> <Text color='black'>{stap2.description}</Text></Center>
+                <Center><Text color='black'>{stap2.title}</Text></Center>
+                <br />
+                {/* <Text color='dimmed'>{stap2}</Text> */}
+                <ConfettiAnimation />
+              </Flex>
+            </Card></Box>) : (
+            isFlipped ? (
+              Bit
+            ) : (
+              Bit2
+            )
+          ))}
 
         <Box>
           <Container className="tw-mt-6">
@@ -447,7 +447,7 @@ const RatingButton = () => {
 }
 
 export async function getServerSideProps(context) {
-  const token = context.req.cookies['token']
+  const token = context.req.cookies['token_v2']
   let avatar = await fetch(`${process.env.API_URL}/api/user/avatar`, {
     headers: new Headers({
       'JWTAuthorization': `Bearer ${token}`,

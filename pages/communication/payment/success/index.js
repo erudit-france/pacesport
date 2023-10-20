@@ -18,7 +18,7 @@ export default function Page(props) {
             <div className="tw-container tw-mx-auto tw-px-2">
                 <Stack>
                     <Center>
-                        <FiCheckCircle  className="tw-text-green-700" size={56}/>
+                        <FiCheckCircle className="tw-text-green-700" size={56} />
                     </Center>
                     <Title mt={'lg'} align="center" order={3} className="tw-text-gray-800">Transaction validée</Title>
                 </Stack>
@@ -29,7 +29,7 @@ export default function Page(props) {
 
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token']
+    const token = context.req.cookies['token_v2']
 
     let url = context.req.headers.referer
     let previousUrl = url === undefined ? '/profil/sponsor/' : url
@@ -38,8 +38,8 @@ export async function getServerSideProps(context) {
     if (user.code == 401) {
         return {
             redirect: {
-            permanent: false,
-            destination: "/login"
+                permanent: false,
+                destination: "/login"
             }
         }
     }

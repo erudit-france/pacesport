@@ -18,7 +18,7 @@ export default function Page(props) {
             <div className="tw-container tw-mx-auto tw-px-2">
                 <Stack>
                     <Center>
-                        <FiXCircle  className="tw-text-red-700" size={56}/>
+                        <FiXCircle className="tw-text-red-700" size={56} />
                     </Center>
                     <Title mt={'lg'} align="center" order={3} className="tw-text-gray-800">Erreur transaction</Title>
                     <Title mt={'lg'} align="center" order={6} className="tw-text-gray-500">Veuillez réssayer plus tard</Title>
@@ -31,7 +31,7 @@ export default function Page(props) {
 
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token']
+    const token = context.req.cookies['token_v2']
 
     let url = context.req.headers.referer
     let previousUrl = url === undefined ? '/profil/sponsor/' : url
@@ -40,8 +40,8 @@ export async function getServerSideProps(context) {
     if (user.code == 401) {
         return {
             redirect: {
-            permanent: false,
-            destination: "/login"
+                permanent: false,
+                destination: "/login"
             }
         }
     }

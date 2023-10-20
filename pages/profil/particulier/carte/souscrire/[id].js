@@ -78,7 +78,7 @@ export default function Page(props) {
     fetch(`/api/stripe/subscriptionLinks`, {
       method: 'POST',
       headers: new Headers({
-        'JWTAuthorization': `Bearer ${getCookie('token')}`
+        'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
       }),
       body: JSON.stringify({
         cancelUrl: cancelUrl,
@@ -108,7 +108,7 @@ export default function Page(props) {
     setOffers([])
     fetch(`/api/sponsoring-offer-sponsor-active/${selectedAssociation}`, {
       headers: new Headers({
-        'JWTAuthorization': `Bearer ${getCookie('token')}`,
+        'JWTAuthorization': `Bearer ${getCookie('token_v2')}`,
       })
     }
     ).then(res => res.json())
@@ -329,7 +329,7 @@ export default function Page(props) {
 
 export async function getServerSideProps(context) {
   const id = context.query.id
-  const token = context.req.cookies['token']
+  const token = context.req.cookies['token_v2']
   let avatar = await fetch(`${process.env.API_URL}/api/user/avatar`, {
     headers: new Headers({
       'JWTAuthorization': `Bearer ${token}`,

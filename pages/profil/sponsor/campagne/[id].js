@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Flex, Group, Space, Text, TextInput, Textarea, Title} from "@mantine/core"; 
+import { Box, Button, Divider, Flex, Group, Space, Text, TextInput, Textarea, Title } from "@mantine/core";
 import { BsArrowLeft } from "react-icons/bs";
 import Layout from "./layout"
 import moment from "moment"
@@ -22,159 +22,165 @@ export default function Page(props) {
   const DiscountOfferSection = () => {
     if (offer == null) {
       return (
-        <Box  className="tw-border-[1] tw-border-t-[#d61515] tw-border-b-[#d61515] tw-p-4">
+        <Box className="tw-border-[1] tw-border-t-[#d61515] tw-border-b-[#d61515] tw-p-4">
           <Title order={4} align="center">Mon offre</Title>
           <form onSubmit={form.onSubmit((values) => submitHandler(values))}>
             <Textarea autosize label="Description" withAsterisk minRows={4} radius={'md'}
-                        {...form.getInputProps('description')} />
+              {...form.getInputProps('description')} />
             <Flex justify={'center'} mt={'md'}>
-              <Button className="tw-mx-auto tw-bg-lime-600 hover:tw-bg-teal-600" 
-                radius={'lg'} size="sm" variant="filled" 
+              <Button className="tw-mx-auto tw-bg-lime-600 hover:tw-bg-teal-600"
+                radius={'lg'} size="sm" variant="filled"
                 type="submit" disabled={loading}>Envoyer</Button></Flex>
           </form>
         </Box>
       )
     }
     return (
-      <Box  className="tw-border-[1] tw-border-t-[#d61515] tw-border-b-[#d61515] tw-p-4">
+      <Box className="tw-border-[1] tw-border-t-[#d61515] tw-border-b-[#d61515] tw-p-4">
         <Title order={4} align="center">Mon offre</Title>
-          <Textarea autosize label="Créée le" radius={'md'} readOnly
-            value={moment(offer.createdAt).format('DD/MM/YYYY')} />
-          <Textarea autosize label="Description" minRows={4} radius={'md'} readOnly
-            value={offer.description} />
-          
-          {offer.isAccepted &&
-            <Text className="tw-text-green-600 tw-font-semibold" mt={'md'} fz={'sm'} align="center">Offre validée par l'association</Text>
-          }
+        <Textarea autosize label="Créée le" radius={'md'} readOnly
+          value={moment(offer.createdAt).format('DD/MM/YYYY')} />
+        <Textarea autosize label="Description" minRows={4} radius={'md'} readOnly
+          value={offer.description} />
 
-          {!offer.isAccepted &&
-            <Text className="tw-text-gold-500 tw-font-semibold" mt={'md'} fz={'sm'} align="center">En attente de validation par l'association</Text>
-          }
+        {offer.isAccepted &&
+          <Text className="tw-text-green-600 tw-font-semibold" mt={'md'} fz={'sm'} align="center">Offre validée par l'association</Text>
+        }
+
+        {!offer.isAccepted &&
+          <Text className="tw-text-gold-500 tw-font-semibold" mt={'md'} fz={'sm'} align="center">En attente de validation par l'association</Text>
+        }
       </Box>
     )
   }
 
   const form = useForm({
-      initialValues: {
-          description: '',
-      },
-      validate: {
-        description: (value) => (value != '' ? null : 'Veuillez saisir une description'),
-      },
+    initialValues: {
+      description: '',
+    },
+    validate: {
+      description: (value) => (value != '' ? null : 'Veuillez saisir une description'),
+    },
   });
 
   const submitHandler = (values) => {
     setLoading(true)
-    let body = serialize({...values, cardId: card.id});
+    let body = serialize({ ...values, cardId: card.id });
     fetch(`/api/discount-offer`, {
-        method: 'POST',
-        headers: new Headers({
-          'JWTAuthorization': `Bearer ${getCookie('token')}`
-        }),
-        body: body
-      })
-    .then(res => res.json())
-    .then(res => {
+      method: 'POST',
+      headers: new Headers({
+        'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+      }),
+      body: body
+    })
+      .then(res => res.json())
+      .then(res => {
         if (res.data) {
           Toast.success(res.data.message)
           router.push('/profil/sponsor')
         }
       })
-    .catch((error) => { Toast.error('Erreur pendant l\'enregistrement de l\'offre') })
+      .catch((error) => { Toast.error('Erreur pendant l\'enregistrement de l\'offre') })
     form.reset();
-      setLoading(false)
+    setLoading(false)
   }
   return (
-      <>
-        <Head><title>Pace'Sport - Sponsor - Campagne</title></Head>
-        <section className="tw-p-3 tw-pt-0">
-          <Flex>
+    <>
+      <Head><title>Pace'Sport - Sponsor - Campagne</title></Head>
+      <section className="tw-p-3 tw-pt-0">
+        <Flex>
           <Button variant="filled" id="goBackButton" size="sm"
-                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
-                hover:tw-bg-gray-100 hover:tw-text-black tw-ml-5 tw-rounded-full" 
-                radius={'xl'}><BsArrowLeft /></Button>
-            <Title order={3} align="center" transform="capitalize" className="tw-flex-1">{card.name}</Title>
+            className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+                hover:tw-bg-gray-100 hover:tw-text-black tw-ml-5 tw-rounded-full"
+            radius={'xl'}><BsArrowLeft /></Button>
+          <Title order={3} align="center" transform="capitalize" className="tw-flex-1">{card.name}</Title>
+        </Flex>
+        <Group my={'md'} className="tw-rounded-xl tw-border-[1px] tw-border-gray-400 tw-p-2">
+          <Text className='' color="">Association:</Text>
+          <Text className="tw-font-light">{card.association.name}</Text>
+        </Group>
+        <div className="tw-rounded-xl tw-border-[1px] tw-border-gray-400 tw-shadow-sm tw-p-3">
+          <Flex>
+            <Flex direction={'column'} className="tw-flex-1 tw-ml-3">
+              <Text size={'sm'} className="tw-font-semibold">{card.nom}</Text>
+              <Text size={'sm'}>Du {moment(card.dateDebut).format('DD/MM/YYYY')} au {moment(card.dateFin).format('DD/MM/YYYY')}</Text>
+            </Flex>
           </Flex>
-          <Group my={'md'} className="tw-rounded-xl tw-border-[1px] tw-border-gray-400 tw-p-2">
-            <Text className='' color="">Association:</Text>
-            <Text className="tw-font-light">{card.association.name}</Text>
-          </Group>
-          <div className="tw-rounded-xl tw-border-[1px] tw-border-gray-400 tw-shadow-sm tw-p-3">
-              <Flex>
-                  <Flex direction={'column'} className="tw-flex-1 tw-ml-3">
-                      <Text size={'sm'} className="tw-font-semibold">{card.nom}</Text>
-                      <Text size={'sm'}>Du {moment(card.dateDebut).format('DD/MM/YYYY')} au {moment(card.dateFin).format('DD/MM/YYYY')}</Text>
-                  </Flex>
-              </Flex>
-          </div>
-
-          
-          <div className="tw-rounded-xl tw-border-[1px] tw-border-gray-400 tw-shadow-sm tw-p-3 tw-mt-2">
-              <Flex>
-                  {/* <PageStatusIndicator page={2} currentPage={2} relative={false}/> */}
-                  <Flex direction={'column'} className="tw-flex-1 tw-ml-3">
-                      <Text size={'sm'} className="">Montant {card.prix}</Text>
-                      <Text size={'sm'}>Nombre de cartes {acceptedOffers.length}</Text>
-                  </Flex>
-              </Flex>
-          </div>
-        </section>
+        </div>
 
 
-        <Divider my="xl" h={'lg'}/>
+        <div className="tw-rounded-xl tw-border-[1px] tw-border-gray-400 tw-shadow-sm tw-p-3 tw-mt-2">
+          <Flex>
+            {/* <PageStatusIndicator page={2} currentPage={2} relative={false}/> */}
+            <Flex direction={'column'} className="tw-flex-1 tw-ml-3">
+              <Text size={'sm'} className="">Montant {card.prix}</Text>
+              <Text size={'sm'}>Nombre de cartes {acceptedOffers.length}</Text>
+            </Flex>
+          </Flex>
+        </div>
+      </section>
 
-        <DiscountOfferSection />
 
-        <Box mt={'xl'}>
-            <Title align="center" color="white" className="tw-bg-[#d61515] tw-font-light tw-pb-1" order={6}>Offres validées par l'association</Title>
-            <AssociationAcceptedOffers offers={acceptedOffers} />
-            <Space my={'lg'} />
-        </Box>  
-        <script dangerouslySetInnerHTML={{ __html: `
+      <Divider my="xl" h={'lg'} />
+
+      <DiscountOfferSection />
+
+      <Box mt={'xl'}>
+        <Title align="center" color="white" className="tw-bg-[#d61515] tw-font-light tw-pb-1" order={6}>Offres validées par l'association</Title>
+        <AssociationAcceptedOffers offers={acceptedOffers} />
+        <Space my={'lg'} />
+      </Box>
+      <script dangerouslySetInnerHTML={{
+        __html: `
             // Attacher un gestionnaire d'événements au bouton
             document.getElementById('goBackButton').addEventListener('click', function() {
                 // Appeler la fonction pour revenir en arrière dans l'historique
                 window.history.back();
             });
         `}} />
-      </>
+    </>
   )
 }
 
 export async function getServerSideProps(context) {
-    const id = context.query.id
-    const token = context.req.cookies['token']
-    const res = await fetch(`${process.env.API_URL}/api/discount-card/${id}`, {
-      headers: new Headers({
-              'JWTAuthorization': `Bearer ${token}`,
-      })}
-      )
-    const data = await res.json()
-    
-    let offerRes = await fetch(`${process.env.API_URL}/api/discount-enseigne-offer-pending/${id}`, {
-      headers: new Headers({
-              'JWTAuthorization': `Bearer ${token}`,
-      })}
-      )
-    let offerData = await offerRes.json()
+  const id = context.query.id
+  const token = context.req.cookies['token_v2']
+  const res = await fetch(`${process.env.API_URL}/api/discount-card/${id}`, {
+    headers: new Headers({
+      'JWTAuthorization': `Bearer ${token}`,
+    })
+  }
+  )
+  const data = await res.json()
 
-    let acceptedOffersRes = await fetch(`${process.env.API_URL}/api/discount-enseigne-all-offer-accepted/${id}`, {
-      headers: new Headers({
-              'JWTAuthorization': `Bearer ${token}`,
-      })}
-      )
-    let acceptedOffers = await acceptedOffersRes.json()
-    
-    // // Pass data to the page via props
-    return { props: { 
+  let offerRes = await fetch(`${process.env.API_URL}/api/discount-enseigne-offer-pending/${id}`, {
+    headers: new Headers({
+      'JWTAuthorization': `Bearer ${token}`,
+    })
+  }
+  )
+  let offerData = await offerRes.json()
+
+  let acceptedOffersRes = await fetch(`${process.env.API_URL}/api/discount-enseigne-all-offer-accepted/${id}`, {
+    headers: new Headers({
+      'JWTAuthorization': `Bearer ${token}`,
+    })
+  }
+  )
+  let acceptedOffers = await acceptedOffersRes.json()
+
+  // // Pass data to the page via props
+  return {
+    props: {
       card: JSON.parse(data.data),
       offer: JSON.parse(offerData.data),
       acceptedOffers: JSON.parse(acceptedOffers.data)
-    } }
+    }
   }
-  
-  Page.getLayout = function getLayout(page) {
-    return (
-      <Layout>{page}</Layout>
-    )
-  }
+}
+
+Page.getLayout = function getLayout(page) {
+  return (
+    <Layout>{page}</Layout>
+  )
+}

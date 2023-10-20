@@ -72,7 +72,7 @@ export default function Page() {
         method: 'POST',
         type: 'cors',
         headers: new Headers({
-          'JWTAuthorization': `Bearer ${getCookie('token')}`
+          'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
         }),
         body: formData
       })
@@ -100,7 +100,7 @@ export default function Page() {
         method: 'POST',
         type: 'cors',
         headers: new Headers({
-          'JWTAuthorization': `Bearer ${getCookie('token')}`
+          'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
         }),
         body: statusForm
       })
@@ -128,7 +128,7 @@ export default function Page() {
       method: 'POST',
       type: 'cors',
       headers: new Headers({
-        'JWTAuthorization': `Bearer ${getCookie('token')}`
+        'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
       }),
       body: body
     })

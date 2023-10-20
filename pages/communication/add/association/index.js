@@ -67,7 +67,7 @@ export default function Page(props) {
         fetch(`/api/communication/association`, {
             method: 'POST',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
             }),
             body: body
         })
@@ -150,7 +150,7 @@ export default function Page(props) {
                     <Text>{price} €</Text>
                 </Group>
                 <Center mt={'lg'}>
-                    <iframe  className="tw-w-full" height={600} src={iframeUrl}></iframe>
+                    <iframe className="tw-w-full" height={600} src={iframeUrl}></iframe>
                 </Center>
             </Modal>
         </>
@@ -159,7 +159,7 @@ export default function Page(props) {
 
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token']
+    const token = context.req.cookies['token_v2']
 
     let url = context.req.headers.referer
     let previousUrl = url === undefined ? '/profil/sponsor/' : url
@@ -176,8 +176,8 @@ export async function getServerSideProps(context) {
     if (user.code == 401) {
         return {
             redirect: {
-            permanent: false,
-            destination: "/login"
+                permanent: false,
+                destination: "/login"
             }
         }
     }
@@ -188,7 +188,7 @@ export async function getServerSideProps(context) {
         props: {
             credit: JSON.parse(creditData.data.credit),
             cancelUrl: `${process.env.NEXT_URL}${context.resolvedUrl}`,
-            baseUrl: `${process.env.NEXT_URL}`.replace('http://','https://'),
+            baseUrl: `${process.env.NEXT_URL}`.replace('http://', 'https://'),
             user: user
         }
     }

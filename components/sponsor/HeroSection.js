@@ -12,16 +12,16 @@ const { useState } = require("react");
 const { RiImageAddFill } = require("react-icons/ri");
 const { RxCross2, RxCheck } = require("react-icons/rx");
 
-const HeroSection = ({avatar, background}) => {
+const HeroSection = ({ avatar, background }) => {
     const originalImage = '/uploads/'.concat(avatar);
     const [image, setImage] = useState(originalImage)
     const [editing, edit] = useDisclosure(false)
     const [imageFile, setImageFile] = useState(null)
-    const originalBackgroundImage = background ? '/uploads/'+background : '/chair.jpg'
-    const [backgroundImage, setBackground] = useState(background ? '/uploads/'+background : '/chair.jpg')
+    const originalBackgroundImage = background ? '/uploads/' + background : '/chair.jpg'
+    const [backgroundImage, setBackground] = useState(background ? '/uploads/' + background : '/chair.jpg')
     const [backgroundImageFile, setBackgroundImageFile] = useState(null)
     const [editingBackground, editBackground] = useDisclosure(false)
-    
+
     const backgroundHandler = (file) => {
         const url = URL.createObjectURL(file)
         setBackground(url)
@@ -41,17 +41,17 @@ const HeroSection = ({avatar, background}) => {
             edit.close()
             return
         }
-        
+
         const formData = new FormData()
         formData.append('file', backgroundImageFile)
         fetch(`/api/file/upload`, {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
             }),
             body: formData
-            })
+        })
             .then(res => res.json())
             .then(res => {
                 if (res.data.code == 1) {
@@ -61,28 +61,28 @@ const HeroSection = ({avatar, background}) => {
                         method: 'POST',
                         type: 'cors',
                         headers: new Headers({
-                        'JWTAuthorization': `Bearer ${getCookie('token')}`
+                            'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
                         }),
                         body: body
                     })
-                    .then(res => res.json())
+                        .then(res => res.json())
                         .then(res => {
-                            res.data.code == 1 
+                            res.data.code == 1
                                 ? Toast.success(res.data.message)
                                 : Toast.error(res.data.message)
                         })
-                        .catch((error) => { 
-                            Toast.error('Erreur pendant le téléchargement de l\'image') 
+                        .catch((error) => {
+                            Toast.error('Erreur pendant le téléchargement de l\'image')
                         })
                 } else {
                     Toast.error(res.data.message)
                 }
             })
-            .catch((error) => { 
+            .catch((error) => {
                 console.log('error', error)
-                Toast.error('Erreur pendant le téléchargement de l\'image') 
+                Toast.error('Erreur pendant le téléchargement de l\'image')
             })
-            editBackground.close()
+        editBackground.close()
     }
 
     const uploadHandler = (file) => {
@@ -109,10 +109,10 @@ const HeroSection = ({avatar, background}) => {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
             }),
             body: formData
-            })
+        })
             .then(res => res.json())
             .then(res => {
                 if (res.data.code == 1) {
@@ -122,26 +122,26 @@ const HeroSection = ({avatar, background}) => {
                         method: 'POST',
                         type: 'cors',
                         headers: new Headers({
-                        'JWTAuthorization': `Bearer ${getCookie('token')}`
+                            'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
                         }),
                         body: body
                     })
-                    .then(res => res.json())
+                        .then(res => res.json())
                         .then(res => {
-                            res.data.code == 1 
+                            res.data.code == 1
                                 ? Toast.success(res.data.message)
                                 : Toast.error(res.data.message)
                         })
-                        .catch((error) => { 
-                            Toast.error('Erreur pendant le téléchargement de l\'image') 
+                        .catch((error) => {
+                            Toast.error('Erreur pendant le téléchargement de l\'image')
                         })
                 } else {
                     Toast.error(res.data.message)
                 }
             })
-            .catch((error) => { 
+            .catch((error) => {
                 console.log('error', error)
-                Toast.error('Erreur pendant le téléchargement de l\'image') 
+                Toast.error('Erreur pendant le téléchargement de l\'image')
             })
         edit.close()
     }
@@ -165,8 +165,8 @@ const HeroSection = ({avatar, background}) => {
         return (
             <Box className="tw-absolute tw-z-20 tw-bottom-0 tw-right-0">
                 <FileButton onChange={uploadHandler} accept="image/png,image/jpeg">
-                {(props) => <ActionIcon size={25} {...props} className="tw-bg-[#d61515] hover:tw-bg-[#d61515] tw-text-[#FFF] tw-rounded-full">
-                        <RiImageAddFill size={15} className="tw-relative tw-right-[1px]"/>
+                    {(props) => <ActionIcon size={25} {...props} className="tw-bg-[#d61515] hover:tw-bg-[#d61515] tw-text-[#FFF] tw-rounded-full">
+                        <RiImageAddFill size={15} className="tw-relative tw-right-[1px]" />
                     </ActionIcon>}
                 </FileButton>
             </Box>
@@ -184,7 +184,7 @@ const HeroSection = ({avatar, background}) => {
         }
         return (
             <FileButton onChange={backgroundHandler} accept="image/png,image/jpeg">
-                {(props) => <ActionIcon {...props}  radius={'xl'} size={'md'}
+                {(props) => <ActionIcon {...props} radius={'xl'} size={'md'}
                     className="tw-bg-white tw-text-gray-900 tw-absolute tw-right-3 tw-top-24">
                     <RiImageAddFill />
                 </ActionIcon>}
@@ -195,23 +195,23 @@ const HeroSection = ({avatar, background}) => {
     const [isDarkMode, setIsDarkMode] = useState(false);
     const containerStyle = {
         filter: isDarkMode ? 'invert(1)' : 'none'
-      };
+    };
 
     return (
         <header className='tw-flex tw-justify-center tw-h-36 tw-relative'>
-            <Image className='tw-w-full tw-h-full tw-absolute tw-object-cover -tw-z-10 tw-blur-sm tw-scale-110' fullwidth='true' src={backgroundImage} placeholder='blur' alt="Hero image"/>
+            <Image className='tw-w-full tw-h-full tw-absolute tw-object-cover -tw-z-10 tw-blur-sm tw-scale-110' fullwidth='true' src={backgroundImage} placeholder='blur' alt="Hero image" />
             <div className='tw-flex tw-flex-col tw-justify-center tw-z-30'>
                 <Box className="tw-relative tw-rounded-full">
-                    <Avatar radius={9999} size={70} src={`${image}`}  alt="Logo Pace'sport" style={containerStyle}
-                        className='hadow-sm tw-bg-transparent tw-z-20'/>
+                    <Avatar radius={9999} size={70} src={`${image}`} alt="Logo Pace'sport" style={containerStyle}
+                        className='hadow-sm tw-bg-transparent tw-z-20' />
                     <LogoButtons />
                 </Box>
             </div>
 
             <Group className='tw-flex-col tw-absolute tw-right-3 tw-top-4 tw-z-20' spacing={'md'}>
-                <ActionIcon component='a' href='/parametres?prev=/profil/sponsor' 
+                <ActionIcon component='a' href='/parametres?prev=/profil/sponsor'
                     className='tw-text-black tw-rounded-full tw-bg-white tw-shadow-sm'><IoMdSettings /></ActionIcon>
-                <ActionIcon component='a' href='/communication/add/sponsor?prev=/profil/sponsor' 
+                <ActionIcon component='a' href='/communication/add/sponsor?prev=/profil/sponsor'
                     className='tw-text-black tw-rounded-full tw-bg-white tw-shadow-sm'><GoMegaphone /></ActionIcon>
             </Group>
 

@@ -21,23 +21,23 @@ import { getCurrentRapatriement } from "@/domain/repository/AssociationRepositor
 
 const useStyles = createStyles((theme) => ({
     td: {
-      padding: '5px 10px !important',
+        padding: '5px 10px !important',
     }
 }))
 
 
 const SelectItem = forwardRef(
-    ({label, icon, ...others}, ref) => (
-      <div ref={ref} {...others}>
-        <Flex justify={'space-between'}>
-            <Text size="sm">{label}</Text>
-            {icon}
-        </Flex>
-      </div>
+    ({ label, icon, ...others }, ref) => (
+        <div ref={ref} {...others}>
+            <Flex justify={'space-between'}>
+                <Text size="sm">{label}</Text>
+                {icon}
+            </Flex>
+        </div>
     )
-  );
+);
 
-  SelectItem.displayName = 'SelectItem';
+SelectItem.displayName = 'SelectItem';
 
 const FilterHeader = ({ sort, sortHandler }) => (
     <Flex justify='flex-end' px={'md'} py={'md'}>
@@ -51,20 +51,20 @@ const FilterHeader = ({ sort, sortHandler }) => (
             hover:tw-bg-gray-100 hover:tw-text-black" 
             radius={'xl'}>Offres</Button> */}
         <Select placeholder="Trier"
-                rightSection={<FaChevronDown/>}
-                size="xs"
-                radius={'xl'}
-                value={sort}
-                onChange={sortHandler}
-                defaultValue="dateDESC"
-                itemComponent={SelectItem}
-                data={[
-                    { value: 'dateASC', label: 'Date', icon: <AiOutlineArrowUp size={18}/> },
-                    { value: 'dateDESC', label: 'Date', icon: <AiOutlineArrowDown size={18}/>},
-                    { value: 'prixASC', label: 'Prix', icon: <AiOutlineArrowUp size={18}/> },
-                    { value: 'prixDESC', label: 'Prix', icon: <AiOutlineArrowDown size={18}/>}
-                ]}
-            />
+            rightSection={<FaChevronDown />}
+            size="xs"
+            radius={'xl'}
+            value={sort}
+            onChange={sortHandler}
+            defaultValue="dateDESC"
+            itemComponent={SelectItem}
+            data={[
+                { value: 'dateASC', label: 'Date', icon: <AiOutlineArrowUp size={18} /> },
+                { value: 'dateDESC', label: 'Date', icon: <AiOutlineArrowDown size={18} /> },
+                { value: 'prixASC', label: 'Prix', icon: <AiOutlineArrowUp size={18} /> },
+                { value: 'prixDESC', label: 'Prix', icon: <AiOutlineArrowDown size={18} /> }
+            ]}
+        />
     </Flex>
 )
 
@@ -77,9 +77,9 @@ export default function Page(props) {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
             }),
-            })
+        })
             .then(res => res.json())
             .then(res => {
                 if (res.data.code == 1) {
@@ -90,8 +90,8 @@ export default function Page(props) {
                 }
                 setLoading(false)
             })
-            .catch((error) => { 
-                Toast.error('Erreur pendant l\'envoi de la demande') 
+            .catch((error) => {
+                Toast.error('Erreur pendant l\'envoi de la demande')
                 setLoading(false)
             })
     }
@@ -100,31 +100,31 @@ export default function Page(props) {
         if (!rapatriement) {
             return (
                 <Button onClick={rapatriementHandler}
-                disabled={loading}
-                variant="filled" size="sm" 
-                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
-                hover:tw-bg-gray-100 hover:tw-text-black" 
-                radius={'xl'}>{'Collecter un don pour ' + props.user.association.name}</Button>
+                    disabled={loading}
+                    variant="filled" size="sm"
+                    className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+                hover:tw-bg-gray-100 hover:tw-text-black"
+                    radius={'xl'}>{'Collecter un don pour ' + props.user.association.name}</Button>
             )
         }
         return (
-            <Button 
-            disabled
-            variant="filled" size="sm" 
-            className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
-            hover:tw-bg-gray-100 hover:tw-text-black" 
-            radius={'xl'}>Demande envoyée {moment(rapatriement.createdAt).format('DD/MM/YYYY HH:mm')}</Button>
+            <Button
+                disabled
+                variant="filled" size="sm"
+                className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
+            hover:tw-bg-gray-100 hover:tw-text-black"
+                radius={'xl'}>Demande envoyée {moment(rapatriement.createdAt).format('DD/MM/YYYY HH:mm')}</Button>
         )
 
     }
 
     const NavHeader = () => (
         <Flex justify='space-between' p={'md'}>
-                    <Link href={props.id ? props.id : "/parametres"}>
-        <Button variant="filled" size="sm"
-                className="tw-bg-gray-50 tw-text-black tw-ml-5 tw-border-[1px] tw-border-gray-900
-                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full" 
-                radius={'xl'}><BsArrowLeft /></Button></Link>
+            <Link href={props.id ? props.id : "/parametres"}>
+                <Button variant="filled" size="sm"
+                    className="tw-bg-gray-50 tw-text-black tw-ml-5 tw-border-[1px] tw-border-gray-900
+                hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full"
+                    radius={'xl'}><BsArrowLeft /></Button></Link>
             <RapatriementButton />
             {/* <Link href={'/profil/association/gestion-fonds/statistiques'}><Button variant="filled" size="sm"
                 className="tw-bg-gray-50 tw-text-black tw-border-[1px] tw-border-gray-900
@@ -132,14 +132,14 @@ export default function Page(props) {
                 radius={'xl'}><SlChart /></Button></Link> */}
         </Flex>
     )
-    
+
     const [sort, setSort] = useState(null);
     const sortHandler = (v) => {
         setSort(v)
-        
+
         if (v == 'dateDESC') {
             setCalculatedList(sortByDate('DESC'))
-        } 
+        }
         if (v == 'dateASC') {
             console.log('sort == dateASC', sort)
             setCalculatedList(sortByDate('ASC'))
@@ -150,27 +150,28 @@ export default function Page(props) {
     let calculatedList = null;
     //const [calculatedList, setCalculatedList] = useState([...dummyList]);
 
-    if(dummyList != null){
-    let sortByDate  = (dir) => {
-     let list = dummyList.reduce((acc, current) => {
-        const date = current.date;
-        const found = acc.find(item => item.date === date);
-        
-        if (!found) {
-            acc.push({
-                date: date,
-                data: current.data
-            });
-        } else {
-            found.data = found.data.concat(current.data);
-        }
-        return acc;
-        }, [])
-        if (dir == 'ASC') {
-            list =  list.reverse()
-        }
-        return list;
-    };}
+    if (dummyList != null) {
+        let sortByDate = (dir) => {
+            let list = dummyList.reduce((acc, current) => {
+                const date = current.date;
+                const found = acc.find(item => item.date === date);
+
+                if (!found) {
+                    acc.push({
+                        date: date,
+                        data: current.data
+                    });
+                } else {
+                    found.data = found.data.concat(current.data);
+                }
+                return acc;
+            }, [])
+            if (dir == 'ASC') {
+                list = list.reverse()
+            }
+            return list;
+        };
+    }
 
     const totalValue = 0
     const [loading, setLoading] = useState(false);
@@ -189,28 +190,29 @@ export default function Page(props) {
         setLoading(true)
         setSearch(true)
     }
-    
-    if(props.orders){
-        const filteredData = props.orders.filter(item => 
+
+    if (props.orders) {
+        const filteredData = props.orders.filter(item =>
             item.association && item.association.id === props.user.association.id && item.isComplete == true
-          );
-          console.log(props.rapatriement)
-    calculatedList = filteredData.map((order, i) => (
-        <React.Fragment key={i}>
-            <tr className="tw-text-center tw-font-semibold tw-bg-gray-50"><td  colSpan={4}>{order.user.name}</td></tr>
-                    <tr className="tw-bg-gray-200">
-                        <td className={classes.td}>{order.user.nom + " " + order.user.prenom}</td>
-                        <td className={`${classes.td}`}>{order.user.email}</td>
-                        <td className={`${classes.td}`}>{new Date(order.createdAt).toLocaleDateString()}</td>
-                        <td className={`${classes.td} tw-text-center`}>{(rapatriement.createdAt > order.createdAt ? 'Validé' : 'En attente')}</td>
-                    </tr>
-        </React.Fragment>
-    ))}
+        );
+        console.log(props.rapatriement)
+        calculatedList = filteredData.map((order, i) => (
+            <React.Fragment key={i}>
+                <tr className="tw-text-center tw-font-semibold tw-bg-gray-50"><td colSpan={4}>{order.user.name}</td></tr>
+                <tr className="tw-bg-gray-200">
+                    <td className={classes.td}>{order.user.nom + " " + order.user.prenom}</td>
+                    <td className={`${classes.td}`}>{order.user.email}</td>
+                    <td className={`${classes.td}`}>{new Date(order.createdAt).toLocaleDateString()}</td>
+                    <td className={`${classes.td} tw-text-center`}>{(rapatriement.createdAt > order.createdAt ? 'Validé' : 'En attente')}</td>
+                </tr>
+            </React.Fragment>
+        ))
+    }
     return (
         <>
             <NavHeader />
             <Space h='md' />
-            
+
             {/* <TextInput
                 className='focus:tw-border-[#d61515] tw-mx-4 tw-mt-3'
                 size={"sm"}
@@ -227,17 +229,17 @@ export default function Page(props) {
 
             <Text className="tw-bg-[#d61515] tw-my-4 
                     tw-text-white tw-font-bold tw-text-center tw-py-3">
-                        <span>{calculatedList.length}</span> {calculatedList.length > 1 ? 'cartés' : 'carté'}</Text>
+                <span>{calculatedList.length}</span> {calculatedList.length > 1 ? 'cartés' : 'carté'}</Text>
 
             {/* <FilterHeader  sort={sort} sortHandler={sortHandler} /> */}
 
             <section>
                 <Table verticalSpacing="xs" fontSize="sm">
                     <tbody>
-                            {calculatedList != null && calculatedList.length > 0 
-                                ? calculatedList
-                                : <Text py="lg" align="center">Aucun carté</Text>
-                            }
+                        {calculatedList != null && calculatedList.length > 0
+                            ? calculatedList
+                            : <Text py="lg" align="center">Aucun carté</Text>
+                        }
                     </tbody>
                 </Table>
             </section>
@@ -246,14 +248,14 @@ export default function Page(props) {
 }
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token']
+    const token = context.req.cookies['token_v2']
     const id = context.query.prev
     let rapatriement = await getCurrentRapatriement(token)
     if (rapatriement.code == 401) {
         return {
             redirect: {
-            permanent: false,
-            destination: "/login"
+                permanent: false,
+                destination: "/login"
             }
         }
     }
@@ -261,16 +263,18 @@ export async function getServerSideProps(context) {
     let orders = await getAllOrder(token)
     orders = JSON.parse(orders.data)
     // // Pass data to the page via props
-    return { props: { 
-        rapatriement: JSON.parse(rapatriement.data),
-        orders: orders,
-        user: JSON.parse(user.data),
-        id : id
-    } }
-  }
+    return {
+        props: {
+            rapatriement: JSON.parse(rapatriement.data),
+            orders: orders,
+            user: JSON.parse(user.data),
+            id: id
+        }
+    }
+}
 
 Page.getLayout = function getLayout(page) {
     return (
-      <Layout text={'Centre de gestion'}>{page}</Layout>
+        <Layout text={'Centre de gestion'}>{page}</Layout>
     )
 }

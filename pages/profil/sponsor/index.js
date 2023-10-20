@@ -55,7 +55,7 @@ const Status = ({ offer }) => {
           method: 'POST',
           type: 'cors',
           headers: new Headers({
-            'JWTAuthorization': `Bearer ${getCookie('token')}`
+            'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
           }),
           body: body
         })
@@ -176,7 +176,7 @@ export default function Page(props) {
       description: (value) => (value != '' ? null : 'Veuillez saisir une description'),
     },
   });
-console.log(props)
+  console.log(props)
   const offerForm = useForm({
     initialValues: {
       category: '',
@@ -199,7 +199,7 @@ console.log(props)
     fetch(`/api/admin/sponsoring-offer/association/add`, {
       method: 'POST',
       headers: new Headers({
-        'JWTAuthorization': `Bearer ${getCookie('token')}`
+        'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
       }),
       body: body
     })
@@ -229,7 +229,7 @@ console.log(props)
     fetch(`/api/sponsoring-offer`, {
       method: 'POST',
       headers: new Headers({
-        'JWTAuthorization': `Bearer ${getCookie('token')}`
+        'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
       }),
       body: body
     }).then(res => res.json())
@@ -563,7 +563,7 @@ console.log(props)
 }
 
 export async function getServerSideProps(context) {
-  const token = context.req.cookies['token']
+  const token = context.req.cookies['token_v2']
   const res = await fetch(`${process.env.API_URL}/api/discount-card`, {
     headers: new Headers({
       'JWTAuthorization': `Bearer ${token}`,

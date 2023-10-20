@@ -189,7 +189,7 @@ export default function Page(props) {
         fetch(`/api/admin/sponsoring-offer-category`, {
             method: 'POST',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
             }),
             body: body
         })
@@ -219,7 +219,7 @@ export default function Page(props) {
         fetch(`/api/admin/sponsoring-offer/association/add`, {
             method: 'POST',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
             }),
             body: body
         })
@@ -345,7 +345,7 @@ export default function Page(props) {
 }
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token']
+    const token = context.req.cookies['token_v2']
     let user = await getUser(token)
     if (user.code == 401) {
         return {

@@ -101,10 +101,10 @@ export default function SignupForm({ loading }) {
               if (res.payload) {
                 if (res.payload.token) {
                   // Supprimer tous les cookies contenant le mot "token"
-                  deleteCookie('token');
+                  deleteCookie('token_v2');
 
                   // Définir le nouveau cookie
-                  setCookie('token', res.payload.token);
+                  setCookie('token_v2', res.payload.token);
                   nextPage();
                 }
               }

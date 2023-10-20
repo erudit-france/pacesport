@@ -58,7 +58,7 @@ export default function Page(props) {
     fetch(`/api/sponsoring-offer`, {
       method: 'POST',
       headers: new Headers({
-        'JWTAuthorization': `Bearer ${getCookie('token')}`
+        'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
       }),
       body: body
     }).then(res => res.json())
@@ -200,7 +200,7 @@ hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full"
 
 export async function getServerSideProps(context) {
   const id = context.query.id
-  const token = context.req.cookies['token']
+  const token = context.req.cookies['token_v2']
   const res = await fetch(`${process.env.API_URL}/api/association/get/${id}`, {
     headers: new Headers({
       'JWTAuthorization': `Bearer ${token}`,

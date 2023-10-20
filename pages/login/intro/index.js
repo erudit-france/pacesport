@@ -14,7 +14,7 @@ import { getActiveSubscription } from '@/domain/repository/OrderRepository'
 const LinkButton = ({ text, href, lock, className, onClick }) => {
     const router = useRouter()
     const logout = () => {
-        deleteCookie('token')
+        deleteCookie('token_v2')
         router.push('/login')
     }
 
@@ -57,7 +57,7 @@ const Logo = () => (
 )
 
 const logout = () => {
-    deleteCookie('token')
+    deleteCookie('token_v2')
     router.push('/login')
 }
 
@@ -66,7 +66,7 @@ export default function Page(props) {
     const context = useContext(AppContext)
     const router = useRouter()
     const logout = () => {
-        deleteCookie('token')
+        deleteCookie('token_v2')
         router.push('/login')
     }
 
@@ -136,7 +136,7 @@ export default function Page(props) {
 }
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token']
+    const token = context.req.cookies['token_v2']
     const res = await fetch(`${process.env.API_URL}/api/account/is-signup-complete`, {
         headers: new Headers({
             'JWTAuthorization': `Bearer ${token}`,

@@ -154,7 +154,7 @@ export default function Page(props) {
     setOffers([])
     fetch(`/api/sponsoring-offer-by-enseigne-active/${selectedSponsor}`, {
       headers: new Headers({
-        'JWTAuthorization': `Bearer ${getCookie('token')}`,
+        'JWTAuthorization': `Bearer ${getCookie('token_v2')}`,
       })
     }
     ).then(res => res.json())
@@ -219,7 +219,7 @@ export default function Page(props) {
           method: 'POST',
           type: 'cors',
           headers: new Headers({
-            'JWTAuthorization': `Bearer ${getCookie('token')}`
+            'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
           }),
           body: body
         })
@@ -256,7 +256,7 @@ export default function Page(props) {
     fetch(`/api/mail/invitation`, {
       method: 'POST',
       headers: new Headers({
-        'JWTAuthorization': `Bearer ${getCookie('token')}`
+        'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
       }),
       body: body
     }).then(res => res.json())
@@ -449,7 +449,7 @@ const fetchYourGeocodingAPI = async (lat, lon) => {
   }
 }
 export async function getServerSideProps(context) {
-  const token = context.req.cookies['token']
+  const token = context.req.cookies['token_v2']
 
   let avatar = await fetch(`${process.env.API_URL}/api/association/avatar`, {
     headers: new Headers({

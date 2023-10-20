@@ -138,7 +138,7 @@ export default function Navbar(props) {
     }
 
     const logout = () => {
-        deleteCookie('token')
+        deleteCookie('token_v2')
         router.push('/login')
     }
 
