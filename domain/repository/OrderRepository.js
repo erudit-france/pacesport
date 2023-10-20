@@ -3,8 +3,9 @@ const fetchApi = async (token, url, local = false) => {
     if (local) base = ''
     let res = await fetch(`${base}${url}`, {
         headers: new Headers({
-                'JWTAuthorization': `Bearer ${token}`,
-    })})
+            'JWTAuthorization': `Bearer ${token}`,
+        })
+    })
     return await res.json()
 }
 

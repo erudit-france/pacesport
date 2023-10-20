@@ -100,10 +100,20 @@ export default function SignupForm({ loading }) {
               loading(false)
               if (res.payload) {
                 if (res.payload.token) {
+                  // Supprimer tous les cookies contenant le mot "token"
+                  document.cookie.split(";").forEach(function (cookie) {
+                    let name = cookie.split("=")[0].trim();
+                    if (name.includes('token')) {
+                      document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                    }
+                  });
+
+                  // Définir le nouveau cookie
                   setCookie('token', res.payload.token)
                   nextPage()
                 }
               }
+
               if (res.code == 401) { setError(res.message) }
             })
             .catch((error) => {

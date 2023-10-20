@@ -81,7 +81,7 @@ export default function Page(props) {
         'JWTAuthorization': `Bearer ${getCookie('token')}`
       }),
       body: JSON.stringify({
-        cancelUrl: baseURL,
+        cancelUrl: cancelUrl,
         baseUrl: baseURL,
         asso: association.id,
       })
