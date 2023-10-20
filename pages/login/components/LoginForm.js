@@ -3,7 +3,7 @@ import { Alert, Button, Flex, Input, Paper, PasswordInput, Text, TextInput, Moda
 import { useRouter } from 'next/navigation';
 import { useForm } from '@mantine/form';
 import { AiOutlineInfoCircle } from 'react-icons/ai'
-import { setCookie, getCookie } from 'cookies-next';
+import { setCookie, getCookie, deleteCookie } from 'cookies-next';
 import { useContext } from 'react';
 import { serialize } from "object-to-formdata";
 import { AppContext } from '@/context/AppContext';
@@ -91,6 +91,12 @@ export default function LoginForm({ loading }) {
       .then((res) => res.json())
       .then((res) => {
         if (res.payload && res.payload.token) {
+          document.cookie.split(";").forEach(function (cookie) {
+            let name = cookie.split("=")[0].trim();
+            if (name.includes('token')) {
+              deleteCookie(name);
+            }
+          });
           // Utilisez setItem pour sauvegarder le token dans le localStorage
           localStorage.setItem('token', res.payload.token);
           // Si vous souhaitez utiliser des cookies à la place de localStorage

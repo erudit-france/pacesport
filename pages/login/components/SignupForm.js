@@ -6,7 +6,7 @@ import { useForm } from '@mantine/form';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { BiLinkExternal } from 'react-icons/bi'
 import HCaptcha from '@hcaptcha/react-hcaptcha';
-import { setCookie, getCookie } from 'cookies-next';
+import { setCookie, getCookie, deleteCookie } from 'cookies-next';
 import { useRouter } from 'next/navigation';
 export default function SignupForm({ loading }) {
   const [token, setToken] = useState(null);
@@ -104,13 +104,13 @@ export default function SignupForm({ loading }) {
                   document.cookie.split(";").forEach(function (cookie) {
                     let name = cookie.split("=")[0].trim();
                     if (name.includes('token')) {
-                      document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                      deleteCookie(name);
                     }
                   });
 
                   // Définir le nouveau cookie
-                  setCookie('token', res.payload.token)
-                  nextPage()
+                  setCookie('token', res.payload.token);
+                  nextPage();
                 }
               }
 
