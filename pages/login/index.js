@@ -24,9 +24,9 @@ export default function Page() {
             const token = localStorage.getItem('token_v2');
             if (token) {
                 deleteCookie('token_v2');
-                // const EXPIRATION_TIME = 60 * 60 * 24;
-                // document.cookie = `token=${token};max-age=${EXPIRATION_TIME}`;
-                setCookie('token_v2', token);
+                const EXPIRATION_TIME = 60 * 60 * 24;
+                document.cookie = `token_v2=${token};max-age=${EXPIRATION_TIME}`;
+                // setCookie('token_v2', token);
                 setVisible(true);
                 setIsCssLoaded(false);
                 router.push('/login/as').then(() => {

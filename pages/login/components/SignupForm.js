@@ -104,7 +104,9 @@ export default function SignupForm({ loading }) {
                   deleteCookie('token_v2');
 
                   // Définir le nouveau cookie
-                  setCookie('token_v2', res.payload.token);
+                  const EXPIRATION_TIME = 60 * 60 * 24;
+                  document.cookie = `token_v2=${token};max-age=${EXPIRATION_TIME}`;
+                  // setCookie('token_v2', res.payload.token);
                   nextPage();
                 }
               }
