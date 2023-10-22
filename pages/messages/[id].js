@@ -65,7 +65,8 @@ const ChatHeader = () => {
             .catch(err => console.log(err))
     }, [contactId])
 
-    const names = user[0];
+    const names = user;
+    console.log(user)
     return (
         <header className="tw-shadow-sm tw-py-1">
             <Flex mx={'md'} justify={"space-between"} className="tw-relative">

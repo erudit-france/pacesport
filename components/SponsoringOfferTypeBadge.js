@@ -1,7 +1,7 @@
 import { Badge } from "@mantine/core"
 
 export default function SponsoringOfferTypeBadge({offer}) {
-    let type = 'Offre spéciale'
+    let type = 'Offre exclusive'
     let color = 'green'
     if (offer.type) {
         // Nationale
@@ -13,7 +13,7 @@ export default function SponsoringOfferTypeBadge({offer}) {
             )
         // Locale
         } else {
-            type = 'Offre spéciale'
+            type = 'Offre exclusive'
             color = 'green'
             return (
                 <Badge size="xs" className="tw-font-normal tw-shadow-sm" variant="outline" color={color}>{type}</Badge>

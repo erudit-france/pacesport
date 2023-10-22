@@ -16,7 +16,7 @@ import AssociationCardParticulier from '@/components/AssociationCardParticulier'
 import CommunicationAdsCarousel from '@/components/CommunicationAdsCarousel'
 import moment from 'moment'
 import { getActiveOffers } from '@/domain/repository/CardOffersRepository'
-import { FaMapMarkerAlt } from 'react-icons/fa'
+import { FaAt, FaMapMarkerAlt } from 'react-icons/fa'
 import SponsoringOfferTypeBadge from '@/components/SponsoringOfferTypeBadge'
 import ReactCardFlip from 'react-card-flip'
 import { getUser } from '@/domain/repository/UserRepository'
@@ -32,21 +32,24 @@ export default function Page(props) {
   const [stap2, setStap2] = useState(null)
   const [showBoxList, setShowBoxList] = useState(false);
   const [filteredOffersNearby, setFilteredOffersNearby] = useState([]);
+  const [filteredOffersNearby2, setFilteredOffersNearby2] = useState(filteredOffersNearby);
+  const [filteredOffers3, setFilteredOffers3] = useState([]);
   const [selectedBox, setSelectedBox] = useState(null);
   const [confettiActive, setConfettiActive] = useState(false);
   const [error, setError] = useState(null);
+  const [searchText, setSearchText] = useState('');
   const pacesportCardSrc = props.pacesportCard?.image?.name ? `/uploads/${props.pacesportCard?.image?.name}` : '/logo.png'
   const standaloneCard = <>
     <Center>
       <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
         <Box className="tw-rounded-[17px] tw-border-[1px] tw-relative tw-border-zinc-900 tw-shadow-lg">
-          <Image
+          {/* <Image
             className="tw-rounded-xl tw-absolute tw-left-5 tw-z-10 tw-opacity-80 -tw-translate-y-full tw-top-10"
             width={36}
             height={36}
             src={`/uploads/${pacesportSubscription.association.avatar?.name}`}
             alt="logo sim"
-          />
+          /> */}
           <Image
             className="tw-rounded-xl"
             radius={'lg'}
@@ -74,18 +77,29 @@ export default function Page(props) {
   </>
 
   const OfferRow = ({ offer }) => (
-    <Card className='tw-flex tw-bg-gray-50 tw-mb-2' radius={'lg'}>
+    <Card className='tw-flex tw-bg-gray-200 tw-mb-2' radius={'lg'}>
       <Center>
-        <Avatar className='tw-shadow-md' radius={'lg'} src={`/uploads/${offer?.enseigne?.avatar?.name}`} />
+        <Avatar className='tw-shadow-md' radius={'lg'} src={`/uploads/${offer.enseigne?.avatar?.name}`} />
       </Center>
       <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
         <Flex justify={'space-between'}>
-          <Text weight={550}>{offer?.enseigne?.name} <SponsoringOfferTypeBadge offer={offer} /></Text>
+          <Text weight={550}>{offer?.enseigne.name} <SponsoringOfferTypeBadge offer={offer} /></Text>
           <Text className='tw-flex tw-font-light' fz={'sm'}>
-            <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />{offer?.enseigne?.city}</Text>
+            {offer?.title === "online" ? (
+              // Si offer.title est "online", affiche uniquement l'icône FaMapMarkerAlt
+              <FaAt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />
+            ) : (
+              // Sinon, affiche l'icône FaMapMarkerAlt suivi de l'attribut offer.enseigne.ville si celui-ci est défini
+              <>
+                <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />
+                {offer.enseigne && offer.enseigne.ville ? offer.enseigne.ville : null}
+              </>
+            )}
+          </Text>
+
         </Flex>
-        <Text color='dimmed'>{offer?.description}</Text>
-        <Text color='dimmed'>{offer?.title}</Text>
+        <Text color='dimmed'>{offer.description}</Text>
+        <Text color='dimmed'>{offer?.title == "online" ? "Boutique en ligne" : ("Distance : " + (parseInt(offer?.title) > 1000 ? (offer?.title / 1000).toFixed(0) : offer?.title) + " " + (parseInt(offer?.title) > 1000 ? "km" : "mètres"))}</Text>
       </Flex>
     </Card>
   )
@@ -101,6 +115,22 @@ export default function Page(props) {
     </Transition>
   </>
 
+  const handleSearch = (text) => {
+    setSearchText(text);
+    const filtered = filteredOffersNearby.filter((offer) =>
+      offer.description.toLowerCase().includes(text.toLowerCase())
+    );
+    setFilteredOffersNearby2(filtered);
+  }
+
+  const handleSearch2 = (text) => {
+    setSearchText(text);
+    const filtered = filteredOffers.filter((offer) =>
+      offer.description.toLowerCase().includes(text.toLowerCase())
+    );
+    setFilteredOffers3(filtered);
+  }
+
   useEffect(() => {
     // Obtenir la position actuelle
     navigator.geolocation.getCurrentPosition(
@@ -110,22 +140,18 @@ export default function Page(props) {
 
         const filteredOffersNearby2 = await Promise.all(
           filteredOffers.map(async (offer) => {
-            const address = offer.enseigne.address;
-            const osmGeocodingUrl = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURI(address)}`;
             try {
-              const response = await fetch(osmGeocodingUrl);
-              const data = await response.json();
-              if (data.length > 0) {
-                const { lat: offerLat, lon: offerLon } = data[0];
-                const distance = calculateDistance(lat, lon, offerLat, offerLon);
-                offer.title = `Distance : ${distance} meters`;
-                console.log("okD" + distance);
+              console.log(offer.enseigne.latitude)
+              if (offer.enseigne.latitude === "0" && offer.enseigne.longitude === "0") {
+                offer.title = 'online'
+                return true
+              }
+              else {
+                const distance = calculateDistance(lat, lon, offer.enseigne.latitude, offer.enseigne.longitude);
+                offer.title = `${(distance).toFixed(0)}`;
                 return distance <= 40000;
-              } else {
-                return false; // Coordonnées non trouvées
               }
             } catch (error) {
-              console.error(`Error while fetching coordinates for address: ${address}`, error);
               return false;
             }
           })
@@ -136,6 +162,8 @@ export default function Page(props) {
 
         // Vous avez maintenant une liste d'offres pour lesquelles la valeur retournée était true
         setFilteredOffersNearby(filteredTrueOffers);
+        setFilteredOffersNearby2(filteredTrueOffers);
+        setFilteredOffers3(filteredOffers);
       },
       (error) => {
         setError(`Error while getting location: ${error.message}`);
@@ -213,11 +241,20 @@ export default function Page(props) {
             retour
           </Button>
         </Group>
+        <Center>
+          <input
+            type="text"
+            placeholder="Rechercher par description..."
+            value={searchText}
+            onChange={(e) => handleSearch2(e.target.value)}
+            className="tw-bg-gray-100 tw-rounded-full tw-py-2 tw-px-4 tw-w-full tw-mt-4 tw-text-sm tw-focus:tw-outline-none tw-border tw-border-gray-300"
+          />
+        </Center>
         <br />
-        {filteredOffersNearby.length === 0 ? (
+        {filteredOffers3.sort(compareOffers).length === 0 ? (
           <Center><h2 className="tw-text-white">Aucune offre n'a été trouvée à proximité.</h2></Center>
         ) : (
-          filteredOffersNearby.map((offer) => (
+          filteredOffers3.sort(compareOffers).map((offer) => (
             <div key={offer.title} onClick={() => selectBox(offer)}>
               <OfferRow key={offer?.title} offer={offer} />
             </div>
@@ -325,6 +362,28 @@ export default function Page(props) {
     );
   };
 
+  function compareOffers(offerA, offerB) {
+    const titleA = offerA.title;
+    const titleB = offerB.title;
+
+    if (titleA === "online" && titleB === "online") {
+      return 0; // Les deux sont "online", pas de changement d'ordre.
+    }
+
+    if (titleA === "online") {
+      return -1; // L'élément avec titleA "online" doit aller en premier.
+    }
+
+    if (titleB === "online") {
+      return 1; // L'élément avec titleB "online" doit aller en premier.
+    }
+
+    // Si aucun des deux n'est "online", comparez-les en tant que nombres.
+    const numberA = titleA !== null ? parseInt(titleA, 10) : 0;
+    const numberB = titleB !== null ? parseInt(titleB, 10) : 0;
+    return numberA - numberB;
+  }
+
   function calculateDistance(lat1, lon1, lat2, lon2) {
     const R = 6371e3; // Earth's radius in meters
     const lat1Rad = (lat1 * Math.PI) / 180;
@@ -386,7 +445,6 @@ export default function Page(props) {
               <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
                 <Center> <Text color='black'>{stap2.enseigne.name}</Text></Center>
                 <Center> <Text color='black'>{stap2.description}</Text></Center>
-                <Center><Text color='black'>{stap2.title}</Text></Center>
                 <br />
                 {/* <Text color='dimmed'>{stap2}</Text> */}
                 <ConfettiAnimation />
@@ -409,8 +467,8 @@ export default function Page(props) {
               {pacesportSubscription &&
                 <Center>
                   <Group>
-                    <Avatar className="tw-shadow-md" size={'lg'} radius={'xl'} src={`/uploads/${pacesportSubscription.association.avatar?.name}`} />
-                    <Text fz={'md'} weight={600}>{pacesportSubscription.association.name}</Text>
+                    {/* <Avatar className="tw-shadow-md" size={'lg'} radius={'xl'} src={`/uploads/${pacesportSubscription.association.avatar?.name}`} />
+                    <Text fz={'md'} weight={600}>{pacesportSubscription.association.name}</Text> */}
                   </Group>
                 </Center>
               }
@@ -425,7 +483,17 @@ export default function Page(props) {
             </Box>
             {showOffers &&
               <section className='tw-relative -tw-top-6'>
-                {filteredOffers.map((offer) => (
+                <Center>
+                  <input
+                    type="text"
+                    placeholder="Rechercher par description..."
+                    value={searchText}
+                    onChange={(e) => handleSearch(e.target.value)}
+                    className="tw-bg-gray-100 tw-rounded-full tw-py-2 tw-px-4 tw-w-full tw-mt-2 tw-mb-6 tw-text-sm tw-focus:tw-outline-none tw-border tw-border-gray-300"
+                  />
+                </Center>
+
+                {filteredOffersNearby2.sort(compareOffers).map((offer) => (
                   <OfferRow key={offer.title} offer={offer} />
                 ))}
                 <br /><br /><br />
@@ -456,7 +524,7 @@ export async function getServerSideProps(context) {
   )
   avatar = await avatar.json();
 
-  let offers = await getActiveOffers(token)
+  // let offers = await getActiveOffers(token)
   let user = await getUser(token)
   if (user.code == 401) {
     return {

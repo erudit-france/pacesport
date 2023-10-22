@@ -22,7 +22,7 @@ export default function Page(props) {
     const [typeError, setTypeError] = useState(null);
     const { push } = useRouter()
     const [isSubmitting, setIsSubmitting] = useState(false);
-
+    const [hideAddressAndVille, setHideAddressAndVille] = useState(false);
 
     const isPublicHandler = (v) => {
         setIsPublic(v)
@@ -51,7 +51,9 @@ export default function Page(props) {
             email: '',
             phone: '',
             description: '',
-            isPublic: isPublic
+            isPublic: isPublic,
+            longitude: '',
+            latitude: ''
         },
         validate: {
             name: (v) => v > '' ? null : 'Veuillez saisir une dénomination',
@@ -174,6 +176,29 @@ export default function Page(props) {
         )
     }
 
+    const handleSubmit = async (values) => {
+        const address = values.address; // Assurez-vous que 'address' correspond au nom de votre champ d'adresse dans le formulaire
+        const osmGeocodingUrl = `https://nominatim.openstreetmap.org/search?format=json&limit=1&street=${encodeURI(address)}&city=${encodeURI(values.ville)}&county=france&postalcode=${encodeURI(values.postal)}`;
+        if (hideAddressAndVille) {
+            values.latitude = '0';
+            values.longitude = '0';
+        }
+        else {
+            try {
+                const response = await fetch(osmGeocodingUrl);
+                const data = await response.json();
+
+                if (data.length > 0) {
+                    const { lat: offerLat, lon: offerLon } = data[0];
+                    values.latitude = offerLat;
+                    values.longitude = offerLon;
+                }
+            } catch (error) {
+            }
+        }
+        submitHandler(values);
+    };
+
     const TypeCollectivite = ({ error }) => {
         return (
             <Select className="tw-m-1.5 tw-my-3" value={type} onChange={typeHandler} description="Type collectivité" placeholder="Type collectivité"
@@ -196,23 +221,9 @@ export default function Page(props) {
                     className="tw-bg-gray-50 tw-text-black tw-ml-5 tw-border-[1px] tw-border-gray-900
                 hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full"
                     radius={'xl'}><BsArrowLeft /></Button></Link>
-            <form className="tw-relative tw-top-5" onSubmit={form.onSubmit((values) => submitHandler(values))}>
+            <form className="tw-relative tw-top-5" onSubmit={form.onSubmit((handleSubmit))}>
                 <Text align="center" className="tw-font-semibold tw-text-lg tw-text-white">Formulaire Partenaire</Text>
                 <Paper shadow="xl" p="xs" radius="lg" className="tw-bg-gray-800 tw-m-3 tw-pb-10 tw-top-5">
-                    {/* <Radio.Group
-                className="tw-text-white tw-p-2"
-                name="isCollectivitePublique"
-                defaultValue={"0"}
-                withAsterisk
-                >
-                <Input.Label className="tw-text-white tw-top-[3px] tw-relative" required>Collectivité publique</Input.Label>
-                <Group mt="xs">
-                    <Radio checked={isPublic} onClick={() => {isPublicHandler(true)}}
-                            className="tw-text-white" value="1" label="Oui" />
-                    <Radio checked={isPublic} onClick={() => {isPublicHandler(false)}}
-                            className="tw-text-white" value="0" label="Non" />
-                </Group>
-            </Radio.Group> */}
                     {isPublic
                         ? <TypeCollectivite error={typeError} />
                         : <TypeEnseigne error={typeError} />}
@@ -231,6 +242,22 @@ export default function Page(props) {
                         placeholder={isPublic == '1' ? 'Dénomination collectivité publique' : 'Dénomination sociale'}
                         radius="lg" size="sm" withAsterisk
                         {...form.getInputProps('name')} />
+                    <br />
+                    <label className="tw-ml-2 tw-flex tw-items-center tw-cursor-pointer">
+                        <input
+                            type="checkbox"
+                            className="tw-hidden"
+                            checked={hideAddressAndVille}
+                            onChange={() => setHideAddressAndVille(!hideAddressAndVille)}
+                        />
+                        <div className="tw-relative tw-w-14 tw-h-6 tw-bg-gray-400 tw-rounded-full tw-transition tw-duration-300 tw-ease-in-out">
+                            <div
+                                className={`tw-absolute tw-w-6 tw-h-6 tw-rounded-full tw-transition tw-duration-300 tw-ease-in-out ${hideAddressAndVille ? 'tw-translate-x-5 tw-bg-red-500' : ' tw-bg-white'}`}
+                                style={{ left: hideAddressAndVille ? '0.75rem' : 'calc(100% - 3.50rem)' }}
+                            ></div>
+                        </div>
+                        <span className="tw-ml-2 tw-text-white">Boutique en ligne</span>
+                    </label>
                     <TextInput mt="sm" variant="filled" description="Code postal de l'enseigne" placeholder="Code postal de l'enseigne" radius="lg" size="sm" withAsterisk
                         {...form.getInputProps('postal')} />
                     <TextInput mt="sm" variant="filled" description="Ville de l'enseigne" placeholder="Ville de l'enseigne" radius="lg" size="sm" withAsterisk
