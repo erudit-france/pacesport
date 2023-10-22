@@ -5,6 +5,7 @@ import SearchInput from '@/components/SearchInput'
 import { Box, Button, Center, CloseButton, Grid, Group, Modal, Space, Text, TextInput, Title } from '@mantine/core'
 import AssociationCard from '@/components/AssociationCard'
 import Layout from './layout'
+import Link from "next/link"
 import { FaMapMarkerAlt } from 'react-icons/fa'
 import { useEffect, useState } from 'react'
 import { getCookie } from 'cookies-next'
@@ -199,10 +200,14 @@ export default function Page(props) {
           </section>
           {/* <EnseigneGrid /> */}
           {associationsGrid}
+          <Center className='tw-absolute tw-top-20 tw-right-1'>
+          <Link href="/contact" className="tw-flex tw-items-center tw-justify-center tw-h-screen">
+    <Button variant="filled" size="sm"
+        className="tw-bg-gray-50 tw-text-black hover:tw-bg-red-100 hover:tw-text-black tw-rounded-full" 
+        radius={'xl'}>Besoin d'aide</Button>
+</Link>
+        </Center>
         </section>
-
-
-
         {/* Autres sections de votre code... */}
       </div>
 

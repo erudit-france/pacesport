@@ -144,7 +144,7 @@ body {
 }
 
 .truc-fonce{
-  z-index: 2; background-color: rgba(0, 0, 0, 0.8); height: 100vh; width: 100vw; top: 0; left: 0; padding-top: 14vh; padding-left: 10vw; padding-right: 10vw;
+  z-index: 2; background-color: rgba(0, 0, 0, 0.8); min-height: 100%; width: 100vw; top: 0; left: 0; padding-top: 14vh; padding-left: 10vw; padding-right: 10vw;
 }
 
 @keyframes fall {
@@ -153,6 +153,28 @@ body {
   }
   100% {
     transform: translateY(100vh);
+  }
+}
+
+.tw-animate-circle {
+  animation: circle 4s linear infinite;
+}
+
+@keyframes circle {
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+  25% {
+    transform: translateX(100%) translateY(0);
+  }
+  50% {
+    transform: translateX(100%) translateY(100%);
+  }
+  75% {
+    transform: translateX(0) translateY(100%);
+  }
+  100% {
+    transform: translateX(0) translateY(0);
   }
 }
 
