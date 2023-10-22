@@ -81,7 +81,7 @@ export default function Page(props) {
       <Center>
         <Avatar className='tw-shadow-md' radius={'lg'} src={`/uploads/${offer.enseigne?.avatar?.name}`} />
       </Center>
-      <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
+      <Flex direction={'column'} className='tw-flex-1'>
         <Flex justify={'space-between'}>
           <Text weight={550}>{offer?.enseigne.name} <SponsoringOfferTypeBadge offer={offer} /></Text>
           <Text className='tw-flex tw-font-light' fz={'sm'}>
@@ -342,13 +342,17 @@ export default function Page(props) {
           <Center> <Text color='black'>Notez votre transaction</Text></Center>
           <Group position="center" className="">
             <Center>
-              <div className='tw-text-30'>
+              <div className='tw-text-50'>
                 <h2 className='tw-text-center'>{rating} étoiles</h2>
                 <div>
                   {[1, 2, 3, 4, 5].map((starValue) => (
                     <button
                       key={starValue}
                       onClick={() => handleRatingClick(starValue)}
+                      style={{
+                        fontSize: starValue <= rating ? '30px' : '30px',
+                        color: starValue <= rating ? 'red' : 'black'
+                      }}
                     >
                       {starValue <= rating ? '★' : '☆'}
                     </button>
@@ -409,10 +413,35 @@ export default function Page(props) {
 
         {stap3 ? (<Box className='tw-absolute truc-fonce' >
           <Card className='tw-flex tw-bg-gray-50 tw-mb-2' radius={'lg'}>
-            <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
+            <Flex direction={'column'} className='tw-flex-1'>
               <Center> <h1 color='black' className='tw-text-center'>Félicitation, PACE'SPORT validé !</h1></Center>
               <br />
-              <Center> <Text color='black'>Vous avez collecté 100 points !</Text></Center>
+              <div className="heart-rate">
+                    <svg
+                      version="1.0"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlnsXlink="http://www.w3.org/1999/xlink"
+                      x="0px"
+                      y="0px"
+                      width="150px"
+                      height="73px"
+                      viewBox="0 0 150 73"
+                      enableBackground="new 0 0 150 73"
+                      xmlSpace="preserve"
+                    >
+                      <polyline
+                        fill="none"
+                        stroke="#000000"
+                        strokeWidth="3"
+                        strokeMiterlimit="10"
+                        points="0,45.486 62.838,45.622 71.959,20 80.067,70.729 90.297,45.486 150,45.486"
+                      />
+                    </svg>
+                    <div className="fade-in"></div>
+                    <div className="fade-out"></div>
+                  </div>
+                  <br/>
+              <Center><Text fz={'md'} weight={600}>{pacesportSubscription.association.name} vous remercie pour votre achat</Text></Center>
               <br />
               {/* <Text color='dimmed'>{stap2}</Text> */}
             </Flex>
@@ -442,7 +471,13 @@ export default function Page(props) {
             </Group>
             <br />
             <Card className='tw-flex tw-bg-gray-50 tw-mb-2' radius={'lg'}>
-              <Flex direction={'column'} className='tw-flex-1 tw-px-3'>
+              <Flex direction={'column'} className='tw-flex-1'>
+              <Center>
+                  <Group>
+                    <Avatar className="tw-shadow-md" size={'lg'} radius={'xl'} src={`/uploads/${pacesportSubscription.association.avatar?.name}`} />
+                    <Text fz={'md'} weight={600}>{pacesportSubscription.association.name}</Text>
+                  </Group>
+                </Center>
                 <Center> <Text color='black'>{stap2.enseigne.name}</Text></Center>
                 <Center> <Text color='black'>{stap2.description}</Text></Center>
                 <br />

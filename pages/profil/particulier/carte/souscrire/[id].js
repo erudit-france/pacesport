@@ -28,6 +28,7 @@ export default function Page(props) {
   const [loading, setLoading] = useState(false)
   const [offers, setOffers] = useState(props.associationActiveOffers)
   const { push } = useRouter()
+  const [champ, setChamp] = useState('');
   let filteredOffersOld = null
   const [showOffers, setShowOffers] = useState(true)
   const [fetching, setFetching] = useState(false)
@@ -67,6 +68,29 @@ export default function Page(props) {
     setIframeUrl(null)
   }
 
+  const mailFacture = () => {
+    const data = {
+      email: props?.user?.email
+  };
+  console.log("jjjjjjjjjjjjjjjjjjjjjjjjj"+props?.user?.email)
+    fetch(`/api/mail/sendFacture`, {
+        method: 'POST',
+        headers: new Headers({
+            'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+        }),
+        body: JSON.stringify(data) 
+    }).then(res => res.json())
+        .then(res => {
+            if (res.data) {
+                Toast.success('Mail envoyée')
+            }
+            close()
+        })
+        .catch((error) => {
+            close()
+        })
+};
+
   const submitHandler = (values) => {
 
     const cancelUrl = window.location.href;
@@ -87,7 +111,7 @@ export default function Page(props) {
       })
     }).then(res => res.json())
       .then(res => {
-
+        //mailFacture()
         if (res.yearUrl) {
           router.push(res.yearUrl)
         }
@@ -278,6 +302,31 @@ export default function Page(props) {
 
                   </Center>
                 </form>
+
+                <div className='tw-mt-10'>
+
+                </div>
+                <div className="tw-flex tw-justify-center tw-items-center tw-h-screen">
+                  <div className="tw-flex tw-items-center">
+                    <input
+                      type="text"
+                      id="champValider"
+                      value={champ}
+                      onChange={(e) => setChamp(e.target.value)}
+                      className="tw-w-[40vw] tw-px-4 tw-py-2 tw-border tw-rounded-lg tw-text-md"
+                      placeholder="Code promo"
+                    />
+                    <button
+                      type="submit"
+                      className="tw-bg-blue-500 tw-text-white tw-px-4 tw-py-2 tw-ml-2 tw-rounded-lg tw-shadow-sm"
+                      disabled={loading}
+                    >
+                      Valider
+                    </button>
+                  </div>
+                </div>
+
+
               </Container>
 
               <Title order={6} my={'lg'} align='center'>Les offres</Title> <Button className='tw-text-black' onClick={requestLocation}>Filtrer avec ma position <FaMapMarkerAlt className='tw-relative tw-top-1 tw-ml-3 tw-mb-2 tw-text-gray-800' /></Button>
@@ -295,12 +344,12 @@ export default function Page(props) {
               <Space my={'md'} />
             </Box>
             <Center className='tw-absolute tw-top-20 tw-right-1'>
-          <Link href="/contact" className="tw-flex tw-items-center tw-justify-center tw-h-screen">
-    <Button variant="filled" size="sm"
-        className="tw-bg-gray-50 tw-text-black hover:tw-bg-red-100 hover:tw-text-black tw-rounded-full" 
-        radius={'xl'}>Besoin d'aide</Button>
-</Link>
-        </Center>
+              <Link href="/contact" className="tw-flex tw-items-center tw-justify-center tw-h-screen">
+                <Button variant="filled" size="sm"
+                  className="tw-bg-gray-50 tw-text-black hover:tw-bg-red-100 hover:tw-text-black tw-rounded-full"
+                  radius={'xl'}>Besoin d'aide</Button>
+              </Link>
+            </Center>
           </section>
         </Box>
       </Box>
