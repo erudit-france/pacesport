@@ -117,8 +117,8 @@ export default function Page(props) {
 
   const handleSearch = (text) => {
     setSearchText(text);
-    const filtered = filteredOffersNearby.filter((offer) =>
-      offer.description.toLowerCase().includes(text.toLowerCase())
+    const filtered = filteredOffers.filter((offer) =>
+      offer.enseigne.name.toLowerCase().includes(text.toLowerCase())
     );
     setFilteredOffersNearby2(filtered);
   }
@@ -149,7 +149,7 @@ export default function Page(props) {
               else {
                 const distance = calculateDistance(lat, lon, offer.enseigne.latitude, offer.enseigne.longitude);
                 offer.title = `${(distance).toFixed(0)}`;
-                return distance <= 40000;
+                return distance <= 500;
               }
             } catch (error) {
               return false;
@@ -246,15 +246,15 @@ export default function Page(props) {
             type="text"
             placeholder="Rechercher par description..."
             value={searchText}
-            onChange={(e) => handleSearch2(e.target.value)}
+            onChange={(e) => handleSearch(e.target.value)}
             className="tw-bg-gray-100 tw-rounded-full tw-py-2 tw-px-4 tw-w-full tw-mt-4 tw-text-sm tw-focus:tw-outline-none tw-border tw-border-gray-300"
           />
         </Center>
         <br />
-        {filteredOffers3.sort(compareOffers).length === 0 ? (
+        {filteredOffersNearby2.sort(compareOffers).length === 0 ? (
           <Center><h2 className="tw-text-white">Aucune offre n'a été trouvée à proximité.</h2></Center>
         ) : (
-          filteredOffers3.sort(compareOffers).map((offer) => (
+          filteredOffersNearby2.sort(compareOffers).map((offer) => (
             <div key={offer.title} onClick={() => selectBox(offer)}>
               <OfferRow key={offer?.title} offer={offer} />
             </div>
@@ -523,12 +523,12 @@ export default function Page(props) {
                     type="text"
                     placeholder="Rechercher par description..."
                     value={searchText}
-                    onChange={(e) => handleSearch(e.target.value)}
+                    onChange={(e) => handleSearch2(e.target.value)}
                     className="tw-bg-gray-100 tw-rounded-full tw-py-2 tw-px-4 tw-w-full tw-mt-2 tw-mb-6 tw-text-sm tw-focus:tw-outline-none tw-border tw-border-gray-300"
                   />
                 </Center>
 
-                {filteredOffersNearby2.sort(compareOffers).map((offer) => (
+                {filteredOffers3.sort(compareOffers).map((offer) => (
                   <OfferRow key={offer.title} offer={offer} />
                 ))}
                 <br /><br /><br />
