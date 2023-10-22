@@ -105,7 +105,7 @@ export default function SignupForm({ loading }) {
 
                   // Définir le nouveau cookie
                   const EXPIRATION_TIME = 60 * 60 * 24 * 365;
-                  document.cookie = `token_v3=${token};max-age=${EXPIRATION_TIME};path=/`;
+                  document.cookie = `token_v3=${res.payload.token};max-age=${EXPIRATION_TIME};path=/`;
                   // setCookie('token_v3', res.payload.token);
                   nextPage();
                 }
