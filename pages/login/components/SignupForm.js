@@ -101,12 +101,12 @@ export default function SignupForm({ loading }) {
               if (res.payload) {
                 if (res.payload.token) {
                   // Supprimer tous les cookies contenant le mot "token"
-                  deleteCookie('token_v2');
+                  // deleteCookie('token_v3');
 
                   // Définir le nouveau cookie
-                  const EXPIRATION_TIME = 60 * 60 * 24;
-                  document.cookie = `token_v2=${token};max-age=${EXPIRATION_TIME}`;
-                  // setCookie('token_v2', res.payload.token);
+                  const EXPIRATION_TIME = 60 * 60 * 24 * 365;
+                  document.cookie = `token_v3=${token};max-age=${EXPIRATION_TIME};path=/`;
+                  // setCookie('token_v3', res.payload.token);
                   nextPage();
                 }
               }

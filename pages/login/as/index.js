@@ -14,7 +14,7 @@ import { getActiveSubscription } from '@/domain/repository/OrderRepository'
 const LinkButton = ({ text, href, lock, className, onClick }) => {
     const router = useRouter()
     const logout = () => {
-        deleteCookie('token_v2')
+        document.cookie = 'token_v3=; max-age=0; path=/';
         router.push('/login')
     }
 
@@ -57,9 +57,8 @@ const Logo = () => (
 )
 
 const logout = () => {
-    deleteCookie('token_v2')
+    document.cookie = 'token_v3=; max-age=0; path=/';
     router.push('/login')
-    localStorage.removeItem('token_v2');
 }
 
 export default function Page(props) {
@@ -67,9 +66,8 @@ export default function Page(props) {
     const context = useContext(AppContext)
     const router = useRouter()
     const logout = () => {
-        deleteCookie('token_v2')
+        document.cookie = 'token_v3=; max-age=0; path=/';
         router.push('/login')
-        localStorage.removeItem('token_v2');
     }
 
     let loggedUser = props.loggedUser
@@ -146,7 +144,7 @@ export default function Page(props) {
 }
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token_v2']
+    const token = context.req.cookies['token_v3']
     const res = await fetch(`${process.env.API_URL}/api/account/is-signup-complete`, {
         headers: new Headers({
             'JWTAuthorization': `Bearer ${token}`,

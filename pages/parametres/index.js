@@ -14,7 +14,7 @@ const LinkButton = ({ text, href, lock, className, onClick }) => {
     const router = useRouter()
     const logout = () => {
         console.log('hello')
-        deleteCookie('token_v2')
+        document.cookie = 'token_v3=; max-age=0; path=/';
         router.push('/login')
     }
     const context = useContext(AppContext)
@@ -80,7 +80,7 @@ export default function Page({ status }) {
     const router = useRouter()
     const context = useContext(AppContext)
     const logout = () => {
-        deleteCookie('token_v2')
+        document.cookie = 'token_v3=; max-age=0; path=/';
         router.push('/login')
     }
     return (
@@ -118,7 +118,7 @@ export default function Page({ status }) {
 }
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token_v2']
+    const token = context.req.cookies['token_v3']
     const res = await fetch(`${process.env.API_URL}/api/account/is-signup-complete`, {
         headers: new Headers({
             'JWTAuthorization': `Bearer ${token}`,

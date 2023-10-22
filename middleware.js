@@ -24,7 +24,7 @@ export function middleware(req) {
         fetch(`${process.env.API_URL}/api/verify/jwt`, {
             method: 'POST',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`,
+                'JWTAuthorization': `Bearer ${getCookie('token_v3')}`,
             }),
         })
             .then(res => res.json())

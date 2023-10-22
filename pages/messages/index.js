@@ -42,7 +42,7 @@ const ChatHeader = ({ previousUrl }) => {
             //   setLoading(true)
             const res = await axios(
                 '/api/chat/users',
-                { headers: { 'JWTAuthorization': `Bearer ${getCookie('token_v2')}` } }
+                { headers: { 'JWTAuthorization': `Bearer ${getCookie('token_v3')}` } }
             );
 
             setUsers(JSON.parse(res.data.data))
@@ -97,7 +97,7 @@ export default function Page(props) {
     //       //   setLoading(true)
     //         const res = await axios(
     //             '/api/chat/rooms',
-    //             {headers: { 'JWTAuthorization': `Bearer ${getCookie('token_v2')}`}}
+    //             {headers: { 'JWTAuthorization': `Bearer ${getCookie('token_v3')}`}}
     //         );
 
     //         setChatRooms(JSON.parse(res.data.data))
@@ -132,7 +132,7 @@ export default function Page(props) {
 }
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token_v2']
+    const token = context.req.cookies['token_v3']
     const res = await fetch(`${process.env.API_URL}/api/chat/rooms`, {
         headers: new Headers({
             'JWTAuthorization': `Bearer ${token}`,

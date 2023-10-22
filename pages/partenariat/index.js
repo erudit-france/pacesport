@@ -19,7 +19,7 @@ export default function Page() {
         async function fetchData() {
             const res = await axios(
                 '/api/discount-offer',
-                { headers: { 'JWTAuthorization': `Bearer ${getCookie('token_v2')}` } }
+                { headers: { 'JWTAuthorization': `Bearer ${getCookie('token_v3')}` } }
             );
             setOffers(JSON.parse(res.data.data))
         }
@@ -31,7 +31,7 @@ export default function Page() {
         fetch(`/api/discount-offer`, {
             method: 'POST',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
             }),
             body: serialize(values)
         })

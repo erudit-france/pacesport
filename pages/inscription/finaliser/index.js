@@ -14,7 +14,7 @@ export default function Page() {
     fetch(`/api/account/status/update`, {
       method: "POST",
       headers: {
-        'JWTAuthorization': `Bearer ${getCookie('token_v2')}`,
+        'JWTAuthorization': `Bearer ${getCookie('token_v3')}`,
       },
       body: data,
     })

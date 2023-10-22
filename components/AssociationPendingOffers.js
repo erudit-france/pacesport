@@ -21,7 +21,7 @@ export default function AssociationPendingOffers({ offers }) {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
             }),
             body: JSON.stringify({ offer: id })
         })
@@ -43,7 +43,7 @@ export default function AssociationPendingOffers({ offers }) {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
             }),
             body: JSON.stringify({ offer: id })
         })

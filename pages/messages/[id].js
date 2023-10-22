@@ -26,7 +26,7 @@ const ChatHeader = () => {
         fetch(`/api/chat/users/chatRoom?id=${contactId}`, {
             method: 'GET',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`,
+                'JWTAuthorization': `Bearer ${getCookie('token_v3')}`,
                 'Content-Type': 'application/json'
             })
         })
@@ -38,7 +38,7 @@ const ChatHeader = () => {
         fetch(`/api/chat/get/infos/users/chatRoom?id=${contactId}`, {
             method: 'GET',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`,
+                'JWTAuthorization': `Bearer ${getCookie('token_v3')}`,
                 'Content-Type': 'application/json'
             })
         })
@@ -117,7 +117,7 @@ export default function Page(props) {
         if (contactId === undefined) return
         fetch(`/api/chat/messages?id=${contactId}`, {
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`,
+                'JWTAuthorization': `Bearer ${getCookie('token_v3')}`,
             }),
         })
             .then(res => res.json())
@@ -129,7 +129,7 @@ export default function Page(props) {
         if (contactId === undefined) return
         fetch(`/api/chat/messages?id=${contactId}`, {
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`,
+                'JWTAuthorization': `Bearer ${getCookie('token_v3')}`,
             }),
         })
             .then(res => res.json())
@@ -165,7 +165,7 @@ export default function Page(props) {
                 method: 'POST',
                 type: 'cors',
                 headers: new Headers({
-                    'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+                    'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
                 }),
                 body: formData
             })
@@ -179,7 +179,7 @@ export default function Page(props) {
                         body: body,
                         method: 'POST',
                         headers: new Headers({
-                            'JWTAuthorization': `Bearer ${getCookie('token_v2')}`,
+                            'JWTAuthorization': `Bearer ${getCookie('token_v3')}`,
                         }),
                     })
                         .then(res => res.json())
@@ -205,7 +205,7 @@ export default function Page(props) {
                 body: body,
                 method: 'POST',
                 headers: new Headers({
-                    'JWTAuthorization': `Bearer ${getCookie('token_v2')}`,
+                    'JWTAuthorization': `Bearer ${getCookie('token_v3')}`,
                 }),
             })
                 .then(res => res.json())
@@ -329,7 +329,7 @@ export default function Page(props) {
 }
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token_v2']
+    const token = context.req.cookies['token_v3']
 
 
     const user = await fetch(`${process.env.API_URL}/api/user`, {

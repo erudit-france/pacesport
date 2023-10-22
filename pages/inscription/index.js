@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from 'next/router'
 
 export default function Page() {
-    const token = getCookie('token_v2')
+    const token = getCookie('token_v3')
     const router = useRouter()
     // Mounting
     useEffect(() => {

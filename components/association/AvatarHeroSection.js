@@ -47,7 +47,7 @@ const AvatarHeroSection = ({ user, avatar, background }) => {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
             }),
             body: formData
         })
@@ -60,7 +60,7 @@ const AvatarHeroSection = ({ user, avatar, background }) => {
                         method: 'POST',
                         type: 'cors',
                         headers: new Headers({
-                            'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+                            'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
                         }),
                         body: body
                     })
@@ -106,7 +106,7 @@ const AvatarHeroSection = ({ user, avatar, background }) => {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
             }),
             body: formData
         })
@@ -119,7 +119,7 @@ const AvatarHeroSection = ({ user, avatar, background }) => {
                         method: 'POST',
                         type: 'cors',
                         headers: new Headers({
-                            'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+                            'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
                         }),
                         body: body
                     })

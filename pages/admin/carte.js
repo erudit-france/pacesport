@@ -35,7 +35,7 @@ export default function Page(props) {
         fetch(`/api/discount-card-pacesport/initiate`, {
             method: 'POST',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
             })
         })
             .then(res => res.json())
@@ -61,7 +61,7 @@ export default function Page(props) {
         fetch(`/api/toggle-active-state?XDEBUG_SESSION_START=tom`, {
             method: 'POST',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
             }),
             body: JSON.stringify({ isActive: state })
         })
@@ -87,7 +87,7 @@ export default function Page(props) {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
             }),
             body: formData
         })
@@ -103,7 +103,7 @@ export default function Page(props) {
         fetch(`/api/discount-card-pacesport/update`, {
             method: 'POST',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
             }),
             body: body
         })
@@ -196,7 +196,7 @@ export default function Page(props) {
 }
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token_v2']
+    const token = context.req.cookies['token_v3']
     let user = await getUser(token)
     user = JSON.parse(user.data)
     if (!user.roles.includes('ROLE_ADMIN')) {

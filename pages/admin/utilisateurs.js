@@ -30,7 +30,7 @@ export default function Page(props) {
         fetch(`/api/user/delete/${userId}`, {
             method: 'DELETE',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
             })
         })
             .then(res => res.json())
@@ -143,7 +143,7 @@ export default function Page(props) {
 }
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token_v2']
+    const token = context.req.cookies['token_v3']
     let user = await getUser(token)
     user = JSON.parse(user.data)
     if (!user.roles.includes('ROLE_ADMIN')) {
