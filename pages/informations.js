@@ -34,7 +34,7 @@ export default function ConditionsGeneralesVente(props) {
         setIsLoading(true); // Définir isLoading à vrai
 
         // Obtenir le token à partir des cookies
-        const token = getCookie('token_v2');
+        const token = getCookie('token_v3');
 
         // Appeler la route Symfony pour mettre à jour l'utilisateur
         fetch(`/api/updateUser/${props.user?.id}`, {
@@ -212,7 +212,7 @@ const InfoSection = ({ title, data }) => (
 
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token_v2']
+    const token = context.req.cookies['token_v3']
     let user = await getUser(token)
     console.log(user);
     let sponsors = await getActive(token)

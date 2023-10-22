@@ -218,7 +218,7 @@ export default function Page(props) {
 
 
 export async function getServerSideProps(context) {
-  const token = context.req.cookies['token_v2']
+  const token = context.req.cookies['token_v3']
   let offers = await getAllOffers(token);
   let pacesportSubscription = await getActiveSubscription(token);
   if (!(pacesportSubscription.data === 'null' || pacesportSubscription.data == null)) {

@@ -84,7 +84,7 @@ export default function Page(props) {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
             }),
             body: formData
         })
@@ -96,7 +96,7 @@ export default function Page(props) {
                     method: 'POST',
                     type: 'cors',
                     headers: new Headers({
-                        'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+                        'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
                     }),
                     body: body
                 })
@@ -127,7 +127,7 @@ export default function Page(props) {
                         method: 'POST',
                         type: 'cors',
                         headers: new Headers({
-                            'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+                            'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
                         }),
                         body: body
                     })
@@ -290,7 +290,7 @@ export default function Page(props) {
 }
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token_v2']
+    const token = context.req.cookies['token_v3']
     const res = await fetch(`${process.env.API_URL}/api/user/`, {
         headers: new Headers({
             'JWTAuthorization': `Bearer ${token}`,

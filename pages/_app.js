@@ -49,7 +49,7 @@ App.getInitialProps = async ({ Component, ctx }) => {
   // si page autre que connexion ou accueil, vérifier l'authentication
   // if (!exclude.includes(ctx.pathname)) {
   //   if (ctx.req) {
-  //     const token = ctx.req.cookies['token_v2']
+  //     const token = ctx.req.cookies['token_v3']
   //     let response = await fetch(`${process.env.API_URL}/api/verify/jwt`, {
   //       headers: new Headers({
   //               'JWTAuthorization': `Bearer ${token}`,

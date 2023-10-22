@@ -77,7 +77,7 @@ export default function Page(props) {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
             }),
         })
             .then(res => res.json())
@@ -248,7 +248,7 @@ export default function Page(props) {
 }
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token_v2']
+    const token = context.req.cookies['token_v3']
     const id = context.query.prev
     let rapatriement = await getCurrentRapatriement(token)
     if (rapatriement.code == 401) {

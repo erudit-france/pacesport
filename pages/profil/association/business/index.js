@@ -63,7 +63,7 @@ export default function Page(props) {
 }
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token_v2']
+    const token = context.req.cookies['token_v3']
     let avatar = await fetch(`${process.env.API_URL}/api/association/avatar`, {
         headers: new Headers({
             'JWTAuthorization': `Bearer ${token}`,

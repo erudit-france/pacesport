@@ -63,7 +63,7 @@ export default function Page(props) {
         fetch(`/api/communication/sponsor`, {
             method: 'POST',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
             }),
             body: body
         })
@@ -85,12 +85,12 @@ export default function Page(props) {
 
 
     const getCreditUrl = (credit, price) => {
-        let token = getCookie('token_v2');
+        let token = getCookie('token_v3');
         const baseURL = window.location.origin;
         fetch(`/api/stripe/credit`, {
             method: 'POST',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
             }),
             body: JSON.stringify({
                 credit: credit,
@@ -180,7 +180,7 @@ export default function Page(props) {
 
 export async function getServerSideProps(context) {
     const { req, res } = context;
-    let token = req.cookies['token_v2'];
+    let token = req.cookies['token_v3'];
 
     let url = context.req.headers.referer
     let previousUrl = url === undefined ? '/profil/sponsor/' : url

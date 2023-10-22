@@ -16,7 +16,7 @@ export default function AssociationActiveOffers({ offers }) {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
             }),
             body: JSON.stringify({ discountOfferId: id })
         })
@@ -37,7 +37,7 @@ export default function AssociationActiveOffers({ offers }) {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
             }),
             body: JSON.stringify({ discountOfferId: id })
         })

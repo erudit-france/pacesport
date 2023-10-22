@@ -42,7 +42,7 @@ export default function Page(props) {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
             }),
             body: JSON.stringify({ rapatriement: id })
         })
@@ -66,7 +66,7 @@ export default function Page(props) {
             method: 'POST',
             type: 'cors',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
             }),
             body: JSON.stringify({ rapatriement: id })
         })
@@ -228,7 +228,7 @@ export default function Page(props) {
 }
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token_v2']
+    const token = context.req.cookies['token_v3']
     let user = await getUser(token)
     if (user.code == 401) {
         return {

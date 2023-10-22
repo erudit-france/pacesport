@@ -51,7 +51,7 @@ export default function Page(props) {
 
 export async function getServerSideProps(context) {
     const id = context.query.id
-    const token = context.req.cookies['token_v2']
+    const token = context.req.cookies['token_v3']
     const res = await fetch(`${process.env.API_URL}/api/association/get/${id}`, {
         headers: new Headers({
             'JWTAuthorization': `Bearer ${token}`,

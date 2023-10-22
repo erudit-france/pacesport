@@ -26,7 +26,7 @@ export default function Page(props) {
 
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token_v2']
+    const token = context.req.cookies['token_v3']
 
     let url = context.req.headers.referer
     let previousUrl = url === undefined ? '/profil/sponsor/' : url
