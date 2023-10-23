@@ -63,6 +63,7 @@ export default function Navbar(props) {
                 </Flex>
                 <NavbarLink toggleMenu={toggleMenu} href={'/'} name={<>Mon pace'sport (carte)</>} />
                 <NavbarLink toggleMenu={toggleMenu} href={'/parametres?prev=/'} name={'Paramètres'} />
+                <NavbarLink toggleMenu={toggleMenu} href={'/contact'} name={'Besoin d\'aide'} />
 
                 <Button
                     onClick={logout}
@@ -95,7 +96,7 @@ export default function Navbar(props) {
                 <NavbarLink toggleMenu={toggleMenu} href={`/annuaire?prev=${router.pathname}&pos=association`} name={'Annuaire'} />
                 <NavbarLink toggleMenu={toggleMenu} href={`/messages?prev=${router.pathname}`} name={'Messagerie'} />
                 <NavbarLink toggleMenu={toggleMenu} href={`/profil/association/gestion-fonds?prev=${router.pathname}`} name={'Centre de gestion'} />
-
+                <NavbarLink toggleMenu={toggleMenu} href={'/contact'} name={'Besoin d\'aide'} />
                 <Button
                     onClick={logout}
                     className={`tw-my-5
@@ -126,7 +127,7 @@ export default function Navbar(props) {
                 <NavbarLink toggleMenu={toggleMenu} href={'/communication/add/sponsor'} name={'Communication'} />
                 <NavbarLink toggleMenu={toggleMenu} href={`/annuaire?prev=${router.pathname}&pos=sponsor`} name={'Annuaire'} />
                 <NavbarLink toggleMenu={toggleMenu} href={`/messages?prev=${router.pathname}`} name={'Messagerie'} />
-
+                <NavbarLink toggleMenu={toggleMenu} href={'/contact'} name={'Besoin d\'aide'} />
                 <Button
                     onClick={logout}
                     className={`tw-my-5
@@ -185,12 +186,13 @@ export default function Navbar(props) {
                             <Center mb={'md'}>
                                 <Avatar src={'/logo.png'} size={70} />
                             </Center>
-                            {!['particulier', 'sponsor/partenaire', 'association'].includes(role)
-                                && <NavParticulier toggleMenu={toggleMenu} />
+                            {!window.location.href.includes("particulier") && !window.location.href.includes("sponsor/partenaire") && !window.location.href.includes("association")
+                            && <NavParticulier toggleMenu={toggleMenu} />
                             }
-                            {role == 'particulier' && <NavParticulier toggleMenu={toggleMenu} />}
-                            {role == 'sponsor/partenaire' && <NavSponsor toggleMenu={toggleMenu} suppressHydrationWarning />}
-                            {role == 'association' && <NavAssociation toggleMenu={toggleMenu} />}
+                            {console.log(window.location.href)}
+                            {window.location.href.includes("particulier") && <NavParticulier toggleMenu={toggleMenu} />}
+                            {window.location.href.includes("sponsor/partenaire") && <NavSponsor toggleMenu={toggleMenu} suppressHydrationWarning />}
+                            {window.location.href.includes("association") && <NavAssociation toggleMenu={toggleMenu} />}
                         </ul>
                     </div>
 
