@@ -244,7 +244,7 @@ export default function Page(props) {
         <Center>
           <input
             type="text"
-            placeholder="Rechercher par description..."
+            placeholder="Rechercher par enseigne..."
             value={searchText}
             onChange={(e) => handleSearch(e.target.value)}
             className="tw-bg-gray-100 tw-rounded-full tw-py-2 tw-px-4 tw-w-full tw-mt-4 tw-text-sm tw-focus:tw-outline-none tw-border tw-border-gray-300"
@@ -521,7 +521,7 @@ export default function Page(props) {
                 <Center>
                   <input
                     type="text"
-                    placeholder="Rechercher par description..."
+                    placeholder="Rechercher par enseigne..."
                     value={searchText}
                     onChange={(e) => handleSearch2(e.target.value)}
                     className="tw-bg-gray-100 tw-rounded-full tw-py-2 tw-px-4 tw-w-full tw-mt-2 tw-mb-6 tw-text-sm tw-focus:tw-outline-none tw-border tw-border-gray-300"
