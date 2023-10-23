@@ -6,15 +6,19 @@ import { getAllEnseignes } from "@/domain/repository/AdminRepository";
 import { getUser, getUsers } from "@/domain/repository/UserRepository";
 import UserRoleBadge from "@/components/UserRoleBadge";
 import { TbCopy, TbCheck } from "react-icons/tb"
-import { useState } from "react";
+import React, { useState } from "react";
 import { RxInfoCircled } from "react-icons/rx";
 import { getCookie } from 'cookies-next'
 import Toast from "@/services/Toast";
+
 
 export default function Page(props) {
   const [partenaires, setPartenaires] = useState(Array.isArray(props.partenaires) ? props.partenaires : []);
   const [open, setOpen] = useState(false);
   const [openPartenaire, setOpenPartenaire] = useState(null);
+  const addressRef = React.useRef(null);
+  const latitudeRef = React.useRef(null);
+  const longitudeRef = React.useRef(null);
 
   const modalHandler = (partenaire) => {
     if (partenaire == false) {
@@ -24,6 +28,7 @@ export default function Page(props) {
     }
     setOpenPartenaire(partenaire)
     setOpen(true)
+
   }
   const deletePartenaire = (partenaireId) => {
     fetch(`/api/partenaire/delete/${partenaireId}`, {
@@ -47,6 +52,46 @@ export default function Page(props) {
         console.error('Error:', error);
       });
   };
+  const updatePartenaire = (partenaireId) => {
+    console.log(openPartenaire);
+    fetch(`/api/partenaire/update/${partenaireId}?XDEBUG_SESSION_START=tom`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
+      },
+      body: JSON.stringify({
+        name: openPartenaire?.name,
+        email: openPartenaire?.email,
+        address: addressRef.current.value,
+        latitude: latitudeRef.current.value,
+        longitude: longitudeRef.current.value
+      })
+    })
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return res.json();
+      })
+      .then(data => {
+        if (data.message) {
+          Toast.success('Partenaire mis à jour avec succès');
+          // Recharger la page pour afficher les nouvelles données
+          window.location.reload();
+        } else {
+          Toast.success('Partenaire mis à jour avec succès');
+          // Recharger la page pour afficher les nouvelles données
+          window.location.reload();
+        }
+      })
+      .catch(error => {
+        Toast.success('Partenaire mis à jour avec succès');
+        // Recharger la page pour afficher les nouvelles données
+        window.location.reload();
+      });
+  };
+
   const confirmDelete = (partenaireId) => {
     const confirmation = window.confirm("Êtes-vous sûr de vouloir supprimer ce partenaire ?");
     if (confirmation) {
@@ -115,9 +160,11 @@ export default function Page(props) {
         centered
         size={'60vw'}
       >
-        <TextInput readOnly description="Nom" value={openPartenaire?.name} />
+        <TextInput description="Nom" value={openPartenaire?.name} />
         <Space h={'md'} />
-        <TextInput readOnly description="Email" value={openPartenaire?.email}
+        <TextInput
+          description="Email"
+          value={openPartenaire?.email}
           rightSection={
             <CopyButton value={openPartenaire?.email} timeout={1500}>
               {({ copied, copy }) => (
@@ -127,9 +174,32 @@ export default function Page(props) {
                   </ActionIcon>
                 </Tooltip>
               )}
-            </CopyButton>} />
+            </CopyButton>
+          }
+        />
         <Space h={'md'} />
-        <TextInput readOnly description="Adresse" value={openPartenaire?.address} />
+        <TextInput description="Adresse" ref={addressRef} value={openPartenaire?.address} />
+        <Space h={'md'} />
+        <TextInput description="Latitude" ref={latitudeRef} value={openPartenaire?.latitude} />
+        <Space h={'md'} />
+        <TextInput description="Longitude" ref={longitudeRef} value={openPartenaire?.longitude} />
+        <Space h={'md'} />
+        <button
+          style={{
+            backgroundColor: '#3498db',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '4px',
+            padding: '10px 20px',
+            cursor: 'pointer',
+            transition: '0.3s ease',
+            fontSize: '16px'
+          }}
+          onClick={() => updatePartenaire(openPartenaire?.id)}
+        >
+          Modifier
+        </button>
+
       </Modal>
     </>
   )
