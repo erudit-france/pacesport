@@ -103,6 +103,8 @@ export default function Page(props) {
       <th>Nom</th>
       <th>Email</th>
       <th>Adresse</th>
+      <th>Code postal</th>
+      <th>Ville</th>
       <th>Supprimer</th>
       <th></th>
     </tr>
@@ -126,6 +128,8 @@ export default function Page(props) {
         </Flex>
       </td>
       <td><Text transform="capitalize">{partenaire.address}</Text></td>
+      <td><Text transform="capitalize">{partenaire.phone}</Text></td>
+      <td><Text transform="capitalize">{partenaire.ville}</Text></td>
       <td>
         <Center>
           <ActionIcon onClick={() => confirmDelete(partenaire.id)}>
@@ -178,12 +182,46 @@ export default function Page(props) {
           }
         />
         <Space h={'md'} />
-        <TextInput description="Adresse" ref={addressRef} value={openPartenaire?.address} />
+        <TextInput
+          description="Adresse"
+          ref={addressRef}
+          value={openPartenaire?.address}
+          onChange={(e) => {
+            setOpenPartenaire(prev => ({
+              ...prev,
+              address: e.target.value
+            }));
+          }}
+        />
         <Space h={'md'} />
-        <TextInput description="Latitude" ref={latitudeRef} value={openPartenaire?.latitude} />
+
+        <TextInput
+          description="Latitude"
+          ref={latitudeRef}
+          value={openPartenaire?.latitude}
+          onChange={(e) => {
+            setOpenPartenaire(prev => ({
+              ...prev,
+              latitude: e.target.value
+            }));
+          }}
+        />
+
         <Space h={'md'} />
-        <TextInput description="Longitude" ref={longitudeRef} value={openPartenaire?.longitude} />
+        <TextInput
+          description="Longitude"
+          ref={longitudeRef}
+          value={openPartenaire?.longitude}
+          onChange={(e) => {
+            setOpenPartenaire(prev => ({
+              ...prev,
+              longitude: e.target.value
+            }));
+          }}
+        />
         <Space h={'md'} />
+
+
         <button
           style={{
             backgroundColor: '#3498db',

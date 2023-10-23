@@ -39,6 +39,7 @@ export default function Page(props) {
   const [error, setError] = useState(null);
   const [searchText, setSearchText] = useState('');
   const pacesportCardSrc = props.pacesportCard?.image?.name ? `/uploads/${props.pacesportCard?.image?.name}` : '/logo.png'
+  const [associationPartenaire, setAssociationPartenaire] = useState(false);
   const standaloneCard = <>
     <Center>
       <ReactCardFlip isFlipped={isFlipped} flipDirection="horizontal">
@@ -194,9 +195,12 @@ export default function Page(props) {
     }, 5000); // Désactivez les confettis après 5 secondes
   };
 
+
+
   const selectBox = (name) => {
+    setAssociationPartenaire(name);
     setShowBoxList(false);
-    console.log("ttt")
+    console.log(name)
     setStap2(name);
     console.log(name);
     console.log(stap2);
@@ -271,10 +275,29 @@ export default function Page(props) {
     </Box>
   </>
 
-  const ConfettiAnimation = () => {
+  const ConfettiAnimation = ({ associationPartenaire }) => {
     const [showConfetti, setShowConfetti] = useState(false);
 
-    const startConfettiAnimation = () => {
+    const startConfettiAnimation = async (associationPartenaire) => {
+      // Je suppose que vous avez partenaire et association disponibles ici
+      let partenaire = associationPartenaire.enseigne.id; // Mettez la valeur de 'partenaire' ici
+      let association = associationPartenaire.associations[0].id; // Mettez la valeur de 'association' ici
+      // Appel à l'API
+      try {
+        const response = await fetch(`/api/partenaire/user/association/${partenaire}/${association}/?XDEBUG_SESSION_START=tom`, {
+          method: 'GET', // Ou POST, DELETE, etc., selon ce que vous voulez faire
+          headers: {
+            'Content-Type': 'application/json',
+            'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
+          }
+        });
+        const data = await response.json();
+        // Utilisez la réponse ici si nécessaire
+        console.log(data);
+      } catch (error) {
+        console.error("Erreur lors de l'appel à l'API: ", error);
+        Toast.error("Une erreur est survenue lors de l'appel à l'API."); // Ou un autre message d'erreur adapté à vos besoins
+      }
       setShowConfetti(true);
       setIsFlipped(false);
       setStap3(true);
@@ -282,6 +305,7 @@ export default function Page(props) {
         setShowConfetti(false);
       }, 4000); // Activer l'animation pendant 2 secondes (2000 millisecondes)
     };
+
 
     useEffect(() => {
       if (showConfetti) {
@@ -320,7 +344,7 @@ export default function Page(props) {
         <br />
         <Button
           size="md"
-          onClick={startConfettiAnimation}
+          onClick={() => startConfettiAnimation(associationPartenaire)}
           className="tw-text-black tw-px-8 tw-py-3 tw-bg-gradient-to-br tw-from-gray-200 tw-to-green tw-shadow-md tw-w-full tw-rounded-2xl tw-border-2 tw-border-white hover:tw-bg-gray-200"
         >
           Valider mon pace'sport
@@ -417,30 +441,30 @@ export default function Page(props) {
               <Center> <h1 color='black' className='tw-text-center'>Félicitation, PACE'SPORT validé !</h1></Center>
               <br />
               <div className="heart-rate">
-                    <svg
-                      version="1.0"
-                      xmlns="http://www.w3.org/2000/svg"
-                      xmlnsXlink="http://www.w3.org/1999/xlink"
-                      x="0px"
-                      y="0px"
-                      width="150px"
-                      height="73px"
-                      viewBox="0 0 150 73"
-                      enableBackground="new 0 0 150 73"
-                      xmlSpace="preserve"
-                    >
-                      <polyline
-                        fill="none"
-                        stroke="#000000"
-                        strokeWidth="3"
-                        strokeMiterlimit="10"
-                        points="0,45.486 62.838,45.622 71.959,20 80.067,70.729 90.297,45.486 150,45.486"
-                      />
-                    </svg>
-                    <div className="fade-in"></div>
-                    <div className="fade-out"></div>
-                  </div>
-                  <br/>
+                <svg
+                  version="1.0"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlnsXlink="http://www.w3.org/1999/xlink"
+                  x="0px"
+                  y="0px"
+                  width="150px"
+                  height="73px"
+                  viewBox="0 0 150 73"
+                  enableBackground="new 0 0 150 73"
+                  xmlSpace="preserve"
+                >
+                  <polyline
+                    fill="none"
+                    stroke="#000000"
+                    strokeWidth="3"
+                    strokeMiterlimit="10"
+                    points="0,45.486 62.838,45.622 71.959,20 80.067,70.729 90.297,45.486 150,45.486"
+                  />
+                </svg>
+                <div className="fade-in"></div>
+                <div className="fade-out"></div>
+              </div>
+              <br />
               <Center><Text fz={'md'} weight={600}>{pacesportSubscription.association.name} vous remercie pour votre achat</Text></Center>
               <br />
               {/* <Text color='dimmed'>{stap2}</Text> */}
@@ -472,7 +496,7 @@ export default function Page(props) {
             <br />
             <Card className='tw-flex tw-bg-gray-50 tw-mb-2' radius={'lg'}>
               <Flex direction={'column'} className='tw-flex-1'>
-              <Center>
+                <Center>
                   <Group>
                     <Avatar className="tw-shadow-md" size={'lg'} radius={'xl'} src={`/uploads/${pacesportSubscription.association.avatar?.name}`} />
                     <Text fz={'md'} weight={600}>{pacesportSubscription.association.name}</Text>
@@ -482,7 +506,7 @@ export default function Page(props) {
                 <Center> <Text color='black'>{stap2.description}</Text></Center>
                 <br />
                 {/* <Text color='dimmed'>{stap2}</Text> */}
-                <ConfettiAnimation />
+                <ConfettiAnimation associationPartenaire={associationPartenaire} />
               </Flex>
             </Card></Box>) : (
             isFlipped ? (
