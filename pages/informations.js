@@ -110,15 +110,6 @@ export default function ConditionsGeneralesVente(props) {
                         />
                     ))}
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                    <Button
-                        onClick={handleUpdate}
-                        style={{ backgroundColor: 'red', color: 'white' }}
-                        disabled={isLoading}  // Désactiver le bouton si isLoading est vrai
-                    >
-                        Mettre à jour
-                    </Button>
-                </div>
 
                 {/* Enseigne Info */}
                 {props.user?.enseigne?.name && (
@@ -129,6 +120,15 @@ export default function ConditionsGeneralesVente(props) {
                 {props?.user?.association?.name && (
                     <InfoSection title="Association" data={props.user?.association} />
                 )}
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <Button
+                        onClick={handleUpdate}
+                        style={{ backgroundColor: 'red', color: 'white' }}
+                        disabled={isLoading}  // Désactiver le bouton si isLoading est vrai
+                    >
+                        Mettre à jour
+                    </Button>
+                </div>
             </div>
         </main>
         <script dangerouslySetInnerHTML={{

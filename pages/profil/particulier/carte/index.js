@@ -33,7 +33,9 @@ export default function Page(props) {
   const [showBoxList, setShowBoxList] = useState(false);
   const [filteredOffersNearby, setFilteredOffersNearby] = useState([]);
   const [filteredOffersNearby2, setFilteredOffersNearby2] = useState(filteredOffersNearby);
+  const [filteredOffersNearby3, setFilteredOffersNearby3] = useState([]);
   const [filteredOffers3, setFilteredOffers3] = useState([]);
+  const [searchResults, setSearchResults] = useState(filteredOffers3);
   const [selectedBox, setSelectedBox] = useState(null);
   const [confettiActive, setConfettiActive] = useState(false);
   const [error, setError] = useState(null);
@@ -104,6 +106,37 @@ export default function Page(props) {
     </Card>
   )
 
+  const OfferRow21 = ( searchResultsT ) => (
+    searchResults.sort(compareOffers).map((offer) => (
+    <Card className='tw-flex tw-bg-gray-200 tw-mb-2' radius={'lg'}>
+      <Center>
+        <Avatar className='tw-shadow-md' radius={'lg'} src={`/uploads/${offer.enseigne?.avatar?.name}`} />
+      </Center>
+      <Flex direction={'column'} className='tw-flex-1'>
+        <Flex justify={'space-between'}>
+          <Text weight={550}>{offer?.enseigne.name} <SponsoringOfferTypeBadge offer={offer} /></Text>
+          <Text className='tw-flex tw-font-light' fz={'sm'}>
+            {offer?.title === "online" ? (
+              // Si offer.title est "online", affiche uniquement l'icône FaMapMarkerAlt
+              <FaAt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />
+            ) : (
+              // Sinon, affiche l'icône FaMapMarkerAlt suivi de l'attribut offer.enseigne.ville si celui-ci est défini
+              <>
+                <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />
+                {offer.enseigne && offer.enseigne.ville ? offer.enseigne.ville : null}
+              </>
+            )}
+          </Text>
+
+        </Flex>
+        <Text color='dimmed'>{offer.description}</Text>
+        <Text color='dimmed'>{offer?.title == "online" ? "Boutique en ligne" : ("Distance : " + (parseInt(offer?.title) > 1000 ? (offer?.title / 1000).toFixed(0) : offer?.title) + " " + (parseInt(offer?.title) > 1000 ? "km" : "mètres"))}</Text>
+      </Flex>
+    </Card>
+    ))
+  )
+
+
   const offersList = <>
     <Transition mounted={setShowOffers} transition="slide-down" duration={400} timingFunction="ease">
       {(styles) =>
@@ -117,19 +150,30 @@ export default function Page(props) {
 
   const handleSearch = (text) => {
     setSearchText(text);
-    const filtered = filteredOffers.filter((offer) =>
+    let filtered = filteredOffers3;
+    if (text) {
+      // Effectuez la recherche et filtrez les offres
+      filtered = filteredOffersNearby2.filter((offer) =>
       offer.enseigne.name.toLowerCase().includes(text.toLowerCase())
-    );
-    setFilteredOffersNearby2(filtered);
+      );
+    }
+    // Mettez à jour l'état local des résultats de la recherche
+    setFilteredOffersNearby3(filtered);
   }
 
   const handleSearch2 = (text) => {
     setSearchText(text);
-    const filtered = filteredOffers.filter((offer) =>
-      offer.description.toLowerCase().includes(text.toLowerCase())
-    );
-    setFilteredOffers3(filtered);
-  }
+    let filteredResults = filteredOffers3;
+    if (text) {
+      // Effectuez la recherche et filtrez les offres
+      filteredResults = filteredOffers3.filter((offer) =>
+      offer.enseigne.name.toLowerCase().includes(text.toLowerCase())
+      );
+    }
+    console.log("pp" + text)
+    // Mettez à jour l'état local des résultats de la recherche
+    setSearchResults(filteredResults);
+  };
 
   useEffect(() => {
     // Obtenir la position actuelle
@@ -163,7 +207,9 @@ export default function Page(props) {
         // Vous avez maintenant une liste d'offres pour lesquelles la valeur retournée était true
         setFilteredOffersNearby(filteredTrueOffers);
         setFilteredOffersNearby2(filteredTrueOffers);
+        setFilteredOffersNearby3(filteredTrueOffers);
         setFilteredOffers3(filteredOffers);
+        setSearchResults(filteredOffers);
       },
       (error) => {
         setError(`Error while getting location: ${error.message}`);
@@ -236,7 +282,7 @@ export default function Page(props) {
           <Button
             size="md"
             onClick={toggleBoxList2}
-            className="tw-text-black tw-px-8 tw-py-3 tw-bg-gradient-to-br tw-from-gray-200 tw-to-white tw-shadow-md tw-w-full tw-rounded-2xl tw-border-2 tw-border-white hover:tw-bg-gray-200"
+            className="tw-text-black tw-mt-10 tw-px-8 tw-py-3 tw-bg-gradient-to-br tw-from-gray-200 tw-to-white tw-shadow-md tw-w-full tw-rounded-2xl tw-border-2 tw-border-white hover:tw-bg-gray-200"
           >
             retour
           </Button>
@@ -251,10 +297,10 @@ export default function Page(props) {
           />
         </Center>
         <br />
-        {filteredOffersNearby2.sort(compareOffers).length === 0 ? (
+        {filteredOffersNearby3.sort(compareOffers).length === 0 ? (
           <Center><h2 className="tw-text-white">Aucune offre n'a été trouvée à proximité.</h2></Center>
         ) : (
-          filteredOffersNearby2.sort(compareOffers).map((offer) => (
+          filteredOffersNearby3.sort(compareOffers).map((offer) => (
             <div key={offer.title} onClick={() => selectBox(offer)}>
               <OfferRow key={offer?.title} offer={offer} />
             </div>
@@ -412,36 +458,40 @@ export default function Page(props) {
       <Container>
 
         {stap3 ? (<Box className='tw-absolute truc-fonce' >
-          <Card className='tw-flex tw-bg-gray-50 tw-mb-2' radius={'lg'}>
+          <Card className='tw-flex tw-bg-gray-50 tw-mb-2 tw-mt-5' radius={'lg'}>
             <Flex direction={'column'} className='tw-flex-1'>
-              <Center> <h1 color='black' className='tw-text-center'>Félicitation, PACE'SPORT validé !</h1></Center>
-              <br />
+              <Center><h1 color='black' className='tw-text-center'>Félicitation, PACE'SPORT validé !</h1></Center>
               <div className="heart-rate">
-                    <svg
-                      version="1.0"
-                      xmlns="http://www.w3.org/2000/svg"
-                      xmlnsXlink="http://www.w3.org/1999/xlink"
-                      x="0px"
-                      y="0px"
-                      width="150px"
-                      height="73px"
-                      viewBox="0 0 150 73"
-                      enableBackground="new 0 0 150 73"
-                      xmlSpace="preserve"
-                    >
-                      <polyline
-                        fill="none"
-                        stroke="#000000"
-                        strokeWidth="3"
-                        strokeMiterlimit="10"
-                        points="0,45.486 62.838,45.622 71.959,20 80.067,70.729 90.297,45.486 150,45.486"
-                      />
-                    </svg>
-                    <div className="fade-in"></div>
-                    <div className="fade-out"></div>
-                  </div>
-                  <br/>
-              <Center><Text fz={'md'} weight={600}>{pacesportSubscription.association.name} vous remercie pour votre achat</Text></Center>
+                <svg
+                  version="1.0"
+                  xmlns="http://www.w3.org/2000/svg"
+                  xmlnsXlink="http://www.w3.org/1999/xlink"
+                  x="0px"
+                  y="0px"
+                  width="150px"
+                  height="73px"
+                  viewBox="0 0 150 73"
+                  enableBackground="new 0 0 150 73"
+                  xmlSpace="preserve"
+                >
+                  <polyline
+                    fill="none"
+                    stroke="#000000"
+                    strokeWidth="3"
+                    strokeMiterlimit="10"
+                    points="0,45.486 62.838,45.622 71.959,20 80.067,70.729 90.297,45.486 150,45.486"
+                  />
+                </svg>
+                <div className="fade-in"></div>
+                <div className="fade-out"></div>
+              </div>
+              <Center>
+                  <Group>
+                    <Avatar className="tw-shadow-md" size={'lg'} radius={'xl'} src={`/uploads/${pacesportSubscription.association.avatar?.name}`} />
+                    <Avatar className="tw-shadow-md" size={'lg'} radius={'xl'} src={`/uploads/${stap2.enseigne.avatar?.name}`} />
+                  </Group>
+                </Center>
+              <Center><Text fz={'md'} weight={600}>{pacesportSubscription.association.name} vous remercie pour votre achat chez {stap2.enseigne.name}</Text></Center>
               <br />
               {/* <Text color='dimmed'>{stap2}</Text> */}
             </Flex>
@@ -464,7 +514,7 @@ export default function Page(props) {
               <Button
                 size="md"
                 onClick={toggleBoxList3}
-                className="tw-text-black tw-px-8 tw-py-3 tw-bg-gradient-to-br tw-from-gray-200 tw-to-white tw-shadow-md tw-w-full tw-rounded-2xl tw-border-2 tw-border-white hover:tw-bg-gray-200"
+                className="tw-text-black tw-mt-10 tw-px-8 tw-py-3 tw-bg-gradient-to-br tw-from-gray-200 tw-to-white tw-shadow-md tw-w-full tw-rounded-2xl tw-border-2 tw-border-white hover:tw-bg-gray-200"
               >
                 retour
               </Button>
@@ -472,7 +522,7 @@ export default function Page(props) {
             <br />
             <Card className='tw-flex tw-bg-gray-50 tw-mb-2' radius={'lg'}>
               <Flex direction={'column'} className='tw-flex-1'>
-              <Center>
+                <Center>
                   <Group>
                     <Avatar className="tw-shadow-md" size={'lg'} radius={'xl'} src={`/uploads/${pacesportSubscription.association.avatar?.name}`} />
                     <Text fz={'md'} weight={600}>{pacesportSubscription.association.name}</Text>
@@ -498,7 +548,7 @@ export default function Page(props) {
               {standaloneCard}
             </Box>
             <Box className="tw-bg-gradient-to-br tw-from-slate-100 tw-to-gray-100 tw-shadow-lg tw-rounded-2xl tw-pt-12 tw-relative -tw-top-10 tw-z-0" p={'md'}>
-              <Title order={3} mb={'sm'} align="center">Pace'Sport</Title>
+              <Title order={3} mb={'sm'} align="center">Mon Pace'Sport</Title>
               {pacesportSubscription &&
                 <Center>
                   <Group>
@@ -517,7 +567,7 @@ export default function Page(props) {
               </Center>
             </Box>
             {showOffers &&
-              <section className='tw-relative -tw-top-6'>
+              <section className="tw-relative -tw-top-6">
                 <Center>
                   <input
                     type="text"
@@ -528,9 +578,7 @@ export default function Page(props) {
                   />
                 </Center>
 
-                {filteredOffers3.sort(compareOffers).map((offer) => (
-                  <OfferRow key={offer.title} offer={offer} />
-                ))}
+                <OfferRow21 offer={searchResults} />
                 <br /><br /><br />
               </section>
             }
