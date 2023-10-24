@@ -72,10 +72,7 @@ export default function Page(props) {
       setVisible(false);
     }, 2000);
   }, [debouncedSearch, props.associations]);
-
-
-
-
+  
   const handleSearch = (event) => {
     setSearch(event.currentTarget.value)
     // if (props.associations.length == 0) {
