@@ -131,7 +131,7 @@ export default function Page(props) {
 
           </Flex>
           <Text color='dimmed'>{offer.description}</Text>
-          <Text color='dimmed'>{offer?.title == "online" ? "Boutique en ligne" : ("Distance : " + (parseInt(offer?.title) > 1000 ? (offer?.title / 1000).toFixed(0) : offer?.title) + " " + (parseInt(offer?.title) > 1000 ? "km" : "mètres"))}</Text>
+          <Text color='dimmed'>{offer?.title!= 'aucun' ? (offer?.title == "online" ? "Boutique en ligne" : ("Distance : " + (parseInt(offer?.title) > 1000 ? (offer?.title / 1000).toFixed(0) : offer?.title) + " " + (parseInt(offer?.title) > 1000 ? "km" : "mètres"))) : ''}</Text>
         </Flex>
       </Card>
     ))
@@ -190,6 +190,10 @@ export default function Page(props) {
               if (offer.enseigne.latitude === "0" && offer.enseigne.longitude === "0") {
                 offer.title = 'online'
                 return true
+              }
+              else if (offer.enseigne.latitude === null && offer.enseigne.longitude === null) {
+                offer.title = 'aucun'
+                return false
               }
               else {
                 const distance = calculateDistance(lat, lon, offer.enseigne.latitude, offer.enseigne.longitude);
@@ -342,7 +346,7 @@ export default function Page(props) {
         console.log(data);
       } catch (error) {
         console.error("Erreur lors de l'appel à l'API: ", error);
-        Toast.error("Une erreur est survenue lors de l'appel à l'API."); // Ou un autre message d'erreur adapté à vos besoins
+        //Toast.error("Une erreur est survenue lors de l'appel à l'API."); // Ou un autre message d'erreur adapté à vos besoins
       }
       setShowConfetti(true);
       setIsFlipped(false);
@@ -458,6 +462,46 @@ export default function Page(props) {
     return numberA - numberB;
   }
 
+  const handleUpload = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      setImage(event.target.result);
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleTakePhoto = () => {
+    // Vous pouvez utiliser l'API de la caméra ici
+    // Pour cet exemple, nous utiliserons une image de démonstration
+    const demoImage = 'https://via.placeholder.com/150';
+    setImage(demoImage);
+  };
+
+  const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    async function getCameraPermission() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+
+        if (stream) {
+          // L'utilisateur a autorisé l'accès à la caméra
+          // Vous pouvez maintenant afficher le flux vidéo en direct ou prendre une photo
+        }
+      } catch (error) {
+        // Gérer les erreurs, par exemple, l'utilisateur a refusé l'accès à la caméra
+        console.error('Erreur lors de la demande d\'accès à la caméra:', error);
+      }
+    }
+
+    getCameraPermission();
+  }, []);
+
   function calculateDistance(lat1, lon1, lat2, lon2) {
     const R = 6371e3; // Earth's radius in meters
     const lat1Rad = (lat1 * Math.PI) / 180;
@@ -485,34 +529,34 @@ export default function Page(props) {
           <Card className='tw-flex tw-bg-gray-50 tw-mb-2 tw-mt-5' radius={'lg'}>
             <Flex direction={'column'} className='tw-flex-1'>
               <Center><h1 color='black' className='tw-text-center'>Félicitation, PACE'SPORT validé !</h1></Center>
-              <div className="heart-rate">
-                <svg
-                  version="1.0"
-                  xmlns="http://www.w3.org/2000/svg"
-                  xmlnsXlink="http://www.w3.org/1999/xlink"
-                  x="0px"
-                  y="0px"
-                  width="150px"
-                  height="73px"
-                  viewBox="0 0 150 73"
-                  enableBackground="new 0 0 150 73"
-                  xmlSpace="preserve"
-                >
-                  <polyline
-                    fill="none"
-                    stroke="#000000"
-                    strokeWidth="3"
-                    strokeMiterlimit="10"
-                    points="0,45.486 62.838,45.622 71.959,20 80.067,70.729 90.297,45.486 150,45.486"
-                  />
-                </svg>
-                <div className="fade-in"></div>
-                <div className="fade-out"></div>
-              </div>
               <Center>
                 <Group>
-                  <Avatar className="tw-shadow-md" size={'lg'} radius={'xl'} src={`/uploads/${pacesportSubscription.association.avatar?.name}`} />
-                  <Avatar className="tw-shadow-md" size={'lg'} radius={'xl'} src={`/uploads/${stap2.enseigne.avatar?.name}`} />
+                  <Avatar className="tw-shadow-md tw-z-20" size={'lg'} radius={'xl'} src={`/uploads/${pacesportSubscription.association.avatar?.name}`} />
+                  <div className="heart-rate">
+                    <svg
+                      version="1.0"
+                      xmlns="http://www.w3.org/2000/svg"
+                      xmlnsXlink="http://www.w3.org/1999/xlink"
+                      x="0px"
+                      y="0px"
+                      width="150px"
+                      height="73px"
+                      viewBox="0 0 150 73"
+                      enableBackground="new 0 0 150 73"
+                      xmlSpace="preserve"
+                    >
+                      <polyline
+                        fill="none"
+                        stroke="#000000"
+                        strokeWidth="3"
+                        strokeMiterlimit="10"
+                        points="0,45.486 62.838,45.622 71.959,20 80.067,70.729 90.297,45.486 150,45.486"
+                      />
+                    </svg>
+                    <div className="fade-in"></div>
+                    <div className="fade-out"></div>
+                  </div>
+                  <Avatar className="tw-shadow-md tw-z-20" size={'lg'} radius={'xl'} src={`/uploads/${stap2.enseigne.avatar?.name}`} />
                 </Group>
               </Center>
               <Center><Text fz={'md'} weight={600}>{pacesportSubscription.association.name} vous remercie pour votre achat chez {stap2.enseigne.name}</Text></Center>
@@ -524,14 +568,31 @@ export default function Page(props) {
           <br />
           <RatingButton />
           <br />
+          <Card className='tw-flex tw-justify-center tw-bg-gray-50 tw-mb-2' radius={'lg'}>
+            <Box>
+              <Center> <Text color='black'>Envoyer mon reçu pour obtenir des points Pace'Sport</Text></Center>
+              <br/>
+              <Group position="center" className="">
+                <Center>
+                  <div>
+                    <input type="file" accept="image/*" onChange={handleUpload} />
+                    <button onClick={handleTakePhoto}>Prendre une photo</button>
+                    {image && <img src={image} alt="Uploaded/Taken Photo" />}
+                  </div>
+                </Center>
+              </Group>
+            </Box>
+          </Card>
+          <br />
           <Group position="center" className="">
             <Button
               size="md"
               onClick={toggleBoxList2}
               className="tw-text-black tw-px-8 tw-py-3 tw-bg-gradient-to-br tw-from-gray-200 tw-to-white tw-shadow-md tw-w-full tw-rounded-2xl tw-border-2 tw-border-white hover:tw-bg-gray-200"
             >
-              retour
+              Terminer
             </Button>
+            <br/>
           </Group></Box>) : (
           stap2 ? (<Box className='tw-absolute truc-fonce' >
             <Group position="center" className="">
