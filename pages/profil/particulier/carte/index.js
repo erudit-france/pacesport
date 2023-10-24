@@ -576,8 +576,8 @@ export default function Page(props) {
                 <Center>
                   <div>
                     <input type="file" accept="image/*" onChange={handleUpload} />
-                    <button onClick={handleTakePhoto}>Prendre une photo</button>
-                    {image && <img src={image} alt="Uploaded/Taken Photo" />}
+                    {/* <button onClick={handleTakePhoto}>Prendre une photo</button>
+                    {image && <img src={image} alt="Uploaded/Taken Photo" />} */}
                   </div>
                 </Center>
               </Group>
