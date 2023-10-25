@@ -108,6 +108,28 @@ export default function Page(props) {
                 console.error("Error from server:", err);
                 Toast.error('Erreur, veuillez réessayer plus tard');
             })
+
+        fetch(`/api/communication/add/credit`, {
+            method: 'POST',
+            headers: new Headers({
+                'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
+            }),
+            body: JSON.stringify({
+                credit: credit
+            })
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (res.data) {
+                    Toast.success(res.data.message)
+                    router.push('/profil/sponsor')
+                }
+            })
+            .catch((error) => {
+                console.error("Erreur:", error);
+                Toast.error('Erreur pendant l\'enregistrement de l\'offre');
+            })
+
     }
     console.log(props)
 

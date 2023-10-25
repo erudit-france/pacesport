@@ -251,6 +251,26 @@ export default function Page(props) {
 
 export async function getServerSideProps(context) {
     const token = context.req.cookies['token_v3']
+    let user = await getUser(token)
+    if (user.code == 401) {
+        return {
+            redirect: {
+                permanent: false,
+                destination: "/login/as"
+            }
+        }
+    }
+    user = JSON.parse(user.data)
+    if (!user.roles.includes('ROLE_ADMIN')) {
+        return {
+            redirect: {
+                permanent: false,
+                destination: "/login/as"
+            }
+        }
+    }
+    const query = context.query
+    const filter = query.filter
 
     let avatar = await fetch(`${process.env.API_URL}/api/association/avatar`, {
         headers: new Headers({
@@ -278,8 +298,6 @@ export async function getServerSideProps(context) {
     let associations = await getAllAssociations(token)
     let pendingAssociations = await getPendingAssociations(token)
     let activeAssociations = await getActiveAssociations(token)
-    let user = await getUser(token)
-    user = JSON.parse(user.data)
     if (!user.roles.includes('ROLE_ADMIN')) {
         return {
             redirect: {

@@ -79,6 +79,38 @@ export default function Page(props) {
     </Center>
   </>
 
+  const OfferRow555 = (ss) => (
+    filteredOffersNearby3.sort(compareOffers).map((offer) => (
+      <div key={offer.title} onClick={() => selectBox(offer)}>
+        <Card className='tw-flex tw-bg-gray-200 tw-mb-2' radius={'lg'}>
+          <Center>
+            <Avatar className='tw-shadow-md' radius={'lg'} src={`/uploads/${offer.enseigne?.avatar?.name}`} />
+          </Center>
+          <Flex direction={'column'} className='tw-flex-1'>
+            <Flex justify={'space-between'}>
+              <Text weight={550}>{offer?.enseigne.name} <SponsoringOfferTypeBadge offer={offer} /></Text>
+              <Text className='tw-flex tw-font-light' fz={'sm'}>
+                {offer?.title === "online" ? (
+                  // Si offer.title est "online", affiche uniquement l'icône FaMapMarkerAlt
+                  <FaAt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />
+                ) : (
+                  // Sinon, affiche l'icône FaMapMarkerAlt suivi de l'attribut offer.enseigne.ville si celui-ci est défini
+                  <>
+                    <FaMapMarkerAlt className='tw-relative tw-top-1 tw-mr-1 tw-text-gray-800' />
+                    {offer.enseigne && offer.enseigne.ville ? offer.enseigne.ville : null}
+                  </>
+                )}
+              </Text>
+
+            </Flex>
+            <Text color='dimmed'>{offer.description}</Text>
+            <Text color='dimmed'>{offer?.title != 'aucun' && offer?.title != null ? (offer?.title == "online" ? "Boutique en ligne" : ("Distance : " + (parseInt(offer?.title) > 1000 ? (offer?.title / 1000).toFixed(0) : offer?.title) + " " + (parseInt(offer?.title) > 1000 ? "km" : "mètres"))) : ''}</Text>
+          </Flex>
+        </Card>
+      </div>
+    ))
+  )
+
   const OfferRow = ({ offer }) => (
     <Card className='tw-flex tw-bg-gray-200 tw-mb-2' radius={'lg'}>
       <Center>
@@ -102,7 +134,7 @@ export default function Page(props) {
 
         </Flex>
         <Text color='dimmed'>{offer.description}</Text>
-        <Text color='dimmed'>{offer?.title == "online" ? "Boutique en ligne" : ("Distance : " + (parseInt(offer?.title) > 1000 ? (offer?.title / 1000).toFixed(0) : offer?.title) + " " + (parseInt(offer?.title) > 1000 ? "km" : "mètres"))}</Text>
+        <Text color='dimmed'>{offer?.title != 'aucun' && offer?.title != null ? (offer?.title == "online" ? "Boutique en ligne" : ("Distance : " + (parseInt(offer?.title) > 1000 ? (offer?.title / 1000).toFixed(0) : offer?.title) + " " + (parseInt(offer?.title) > 1000 ? "km" : "mètres"))) : ''}</Text>
       </Flex>
     </Card>
   )
@@ -131,7 +163,7 @@ export default function Page(props) {
 
           </Flex>
           <Text color='dimmed'>{offer.description}</Text>
-          <Text color='dimmed'>{offer?.title!= 'aucun' ? (offer?.title == "online" ? "Boutique en ligne" : ("Distance : " + (parseInt(offer?.title) > 1000 ? (offer?.title / 1000).toFixed(0) : offer?.title) + " " + (parseInt(offer?.title) > 1000 ? "km" : "mètres"))) : ''}</Text>
+          <Text color='dimmed'>{offer?.title != 'aucun' && offer?.title != null ? (offer?.title == "online" ? "Boutique en ligne" : ("Distance : " + (parseInt(offer?.title) > 1000 ? (offer?.title / 1000).toFixed(0) : offer?.title) + " " + (parseInt(offer?.title) > 1000 ? "km" : "mètres"))) : ''}</Text>
         </Flex>
       </Card>
     ))
@@ -151,10 +183,10 @@ export default function Page(props) {
 
   const handleSearch = (text) => {
     setSearchText(text);
-    let filtered = filteredOffers3;
+    let filtered = filteredOffersNearby2;
     if (text) {
       // Effectuez la recherche et filtrez les offres
-      filtered = filteredOffersNearby2.filter((offer) =>
+      filtered = filtered.filter((offer) =>
         offer.enseigne.name.toLowerCase().includes(text.toLowerCase())
       );
     }
@@ -179,6 +211,8 @@ export default function Page(props) {
   useEffect(() => {
     setFilteredOffers3(filteredOffers);
     setSearchResults(filteredOffers);
+    setFilteredOffersNearby2(filteredOffers);
+    setFilteredOffersNearby3(filteredOffers);
     // Obtenir la position actuelle
     navigator.geolocation.getCurrentPosition(
       async (position) => {
@@ -213,11 +247,27 @@ export default function Page(props) {
 
         // Vous avez maintenant une liste d'offres pour lesquelles la valeur retournée était true
         setFilteredOffersNearby(filteredTrueOffers);
-        setFilteredOffersNearby2(filteredTrueOffers);
         setFilteredOffersNearby3(filteredTrueOffers);
       },
       (error) => {
-        setError(`Error while getting location: ${error.message}`);
+        try {
+          const filteredOffersNearby4 = filteredOffers.map((offer) => {
+            if (offer.enseigne.latitude === "0" && offer.enseigne.longitude === "0") {
+              offer.title = 'online';
+              return true;
+            } else {
+              offer.title = 'aucun';
+              return false;
+            }
+          });
+          const filteredTrueOffers2 = filteredOffers.filter((_, index) => filteredOffersNearby4[index]);
+          console.log(filteredTrueOffers2)
+          setFilteredOffersNearby(filteredTrueOffers2);
+          setFilteredOffersNearby2(filteredOffers);
+          setFilteredOffersNearby3(filteredTrueOffers2);
+        } catch (error) {
+          // Gérer les erreurs
+        }
       }
     );
   }, []);
@@ -308,11 +358,8 @@ export default function Page(props) {
         {filteredOffersNearby3.sort(compareOffers).length === 0 ? (
           <Center><h2 className="tw-text-white">Aucune offre n'a été trouvée à proximité.</h2></Center>
         ) : (
-          filteredOffersNearby3.sort(compareOffers).map((offer) => (
-            <div key={offer.title} onClick={() => selectBox(offer)}>
-              <OfferRow key={offer?.title} offer={offer} />
-            </div>
-          ))
+
+          <OfferRow555 offer={filteredOffersNearby3} />
         )}
 
       </div>
@@ -567,7 +614,7 @@ export default function Page(props) {
           <Card className='tw-flex tw-justify-center tw-bg-gray-50 tw-mb-2' radius={'lg'}>
             <Box>
               <Center> <Text color='black'>Envoyer mon reçu pour obtenir des points Pace'Sport</Text></Center>
-              <br/>
+              <br />
               <Group position="center" className="">
                 <Center>
                   <div>
@@ -587,7 +634,7 @@ export default function Page(props) {
             >
               Terminer
             </Button>
-            <br/>
+            <br />
           </Group></Box>) : (
           stap2 ? (<Box className='tw-absolute truc-fonce' >
             <Group position="center" className="">
