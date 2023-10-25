@@ -177,6 +177,8 @@ export default function Page(props) {
   };
 
   useEffect(() => {
+    setFilteredOffers3(filteredOffers);
+    setSearchResults(filteredOffers);
     // Obtenir la position actuelle
     navigator.geolocation.getCurrentPosition(
       async (position) => {
@@ -213,8 +215,6 @@ export default function Page(props) {
         setFilteredOffersNearby(filteredTrueOffers);
         setFilteredOffersNearby2(filteredTrueOffers);
         setFilteredOffersNearby3(filteredTrueOffers);
-        setFilteredOffers3(filteredOffers);
-        setSearchResults(filteredOffers);
       },
       (error) => {
         setError(`Error while getting location: ${error.message}`);
@@ -484,23 +484,23 @@ export default function Page(props) {
 
   const [image, setImage] = useState(null);
 
-  useEffect(() => {
-    async function getCameraPermission() {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+  // useEffect(() => {
+  //   async function getCameraPermission() {
+  //     try {
+  //       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
 
-        if (stream) {
-          // L'utilisateur a autorisé l'accès à la caméra
-          // Vous pouvez maintenant afficher le flux vidéo en direct ou prendre une photo
-        }
-      } catch (error) {
-        // Gérer les erreurs, par exemple, l'utilisateur a refusé l'accès à la caméra
-        console.error('Erreur lors de la demande d\'accès à la caméra:', error);
-      }
-    }
+  //       if (stream) {
+  //         // L'utilisateur a autorisé l'accès à la caméra
+  //         // Vous pouvez maintenant afficher le flux vidéo en direct ou prendre une photo
+  //       }
+  //     } catch (error) {
+  //       // Gérer les erreurs, par exemple, l'utilisateur a refusé l'accès à la caméra
+  //       console.error('Erreur lors de la demande d\'accès à la caméra:', error);
+  //     }
+  //   }
 
-    getCameraPermission();
-  }, []);
+  //   getCameraPermission();
+  // }, []);
 
   function calculateDistance(lat1, lon1, lat2, lon2) {
     const R = 6371e3; // Earth's radius in meters
@@ -560,14 +560,10 @@ export default function Page(props) {
                 </Group>
               </Center>
               <Center><Text fz={'md'} weight={600}>{pacesportSubscription.association.name} vous remercie pour votre achat chez {stap2.enseigne.name}</Text></Center>
-              <br />
               {/* <Text color='dimmed'>{stap2}</Text> */}
             </Flex>
           </Card>
-
-          <br />
           <RatingButton />
-          <br />
           <Card className='tw-flex tw-justify-center tw-bg-gray-50 tw-mb-2' radius={'lg'}>
             <Box>
               <Center> <Text color='black'>Envoyer mon reçu pour obtenir des points Pace'Sport</Text></Center>
@@ -583,7 +579,6 @@ export default function Page(props) {
               </Group>
             </Box>
           </Card>
-          <br />
           <Group position="center" className="">
             <Button
               size="md"
