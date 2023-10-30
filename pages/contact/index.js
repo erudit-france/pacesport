@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { useForm } from '@mantine/form';
 import { BsLock, BsArrowLeft } from 'react-icons/bs'
 import Layout from "@/components/layout/GradientDoodle"
+import { getUser } from "@/domain/repository/UserRepository";
 import { useContext } from "react";
 import { AppContext } from "@/context/AppContext";
 import { deleteCookie } from "cookies-next";
@@ -17,10 +18,6 @@ import { FiArrowLeft, FiSettings } from "react-icons/fi";
 export default function Page(props) {
     const router = useRouter()
     const context = useContext(AppContext)
-    const logout = () => {
-        deleteCookie('token_v2')
-        router.push('/login')
-    }
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -29,8 +26,8 @@ export default function Page(props) {
 
     const form = useForm({
         initialValues: {
-            name: props.user ? props.user.nom + " " + props.user.prenom : '',
-            email: props.user ? props.user.email : '',
+            name: props?.user ? props.user.nom + " " + props.user.prenom : '',
+            email: props?.user ? props.user.email : '',
             message: '',
         },
         validate: {
@@ -40,16 +37,16 @@ export default function Page(props) {
 
     const handleSubmit = (e) => {
         let body = serialize(e)
-        console.log(e)
         fetch(`/api/mail/help`, {
             method: 'POST',
             headers: new Headers({
-                'JWTAuthorization': `Bearer ${getCookie('token_v2')}`
+                'JWTAuthorization': `Bearer ${getCookie('token_v3')}`
             }),
             body: body
         }).then(res => res.json())
             .then(res => {
                 if (res.data) {
+                    console.log(res.data)
                     Toast.success('Mail envoyée')
                 }
                 close()
@@ -76,7 +73,7 @@ export default function Page(props) {
                         className="tw-bg-gray-50 tw-ml-5 tw-text-black tw-border-[1px] tw-border-gray-900
                 hover:tw-bg-gray-100 hover:tw-text-black tw-rounded-full"
                         radius={'xl'}><BsArrowLeft /></Button></Link>
-                <form onSubmit={(values) => handleSubmit(values)}>
+                <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
                     <div className="p-2"> {/* Ajoute un padding aux côtés du formulaire */}
                         <TextInput size="xs" mb={'sm'} label={<span style={{ color: 'white' }}>Nom</span>} className="tw-ml-[20px] tw-mr-[20px] tw-text-white"
                             withAsterisk
@@ -99,35 +96,20 @@ export default function Page(props) {
 }
 
 export async function getServerSideProps(context) {
-    const token = context.req.cookies['token_v2']
-    const res = await fetch(`${process.env.API_URL}/api/account/is-signup-complete`, {
-        headers: new Headers({
-            'JWTAuthorization': `Bearer ${token}`,
-        })
-    }
-    )
-    const data = await res.json()
-
-    if (data.code == 401) {
+    const token = context.req.cookies['token_v3']
+    let user = await getUser(token)
+    if (user.code == 401) {
         return {
-            redirect: {
-                permanent: false,
-                destination: "/login"
+            props: {
+                user: ""
             }
         }
     }
-
-    const user = await fetch(`${process.env.API_URL}/api/user`, {
-        headers: new Headers({
-            'JWTAuthorization': `Bearer ${token}`,
-        })
-    })
-    const userData = await user.json();
+    user = JSON.parse(user.data)
     // // Pass data to the page via props
     return {
         props: {
-            status: data.data,
-            user: JSON.parse(userData.data)
+            user: user
         }
     }
 }
