@@ -26,7 +26,7 @@ export default function OfferDescriptionCard({offer}) {
                 maxHeight={50} showLabel="Plus ▾" hideLabel="Moins ▴">
                 <Text color='dimmed'>{offer.description}</Text>
             </Spoiler>
-            <Text className='tw-relative tw-bottom-1 tw-mr-1 tw-font-light tw-text-end' fz={'xs'}>{'du ' + moment(offer.createdAt).utc().format('DD/MM/YYYY') + ' au ' + moment(offer.createdAt).add(1, 'years').utc().format('DD/MM/YYYY')}</Text>
+            <Text className='tw-relative tw-bottom-1 tw-mr-1 tw-font-light tw-text-end' fz={'xs'}>{'du ' + moment(offer.createdAt).utc().format('DD/MM/YYYY') + ' au 30/06/2024'}</Text>
             </Flex>
         </Card>
     )

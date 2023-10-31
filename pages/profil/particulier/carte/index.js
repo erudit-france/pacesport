@@ -685,7 +685,7 @@ export default function Page(props) {
                 </Center>
               }
 
-              <Text className="tw-text-gray-800" align="center" mt={'sm'} fz={'sm'}>Abonné jusqu'au {moment(pacesportSubscription.createdAt).add(1, 'years').format('DD/MM/YYYY')}</Text>
+              <Text className="tw-text-gray-800" align="center" mt={'sm'} fz={'sm'}>Abonné jusqu'au 30/06/2024</Text>
               <Center mt={'md'}>
                 <Button onClick={() => setShowOffers(!showOffers)} color='white' variant='outline' className='tw-border-gray-700' radius={'lg'}>
                   <Text className='tw-text-gray-800' transform='uppercase' fz={'sm'}>Voir {showOffers ? 'moins' : 'les offres'}</Text>
