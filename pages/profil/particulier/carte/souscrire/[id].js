@@ -276,7 +276,7 @@ export default function Page(props) {
                     <Avatar className="tw-shadow-md" size={'lg'} radius={'xl'} src={`/uploads/${association.avatar?.name}`} />
                     <Flex direction={'column'} justify={'center'}>
                       <Text fz={'md'} weight={600}>{association.name}</Text>
-                      <Text fz={'sm'} weight={400} className='tw-text-gray-600'> Valide pendant 1 an</Text>
+                      <Text fz={'sm'} weight={400} className='tw-text-gray-600'> Valide jusqu'au 30 juin 2024</Text>
                     </Flex>
                   </Group>
                   <Center>
