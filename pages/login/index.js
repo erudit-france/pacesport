@@ -6,7 +6,7 @@ import LoginForm from "./components/LoginForm";
 import { useState, useEffect } from "react";
 import logo from '../../public/logo.png'
 import Image from "next/image";
-import { setCookie, getCookie, deleteCookie, getCookies } from 'cookies-next';
+import { setCookie, getCookie, deleteCookie } from 'cookies-next';
 import { useRouter } from 'next/router';  // Correction ici
 import Layout from "@/components/layout/GradientDoodle";
 
