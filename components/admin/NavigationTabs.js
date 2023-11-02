@@ -13,6 +13,7 @@ export default function NavigationTabs(props) {
             <Tabs.Tab p={'sm'} value="utilisateurs" icon={<FiUsers size={14} />}>Utilisateurs</Tabs.Tab>
             <Tabs.Tab p={'sm'} value="carte" icon={<TbCreditCard size={14} />}>Carte</Tabs.Tab>
             <Tabs.Tab p={'sm'} value="rattrapages" icon={<BiTransferAlt size={14} />}>Rattrapages</Tabs.Tab>
+            <Tabs.Tab p={'sm'} value="stats" icon={<BiTransferAlt size={14} />}>Stats</Tabs.Tab>
         </Tabs.List>
     )
 }

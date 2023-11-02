@@ -12,3 +12,7 @@ const fetchApi = async (token, url, local = false) => {
 export const getActiveSubscription = async (token, local = false) => {
     return fetchApi(token, '/api/user/activeSubscription')
 }
+
+export const getAllActiveSubscription = async (token, local = false) => {
+    return fetchApi(token, '/api/user/allActiveSubscription')
+}
