@@ -16,39 +16,37 @@ export default function Page() {
     const [isCssLoaded, setIsCssLoaded] = useState(false);  // Ajoutez cette ligne
     const router = useRouter();
 
-    useEffect(() => {
-        // Vérifie si localStorage est disponible
-        const storageAvailable = typeof window.localStorage !== "undefined";
+    // useEffect(() => {
+    //     // Vérifie si localStorage est disponible
+    //     const storageAvailable = typeof window.localStorage !== "undefined";
 
-        if (storageAvailable) {
-            const token = getCookie("token_v3");
-            if (token) {
-                const EXPIRATION_TIME = 60 * 60 * 24 * 365;
-                document.cookie = `token_v3=${token};max-age=${EXPIRATION_TIME};path=/`;
+    //     if (storageAvailable) {
+    //         const token = getCookie("token_v3");
+    //         if (token) {
+    //             const EXPIRATION_TIME = 60 * 60 * 24 * 365;
+    //             document.cookie = `token_v3=${token};max-age=${EXPIRATION_TIME};path=/`;
 
-                setVisible(true);
-                setIsCssLoaded(false);
-                router.push('/login/as').then(() => {
-                    const timer = setTimeout(() => {
-                        setVisible(false);
-                        setIsCssLoaded(true);
-                    }, 2000);
-                }).catch((err) => {
-                    setVisible(false);
-                    setIsCssLoaded(true);
-                });
-            } else {
-                setVisible(true);
-                const timer = setTimeout(() => {
-                    setVisible(false);
-                }, 2000);
-                return () => clearTimeout(timer);
-            }
-        }
+    //             setVisible(true);
+    //             setIsCssLoaded(false);
+    //             router.push('/login/as').then(() => {
+    //                 const timer = setTimeout(() => {
+    //                     setVisible(false);
+    //                     setIsCssLoaded(true);
+    //                 }, 2000);
+    //             }).catch((err) => {
+    //                 setVisible(false);
+    //                 setIsCssLoaded(true);
+    //             });
+    //         } else {
+    //             setVisible(true);
+    //             const timer = setTimeout(() => {
+    //                 setVisible(false);
+    //             }, 2000);
+    //             return () => clearTimeout(timer);
+    //         }
+    //     }
 
-    }, []);
-    
-
+    // }, []);
 
     const overlayHandler = (isVisible) => setVisible(isVisible);
     const overlayClass = visible ? 'fade-enter-active' : 'fade-exit-active';
