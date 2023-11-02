@@ -10,7 +10,7 @@ npm run dev
 ```
 built using node 16.8.0
 
-#### Déploiment
+#### Déploimentd
 
 ###### Chemins
 - /home/ubuntu/pacesport-front (pour pacesport.fr)
