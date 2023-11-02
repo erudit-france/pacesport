@@ -48,6 +48,12 @@ export default function Page() {
 
     }, []);
     
+    let kk;
+    try 
+    {
+      kk = getCookie("token_v3")
+    }catch(e){}
+
     const overlayHandler = (isVisible) => setVisible(isVisible);
     const overlayClass = visible ? 'fade-enter-active' : 'fade-exit-active';
     const mainContentClass = visible ? 'hidden' : 'visible';
@@ -85,7 +91,7 @@ export default function Page() {
                                     <LoginForm loading={overlayHandler} />
                                 </Tabs.Panel>
                             </Tabs>
-                            <span className="tw-text-gray-100 tw-text-xs">{getCookie("token_v3")}</span>
+                            <span className="tw-text-gray-100 tw-text-xs">{kk}</span>
                         </main>
                     </div>
                 )}
