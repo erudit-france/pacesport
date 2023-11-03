@@ -16,7 +16,7 @@ export default function ConditionsGeneralesVente() {
             {
             "title": "1. Objet et description du produit",
             "section": [
-                "Les présentes CGV régissent la vente de la carte dématérialisée par Pace'sport, offrant à l'acheteur (ci-après dénommé vous ou l'acheteur) un accès aux avantages et promotions proposés par les enseignes partenaires pendant une durée d'un an à compter de la date d'achat.\n\n1.2 Description du produit : La carte dématérialisée permet à l'acheteur de bénéficier de réductions, promotions et offres spéciales auprès des enseignes locales partenaires de Pace'sport."
+                "Les présentes CGV régissent la vente de la carte dématérialisée par Pace'sport, offrant à l'acheteur (ci-après dénommé vous ou l'acheteur) un accès aux avantages et promotions proposés par les enseignes partenaires pendant une durée d'un an à compter de la date d'achat. 1.2 Description du produit : La carte dématérialisée permet à l'acheteur de bénéficier de réductions, promotions et offres spéciales auprès des enseignes locales partenaires de Pace'sport."
             ]
             },
             {
@@ -31,15 +31,17 @@ export default function ConditionsGeneralesVente() {
             {
             "title": "3. Durée et validité de la carte dématérialisée",
             "section": [
-                "3.1 La carte dématérialisée est valable pour une durée d'un an à compter de la date d'achat, sauf indication contraire. Pendant cette période, vous pouvez bénéficier des avantages et promotions proposés par les enseignes partenaires de Pace'sport.",
-                "3.2 À l'expiration de la période de validité, la carte dématérialisée ne pourra plus être utilisée pour obtenir des réductions ou avantages."
+                "3.1 La carte dématérialisée est valable pour une durée d'une saison sportive. La validité de la carte court de la date d’achat à la fin de la saison sportive.",
+                "3.2 Une saison sportive court du 1er juillet au 30 juin.",
+                "3.3 Toutes les cartes Pace\’sport sont caduque au 30 juin 2023 à 00h00."
             ]
             },
             {
             "title": "4. Responsabilités et limitations",
             "section": [
                 "4.1 Utilisation de la carte dématérialisée : Vous êtes responsable de l'utilisation de votre carte dématérialisée et vous vous engagez à l'utiliser conformément aux conditions et restrictions définies par Pace'sport et ses partenaires.\n\n",
-                "4.2 Limitation de responsabilité : Pace'sport ne peut garantir la disponibilité, l'exactitude, l'exhaustivité ou la qualité des promotions et offres proposées par les enseignes partenaires. En aucun cas, Pace'sport ne pourra être tenu responsable des dommages directs, indirects, accessoires, spéciaux ou consécutifs résultant de l'utilisation de la carte dématérialisée ou de l'impossibilité de l'utiliser."
+                "4.2 Limitation de responsabilité : Pace'sport ne peut garantir la disponibilité, l'exactitude, l'exhaustivité ou la qualité des promotions et offres proposées par les enseignes partenaires. En aucun cas, Pace'sport ne pourra être tenu responsable des dommages directs, indirects, accessoires, spéciaux ou consécutifs résultant de l'utilisation de la carte dématérialisée ou de l'impossibilité de l'utiliser.",
+                "4.3 Pace’sport peut suspendre son activité à tout moment de manière temporaire ou permanente. La suspension de l’activité de Pace’sport implique l’indisponibilité de la carte Pace’sport. "
                 ]
             },
             {
